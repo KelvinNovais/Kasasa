@@ -1,0 +1,6 @@
+data/io.github.kelvinnovais.Soslaio.desktop.in
+data/io.github.kelvinnovais.Soslaio.metainfo.xml.in
+data/io.github.kelvinnovais.Soslaio.gschema.xml
+src/main.c
+src/soslaio-window.c
+src/soslaio-window.ui
