@@ -76,19 +76,6 @@ on_screenshot_taken (GObject      *object,
   load_screenshot (self, uri);
 }
 
-void
-take_screenshot (SoslaioWindow *self)
-{
-  xdp_portal_take_screenshot (
-    self->portal,
-    NULL,
-    XDP_SCREENSHOT_FLAG_INTERACTIVE,
-    NULL,
-    on_screenshot_taken,
-    self
-  );
-}
-
 static void
 soslaio_window_dispose (GObject *soslaio_window)
 {
@@ -126,10 +113,13 @@ soslaio_window_init (SoslaioWindow *self)
 
   self->portal = xdp_portal_new ();
 
-  take_screenshot (self);
-
-  // TODO set window size based on the picture size (sum header height [?])
-
-  // TODO set window ratio
+  xdp_portal_take_screenshot (
+    self->portal,
+    NULL,
+    XDP_SCREENSHOT_FLAG_INTERACTIVE,
+    NULL,
+    on_screenshot_taken,
+    self
+  );
 }
 
