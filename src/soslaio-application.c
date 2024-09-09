@@ -25,7 +25,7 @@
 
 struct _SoslaioApplication
 {
-	AdwApplication parent_instance;
+  AdwApplication parent_instance;
 };
 
 G_DEFINE_FINAL_TYPE (SoslaioApplication, soslaio_application, ADW_TYPE_APPLICATION)
@@ -34,37 +34,40 @@ SoslaioApplication *
 soslaio_application_new (const char        *application_id,
                          GApplicationFlags  flags)
 {
-	g_return_val_if_fail (application_id != NULL, NULL);
+  g_return_val_if_fail (application_id != NULL, NULL);
 
-	return g_object_new (SOSLAIO_TYPE_APPLICATION,
-	                     "application-id", application_id,
-	                     "flags", flags,
-	                     NULL);
+  return g_object_new (SOSLAIO_TYPE_APPLICATION,
+                       "application-id", application_id,
+                       "flags", flags,
+                       NULL);
 }
 
 static void
 soslaio_application_activate (GApplication *app)
 {
-	GtkWindow *window;
+  GtkWindow *window;
 
-	g_assert (SOSLAIO_IS_APPLICATION (app));
+  g_assert (SOSLAIO_IS_APPLICATION (app));
 
-	window = gtk_application_get_active_window (GTK_APPLICATION (app));
+  window = gtk_application_get_active_window (GTK_APPLICATION (app));
 
-	if (window == NULL)
-		window = g_object_new (SOSLAIO_TYPE_WINDOW,
-		                       "application", app,
-		                       NULL);
+  if (window == NULL)
+    window = g_object_new (SOSLAIO_TYPE_WINDOW,
+                           "application", app,
+                           NULL);
 
-	gtk_window_present (window);
+  gtk_window_present (window);
+
+  // Make the window invisible until it receives the screenshot
+  gtk_widget_set_visible (GTK_WIDGET (window), FALSE);
 }
 
 static void
 soslaio_application_class_init (SoslaioApplicationClass *klass)
 {
-	GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
+  GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
 
-	app_class->activate = soslaio_application_activate;
+  app_class->activate = soslaio_application_activate;
 }
 
 static void
@@ -72,22 +75,22 @@ soslaio_application_about_action (GSimpleAction *action,
                                   GVariant      *parameter,
                                   gpointer       user_data)
 {
-	static const char *developers[] = {"Kelvin", NULL};
-	SoslaioApplication *self = user_data;
-	GtkWindow *window = NULL;
+  static const char *developers[] = {"Kelvin", NULL};
+  SoslaioApplication *self = user_data;
+  GtkWindow *window = NULL;
 
-	g_assert (SOSLAIO_IS_APPLICATION (self));
+  g_assert (SOSLAIO_IS_APPLICATION (self));
 
-	window = gtk_application_get_active_window (GTK_APPLICATION (self));
+  window = gtk_application_get_active_window (GTK_APPLICATION (self));
 
-	adw_show_about_window (window,
-	                       "application-name", "soslaio",
-	                       "application-icon", "io.github.kelvinnovais.Soslaio",
-	                       "developer-name", "Kelvin",
-	                       "version", "0.1.0",
-	                       "developers", developers,
-	                       "copyright", "© 2024 Kelvin",
-	                       NULL);
+  adw_show_about_window (window,
+                         "application-name", "Soslaio",
+                         "application-icon", "io.github.kelvinnovais.Soslaio",
+                         "developer-name", "Kelvin",
+                         "version", "0.1.0",
+                         "developers", developers,
+                         "copyright", "© 2024 Kelvin",
+                         NULL);
 }
 
 static void
@@ -95,11 +98,11 @@ soslaio_application_quit_action (GSimpleAction *action,
                                  GVariant      *parameter,
                                  gpointer       user_data)
 {
-	SoslaioApplication *self = user_data;
+  SoslaioApplication *self = user_data;
 
-	g_assert (SOSLAIO_IS_APPLICATION (self));
+  g_assert (SOSLAIO_IS_APPLICATION (self));
 
-	g_application_quit (G_APPLICATION (self));
+  g_application_quit (G_APPLICATION (self));
 }
 
 static const GActionEntry app_actions[] = {
@@ -110,11 +113,11 @@ static const GActionEntry app_actions[] = {
 static void
 soslaio_application_init (SoslaioApplication *self)
 {
-	g_action_map_add_action_entries (G_ACTION_MAP (self),
-	                                 app_actions,
-	                                 G_N_ELEMENTS (app_actions),
-	                                 self);
-	gtk_application_set_accels_for_action (GTK_APPLICATION (self),
-	                                       "app.quit",
-	                                       (const char *[]) { "<primary>q", NULL });
+  g_action_map_add_action_entries (G_ACTION_MAP (self),
+                                   app_actions,
+                                   G_N_ELEMENTS (app_actions),
+                                   self);
+  gtk_application_set_accels_for_action (GTK_APPLICATION (self),
+                                         "app.quit",
+                                         (const char *[]) { "<primary>q", NULL });
 }

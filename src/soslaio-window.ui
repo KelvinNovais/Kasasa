@@ -20,11 +20,20 @@
           </object>
         </child>
         <property name="content">
-          <object class="GtkLabel" id="label">
-            <property name="label">Hello, World!</property>
-            <style>
-              <class name="title-1"/>
-            </style>
+          <object class="GtkBox" id="container">
+            <property name="orientation">vertical</property>
+            <property name="vexpand">True</property>
+            <property name="hexpand">True</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+
+            <child>
+              <object class="GtkPicture" id="picture">
+                <!-- TODO <contain> or <scale-down> -->
+                <property name="content-fit">contain</property>
+                <property name="can-shrink">True</property>
+              </object>
+            </child>
           </object>
         </property>
       </object>
