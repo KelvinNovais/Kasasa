@@ -108,7 +108,8 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="save_button">
-                        <property name="visible">False</property> <!-- TODO -->
+                        <!-- TODO -->
+                        <property name="visible">False</property>
                         <property name="margin-top">6</property>
                         <property name="halign">center</property>
                         <property name="css-classes">flat</property>

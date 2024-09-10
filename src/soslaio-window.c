@@ -32,25 +32,27 @@ struct _SoslaioWindow
   GtkEventController  *motion_event_controller;
 
   /* Template widgets */
-  /* AdwHeaderBar        *header_bar; // TODO */
   GtkPicture          *picture;
   GtkBox              *picture_container;
 };
 
 G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
 
-static void
+static gboolean
 load_screenshot (SoslaioWindow *self, const gchar *uri)
 {
   g_autoptr (GFile) file = NULL;
 
-  g_return_if_fail (uri != NULL);
+  if (uri == NULL)
+    return TRUE;
 
   file = g_file_new_for_uri (uri);
 
   gtk_picture_set_file (self->picture, file);
 
   gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
+
+  return FALSE;
 }
 
 static void
@@ -61,6 +63,9 @@ on_screenshot_taken (GObject      *object,
   SoslaioWindow *self = SOSLAIO_WINDOW (user_data);
   g_autoptr (GError) error = NULL;
   g_autofree gchar *uri = NULL;
+  gboolean failed = FALSE;
+  GtkIconTheme *icon_theme;
+  g_autoptr (GtkIconPaintable) icon;
 
   uri =  xdp_portal_take_screenshot_finish (
     self->portal,
@@ -68,13 +73,63 @@ on_screenshot_taken (GObject      *object,
     &error
   );
 
-  if (error != NULL) {
-    // TODO show error to the user
-    g_warning ("%s", error->message);
-    return;
-  }
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      failed = TRUE;
+    }
+  else
+    {
+      failed = load_screenshot (self, uri);
+    }
 
-  load_screenshot (self, uri);
+  if (failed)
+    {
+      // Set error icon
+      icon_theme = gtk_icon_theme_get_for_display (
+        gtk_widget_get_display (GTK_WIDGET (self))
+      );
+      icon = gtk_icon_theme_lookup_icon (
+        icon_theme,                         // icon theme
+        "image-missing-symbolic",           // icon name
+        NULL,                               // fallbacks
+        200,                                // icon size
+        1,                                  // scale
+        GTK_TEXT_DIR_NONE,                  // text direction
+        GTK_ICON_LOOKUP_FORCE_SYMBOLIC      // flags
+      );
+      gtk_widget_set_margin_top (GTK_WIDGET (self->picture), 20);
+      gtk_widget_set_margin_bottom (GTK_WIDGET (self->picture), 20);
+      gtk_widget_set_margin_start (GTK_WIDGET (self->picture), 20);
+      gtk_widget_set_margin_end (GTK_WIDGET (self->picture), 20);
+      gtk_picture_set_paintable (self->picture, GDK_PAINTABLE (icon));
+      gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
+    }
+}
+
+static void
+on_mouse_enter (GtkEventControllerMotion *self,
+                gdouble                   x,
+                gdouble                   y,
+                gpointer                  user_data)
+{
+  SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
+
+  /*
+   * Setting an element to visible/invisible seems to be needed to correctly
+   * "update" the window
+   */
+  gtk_widget_set_visible (GTK_WIDGET (window->picture), FALSE);
+  gtk_widget_set_opacity (GTK_WIDGET (window), 0.35);
+  gtk_widget_set_visible (GTK_WIDGET (window->picture), TRUE);
+}
+
+static void
+on_mouse_leave (GtkEventControllerMotion *self,
+                gpointer                  user_data)
+{
+  SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
+  gtk_widget_set_opacity (GTK_WIDGET (window), 1.00);
 }
 
 static void
@@ -103,34 +158,8 @@ soslaio_window_class_init (SoslaioWindowClass *klass)
   object_class->finalize = soslaio_window_finalize;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Soslaio/soslaio-window.ui");
-  /* gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, header_bar); // TODO */
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture_container);
-}
-
-static void
-on_mouse_enter (GtkEventControllerMotion *self,
-                gdouble                   x,
-                gdouble                   y,
-                gpointer                  user_data)
-{
-  SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
-
-  /*
-   * Setting an element to visible/invisible seems to be needed to correctly
-   * "update" the window
-   */
-  gtk_widget_set_visible (GTK_WIDGET (window->picture), FALSE);
-  gtk_widget_set_opacity (GTK_WIDGET (window), 0.4);
-  gtk_widget_set_visible (GTK_WIDGET (window->picture), TRUE);
-}
-
-static void
-on_mouse_leave (GtkEventControllerMotion *self,
-                gpointer                  user_data)
-{
-  SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
-  gtk_widget_set_opacity (GTK_WIDGET (window), 1.0);
 }
 
 static void
