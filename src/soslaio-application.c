@@ -81,7 +81,7 @@ soslaio_application_about_action (GSimpleAction *action,
                                   GVariant      *parameter,
                                   gpointer       user_data)
 {
-  static const char *developers[] = {"Kelvin", NULL};
+  static const char *developers[] = {"Kelvin Novais", NULL};
   SoslaioApplication *self = user_data;
   GtkWindow *window = NULL;
 
@@ -92,10 +92,10 @@ soslaio_application_about_action (GSimpleAction *action,
   adw_show_about_window (window,
                          "application-name", "Soslaio",
                          "application-icon", "io.github.kelvinnovais.Soslaio",
-                         "developer-name", "Kelvin",
+                         "developer-name", "Kelvin Novais",
                          "version", "0.1.0",
                          "developers", developers,
-                         "copyright", "© 2024 Kelvin",
+                         "copyright", "© 2024 Kelvin Novais",
                          NULL);
 }
 
