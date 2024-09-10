@@ -121,13 +121,13 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="copy_button">
+                        <!-- TODO -->
+                        <!-- <property name="visible">False</property> -->
                         <property name="margin-top">6</property>
                         <property name="halign">center</property>
                         <property name="css-classes">flat</property>
                         <property name="icon-name">edit-copy-symbolic</property>
                         <property name="tooltip-text" translatable="yes">Copy</property>
-                        <!-- TODO -->
-                        <!-- <signal name="clicked" handler="on_copy_action" swapped="no" /> -->
                       </object>
                     </child>
                   </object>
