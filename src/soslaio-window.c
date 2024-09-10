@@ -29,10 +29,12 @@ struct _SoslaioWindow
   AdwApplicationWindow  parent_instance;
 
   XdpPortal *portal;
+  GtkEventController  *motion_event_controller;
 
   /* Template widgets */
-  AdwHeaderBar        *header_bar;
+  /* AdwHeaderBar        *header_bar; // TODO */
   GtkPicture          *picture;
+  GtkBox              *picture_container;
 };
 
 G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -44,7 +46,6 @@ load_screenshot (SoslaioWindow *self, const gchar *uri)
 
   g_return_if_fail (uri != NULL);
 
-  // TODO move image to /tmp
   file = g_file_new_for_uri (uri);
 
   gtk_picture_set_file (self->picture, file);
@@ -102,8 +103,34 @@ soslaio_window_class_init (SoslaioWindowClass *klass)
   object_class->finalize = soslaio_window_finalize;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Soslaio/soslaio-window.ui");
-  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, header_bar);
+  /* gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, header_bar); // TODO */
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture);
+  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture_container);
+}
+
+static void
+on_mouse_enter (GtkEventControllerMotion *self,
+                gdouble                   x,
+                gdouble                   y,
+                gpointer                  user_data)
+{
+  SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
+
+  /*
+   * Setting an element to visible/invisible seems to be needed to correctly
+   * "update" the window
+   */
+  gtk_widget_set_visible (GTK_WIDGET (window->picture), FALSE);
+  gtk_widget_set_opacity (GTK_WIDGET (window), 0.4);
+  gtk_widget_set_visible (GTK_WIDGET (window->picture), TRUE);
+}
+
+static void
+on_mouse_leave (GtkEventControllerMotion *self,
+                gpointer                  user_data)
+{
+  SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
+  gtk_widget_set_opacity (GTK_WIDGET (window), 1.0);
 }
 
 static void
@@ -112,6 +139,11 @@ soslaio_window_init (SoslaioWindow *self)
   gtk_widget_init_template (GTK_WIDGET (self));
 
   self->portal = xdp_portal_new ();
+
+  self->motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (self->motion_event_controller, "enter", G_CALLBACK (on_mouse_enter), self);
+  g_signal_connect (self->motion_event_controller, "leave", G_CALLBACK (on_mouse_leave), self);
+  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->motion_event_controller);
 
   xdp_portal_take_screenshot (
     self->portal,

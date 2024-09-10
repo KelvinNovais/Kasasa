@@ -7,43 +7,42 @@
     <property name="height-request">190</property>
     <property name="width-request">210</property>
 
-    <child>
-      <object class="AdwBreakpoint">
-        <condition>min-height: 360px</condition>
-        <setter object="main-box" property="orientation">1</setter>
-        <setter object="tool-box" property="orientation">0</setter>
-        <setter object="v-separator" property="visible">False</setter>
-        <setter object="controls" property="visible">False</setter>
-        <setter object="header_bar" property="visible">True</setter>
-        <setter object="vertical-menu" property="visible">False</setter>
-        <setter object="copy_button" property="margin-end">6</setter>
-      </object>
-    </child>
+    <!-- <child> -->
+    <!--   <object class="AdwBreakpoint"> -->
+    <!--     <condition>min-height: 360px</condition> -->
+    <!--     <setter object="main_box" property="orientation">1</setter> -->
+    <!--     <setter object="tool-box" property="orientation">0</setter> -->
+    <!--     <setter object="v_separator" property="visible">False</setter> -->
+    <!--     <setter object="controls" property="visible">False</setter> -->
+    <!--     <setter object="header_bar" property="visible">True</setter> -->
+    <!--     <setter object="vertical_menu" property="visible">False</setter> -->
+    <!--     <setter object="copy_button" property="margin-end">6</setter> -->
+    <!--   </object> -->
+    <!-- </child> -->
 
     <child>
-      <object class="GtkBox" id="main-box">
+      <object class="GtkBox" id="main_box">
         <!-- HEADER BAR -->
-        <child>
-          <object class="AdwHeaderBar" id="header_bar">
-            <property name="visible">False</property>
-            <property name="css-classes">flat</property>
-            <child type="end">
-              <!-- TODO add save and copy buttons -->
-              <object class="GtkMenuButton">
-                <property name="primary">True</property>
-                <property name="icon-name">open-menu-symbolic</property>
-                <property name="tooltip-text" translatable="yes">Menu</property>
-                <property name="menu-model">primary_menu</property>
-              </object>
-            </child>
-          </object>
-        </child>
+        <!-- <child> -->
+        <!--   <object class="AdwHeaderBar" id="header_bar"> -->
+        <!--     <property name="visible">False</property> -->
+        <!--     <property name="css-classes">flat</property> -->
+        <!--     <child type="end"> -->
+        <!--       <object class="GtkMenuButton"> -->
+        <!--         <property name="primary">True</property> -->
+        <!--         <property name="icon-name">open-menu-symbolic</property> -->
+        <!--         <property name="tooltip-text" translatable="yes">Menu</property> -->
+        <!--         <property name="menu-model">primary_menu</property> -->
+        <!--       </object> -->
+        <!--     </child> -->
+        <!--   </object> -->
+        <!-- </child> -->
 
         <!-- PICTURE -->
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="picture_container">
             <child>
-              <object class="GtkBox" id="container">
+              <object class="GtkBox">
                 <property name="orientation">vertical</property>
                 <property name="vexpand">True</property>
                 <property name="hexpand">True</property>
@@ -58,7 +57,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkSeparator" id="v-separator">
+              <object class="GtkSeparator" id="v_separator">
                 <property name="visible">True</property>
               </object>
             </child>
@@ -67,7 +66,7 @@
 
         <!-- VERTICAL MENU -->
         <child>
-          <object class="GtkWindowHandle" id="vertical-menu">
+          <object class="GtkWindowHandle" id="vertical_menu">
             <child>
               <object class="GtkBox">
                 <property name="orientation">1</property>
@@ -109,6 +108,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="save_button">
+                        <property name="visible">False</property> <!-- TODO -->
                         <property name="margin-top">6</property>
                         <property name="halign">center</property>
                         <property name="css-classes">flat</property>
