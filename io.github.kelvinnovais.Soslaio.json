@@ -8,8 +8,7 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--device=dri",
-        "--socket=wayland",
-        "--filesystem=xdg-pictures"
+        "--socket=wayland"
     ],
     "cleanup" : [
         "/include",

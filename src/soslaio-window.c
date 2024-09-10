@@ -40,6 +40,28 @@ struct _SoslaioWindow
 
 G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
 
+/* static void */
+/* trash_screenshot (SoslaioWindow *self, const gchar *uri) */
+/* { */
+/*   g_auto (GStrv) strv; */
+/*   g_autofree gchar *new_uri = NULL; */
+/*   g_autoptr (GFile) file = NULL; */
+/*   guint length = 0; */
+/*   g_autoptr (GError) error = NULL; */
+
+/*   // Split the path to the screenshot */
+/*   strv = g_strsplit (uri, "/", -1); */
+/*   length = g_strv_length (strv); */
+
+/*   // Trash the screenshot corresponding to the name */
+/*   new_uri = g_strconcat ("~/Pictures/", strv[length-1], NULL); */
+/*   file = g_file_new_for_uri (new_uri); */
+/*   g_file_delete (file, NULL, &error); */
+
+/*   if (error != NULL) */
+/*     g_warning ("%s", error->message); */
+/* } */
+
 static void
 on_fail (SoslaioWindow *self)
 {
@@ -78,28 +100,12 @@ on_fail (SoslaioWindow *self)
 static gboolean
 load_screenshot (SoslaioWindow *self, const gchar *uri)
 {
-  g_autoptr (GFile) file = NULL;
-  g_autoptr (GError) error = NULL;
-
   if (uri == NULL)
     return TRUE;
 
-  file = g_file_new_for_uri (uri);
+  self->file = g_file_new_for_uri (uri);
 
-  self->file = file;
-  /* self->uri = g_strdup (uri); */
-  /* g_bytes_unref (self->bytes); */
-  /* self->bytes = g_file_load_bytes ( */
-  /*   file, NULL, NULL, &error */
-  /* ); */
-
-  /* if (error != NULL) */
-  /*   { */
-  /*     g_warning ("%s", error->message); */
-  /*     gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE); */
-  /*   } */
-
-  gtk_picture_set_file (self->picture, file);
+  gtk_picture_set_file (self->picture, self->file);
 
   gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
 
@@ -189,7 +195,8 @@ soslaio_window_dispose (GObject *soslaio_window)
   SoslaioWindow *self = SOSLAIO_WINDOW (soslaio_window);
 
   g_clear_object (&self->portal);
-  g_object_unref (self->file);
+  if (self->file != NULL)
+    g_object_unref (self->file);
 
   G_OBJECT_CLASS (soslaio_window_parent_class)->dispose (soslaio_window);
 }
@@ -222,14 +229,6 @@ soslaio_window_init (SoslaioWindow *self)
 
   self->portal = xdp_portal_new ();
   self->file = NULL;
-
-  // TODO
-  g_message ("tmp: %s", g_getenv ("$TMPDIR"));
-  g_message ("tmp: %s", g_getenv ("TMPDIR"));
-  g_message ("tmp: %s", g_getenv ("TMP"));
-  g_message ("tmp: %s", g_getenv ("tmp"));
-  g_message ("tmp: %s", g_getenv ("/tmp"));
-  system ("ls -la /tmp");
 
   g_signal_connect (self->copy_button, "clicked", G_CALLBACK (on_copy_button_clicked), self);
 
