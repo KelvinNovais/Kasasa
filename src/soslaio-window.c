@@ -29,14 +29,18 @@ struct _SoslaioWindow
   AdwApplicationWindow  parent_instance;
 
   XdpPortal *portal;
-  /* XdpParent *parent; */
   GtkEventController  *motion_event_controller;
   GFile *file;
+  gboolean change_opacity;
+  gdouble opacity;
 
   /* Template widgets */
   GtkPicture          *picture;
   GtkBox              *picture_container;
   GtkButton           *copy_button;
+  GtkLabel            *error_label;
+
+  AdwToastOverlay *toast_overlay;
 };
 
 G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -79,20 +83,26 @@ on_fail (SoslaioWindow *self)
     icon_theme,                         // icon theme
     "image-missing-symbolic",           // icon name
     NULL,                               // fallbacks
-    200,                                // icon size
+    180,                                // icon size
     1,                                  // scale
     GTK_TEXT_DIR_NONE,                  // text direction
     GTK_ICON_LOOKUP_FORCE_SYMBOLIC      // flags
   );
 
   // Add margins
-  gtk_widget_set_margin_top (GTK_WIDGET (self->picture), 20);
-  gtk_widget_set_margin_bottom (GTK_WIDGET (self->picture), 20);
-  gtk_widget_set_margin_start (GTK_WIDGET (self->picture), 20);
-  gtk_widget_set_margin_end (GTK_WIDGET (self->picture), 20);
+  gtk_widget_set_margin_top (GTK_WIDGET (self->picture), 25);
+  gtk_widget_set_margin_bottom (GTK_WIDGET (self->picture), 25);
+  gtk_widget_set_margin_start (GTK_WIDGET (self->picture), 25);
+  gtk_widget_set_margin_end (GTK_WIDGET (self->picture), 25);
 
   // Set icon
   gtk_picture_set_paintable (self->picture, GDK_PAINTABLE (icon));
+
+  // Make the error label visible
+  gtk_widget_set_visible (GTK_WIDGET (self->error_label), TRUE);
+
+  // Disable opacity decrease
+  self->change_opacity = FALSE;
 
   // Make the copy button insensitive
   gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
@@ -131,16 +141,19 @@ on_screenshot_taken (GObject      *object,
 
   if (error != NULL)
     {
+      g_autofree gchar *msg = g_strdup_printf ("Error: %s", error->message);
       g_warning ("%s", error->message);
+      gtk_label_set_label (self->error_label, msg);
       failed = TRUE;
     }
   else
     {
-      failed = load_screenshot (self, uri);
+      if ((failed = load_screenshot (self, uri)))
+        gtk_label_set_label (self->error_label, "Error: couldn't load screenshot");
     }
 
   if (failed)
-    on_fail (self); // TODO pass and show error on UI
+    on_fail (self);
 
   // Finally, present the window after the screenshot was taken
   gtk_window_present (GTK_WINDOW (self));
@@ -154,6 +167,9 @@ on_mouse_enter (GtkEventControllerMotion *self,
                 gpointer                  user_data)
 {
   SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
+
+  if (window->change_opacity == FALSE)
+    return;
 
   /*
    * Setting an element to visible/invisible seems to be needed to correctly
@@ -170,6 +186,10 @@ on_mouse_leave (GtkEventControllerMotion *self,
                 gpointer                  user_data)
 {
   SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
+
+  if (window->change_opacity == FALSE)
+    return;
+
   gtk_widget_set_opacity (GTK_WIDGET (window), 1.00);
 }
 
@@ -189,10 +209,15 @@ on_copy_button_clicked (GtkButton *button,
 
   if (error != NULL)
     {
+      g_autofree gchar *msg = g_strdup_printf ("Error: %s", error->message);
+
       // Make the copy button insensitive on failure
       gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
       g_warning ("%s", error->message);
-      // TODO show error on UI
+
+      // Show error on UI
+      adw_toast_overlay_add_toast (self->toast_overlay, adw_toast_new (msg));
+
       return;
     }
 
@@ -205,7 +230,6 @@ soslaio_window_dispose (GObject *soslaio_window)
   SoslaioWindow *self = SOSLAIO_WINDOW (soslaio_window);
 
   g_clear_object (&self->portal);
-  /* xdp_parent_free (self->parent); */
   if (self->file != NULL)
     g_object_unref (self->file);
 
@@ -231,6 +255,9 @@ soslaio_window_class_init (SoslaioWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture_container);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, copy_button);
+  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, error_label);
+
+  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, toast_overlay);
 }
 
 static void
@@ -239,7 +266,6 @@ soslaio_window_init (SoslaioWindow *self)
   gtk_widget_init_template (GTK_WIDGET (self));
 
   // Initialize variables
-  /* self->parent = xdp_parent_new_gtk (GTK_WINDOW (self)); */
   self->portal = xdp_portal_new ();
   self->file = NULL;
 
@@ -255,7 +281,7 @@ soslaio_window_init (SoslaioWindow *self)
   // Request a screenshot
   xdp_portal_take_screenshot (
     self->portal,
-    NULL, /* self->parent, */
+    NULL,
     XDP_SCREENSHOT_FLAG_INTERACTIVE,
     NULL,
     on_screenshot_taken,

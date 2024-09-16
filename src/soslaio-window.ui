@@ -38,22 +38,47 @@
         <!--   </object> -->
         <!-- </child> -->
 
-        <!-- PICTURE -->
+        <!-- PICTURE (or error message) -->
         <child>
           <object class="GtkBox" id="picture_container">
             <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="vexpand">True</property>
-                <property name="hexpand">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <child>
-                  <object class="GtkPicture" id="picture">
-                    <property name="content-fit">contain</property>
-                    <property name="can-shrink">True</property>
+              <object class="AdwToastOverlay" id="toast_overlay">
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="vexpand">True</property>
+                    <property name="hexpand">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="vexpand">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <child>
+                          <object class="GtkPicture" id="picture">
+                            <property name="content-fit">contain</property>
+                            <property name="can-shrink">True</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="error_label">
+                        <property name="visible">False</property>
+                        <property name="margin-top">20</property>
+                        <property name="margin-bottom">20</property>
+                        <property name="margin-start">20</property>
+                        <property name="margin-end">20</property>
+                        <style>
+                          <class name="title-2"/>
+                        </style>
+                      </object>
+                    </child>
                   </object>
-                </child>
+                </property>
               </object>
             </child>
             <child>
@@ -121,8 +146,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="copy_button">
-                        <!-- TODO -->
-                        <!-- <property name="visible">False</property> -->
                         <property name="margin-top">6</property>
                         <property name="halign">center</property>
                         <property name="css-classes">flat</property>
