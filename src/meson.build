@@ -7,7 +7,7 @@ soslaio_sources = [
 soslaio_deps = [
   dependency('gtk4'),
   dependency('libadwaita-1', version: '>= 1.4'),
-  dependency('libportal')
+  dependency('libportal-gtk4')
 ]
 
 soslaio_sources += gnome.compile_resources('soslaio-resources',

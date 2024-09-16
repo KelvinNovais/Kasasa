@@ -29,6 +29,7 @@ struct _SoslaioWindow
   AdwApplicationWindow  parent_instance;
 
   XdpPortal *portal;
+  /* XdpParent *parent; */
   GtkEventController  *motion_event_controller;
   GFile *file;
 
@@ -62,6 +63,7 @@ G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
 /*     g_warning ("%s", error->message); */
 /* } */
 
+// Set an "missing image" icon when screenshoting fails
 static void
 on_fail (SoslaioWindow *self)
 {
@@ -94,9 +96,9 @@ on_fail (SoslaioWindow *self)
 
   // Make the copy button insensitive
   gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
-  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
 }
 
+// Load the screenshot to the GtkPicture widget
 static gboolean
 load_screenshot (SoslaioWindow *self, const gchar *uri)
 {
@@ -107,11 +109,10 @@ load_screenshot (SoslaioWindow *self, const gchar *uri)
 
   gtk_picture_set_file (self->picture, self->file);
 
-  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
-
   return FALSE;
 }
 
+// Callback xdp_portal_take_screenshot ()
 static void
 on_screenshot_taken (GObject      *object,
                      GAsyncResult *res,
@@ -139,9 +140,13 @@ on_screenshot_taken (GObject      *object,
     }
 
   if (failed)
-    on_fail (self);
+    on_fail (self); // TODO pass and show error on UI
+
+  // Finally, present the window after the screenshot was taken
+  gtk_window_present (GTK_WINDOW (self));
 }
 
+// Decrease window opacity when the pointer enters it
 static void
 on_mouse_enter (GtkEventControllerMotion *self,
                 gdouble                   x,
@@ -159,6 +164,7 @@ on_mouse_enter (GtkEventControllerMotion *self,
   gtk_widget_set_visible (GTK_WIDGET (window->picture), TRUE);
 }
 
+// Increase window opacity when the pointer leaves it
 static void
 on_mouse_leave (GtkEventControllerMotion *self,
                 gpointer                  user_data)
@@ -167,6 +173,7 @@ on_mouse_leave (GtkEventControllerMotion *self,
   gtk_widget_set_opacity (GTK_WIDGET (window), 1.00);
 }
 
+// Copy the image to the clipboard
 static void
 on_copy_button_clicked (GtkButton *button,
                         gpointer   user_data)
@@ -182,8 +189,11 @@ on_copy_button_clicked (GtkButton *button,
 
   if (error != NULL)
     {
+      // Make the copy button insensitive on failure
       gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
       g_warning ("%s", error->message);
+      // TODO show error on UI
+      return;
     }
 
   gdk_clipboard_set_texture (clipboard, texture);
@@ -195,6 +205,7 @@ soslaio_window_dispose (GObject *soslaio_window)
   SoslaioWindow *self = SOSLAIO_WINDOW (soslaio_window);
 
   g_clear_object (&self->portal);
+  /* xdp_parent_free (self->parent); */
   if (self->file != NULL)
     g_object_unref (self->file);
 
@@ -227,9 +238,12 @@ soslaio_window_init (SoslaioWindow *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
 
+  // Initialize variables
+  /* self->parent = xdp_parent_new_gtk (GTK_WINDOW (self)); */
   self->portal = xdp_portal_new ();
   self->file = NULL;
 
+  // Connect copy button callback
   g_signal_connect (self->copy_button, "clicked", G_CALLBACK (on_copy_button_clicked), self);
 
   // Create a motion event controller to monitor when the mouse cursor is over the window
@@ -238,9 +252,10 @@ soslaio_window_init (SoslaioWindow *self)
   g_signal_connect (self->motion_event_controller, "leave", G_CALLBACK (on_mouse_leave), self);
   gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->motion_event_controller);
 
+  // Request a screenshot
   xdp_portal_take_screenshot (
     self->portal,
-    NULL,
+    NULL, /* self->parent, */
     XDP_SCREENSHOT_FLAG_INTERACTIVE,
     NULL,
     on_screenshot_taken,

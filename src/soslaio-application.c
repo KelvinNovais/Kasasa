@@ -55,17 +55,6 @@ soslaio_application_activate (GApplication *app)
     window = g_object_new (SOSLAIO_TYPE_WINDOW,
                            "application", app,
                            NULL);
-
-  gtk_window_present (window);
-
-  /*
-   * Make the window invisible until it receives the screenshot:
-   *
-   * Since the screenshot is an async function, the window will be set visible
-   * as soon as the callback function receives (or not) the taken secreenshot.
-   * This action will be done on soslaio-window.c
-   */
-  gtk_widget_set_visible (GTK_WIDGET (window), FALSE);
 }
 
 static void
