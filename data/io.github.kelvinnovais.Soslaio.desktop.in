@@ -1,8 +1,9 @@
 [Desktop Entry]
 Name=Soslaio
+Comment=Create ephemeral floating screenshot windows
 Exec=soslaio
 Icon=io.github.kelvinnovais.Soslaio
 Terminal=false
 Type=Application
-Categories=GTK;
-StartupNotify=true
+Categories=Utility;GTK;GNOME;
+StartupNotify=false

@@ -28,19 +28,19 @@ struct _SoslaioWindow
 {
   AdwApplicationWindow  parent_instance;
 
-  XdpPortal *portal;
+  XdpPortal           *portal;
   GtkEventController  *motion_event_controller;
-  GFile *file;
-  gboolean change_opacity;
-  gdouble opacity;
+  GFile               *file;
+  GSettings           *settings;
+  gboolean             change_opacity;
+  gdouble              opacity;
 
   /* Template widgets */
   GtkPicture          *picture;
   GtkBox              *picture_container;
   GtkButton           *copy_button;
   GtkLabel            *error_label;
-
-  AdwToastOverlay *toast_overlay;
+  AdwToastOverlay     *toast_overlay;
 };
 
 G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -122,6 +122,13 @@ load_screenshot (SoslaioWindow *self, const gchar *uri)
   return FALSE;
 }
 
+static void
+load_settings (SoslaioWindow *self)
+{
+  self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");
+  self->opacity = g_settings_get_double (self->settings, "opacity");
+}
+
 // Callback xdp_portal_take_screenshot ()
 static void
 on_screenshot_taken (GObject      *object,
@@ -176,7 +183,7 @@ on_mouse_enter (GtkEventControllerMotion *self,
    * "update" the window
    */
   gtk_widget_set_visible (GTK_WIDGET (window->picture), FALSE);
-  gtk_widget_set_opacity (GTK_WIDGET (window), 0.35);
+  gtk_widget_set_opacity (GTK_WIDGET (window), window->opacity);
   gtk_widget_set_visible (GTK_WIDGET (window->picture), TRUE);
 }
 
@@ -225,21 +232,24 @@ on_copy_button_clicked (GtkButton *button,
 }
 
 static void
+on_settings_updated (GSettings* self,
+                     gchar* key,
+                     gpointer user_data)
+{
+  load_settings (SOSLAIO_WINDOW (user_data));
+}
+
+static void
 soslaio_window_dispose (GObject *soslaio_window)
 {
   SoslaioWindow *self = SOSLAIO_WINDOW (soslaio_window);
 
   g_clear_object (&self->portal);
+  g_clear_object (&self->settings);
   if (self->file != NULL)
     g_object_unref (self->file);
 
   G_OBJECT_CLASS (soslaio_window_parent_class)->dispose (soslaio_window);
-}
-
-static void
-soslaio_window_finalize (GObject *soslaio_window)
-{
-  G_OBJECT_CLASS (soslaio_window_parent_class)->finalize (soslaio_window);
 }
 
 static void
@@ -249,14 +259,12 @@ soslaio_window_class_init (SoslaioWindowClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->dispose = soslaio_window_dispose;
-  object_class->finalize = soslaio_window_finalize;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Soslaio/soslaio-window.ui");
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture_container);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, copy_button);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, error_label);
-
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, toast_overlay);
 }
 
@@ -268,6 +276,13 @@ soslaio_window_init (SoslaioWindow *self)
   // Initialize variables
   self->portal = xdp_portal_new ();
   self->file = NULL;
+  self->settings = g_settings_new ("io.github.kelvinnovais.Soslaio");
+
+  // Read settings
+  load_settings (self);
+
+  // Connect signal to track when settings are changed
+  g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
 
   // Connect copy button callback
   g_signal_connect (self->copy_button, "clicked", G_CALLBACK (on_copy_button_clicked), self);

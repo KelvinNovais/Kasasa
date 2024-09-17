@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include "soslaio-preferences.h"
 #include "soslaio-application.h"
 #include "soslaio-window.h"
 
@@ -55,6 +56,19 @@ soslaio_application_activate (GApplication *app)
     window = g_object_new (SOSLAIO_TYPE_WINDOW,
                            "application", app,
                            NULL);
+}
+
+static void
+soslaio_application_preferences_action (GSimpleAction *action,
+                                        GVariant      *parameter,
+                                        gpointer       app)
+{
+  SoslaioPreferences *preferences;
+  GtkWindow *window;
+
+  window = gtk_application_get_active_window (GTK_APPLICATION (app));
+  preferences = soslaio_preferences_new ();
+  adw_dialog_present (ADW_DIALOG (preferences), GTK_WIDGET (window));
 }
 
 static void
@@ -103,6 +117,7 @@ soslaio_application_quit_action (GSimpleAction *action,
 static const GActionEntry app_actions[] = {
 	{ "quit", soslaio_application_quit_action },
 	{ "about", soslaio_application_about_action },
+        {"preferences", soslaio_application_preferences_action }
 };
 
 static void
@@ -115,4 +130,6 @@ soslaio_application_init (SoslaioApplication *self)
   gtk_application_set_accels_for_action (GTK_APPLICATION (self),
                                          "app.quit",
                                          (const char *[]) { "<primary>q", NULL });
+
+  // TODO bind settings: https://docs.gtk.org/gtk4/getting_started.html#a-preference-dialog
 }

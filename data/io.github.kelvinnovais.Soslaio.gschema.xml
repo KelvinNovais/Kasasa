@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="soslaio">
 	<schema id="io.github.kelvinnovais.Soslaio" path="/io/github/kelvinnovais/Soslaio/">
+	  <key name="change-opacity" type="b">
+      <default>true</default>
+    </key>
+
+	  <key name="opacity" type="d">
+      <range min="0.10" max="1.00"/>
+      <default>0.35</default>
+    </key>
 	</schema>
 </schemalist>

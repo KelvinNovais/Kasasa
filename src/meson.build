@@ -1,7 +1,8 @@
 soslaio_sources = [
   'main.c',
   'soslaio-application.c',
-  'soslaio-window.c'
+  'soslaio-window.c',
+  'soslaio-preferences.c'
 ]
 
 soslaio_deps = [

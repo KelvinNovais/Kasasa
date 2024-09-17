@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="SoslaioPreferences" parent="AdwPreferencesDialog">
+    <property name="search-enabled">False</property>
+    <!-- <property name="title" translatable="true">Preferences</property> -->
+    <child>
+      <object class="AdwPreferencesPage">
+        <child>
+          <object class="AdwPreferencesGroup">
+            <!-- <property name="title" translatable="true">Opacity</property> -->
+            <!-- <property name="description" translatable="true">Set whether the opacity of the window should change when the mouse pointer is over it</property> -->
+            <child>
+              <object class="AdwSwitchRow" id="opacity_switch">
+                <property name="title" translatable="true">Change opacity</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwSpinRow">
+                <property name="title" translatable="true">Opacity</property>
+                <property name="digits">2</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment" id="opacity_adjustment">
+                    <property name="lower">0.10</property>
+                    <property name="upper">1.00</property>
+                    <property name="step-increment">0.01</property>
+                    <property name="value">0.35</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
+
