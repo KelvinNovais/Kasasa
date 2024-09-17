@@ -130,6 +130,4 @@ soslaio_application_init (SoslaioApplication *self)
   gtk_application_set_accels_for_action (GTK_APPLICATION (self),
                                          "app.quit",
                                          (const char *[]) { "<primary>q", NULL });
-
-  // TODO bind settings: https://docs.gtk.org/gtk4/getting_started.html#a-preference-dialog
 }
