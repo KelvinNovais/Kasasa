@@ -45,28 +45,6 @@ struct _SoslaioWindow
 
 G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
 
-/* static void */
-/* trash_screenshot (SoslaioWindow *self, const gchar *uri) */
-/* { */
-/*   g_auto (GStrv) strv; */
-/*   g_autofree gchar *new_uri = NULL; */
-/*   g_autoptr (GFile) file = NULL; */
-/*   guint length = 0; */
-/*   g_autoptr (GError) error = NULL; */
-
-/*   // Split the path to the screenshot */
-/*   strv = g_strsplit (uri, "/", -1); */
-/*   length = g_strv_length (strv); */
-
-/*   // Trash the screenshot corresponding to the name */
-/*   new_uri = g_strconcat ("~/Pictures/", strv[length-1], NULL); */
-/*   file = g_file_new_for_uri (new_uri); */
-/*   g_file_delete (file, NULL, &error); */
-
-/*   if (error != NULL) */
-/*     g_warning ("%s", error->message); */
-/* } */
-
 // Set an "missing image" icon when screenshoting fails
 static void
 on_fail (SoslaioWindow *self)
