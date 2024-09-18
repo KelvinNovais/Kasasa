@@ -18,9 +18,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include <libportal-gtk4/portal-gtk4.h>
-
 #include "config.h"
+
+#include <libportal-gtk4/portal-gtk4.h>
+#include <glib/gi18n.h>
 
 #include "soslaio-window.h"
 
@@ -50,7 +51,7 @@ static void
 on_fail (SoslaioWindow *self)
 {
   GtkIconTheme *icon_theme;
-  g_autoptr (GtkIconPaintable) icon;
+  g_autoptr (GtkIconPaintable) icon = NULL;
 
   // Set error icon
   icon_theme = gtk_icon_theme_get_for_display (
@@ -126,7 +127,7 @@ on_screenshot_taken (GObject      *object,
 
   if (error != NULL)
     {
-      g_autofree gchar *msg = g_strdup_printf ("Error: %s", error->message);
+      g_autofree gchar *msg = g_strdup_printf ("%s %s", _("Error:"), error->message);
       g_warning ("%s", error->message);
       gtk_label_set_label (self->error_label, msg);
       failed = TRUE;
@@ -134,7 +135,7 @@ on_screenshot_taken (GObject      *object,
   else
     {
       if ((failed = load_screenshot (self, uri)))
-        gtk_label_set_label (self->error_label, "Error: couldn't load screenshot");
+        gtk_label_set_label (self->error_label, _("Error: couldn't load screenshot"));
     }
 
   if (failed)
@@ -194,7 +195,7 @@ on_copy_button_clicked (GtkButton *button,
 
   if (error != NULL)
     {
-      g_autofree gchar *msg = g_strdup_printf ("Error: %s", error->message);
+      g_autofree gchar *msg = g_strdup_printf ("%s %s", _("Error:"), error->message);
 
       // Make the copy button insensitive on failure
       gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);

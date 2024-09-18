@@ -18,7 +18,7 @@
             </child>
             <child>
               <object class="AdwSpinRow">
-                <property name="title" translatable="true">Opacity</property>
+                <property name="title" translatable="true">Opacity level</property>
                 <property name="digits">2</property>
                 <property name="adjustment">
                   <object class="GtkAdjustment" id="opacity_adjustment">

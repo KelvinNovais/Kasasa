@@ -20,6 +20,8 @@
 
 #include "config.h"
 
+#include <glib/gi18n.h>
+
 #include "soslaio-preferences.h"
 #include "soslaio-application.h"
 #include "soslaio-window.h"
@@ -84,7 +86,7 @@ soslaio_application_about_action (GSimpleAction *action,
                                   GVariant      *parameter,
                                   gpointer       user_data)
 {
-  static const char *developers[] = {"Kelvin Novais", NULL};
+  static const char *developers[] = {"Kelvin Ribeiro Novais", NULL};
   SoslaioApplication *self = user_data;
   GtkWindow *window = NULL;
 
@@ -93,12 +95,12 @@ soslaio_application_about_action (GSimpleAction *action,
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
 
   adw_show_about_window (window,
-                         "application-name", "Soslaio",
+                         "application-name", _("Mini screenshot"),
                          "application-icon", "io.github.kelvinnovais.Soslaio",
-                         "developer-name", "Kelvin Novais",
+                         "developer-name", "Kelvin Ribeiro Novais",
                          "version", "0.1.0",
                          "developers", developers,
-                         "copyright", "© 2024 Kelvin Novais",
+                         "copyright", "© 2024 Kelvin Ribeiro Novais",
                          NULL);
 }
 
@@ -117,7 +119,7 @@ soslaio_application_quit_action (GSimpleAction *action,
 static const GActionEntry app_actions[] = {
 	{ "quit", soslaio_application_quit_action },
 	{ "about", soslaio_application_about_action },
-        {"preferences", soslaio_application_preferences_action }
+        { "preferences", soslaio_application_preferences_action }
 };
 
 static void
