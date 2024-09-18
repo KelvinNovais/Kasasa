@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the soslaio package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Kelvin Ribeiro Novais <kelvin.novais@protonmail.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: soslaio\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-09-18 14:23-0300\n"
+"PO-Revision-Date: 2024-09-18 14:38-0300\n"
+"Last-Translator: Kelvin Ribeiro Novais <kelvin.novais@protonmail.com>\n"
+"Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 46.1\n"
+
+#: data/io.github.kelvinnovais.Soslaio.desktop.in:3 src/soslaio-window.ui:6
+msgid "Mini Screenshot"
+msgstr "Mini Captura de Tela"
+
+#: data/io.github.kelvinnovais.Soslaio.desktop.in:4
+#: data/io.github.kelvinnovais.Soslaio.metainfo.xml.in:7
+msgid "Create ephemeral floating screenshot windows"
+msgstr "Crie janelas flutuantes de captura de tela"
+
+#: src/soslaio-window.c:130 src/soslaio-window.c:198
+msgid "Error:"
+msgstr "Erro:"
+
+#: src/soslaio-window.c:138
+msgid "Error: couldn't load screenshot"
+msgstr "Erro: não foi possível carregar a captura de tela"
+
+#: src/soslaio-window.ui:134
+msgid "Menu"
+msgstr "Menu"
+
+#: src/soslaio-window.ui:146
+msgid "Save"
+msgstr "Salvar"
+
+#: src/soslaio-window.ui:157
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/soslaio-window.ui:173
+msgid "_Preferences"
+msgstr "_Preferências"
+
+#: src/soslaio-window.ui:177
+msgid "_Keyboard Shortcuts"
+msgstr "_Atalhos de teclado"
+
+#: src/soslaio-window.ui:181
+msgid "_About Mini Screenshot"
+msgstr "_Sobre Mini Captura de Tela"

@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the soslaio package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: soslaio\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-09-18 14:23-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/io.github.kelvinnovais.Soslaio.desktop.in:3 src/soslaio-window.ui:6
+msgid "Mini Screenshot"
+msgstr ""
+
+#: data/io.github.kelvinnovais.Soslaio.desktop.in:4
+#: data/io.github.kelvinnovais.Soslaio.metainfo.xml.in:7
+msgid "Create ephemeral floating screenshot windows"
+msgstr ""
+
+#: src/soslaio-window.c:130 src/soslaio-window.c:198
+msgid "Error:"
+msgstr ""
+
+#: src/soslaio-window.c:138
+msgid "Error: couldn't load screenshot"
+msgstr ""
+
+#: src/soslaio-window.ui:134
+msgid "Menu"
+msgstr ""
+
+#: src/soslaio-window.ui:146
+msgid "Save"
+msgstr ""
+
+#: src/soslaio-window.ui:157
+msgid "Copy"
+msgstr ""
+
+#: src/soslaio-window.ui:173
+msgid "_Preferences"
+msgstr ""
+
+#: src/soslaio-window.ui:177
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: src/soslaio-window.ui:181
+msgid "_About Mini Screenshot"
+msgstr ""
