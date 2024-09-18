@@ -4,3 +4,5 @@ data/io.github.kelvinnovais.Soslaio.gschema.xml
 src/main.c
 src/soslaio-window.c
 src/soslaio-window.ui
+src/soslaio-preferences.c
+src/soslaio-preferences.ui

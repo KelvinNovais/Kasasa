@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Soslaio
+Name=Mini Screenshot
 Comment=Create ephemeral floating screenshot windows
 Exec=soslaio
 Icon=io.github.kelvinnovais.Soslaio
