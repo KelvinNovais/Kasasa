@@ -43,6 +43,7 @@ struct _SoslaioWindow
   /* Template widgets */
   GtkPicture          *picture;
   GtkBox              *picture_container;
+  GtkButton           *retake_screenshot_button;
   GtkButton           *copy_button;
   GtkLabel            *error_label;
   AdwToastOverlay     *toast_overlay;
@@ -51,29 +52,29 @@ struct _SoslaioWindow
 G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
 
 // If (picture.height > picture.width), the window gets its height wrong (much
-// taller than should be); on that condition, fix the window height
+// taller than should be)
 static void
 resize_window (SoslaioWindow *self)
 {
   g_autoptr (GdkTexture) texture = NULL;
   g_autoptr (GError) error = NULL;
+  gint image_height, image_width;
 
   texture = gdk_texture_new_from_file (self->file, &error);
 
   if (error != NULL)
     {
       g_warning ("%s", error->message);
+      return;
     }
-  else
-    {
-      gint image_height = gdk_texture_get_height (texture);
-      gint image_width = gdk_texture_get_width (texture);
 
-      if (image_height > image_width)
-        gtk_window_set_default_size (GTK_WINDOW (self),
-                                     -1,                          // -1 to unset
-                                     MAX (HEIGHT_REQUEST, image_height));
-    }
+  image_height = gdk_texture_get_height (texture);
+  image_width = gdk_texture_get_width (texture);
+
+  if (image_height > image_width)
+    gtk_window_set_default_size (GTK_WINDOW (self),
+                                 -1,                   // width unset
+                                 MAX (HEIGHT_REQUEST, image_height));
 }
 
 // Set an "missing image" icon when screenshoting fails
@@ -211,6 +212,25 @@ on_mouse_leave (GtkEventControllerMotion *self,
   gtk_widget_set_opacity (GTK_WIDGET (window), 1.00);
 }
 
+// Retake screenshot
+static void
+on_retake_screenshot_button_clicked (GtkButton *button,
+                                     gpointer   user_data)
+{
+  SoslaioWindow *self = SOSLAIO_WINDOW (user_data);
+
+  gtk_window_minimize (GTK_WINDOW (self));
+
+  xdp_portal_take_screenshot (
+    self->portal,
+    NULL,
+    XDP_SCREENSHOT_FLAG_INTERACTIVE,
+    NULL,
+    on_screenshot_taken,
+    self
+  );
+}
+
 // Copy the image to the clipboard
 static void
 on_copy_button_clicked (GtkButton *button,
@@ -274,6 +294,7 @@ soslaio_window_class_init (SoslaioWindowClass *klass)
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Soslaio/soslaio-window.ui");
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture_container);
+  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, retake_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, copy_button);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, error_label);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, toast_overlay);
@@ -298,8 +319,11 @@ soslaio_window_init (SoslaioWindow *self)
   // Connect signal to track when settings are changed
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
 
-  // Connect copy button callback
-  g_signal_connect (self->copy_button, "clicked", G_CALLBACK (on_copy_button_clicked), self);
+  // Connect buttons to the callbacks
+  g_signal_connect (self->retake_screenshot_button, "clicked",
+                    G_CALLBACK (on_retake_screenshot_button_clicked), self);
+  g_signal_connect (self->copy_button, "clicked",
+                    G_CALLBACK (on_copy_button_clicked), self);
 
   // Create a motion event controller to monitor when the mouse cursor is over the window
   self->motion_event_controller = gtk_event_controller_motion_new ();

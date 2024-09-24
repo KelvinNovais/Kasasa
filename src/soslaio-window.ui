@@ -11,10 +11,10 @@
     <!--     <condition>min-height: 360px</condition> -->
     <!--     <setter object="main_box" property="orientation">1</setter> -->
     <!--     <setter object="tool-box" property="orientation">0</setter> -->
-    <!--     <setter object="v_separator" property="visible">False</setter> -->
-    <!--     <setter object="controls" property="visible">False</setter> -->
-    <!--     <setter object="header_bar" property="visible">True</setter> -->
-    <!--     <setter object="vertical_menu" property="visible">False</setter> -->
+    <!--     <setter object="v_separator" property="visible">false</setter> -->
+    <!--     <setter object="controls" property="visible">false</setter> -->
+    <!--     <setter object="header_bar" property="visible">true</setter> -->
+    <!--     <setter object="vertical_menu" property="visible">false</setter> -->
     <!--     <setter object="copy_button" property="margin-end">6</setter> -->
     <!--   </object> -->
     <!-- </child> -->
@@ -24,11 +24,11 @@
         <!-- HEADER BAR -->
         <!-- <child> -->
         <!--   <object class="AdwHeaderBar" id="header_bar"> -->
-        <!--     <property name="visible">False</property> -->
+        <!--     <property name="visible">false</property> -->
         <!--     <property name="css-classes">flat</property> -->
         <!--     <child type="end"> -->
         <!--       <object class="GtkMenuButton"> -->
-        <!--         <property name="primary">True</property> -->
+        <!--         <property name="primary">true</property> -->
         <!--         <property name="icon-name">open-menu-symbolic</property> -->
         <!--         <property name="tooltip-text" translatable="yes">Menu</property> -->
         <!--         <property name="menu-model">primary_menu</property> -->
@@ -46,22 +46,22 @@
                 <property name="child">
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
-                    <property name="vexpand">True</property>
-                    <property name="hexpand">True</property>
+                    <property name="vexpand">true</property>
+                    <property name="hexpand">true</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
                     <child>
                       <!-- Picture -->
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
-                        <property name="vexpand">True</property>
-                        <property name="hexpand">True</property>
+                        <property name="vexpand">true</property>
+                        <property name="hexpand">true</property>
                         <property name="halign">center</property>
                         <property name="valign">center</property>
                         <child>
                           <object class="GtkPicture" id="picture">
                             <property name="content-fit">contain</property>
-                            <property name="can-shrink">True</property>
+                            <property name="can-shrink">true</property>
                           </object>
                         </child>
                       </object>
@@ -69,7 +69,7 @@
                     <!-- Error label -->
                     <child>
                       <object class="GtkLabel" id="error_label">
-                        <property name="visible">False</property>
+                        <property name="visible">false</property>
                         <property name="margin-top">20</property>
                         <property name="margin-bottom">20</property>
                         <property name="margin-start">20</property>
@@ -85,7 +85,7 @@
             </child>
             <child>
               <object class="GtkSeparator" id="v_separator">
-                <property name="visible">True</property>
+                <property name="visible">true</property>
               </object>
             </child>
           </object>
@@ -105,7 +105,7 @@
                     <property name="margin-bottom">6</property>
                     <property name="halign">fill</property>
                     <property name="valign">fill</property>
-                    <property name="vexpand">True</property>
+                    <property name="vexpand">true</property>
                     <!-- Close button -->
                     <child>
                       <object class="GtkWindowControls" id="controls">
@@ -118,36 +118,33 @@
                     <!-- Padding GtkBox -->
                     <child>
                       <object class="GtkBox">
-                        <property name="vexpand">True</property>
-                        <property name="hexpand">True</property>
+                        <property name="vexpand">true</property>
+                        <property name="hexpand">true</property>
                       </object>
                     </child>
-                    <!-- Other buttons (settings, save, copy) -->
+                    <!-- Other buttons (settings, retake screenshot, copy) -->
                     <child>
                       <object class="GtkMenuButton">
                         <!-- Add margins to make it look like a GtkButton (have the same size) -->
                         <property name="margin-start">6</property>
                         <property name="margin-end">6</property>
-                        <property name="can-shrink">True</property>
-                        <property name="has-frame">False</property>
+                        <property name="can-shrink">true</property>
+                        <property name="has-frame">false</property>
                         <property name="direction">left</property>
-                        <property name="primary">True</property>
+                        <property name="primary">true</property>
                         <property name="icon-name">open-menu-symbolic</property>
                         <property name="tooltip-text" translatable="yes">Menu</property>
                         <property name="menu-model">primary_menu</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkButton" id="save_button">
-                        <!-- TODO -->
-                        <property name="visible">False</property>
+                      <object class="GtkButton" id="retake_screenshot_button">
+                        <property name="visible">true</property>
                         <property name="margin-top">6</property>
                         <property name="halign">center</property>
                         <property name="css-classes">flat</property>
-                        <property name="icon-name">document-save-symbolic</property>
-                        <property name="tooltip-text" translatable="yes">Save</property>
-                        <!-- TODO -->
-                        <!-- <signal name="clicked" handler="on_save_action" swapped="no" /> -->
+                        <property name="icon-name">view-refresh-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Retake screenshot</property>
                       </object>
                     </child>
                     <child>

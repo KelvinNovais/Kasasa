@@ -4,7 +4,7 @@
   <requires lib="Adw" version="1.0"/>
   <template class="SoslaioPreferences" parent="AdwPreferencesDialog">
     <property name="height-request">210</property>
-    <property name="search-enabled">False</property>
+    <property name="search-enabled">false</property>
     <child>
       <object class="AdwPreferencesPage">
         <child>
