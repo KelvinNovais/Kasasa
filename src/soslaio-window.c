@@ -45,7 +45,6 @@ struct _SoslaioWindow
   GtkBox              *picture_container;
   GtkButton           *retake_screenshot_button;
   GtkButton           *copy_button;
-  GtkLabel            *error_label;
   AdwToastOverlay     *toast_overlay;
 };
 
@@ -79,10 +78,11 @@ resize_window (SoslaioWindow *self)
 
 // Set an "missing image" icon when screenshoting fails
 static void
-on_fail (SoslaioWindow *self)
+on_fail (SoslaioWindow *self, const gchar *error_message)
 {
   GtkIconTheme *icon_theme;
   g_autoptr (GtkIconPaintable) icon = NULL;
+  AdwDialog *dialog;
 
   // Set error icon
   icon_theme = gtk_icon_theme_get_for_display (
@@ -108,8 +108,15 @@ on_fail (SoslaioWindow *self)
   // Set icon
   gtk_picture_set_paintable (self->picture, GDK_PAINTABLE (icon));
 
-  // Make the error label visible
-  gtk_widget_set_visible (GTK_WIDGET (self->error_label), TRUE);
+  // Present a dialog with the message
+  dialog = adw_alert_dialog_new (_("Error"), NULL);
+  adw_alert_dialog_format_body (ADW_ALERT_DIALOG (dialog), "%s", error_message);
+  adw_alert_dialog_add_responses (ADW_ALERT_DIALOG (dialog),
+                                  "ok",  _("_Ok"),
+                                  NULL);
+  adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
+  adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "ok");
+  adw_dialog_present (dialog, GTK_WIDGET (self));
 
   // Disable opacity decrease
   self->change_opacity = FALSE;
@@ -150,6 +157,7 @@ on_screenshot_taken (GObject      *object,
   SoslaioWindow *self = SOSLAIO_WINDOW (user_data);
   g_autoptr (GError) error = NULL;
   g_autofree gchar *uri = NULL;
+  g_autofree gchar *error_message = NULL;
   gboolean failed = FALSE;
 
   uri =  xdp_portal_take_screenshot_finish (
@@ -160,19 +168,21 @@ on_screenshot_taken (GObject      *object,
 
   if (error != NULL)
     {
-      g_autofree gchar *msg = g_strdup_printf ("%s %s", _("Error:"), error->message);
+      error_message = g_strdup_printf (
+        "%s\n\n%s", error->message,
+        _("Ensure Screenshot permission is enabled in Settings → Apps → Mini Screenshot")
+      );
       g_warning ("%s", error->message);
-      gtk_label_set_label (self->error_label, msg);
       failed = TRUE;
     }
   else
     {
       if ((failed = load_screenshot (self, uri)))
-        gtk_label_set_label (self->error_label, _("Error: couldn't load screenshot"));
+        error_message = _("Couldn't load screenshot");
     }
 
   if (failed)
-    on_fail (self);
+    on_fail (self, error_message);
 
   // Finally, present the window after the screenshot was taken
   gtk_window_present (GTK_WINDOW (self));
@@ -296,7 +306,6 @@ soslaio_window_class_init (SoslaioWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture_container);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, retake_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, copy_button);
-  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, error_label);
   gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, toast_overlay);
 }
 

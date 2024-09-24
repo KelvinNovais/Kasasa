@@ -37,13 +37,14 @@
         <!--   </object> -->
         <!-- </child> -->
 
-        <!-- PICTURE (or error message) -->
+        <!-- PICTURE -->
         <child>
           <object class="GtkBox" id="picture_container">
             <child>
               <!-- Toast overlay -->
               <object class="AdwToastOverlay" id="toast_overlay">
                 <property name="child">
+                  <!-- Picture -->
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="vexpand">true</property>
@@ -51,32 +52,9 @@
                     <property name="halign">center</property>
                     <property name="valign">center</property>
                     <child>
-                      <!-- Picture -->
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="vexpand">true</property>
-                        <property name="hexpand">true</property>
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
-                        <child>
-                          <object class="GtkPicture" id="picture">
-                            <property name="content-fit">contain</property>
-                            <property name="can-shrink">true</property>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <!-- Error label -->
-                    <child>
-                      <object class="GtkLabel" id="error_label">
-                        <property name="visible">false</property>
-                        <property name="margin-top">20</property>
-                        <property name="margin-bottom">20</property>
-                        <property name="margin-start">20</property>
-                        <property name="margin-end">20</property>
-                        <style>
-                          <class name="title-2"/>
-                        </style>
+                      <object class="GtkPicture" id="picture">
+                        <property name="content-fit">contain</property>
+                        <property name="can-shrink">true</property>
                       </object>
                     </child>
                   </object>
