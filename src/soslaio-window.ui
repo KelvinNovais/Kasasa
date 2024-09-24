@@ -127,8 +127,12 @@
                     <!-- Other buttons (settings, save, copy) -->
                     <child>
                       <object class="GtkMenuButton">
+                        <!-- Add margins to make it look like a GtkButton (have the same size) -->
+                        <property name="margin-start">6</property>
+                        <property name="margin-end">6</property>
                         <property name="can-shrink">True</property>
                         <property name="has-frame">False</property>
+                        <property name="direction">left</property>
                         <property name="primary">True</property>
                         <property name="icon-name">open-menu-symbolic</property>
                         <property name="tooltip-text" translatable="yes">Menu</property>

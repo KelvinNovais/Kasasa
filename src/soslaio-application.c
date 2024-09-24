@@ -94,13 +94,17 @@ soslaio_application_about_action (GSimpleAction *action,
 
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
 
-  adw_show_about_window (window,
+  adw_show_about_dialog (GTK_WIDGET (window),
                          "application-name", _("Mini Screenshot"),
                          "application-icon", "io.github.kelvinnovais.Soslaio",
                          "developer-name", "Kelvin Ribeiro Novais",
                          "version", "0.1.0",
+                         "comments", _("Create ephemeral floating screenshot windows"),
+                         "issue-url", "https://github.com/KelvinNovais/Soslaio/issues",
+                         "website", "https://github.com/KelvinNovais/Soslaio",
                          "developers", developers,
                          "copyright", "© 2024 Kelvin Ribeiro Novais",
+                         "license-type", GTK_LICENSE_GPL_3_0,
                          NULL);
 }
 

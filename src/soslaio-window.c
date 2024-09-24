@@ -98,6 +98,13 @@ load_screenshot (SoslaioWindow *self, const gchar *uri)
 
   gtk_picture_set_file (self->picture, self->file);
 
+  /* FIXME:
+   * if (picture.height > picture.width), then window height gets unnecessarily high
+   *
+   * window.height = (picture.height > picture.width && picture.height > 235) ?
+   *                 picture.height : 235;
+   */
+
   return FALSE;
 }
 
