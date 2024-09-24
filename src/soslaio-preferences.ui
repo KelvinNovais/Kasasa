@@ -3,14 +3,12 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="SoslaioPreferences" parent="AdwPreferencesDialog">
+    <property name="height-request">210</property>
     <property name="search-enabled">False</property>
-    <!-- <property name="title" translatable="true">Preferences</property> -->
     <child>
       <object class="AdwPreferencesPage">
         <child>
           <object class="AdwPreferencesGroup">
-            <!-- <property name="title" translatable="true">Opacity</property> -->
-            <!-- <property name="description" translatable="true">Set whether the opacity of the window should change when the mouse pointer is over it</property> -->
             <child>
               <object class="AdwSwitchRow" id="opacity_switch">
                 <property name="title" translatable="true">Change opacity</property>
@@ -36,5 +34,4 @@
     </child>
   </template>
 </interface>
-
 

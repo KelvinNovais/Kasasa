@@ -25,6 +25,10 @@
 
 #include "soslaio-window.h"
 
+// Size request of the window
+#define WIDTH_REQUEST   360
+#define HEIGHT_REQUEST  200
+
 struct _SoslaioWindow
 {
   AdwApplicationWindow  parent_instance;
@@ -45,6 +49,32 @@ struct _SoslaioWindow
 };
 
 G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
+
+// If (picture.height > picture.width), the window gets its height wrong (much
+// taller than should be); on that condition, fix the window height
+static void
+resize_window (SoslaioWindow *self)
+{
+  g_autoptr (GdkTexture) texture = NULL;
+  g_autoptr (GError) error = NULL;
+
+  texture = gdk_texture_new_from_file (self->file, &error);
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+    }
+  else
+    {
+      gint image_height = gdk_texture_get_height (texture);
+      gint image_width = gdk_texture_get_width (texture);
+
+      if (image_height > image_width)
+        gtk_window_set_default_size (GTK_WINDOW (self),
+                                     -1,                          // -1 to unset
+                                     MAX (HEIGHT_REQUEST, image_height));
+    }
+}
 
 // Set an "missing image" icon when screenshoting fails
 static void
@@ -98,12 +128,7 @@ load_screenshot (SoslaioWindow *self, const gchar *uri)
 
   gtk_picture_set_file (self->picture, self->file);
 
-  /* FIXME:
-   * if (picture.height > picture.width), then window height gets unnecessarily high
-   *
-   * window.height = (picture.height > picture.width && picture.height > 235) ?
-   *                 picture.height : 235;
-   */
+  resize_window (self);
 
   return FALSE;
 }
@@ -115,7 +140,7 @@ load_settings (SoslaioWindow *self)
   self->opacity = g_settings_get_double (self->settings, "opacity");
 }
 
-// Callback xdp_portal_take_screenshot ()
+// Callback for xdp_portal_take_screenshot ()
 static void
 on_screenshot_taken (GObject      *object,
                      GAsyncResult *res,
@@ -266,6 +291,9 @@ soslaio_window_init (SoslaioWindow *self)
 
   // Read settings
   load_settings (self);
+
+  // Set size request
+  gtk_widget_set_size_request (GTK_WIDGET (self), WIDTH_REQUEST, HEIGHT_REQUEST);
 
   // Connect signal to track when settings are changed
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);

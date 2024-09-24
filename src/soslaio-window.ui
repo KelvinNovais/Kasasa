@@ -4,8 +4,6 @@
   <requires lib="Adw" version="1.0"/>
   <template class="SoslaioWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Mini Screenshot</property>
-    <property name="height-request">235</property>
-    <property name="width-request">360</property>
 
     <!-- BREAKPOINT -->
     <!-- <child> -->
