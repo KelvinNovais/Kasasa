@@ -52,7 +52,8 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://github.com/KelvinNovais/Soslaio"
+                    "url" : "https://github.com/KelvinNovais/Soslaio",
+                    "branch" : "main"
                 }
             ]
         }

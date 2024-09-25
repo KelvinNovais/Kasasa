@@ -1,9 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
-	<id>io.github.kelvinnovais.Soslaio.desktop</id>
-	<metadata_license>CC0-1.0</metadata_license>
-	<project_license>GPL-3.0-or-later</project_license>
-	<description>
-	  <p>Create ephemeral floating screenshot windows</p>
-	</description>
+<component type="desktop-application">
+  <id>io.github.kelvinnovais.Soslaio</id>
+
+  <name>Mini Screenshot</name>
+  <summary>Create ephemeral floating screenshot windows</summary>
+  <developer id="io.github.kelvinnovais">
+    <name translate="no">Kelvin Novais</name>
+  </developer>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <content_rating type="oars-1.1" />
+  <translation type="gettext">soslaio</translation>
+
+  <recommends>
+    <display_length compare="ge">360</display_length>
+  </recommends>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+
+  <description>
+    <p>
+      Take screenshots and put them on a small floating window;
+      the application also allows you to decrease the window opacity when the mouse pointer is over it.
+    </p>
+    <p>
+      Best used with:
+        - &quot;Always on Top&quot; and/or &quot;Always on Visible Workspace&quot;
+        - A keyboard shortcut (make quick calls whenever you need it, as you do when taking normal screenshots)
+    </p>
+    <p>
+      Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the screenshot,
+      instead of directly using the GNOME&apos;s screenshoter; this may be inconvenient.
+    </p>
+    <p>
+      On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts.
+      There you can set a shortcut to call <em><code>flatpak run io.github.kelvinnovais.Soslaio</code></em>
+    </p>
+  </description>
+
+  <launchable type="desktop-id">io.github.kelvinnovais.Soslaio.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>A small window, in dark mode</caption>
+      <image>https://github.com/KelvinNovais/Soslaio/blob/main/screenshots/01.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>A small window, in light mode</caption>
+      <image>https://github.com/KelvinNovais/Soslaio/blob/main/screenshots/02.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Mini Screenshot over another application</caption>
+      <image>https://github.com/KelvinNovais/Soslaio/blob/main/screenshots/03.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Mini Screenshot over another application, with opacity decreased</caption>
+      <image>https://github.com/KelvinNovais/Soslaio/blob/main/screenshots/04.png</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://github.com/KelvinNovais/Soslaio</url>
+  <url type="bugtracker">https://github.com/KelvinNovais/Soslaio/issues</url>
 </component>

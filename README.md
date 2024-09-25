@@ -15,7 +15,7 @@ Best used with:
 
 > [!IMPORTANT]
 > On GNOME versions < 46, a dialog will appear to set up and take the screenshot,
-> instead of directly using the GNOME's screenshoter; this may be incovinient. 
+> instead of directly using the GNOME's screenshoter; this may be inconvenient. 
 
 ## Installation
 

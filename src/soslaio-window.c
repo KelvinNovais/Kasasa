@@ -350,3 +350,4 @@ soslaio_window_init (SoslaioWindow *self)
     self
   );
 }
+
