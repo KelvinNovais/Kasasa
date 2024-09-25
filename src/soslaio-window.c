@@ -166,6 +166,7 @@ on_screenshot_taken (GObject      *object,
     &error
   );
 
+  // If failed to get the URI, set the error message
   if (error != NULL)
     {
       error_message = g_strdup_printf (
@@ -175,6 +176,7 @@ on_screenshot_taken (GObject      *object,
       g_warning ("%s", error->message);
       failed = TRUE;
     }
+  // Try to load the image and handle possible errors
   else
     {
       if ((failed = load_screenshot (self, uri)))
@@ -228,8 +230,6 @@ on_retake_screenshot_button_clicked (GtkButton *button,
                                      gpointer   user_data)
 {
   SoslaioWindow *self = SOSLAIO_WINDOW (user_data);
-
-  gtk_window_minimize (GTK_WINDOW (self));
 
   xdp_portal_take_screenshot (
     self->portal,
