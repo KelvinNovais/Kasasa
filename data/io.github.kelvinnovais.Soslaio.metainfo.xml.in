@@ -24,21 +24,21 @@
 
   <description>
     <p>
-      Take screenshots and put them on a small floating window;
+      Take screenshots and put them on small floating windows;
       the application also allows you to decrease the window opacity when the mouse pointer is over it.
     </p>
+    <p>Best used with:</p>
+    <ul>
+      <li>&quot;Always on Top&quot; and/or &quot;Always on Visible Workspace&quot;</li>
+      <li>A keyboard shortcut</li>
+    </ul>
     <p>
-      Best used with:
-        - &quot;Always on Top&quot; and/or &quot;Always on Visible Workspace&quot;
-        - A keyboard shortcut (make quick calls whenever you need it, as you do when taking normal screenshots)
+      On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts.
+      There you can set a shortcut to run <em><code>flatpak run io.github.kelvinnovais.Soslaio</code></em>
     </p>
     <p>
       Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the screenshot,
       instead of directly using the GNOME&apos;s screenshoter; this may be inconvenient.
-    </p>
-    <p>
-      On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts.
-      There you can set a shortcut to call <em><code>flatpak run io.github.kelvinnovais.Soslaio</code></em>
     </p>
   </description>
 
@@ -62,6 +62,14 @@
       <image>https://github.com/KelvinNovais/Soslaio/blob/main/screenshots/04.png</image>
     </screenshot>
   </screenshots>
+
+  <releases>
+    <release version="1.0.0">
+      <description translate="no">
+        <p>First release!</p>
+      </description>
+    </release>
+  </releases>
 
   <url type="homepage">https://github.com/KelvinNovais/Soslaio</url>
   <url type="bugtracker">https://github.com/KelvinNovais/Soslaio/issues</url>
