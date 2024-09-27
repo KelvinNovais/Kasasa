@@ -1,8 +1,8 @@
-data/io.github.kelvinnovais.Soslaio.desktop.in
-data/io.github.kelvinnovais.Soslaio.metainfo.xml.in
-data/io.github.kelvinnovais.Soslaio.gschema.xml
+data/io.github.kelvinnovais.Kasasa.desktop.in
+data/io.github.kelvinnovais.Kasasa.metainfo.xml.in
+data/io.github.kelvinnovais.Kasasa.gschema.xml
 src/main.c
-src/soslaio-window.c
-src/soslaio-window.ui
-src/soslaio-preferences.c
-src/soslaio-preferences.ui
+src/kasasa-window.c
+src/kasasa-window.ui
+src/kasasa-preferences.c
+src/kasasa-preferences.ui

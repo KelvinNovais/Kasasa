@@ -1,1 +1,1 @@
-i18n.gettext('soslaio', preset: 'glib')
+i18n.gettext('kasasa', preset: 'glib')

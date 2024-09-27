@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
-  <template class="SoslaioWindow" parent="AdwApplicationWindow">
+  <template class="KasasaWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Mini Screenshot</property>
 
     <!-- BREAKPOINT -->

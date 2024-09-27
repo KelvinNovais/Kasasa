@@ -1,4 +1,4 @@
-/* soslaio-preferences.c
+/* kasasa-preferences.c
  *
  * Copyright 2024 Kelvin
  *
@@ -18,9 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "soslaio-preferences.h"
+#include "kasasa-preferences.h"
 
-struct _SoslaioPreferences
+struct _KasasaPreferences
 {
   AdwPreferencesDialog   parent_instance;
 
@@ -29,38 +29,38 @@ struct _SoslaioPreferences
   GtkWidget             *opacity_adjustment;
 };
 
-G_DEFINE_FINAL_TYPE (SoslaioPreferences, soslaio_preferences, ADW_TYPE_PREFERENCES_DIALOG)
+G_DEFINE_FINAL_TYPE (KasasaPreferences, kasasa_preferences, ADW_TYPE_PREFERENCES_DIALOG)
 
 static void
-soslaio_preferences_dispose (GObject *soslaio_preferences)
+kasasa_preferences_dispose (GObject *kasasa_preferences)
 {
-  SoslaioPreferences *self = SOSLAIO_PREFERENCES (soslaio_preferences);
+  KasasaPreferences *self = KASASA_PREFERENCES (kasasa_preferences);
 
   g_clear_object (&self->settings);
 
-  G_OBJECT_CLASS (soslaio_preferences_parent_class)->dispose (soslaio_preferences);
+  G_OBJECT_CLASS (kasasa_preferences_parent_class)->dispose (kasasa_preferences);
 }
 
 static void
-soslaio_preferences_class_init (SoslaioPreferencesClass *klass)
+kasasa_preferences_class_init (KasasaPreferencesClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->dispose = soslaio_preferences_dispose;
+  object_class->dispose = kasasa_preferences_dispose;
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Soslaio/soslaio-preferences.ui");
-  gtk_widget_class_bind_template_child (widget_class, SoslaioPreferences, opacity_switch);
-  gtk_widget_class_bind_template_child (widget_class, SoslaioPreferences, opacity_adjustment);
+  gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Kasasa/kasasa-preferences.ui");
+  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, opacity_switch);
+  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, opacity_adjustment);
 }
 
 
 static void
-soslaio_preferences_init (SoslaioPreferences *self)
+kasasa_preferences_init (KasasaPreferences *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  self->settings = g_settings_new ("io.github.kelvinnovais.Soslaio");
+  self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
 
   // Bind settings
   g_settings_bind (self->settings, "change-opacity",
@@ -71,8 +71,8 @@ soslaio_preferences_init (SoslaioPreferences *self)
                    G_SETTINGS_BIND_DEFAULT);
 }
 
-SoslaioPreferences *
-soslaio_preferences_new (void)
+KasasaPreferences *
+kasasa_preferences_new (void)
 {
-  return  g_object_new (SOSLAIO_TYPE_PREFERENCES, NULL);
+  return  g_object_new (KASASA_TYPE_PREFERENCES, NULL);
 }

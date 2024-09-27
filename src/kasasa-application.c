@@ -1,4 +1,4 @@
-/* soslaio-application.c
+/* kasasa-application.c
  *
  * Copyright 2024 Kelvin
  *
@@ -22,86 +22,86 @@
 
 #include <glib/gi18n.h>
 
-#include "soslaio-preferences.h"
-#include "soslaio-application.h"
-#include "soslaio-window.h"
+#include "kasasa-preferences.h"
+#include "kasasa-application.h"
+#include "kasasa-window.h"
 
-struct _SoslaioApplication
+struct _KasasaApplication
 {
   AdwApplication parent_instance;
 };
 
-G_DEFINE_FINAL_TYPE (SoslaioApplication, soslaio_application, ADW_TYPE_APPLICATION)
+G_DEFINE_FINAL_TYPE (KasasaApplication, kasasa_application, ADW_TYPE_APPLICATION)
 
-SoslaioApplication *
-soslaio_application_new (const char        *application_id,
+KasasaApplication *
+kasasa_application_new (const char        *application_id,
                          GApplicationFlags  flags)
 {
   g_return_val_if_fail (application_id != NULL, NULL);
 
-  return g_object_new (SOSLAIO_TYPE_APPLICATION,
+  return g_object_new (KASASA_TYPE_APPLICATION,
                        "application-id", application_id,
                        "flags", flags,
                        NULL);
 }
 
 static void
-soslaio_application_activate (GApplication *app)
+kasasa_application_activate (GApplication *app)
 {
   GtkWindow *window;
 
-  g_assert (SOSLAIO_IS_APPLICATION (app));
+  g_assert (KASASA_IS_APPLICATION (app));
 
   window = gtk_application_get_active_window (GTK_APPLICATION (app));
 
   if (window == NULL)
-    window = g_object_new (SOSLAIO_TYPE_WINDOW,
+    window = g_object_new (KASASA_TYPE_WINDOW,
                            "application", app,
                            NULL);
 }
 
 static void
-soslaio_application_preferences_action (GSimpleAction *action,
+kasasa_application_preferences_action (GSimpleAction *action,
                                         GVariant      *parameter,
                                         gpointer       app)
 {
-  SoslaioPreferences *preferences;
+  KasasaPreferences *preferences;
   GtkWindow *window;
 
   window = gtk_application_get_active_window (GTK_APPLICATION (app));
-  preferences = soslaio_preferences_new ();
+  preferences = kasasa_preferences_new ();
   adw_dialog_present (ADW_DIALOG (preferences), GTK_WIDGET (window));
 }
 
 static void
-soslaio_application_class_init (SoslaioApplicationClass *klass)
+kasasa_application_class_init (KasasaApplicationClass *klass)
 {
   GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
 
-  app_class->activate = soslaio_application_activate;
+  app_class->activate = kasasa_application_activate;
 }
 
 static void
-soslaio_application_about_action (GSimpleAction *action,
+kasasa_application_about_action (GSimpleAction *action,
                                   GVariant      *parameter,
                                   gpointer       user_data)
 {
   static const char *developers[] = {"Kelvin Ribeiro Novais", NULL};
-  SoslaioApplication *self = user_data;
+  KasasaApplication *self = user_data;
   GtkWindow *window = NULL;
 
-  g_assert (SOSLAIO_IS_APPLICATION (self));
+  g_assert (KASASA_IS_APPLICATION (self));
 
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
 
   adw_show_about_dialog (GTK_WIDGET (window),
                          "application-name", _("Mini Screenshot"),
-                         "application-icon", "io.github.kelvinnovais.Soslaio",
+                         "application-icon", "io.github.kelvinnovais.Kasasa",
                          "developer-name", "Kelvin Ribeiro Novais",
                          "version", "0.1.0",
                          "comments", _("Create ephemeral floating screenshot windows"),
-                         "issue-url", "https://github.com/KelvinNovais/Soslaio/issues",
-                         "website", "https://github.com/KelvinNovais/Soslaio",
+                         "issue-url", "https://github.com/KelvinNovais/Kasasa/issues",
+                         "website", "https://github.com/KelvinNovais/Kasasa",
                          "developers", developers,
                          "copyright", "© 2024 Kelvin Ribeiro Novais",
                          "license-type", GTK_LICENSE_GPL_3_0,
@@ -109,25 +109,25 @@ soslaio_application_about_action (GSimpleAction *action,
 }
 
 static void
-soslaio_application_quit_action (GSimpleAction *action,
+kasasa_application_quit_action (GSimpleAction *action,
                                  GVariant      *parameter,
                                  gpointer       user_data)
 {
-  SoslaioApplication *self = user_data;
+  KasasaApplication *self = user_data;
 
-  g_assert (SOSLAIO_IS_APPLICATION (self));
+  g_assert (KASASA_IS_APPLICATION (self));
 
   g_application_quit (G_APPLICATION (self));
 }
 
 static const GActionEntry app_actions[] = {
-	{ "quit", soslaio_application_quit_action },
-	{ "about", soslaio_application_about_action },
-        { "preferences", soslaio_application_preferences_action }
+	{ "quit", kasasa_application_quit_action },
+	{ "about", kasasa_application_about_action },
+        { "preferences", kasasa_application_preferences_action }
 };
 
 static void
-soslaio_application_init (SoslaioApplication *self)
+kasasa_application_init (KasasaApplication *self)
 {
   g_action_map_add_action_entries (G_ACTION_MAP (self),
                                    app_actions,

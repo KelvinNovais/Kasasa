@@ -22,20 +22,20 @@
 
 #include <glib/gi18n.h>
 
-#include "soslaio-application.h"
+#include "kasasa-application.h"
 
 int
 main (int   argc,
       char *argv[])
 {
-  g_autoptr(SoslaioApplication) app = NULL;
+  g_autoptr(KasasaApplication) app = NULL;
   int ret;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  app = soslaio_application_new ("io.github.kelvinnovais.Soslaio", G_APPLICATION_NON_UNIQUE);
+  app = kasasa_application_new ("io.github.kelvinnovais.Kasasa", G_APPLICATION_NON_UNIQUE);
   ret = g_application_run (G_APPLICATION (app), argc, argv);
 
   return ret;
