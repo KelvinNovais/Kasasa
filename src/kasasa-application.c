@@ -105,6 +105,8 @@ kasasa_application_about_action (GSimpleAction *action,
                          "developers", developers,
                          "copyright", "© 2024 Kelvin Ribeiro Novais",
                          "license-type", GTK_LICENSE_GPL_3_0,
+                         // Translators: Replace "translator-credits" with your names, one name per line
+                         "translator_credits", _("translator-credits"),
                          NULL);
 }
 

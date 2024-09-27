@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-26 19:32-0300\n"
+"POT-Creation-Date: 2024-09-27 18:29+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
-#: src/kasasa-window.ui:6
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:6
+#: src/kasasa-application.c:98
 msgid "Kasasa"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:4
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
+#: src/kasasa-application.c:102
 msgid "Create ephemeral floating screenshot windows"
 msgstr ""
 
@@ -77,6 +78,21 @@ msgstr ""
 msgid "Kasasa over another application, with opacity decreased"
 msgstr ""
 
+#: src/gtk/help-overlay.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: src/gtk/help-overlay.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr ""
+
 #. Present a dialog with the message
 #: src/kasasa-window.c:112
 msgid "Error"
@@ -87,8 +103,7 @@ msgid "_Ok"
 msgstr ""
 
 #: src/kasasa-window.c:174
-msgid ""
-"Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
+msgid "Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
 msgstr ""
 
 #: src/kasasa-window.c:183
@@ -121,4 +136,17 @@ msgstr ""
 
 #: src/kasasa-window.ui:158
 msgid "_About Kasasa"
+msgstr ""
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/kasasa-application.c:109
+msgid "translator-credits"
+msgstr ""
+
+#: src/kasasa-preferences.ui:14
+msgid "Change opacity"
+msgstr ""
+
+#: src/kasasa-preferences.ui:19
+msgid "Opacity level"
 msgstr ""
