@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-09-27 18:29+0300\n"
-"PO-Revision-Date: 2024-09-26 20:00-0300\n"
+"PO-Revision-Date: 2024-09-27 14:12-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
@@ -23,7 +23,7 @@ msgstr ""
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:6
 #: src/kasasa-application.c:98
 msgid "Kasasa"
-msgstr "Mini Captura de Tela"
+msgstr "Kasasa"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:4
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
@@ -85,27 +85,26 @@ msgstr "Pequena janela, em modo claro"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:57
 msgid "Kasasa over another application"
-msgstr "Mini Captura de Tela sobre outra aplicação"
+msgstr "Kasasa sobre outra aplicação"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
 msgid "Kasasa over another application, with opacity decreased"
-msgstr "Mini Captura de Tela sobre outra aplicação, com opacidade reduzida"
+msgstr "Kasasa sobre outra aplicação, com opacidade reduzida"
 
 #: src/gtk/help-overlay.ui:11
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Geral"
 
 #: src/gtk/help-overlay.ui:14
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr "_Atalhos de teclado"
+msgstr "_Mostrar atalhos de teclado"
 
 #: src/gtk/help-overlay.ui:20
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Sair"
 
 #. Present a dialog with the message
 #: src/kasasa-window.c:112
@@ -120,7 +119,7 @@ msgstr "_Ok"
 msgid "Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
 msgstr ""
 "Certifique-se de que a permissão de captura de tela esteja habilitada em "
-"Configurações → Aplicativos → Mini Captura de Tela"
+"Configurações → Aplicativos → Kasasa"
 
 #: src/kasasa-window.c:183
 msgid "Couldn't load screenshot"
@@ -152,20 +151,20 @@ msgstr "_Atalhos de teclado"
 
 #: src/kasasa-window.ui:158
 msgid "_About Kasasa"
-msgstr "_Sobre Mini Captura de Tela"
+msgstr "_Sobre Kasasa"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:109
 msgid "translator-credits"
-msgstr ""
+msgstr "Kelvin Ribeiro Novais"
 
 #: src/kasasa-preferences.ui:14
 msgid "Change opacity"
-msgstr ""
+msgstr "Mudar opacidade"
 
 #: src/kasasa-preferences.ui:19
 msgid "Opacity level"
-msgstr ""
+msgstr "Nível de opacidade"
 
 #~ msgid "Save"
 #~ msgstr "Salvar"
