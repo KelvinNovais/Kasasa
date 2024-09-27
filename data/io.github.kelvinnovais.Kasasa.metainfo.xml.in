@@ -47,19 +47,19 @@
   <screenshots>
     <screenshot type="default">
       <caption>A small window, in dark mode</caption>
-      <image>https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/01.png</image>
+      <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/01.png</image>
     </screenshot>
     <screenshot>
       <caption>A small window, in light mode</caption>
-      <image>https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/02.png</image>
+      <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/02.png</image>
     </screenshot>
     <screenshot>
       <caption>Kasasa over another application</caption>
-      <image>https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/03.png</image>
+      <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/03.png</image>
     </screenshot>
     <screenshot>
       <caption>Kasasa over another application, with opacity decreased</caption>
-      <image>https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/04.png</image>
+      <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/04.png</image>
     </screenshot>
   </screenshots>
 
