@@ -2,11 +2,11 @@
 
 # Kasasa
 
-Kasasa (formerly Sosliao) lets you take screenshots and put them on a small floating window; the application also allows you to decrease the window opacity when the mouse pointer is over it.
+Kasasa¹ lets you take screenshots and put them on a small floating window; the application also allows you to decrease the window opacity when the mouse pointer is over it.
 
 Best used with:
  - "Always on Top" and/or "Always on Visible Workspace"
- - A keyboard shortcut (make quick calls whenever you need it, as you do when taking normal screenshots)
+ - A keyboard shortcut
 
 > [!NOTE]
 > On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts.
@@ -35,4 +35,4 @@ Best used with:
 
 ---
 
-_"Kasasa" (قصاصة) is an Arabic term meaning a scrap of paper torn from a book, a magazine or a newspaper._
+_¹"Kasasa" (قصاصة) is an Arabic term meaning a scrap of paper torn from a book, a magazine or a newspaper._
