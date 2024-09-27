@@ -64,7 +64,7 @@
   </screenshots>
 
   <releases>
-    <release version="1.0.0">
+    <release date="2024-09-27" version="1.0.0">
       <description translate="no">
         <p>First release!</p>
       </description>
