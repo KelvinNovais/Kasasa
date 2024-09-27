@@ -1,8 +1,8 @@
 <img height="128" src="data/icons/hicolor/scalable/apps/io.github.kelvinnovais.Kasasa.svg" align="left"/> 
 
-# Mini Screenshot
+# Kasasa
 
-Mini Screenshot (formerly Kasasa¹) lets you take screenshots and put them on a small floating window; the application also allows you to decrease the window opacity when the mouse pointer is over it.
+Kasasa (formerly Sosliao) lets you take screenshots and put them on a small floating window; the application also allows you to decrease the window opacity when the mouse pointer is over it.
 
 Best used with:
  - "Always on Top" and/or "Always on Visible Workspace"
@@ -35,4 +35,4 @@ Best used with:
 
 ---
 
-_¹ "Kasasa" (قصاصة) is an Arabic term meaning a scrap of paper torn from a book, a magazine or a newspaper._
+_"Kasasa" (قصاصة) is an Arabic term meaning a scrap of paper torn from a book, a magazine or a newspaper._

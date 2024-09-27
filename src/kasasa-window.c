@@ -171,7 +171,7 @@ on_screenshot_taken (GObject      *object,
     {
       error_message = g_strdup_printf (
         "%s\n\n%s", error->message,
-        _("Ensure Screenshot permission is enabled in Settings → Apps → Mini Screenshot")
+        _("Ensure Screenshot permission is enabled in Settings → Apps → Kasasa")
       );
       g_warning ("%s", error->message);
       failed = TRUE;

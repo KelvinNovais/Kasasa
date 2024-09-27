@@ -20,7 +20,7 @@ msgstr ""
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
 #: src/kasasa-window.ui:6
-msgid "Mini Screenshot"
+msgid "Kasasa"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:4
@@ -70,11 +70,11 @@ msgid "A small window, in light mode"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:57
-msgid "Mini Screenshot over another application"
+msgid "Kasasa over another application"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
-msgid "Mini Screenshot over another application, with opacity decreased"
+msgid "Kasasa over another application, with opacity decreased"
 msgstr ""
 
 #. Present a dialog with the message
@@ -88,7 +88,7 @@ msgstr ""
 
 #: src/kasasa-window.c:174
 msgid ""
-"Ensure Screenshot permission is enabled in Settings → Apps → Mini Screenshot"
+"Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
 msgstr ""
 
 #: src/kasasa-window.c:183
@@ -120,5 +120,5 @@ msgid "_Keyboard Shortcuts"
 msgstr ""
 
 #: src/kasasa-window.ui:158
-msgid "_About Mini Screenshot"
+msgid "_About Kasasa"
 msgstr ""

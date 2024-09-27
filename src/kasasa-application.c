@@ -95,7 +95,7 @@ kasasa_application_about_action (GSimpleAction *action,
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
 
   adw_show_about_dialog (GTK_WIDGET (window),
-                         "application-name", _("Mini Screenshot"),
+                         "application-name", _("Kasasa"),
                          "application-icon", "io.github.kelvinnovais.Kasasa",
                          "developer-name", "Kelvin Ribeiro Novais",
                          "version", "0.1.0",

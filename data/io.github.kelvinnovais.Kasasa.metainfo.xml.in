@@ -2,7 +2,7 @@
 <component type="desktop-application">
   <id>io.github.kelvinnovais.Kasasa</id>
 
-  <name>Mini Screenshot</name>
+  <name>Kasasa</name>
   <summary>Create ephemeral floating screenshot windows</summary>
   <developer id="io.github.kelvinnovais">
     <name translate="no">Kelvin Novais</name>
@@ -54,11 +54,11 @@
       <image>https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/02.png</image>
     </screenshot>
     <screenshot>
-      <caption>Mini Screenshot over another application</caption>
+      <caption>Kasasa over another application</caption>
       <image>https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/03.png</image>
     </screenshot>
     <screenshot>
-      <caption>Mini Screenshot over another application, with opacity decreased</caption>
+      <caption>Kasasa over another application, with opacity decreased</caption>
       <image>https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/04.png</image>
     </screenshot>
   </screenshots>
