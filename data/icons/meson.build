@@ -1,4 +1,4 @@
-application_id = 'io.github.kelvinnovais.Soslaio'
+application_id = 'io.github.kelvinnovais.Kasasa'
 
 scalable_dir = 'hicolor' / 'scalable' / 'apps'
 install_data(

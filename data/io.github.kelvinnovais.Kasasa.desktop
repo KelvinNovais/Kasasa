@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Mini Screenshot
+Name=Kasasa
 Comment=Create ephemeral floating screenshot windows
-Exec=soslaio
-Icon=io.github.kelvinnovais.Soslaio
+Exec=kasasa
+Icon=io.github.kelvinnovais.Kasasa
 Terminal=false
 Type=Application
 Categories=Utility;GTK;GNOME;

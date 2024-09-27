@@ -1,4 +1,4 @@
-/* soslaio-preferences.h
+/* kasasa-window.h
  *
  * Copyright 2024 Kelvin
  *
@@ -24,10 +24,8 @@
 
 G_BEGIN_DECLS
 
-#define SOSLAIO_TYPE_PREFERENCES (soslaio_preferences_get_type())
+#define KASASA_TYPE_WINDOW (kasasa_window_get_type())
 
-G_DECLARE_FINAL_TYPE (SoslaioPreferences, soslaio_preferences, SOSLAIO, PREFERENCES, AdwPreferencesDialog)
-
-SoslaioPreferences *soslaio_preferences_new (void);
+G_DECLARE_FINAL_TYPE (KasasaWindow, kasasa_window, KASASA, WINDOW, AdwApplicationWindow)
 
 G_END_DECLS

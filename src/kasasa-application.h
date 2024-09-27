@@ -1,4 +1,4 @@
-/* soslaio-application.h
+/* kasasa-application.h
  *
  * Copyright 2024 Kelvin
  *
@@ -24,11 +24,11 @@
 
 G_BEGIN_DECLS
 
-#define SOSLAIO_TYPE_APPLICATION (soslaio_application_get_type())
+#define KASASA_TYPE_APPLICATION (kasasa_application_get_type())
 
-G_DECLARE_FINAL_TYPE (SoslaioApplication, soslaio_application, SOSLAIO, APPLICATION, AdwApplication)
+G_DECLARE_FINAL_TYPE (KasasaApplication, kasasa_application, KASASA, APPLICATION, AdwApplication)
 
-SoslaioApplication *soslaio_application_new (const char        *application_id,
+KasasaApplication *kasasa_application_new (const char        *application_id,
                                              GApplicationFlags  flags);
 
 G_END_DECLS

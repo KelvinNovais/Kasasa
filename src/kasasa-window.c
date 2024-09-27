@@ -1,4 +1,4 @@
-/* soslaio-window.c
+/* kasasa-window.c
  *
  * Copyright 2024 Kelvin
  *
@@ -23,13 +23,13 @@
 #include <libportal-gtk4/portal-gtk4.h>
 #include <glib/gi18n.h>
 
-#include "soslaio-window.h"
+#include "kasasa-window.h"
 
 // Size request of the window
 #define WIDTH_REQUEST   360
 #define HEIGHT_REQUEST  200
 
-struct _SoslaioWindow
+struct _KasasaWindow
 {
   AdwApplicationWindow  parent_instance;
 
@@ -48,12 +48,12 @@ struct _SoslaioWindow
   AdwToastOverlay     *toast_overlay;
 };
 
-G_DEFINE_FINAL_TYPE (SoslaioWindow, soslaio_window, ADW_TYPE_APPLICATION_WINDOW)
+G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
 
 // If (picture.height > picture.width), the window gets its height wrong (much
 // taller than should be)
 static void
-resize_window (SoslaioWindow *self)
+resize_window (KasasaWindow *self)
 {
   g_autoptr (GdkTexture) texture = NULL;
   g_autoptr (GError) error = NULL;
@@ -78,7 +78,7 @@ resize_window (SoslaioWindow *self)
 
 // Set an "missing image" icon when screenshoting fails
 static void
-on_fail (SoslaioWindow *self, const gchar *error_message)
+on_fail (KasasaWindow *self, const gchar *error_message)
 {
   GtkIconTheme *icon_theme;
   g_autoptr (GtkIconPaintable) icon = NULL;
@@ -127,7 +127,7 @@ on_fail (SoslaioWindow *self, const gchar *error_message)
 
 // Load the screenshot to the GtkPicture widget
 static gboolean
-load_screenshot (SoslaioWindow *self, const gchar *uri)
+load_screenshot (KasasaWindow *self, const gchar *uri)
 {
   if (uri == NULL)
     return TRUE;
@@ -142,7 +142,7 @@ load_screenshot (SoslaioWindow *self, const gchar *uri)
 }
 
 static void
-load_settings (SoslaioWindow *self)
+load_settings (KasasaWindow *self)
 {
   self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");
   self->opacity = g_settings_get_double (self->settings, "opacity");
@@ -154,7 +154,7 @@ on_screenshot_taken (GObject      *object,
                      GAsyncResult *res,
                      gpointer      user_data)
 {
-  SoslaioWindow *self = SOSLAIO_WINDOW (user_data);
+  KasasaWindow *self = KASASA_WINDOW (user_data);
   g_autoptr (GError) error = NULL;
   g_autofree gchar *uri = NULL;
   g_autofree gchar *error_message = NULL;
@@ -171,7 +171,7 @@ on_screenshot_taken (GObject      *object,
     {
       error_message = g_strdup_printf (
         "%s\n\n%s", error->message,
-        _("Ensure Screenshot permission is enabled in Settings → Apps → Mini Screenshot")
+        _("Ensure Screenshot permission is enabled in Settings → Apps → Kasasa")
       );
       g_warning ("%s", error->message);
       failed = TRUE;
@@ -197,7 +197,7 @@ on_mouse_enter (GtkEventControllerMotion *self,
                 gdouble                   y,
                 gpointer                  user_data)
 {
-  SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
+  KasasaWindow *window = KASASA_WINDOW (user_data);
 
   if (window->change_opacity == FALSE)
     return;
@@ -216,7 +216,7 @@ static void
 on_mouse_leave (GtkEventControllerMotion *self,
                 gpointer                  user_data)
 {
-  SoslaioWindow *window = SOSLAIO_WINDOW (user_data);
+  KasasaWindow *window = KASASA_WINDOW (user_data);
 
   if (window->change_opacity == FALSE)
     return;
@@ -229,7 +229,7 @@ static void
 on_retake_screenshot_button_clicked (GtkButton *button,
                                      gpointer   user_data)
 {
-  SoslaioWindow *self = SOSLAIO_WINDOW (user_data);
+  KasasaWindow *self = KASASA_WINDOW (user_data);
 
   xdp_portal_take_screenshot (
     self->portal,
@@ -246,7 +246,7 @@ static void
 on_copy_button_clicked (GtkButton *button,
                         gpointer   user_data)
 {
-  SoslaioWindow *self = SOSLAIO_WINDOW (user_data);
+  KasasaWindow *self = KASASA_WINDOW (user_data);
   g_autoptr (GError) error = NULL;
   GdkClipboard *clipboard;
   g_autoptr (GdkTexture) texture = NULL;
@@ -277,47 +277,47 @@ on_settings_updated (GSettings* self,
                      gchar* key,
                      gpointer user_data)
 {
-  load_settings (SOSLAIO_WINDOW (user_data));
+  load_settings (KASASA_WINDOW (user_data));
 }
 
 static void
-soslaio_window_dispose (GObject *soslaio_window)
+kasasa_window_dispose (GObject *kasasa_window)
 {
-  SoslaioWindow *self = SOSLAIO_WINDOW (soslaio_window);
+  KasasaWindow *self = KASASA_WINDOW (kasasa_window);
 
   g_clear_object (&self->portal);
   g_clear_object (&self->settings);
   if (self->file != NULL)
     g_object_unref (self->file);
 
-  G_OBJECT_CLASS (soslaio_window_parent_class)->dispose (soslaio_window);
+  G_OBJECT_CLASS (kasasa_window_parent_class)->dispose (kasasa_window);
 }
 
 static void
-soslaio_window_class_init (SoslaioWindowClass *klass)
+kasasa_window_class_init (KasasaWindowClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  object_class->dispose = soslaio_window_dispose;
+  object_class->dispose = kasasa_window_dispose;
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Soslaio/soslaio-window.ui");
-  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture);
-  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, picture_container);
-  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, retake_screenshot_button);
-  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, copy_button);
-  gtk_widget_class_bind_template_child (widget_class, SoslaioWindow, toast_overlay);
+  gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Kasasa/kasasa-window.ui");
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, picture);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, picture_container);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, retake_screenshot_button);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, copy_button);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, toast_overlay);
 }
 
 static void
-soslaio_window_init (SoslaioWindow *self)
+kasasa_window_init (KasasaWindow *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
 
   // Initialize variables
   self->portal = xdp_portal_new ();
   self->file = NULL;
-  self->settings = g_settings_new ("io.github.kelvinnovais.Soslaio");
+  self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
 
   // Read settings
   load_settings (self);

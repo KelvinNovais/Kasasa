@@ -1,22 +1,22 @@
-soslaio_sources = [
+kasasa_sources = [
   'main.c',
-  'soslaio-application.c',
-  'soslaio-window.c',
-  'soslaio-preferences.c'
+  'kasasa-application.c',
+  'kasasa-window.c',
+  'kasasa-preferences.c'
 ]
 
-soslaio_deps = [
+kasasa_deps = [
   dependency('gtk4'),
   dependency('libadwaita-1', version: '>= 1.4'),
   dependency('libportal-gtk4')
 ]
 
-soslaio_sources += gnome.compile_resources('soslaio-resources',
-  'soslaio.gresource.xml',
-  c_name: 'soslaio'
+kasasa_sources += gnome.compile_resources('kasasa-resources',
+  'kasasa.gresource.xml',
+  c_name: 'kasasa'
 )
 
-executable('soslaio', soslaio_sources,
-  dependencies: soslaio_deps,
+executable('kasasa', kasasa_sources,
+  dependencies: kasasa_deps,
        install: true,
 )

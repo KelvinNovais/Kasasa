@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
-  <template class="SoslaioPreferences" parent="AdwPreferencesDialog">
+  <template class="KasasaPreferences" parent="AdwPreferencesDialog">
     <property name="height-request">210</property>
     <property name="search-enabled">false</property>
     <child>
