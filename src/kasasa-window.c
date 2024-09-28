@@ -42,7 +42,7 @@ struct _KasasaWindow
 
   /* Template widgets */
   GtkPicture          *picture;
-  GtkBox              *picture_container;
+  GtkWindowHandle     *picture_container;
   GtkButton           *retake_screenshot_button;
   GtkButton           *copy_button;
   AdwToastOverlay     *toast_overlay;
