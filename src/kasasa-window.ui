@@ -39,7 +39,7 @@
 
         <!-- PICTURE -->
         <child>
-          <!-- Handle (allow moving the window anywhere on the pictureallow moving the window from anywhere on the picture) -->
+          <!-- Handle (allow moving the window from anywhere on the picture) -->
           <object class="GtkWindowHandle" id="picture_container">
             <property name="vexpand">true</property>
             <property name="hexpand">true</property>
