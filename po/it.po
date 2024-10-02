@@ -56,7 +56,7 @@ msgid ""
 "Shortcuts. There you can set a shortcut to run <em><code>flatpak run io."
 "github.kelvinnovais.Kasasa</code></em> "
 msgstr ""
-"Su GNOME, vai su Impostazioni → Tastiera → Visualizza e personalizza scorciatoie → 
+"Su GNOME, vai su Impostazioni → Tastiera → Visualizza e personalizza scorciatoie → "
 "Scorciatoie personalizzate. Lì puoi impostare una scorciatoia per eseguire <em><code>flatpak run io."
 "github.kelvinnovais.Kasasa</code></em> "
 
@@ -65,7 +65,8 @@ msgid ""
 "Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the "
 "screenshot, instead of directly using the GNOME's screenshoter; this may be "
 "inconvenient."
-msgstr ""Nota: nelle versioni di GNOME < 46, apparirà una finestra di dialogo per impostare e acquisire lo "
+msgstr ""
+"Nota: nelle versioni di GNOME < 46, apparirà una finestra di dialogo per impostare e acquisire lo "
 "screenshot, anziché usare direttamente lo screenshoter di GNOME; questo potrebbe essere "
 "non conveniente."
 

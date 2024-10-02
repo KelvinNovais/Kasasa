@@ -3,7 +3,7 @@
   <id>io.github.kelvinnovais.Kasasa</id>
 
   <name>Kasasa</name>
-  <summary>Create ephemeral floating screenshot windows</summary>
+  <summary>Make floating windows of clippings</summary>
   <developer id="io.github.kelvinnovais">
     <name translate="no">Kelvin Novais</name>
   </developer>
@@ -29,13 +29,16 @@
     </p>
     <p>Best used with:</p>
     <ul>
+      <!-- translators: replace &quot; with " -->
       <li>&quot;Always on Top&quot; and/or &quot;Always on Visible Workspace&quot;</li>
       <li>A keyboard shortcut</li>
     </ul>
+    <!-- translators: do not include the tags <b> or <code> -->
     <p>
       On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts.
-      There you can set a shortcut to run <em><code>flatpak run io.github.kelvinnovais.Kasasa</code></em>
+      There you can set a shortcut to run <b><code>flatpak run io.github.kelvinnovais.Kasasa</code></b>
     </p>
+    <!-- translators: if needed, replace "&lt;" with < and "&apos;" with ' -->
     <p>
       Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the screenshot,
       instead of directly using the GNOME&apos;s screenshoter; this may be inconvenient.
@@ -63,7 +66,22 @@
     </screenshot>
   </screenshots>
 
+  <branding>
+    <color type="primary" scheme_preference="light">#f9f28f</color>
+    <color type="primary" scheme_preference="dark">#3583e4</color>
+  </branding>
+
   <releases>
+    <!-- TODO: update before publishing -->
+    <release date="2024-12-01" version="1.1.0">
+      <description translate="no">
+        <p>Features:</p>
+        <ul>
+          <li>Move the window from anywhere on the picture</li>
+          <li>Added translations</li>
+        </ul>
+      </description>
+    </release>
     <release date="2024-09-27" version="1.0.0">
       <description translate="no">
         <p>First release!</p>
@@ -73,4 +91,7 @@
 
   <url type="homepage">https://github.com/KelvinNovais/Kasasa</url>
   <url type="bugtracker">https://github.com/KelvinNovais/Kasasa/issues</url>
+  <url type="vcs-browser">https://github.com/KelvinNovais/Kasasa</url>
+  <url type="contribute">https://github.com/KelvinNovais/Kasasa/blob/main/CONTRIBUTING.md</url>
+  <url type="translate">https://github.com/KelvinNovais/Kasasa/blob/main/CONTRIBUTING.md#translating</url>
 </component>

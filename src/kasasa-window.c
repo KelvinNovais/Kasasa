@@ -42,7 +42,7 @@ struct _KasasaWindow
 
   /* Template widgets */
   GtkPicture          *picture;
-  GtkBox              *picture_container;
+  GtkWindowHandle     *picture_container;
   GtkButton           *retake_screenshot_button;
   GtkButton           *copy_button;
   AdwToastOverlay     *toast_overlay;
@@ -112,7 +112,7 @@ on_fail (KasasaWindow *self, const gchar *error_message)
   dialog = adw_alert_dialog_new (_("Error"), NULL);
   adw_alert_dialog_format_body (ADW_ALERT_DIALOG (dialog), "%s", error_message);
   adw_alert_dialog_add_responses (ADW_ALERT_DIALOG (dialog),
-                                  "ok",  _("_Ok"),
+                                  "ok",  _("Ok"),
                                   NULL);
   adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
   adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "ok");
@@ -170,7 +170,7 @@ on_screenshot_taken (GObject      *object,
   if (error != NULL)
     {
       error_message = g_strdup_printf (
-        "%s\n\n%s", error->message,
+        "\"%s\"\n\n%s", error->message,
         _("Ensure Screenshot permission is enabled in Settings → Apps → Kasasa")
       );
       g_warning ("%s", error->message);
@@ -180,7 +180,7 @@ on_screenshot_taken (GObject      *object,
   else
     {
       if ((failed = load_screenshot (self, uri)))
-        error_message = _("Couldn't load screenshot");
+        error_message = _("Couldn't load the screenshot");
     }
 
   if (failed)
