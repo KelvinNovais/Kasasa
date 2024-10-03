@@ -1,0 +1,164 @@
+# Russian translations for Kasasa package.
+# Copyright (C) 2024 Kelvin Novais
+# This file is distributed under the same license as the Kasasa package.
+# Vladimir Kosolapov, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kasasa\n"
+"Report-Msgid-Bugs-To: https://github.com/KelvinNovais/Kasasa/issues\n"
+"POT-Creation-Date: 2024-09-27 18:29+0300\n"
+"PO-Revision-Date: 2024-10-03 14:25+0000\n"
+"Last-Translator: Vladimir Kosolapov\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:6
+#: src/kasasa-application.c:98
+msgid "Kasasa"
+msgstr "Kasasa"
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
+#: src/kasasa-application.c:102
+msgid "Create ephemeral floating screenshot windows"
+msgstr "Создавайте эфемерные плавающие окна скриншотов"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
+msgid ""
+"Take screenshots and put them on small floating windows; the application "
+"also allows you to decrease the window opacity when the mouse pointer is "
+"over it."
+msgstr ""
+"Делайте скриншоты и помещайте их в маленькие плавающие окна; приложение "
+"также позволяет уменьшать непрозрачность окна, когда курсор находится "
+"над ним."
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
+msgid "Best used with:"
+msgstr "Лучше использовать с:"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:32
+msgid "\"Always on Top\" and/or \"Always on Visible Workspace\""
+msgstr "\"Всегда сверху\" и/или \"Всегда на видимом рабочем столе\""
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:33
+msgid "A keyboard shortcut"
+msgstr "Клавиатурное сокращение"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:35
+msgid ""
+"On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
+"Shortcuts. There you can set a shortcut to run <em><code>flatpak run io."
+"github.kelvinnovais.Kasasa</code></em> "
+msgstr ""
+"В GNOME перейдите в Настройки → Клавиатура → Просмотр и изменение комбинаций "
+"клавиш → Дополнительные комбинации клавиш. Там вы сможете настроить сочетание "
+"для запуска <em><code>flatpak run io.github.kelvinnovais.Kasasa</code></em> "
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:39
+msgid ""
+"Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the "
+"screenshot, instead of directly using the GNOME's screenshoter; this may be "
+"inconvenient."
+msgstr ""
+"Примечание: В GNOME &lt; 46 появится диалоговое окно для настройки и "
+"создания скриншота вместо встроенного инструмента; это может быть "
+"неудобно."
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:49
+msgid "A small window, in dark mode"
+msgstr "Небольшое окно в тёмном режиме"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:53
+msgid "A small window, in light mode"
+msgstr "Небольшое окно в светлом режиме"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:57
+msgid "Kasasa over another application"
+msgstr "Kasasa поверх другого приложения"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
+msgid "Kasasa over another application, with opacity decreased"
+msgstr "Kasasa поверх другого приложения с уменьшенной непрозрачностью"
+
+#: src/gtk/help-overlay.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Общие" 
+
+#: src/gtk/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Показать комбинации клавиш"
+
+#: src/gtk/help-overlay.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Выход"
+
+#. Present a dialog with the message
+#: src/kasasa-window.c:112
+msgid "Error"
+msgstr "Ошибка"
+
+#: src/kasasa-window.c:115
+msgid "_Ok"
+msgstr "_Хорошо"
+
+#: src/kasasa-window.c:174
+msgid "Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
+msgstr ""
+"Убедитесь, что разрешение на снимки экрана включено в Настройки → "
+"Приложения → Kasasa"
+
+#: src/kasasa-window.c:183
+msgid "Couldn't load screenshot"
+msgstr "Не удалось загрузить снимок экрана"
+
+#: src/kasasa-window.c:260
+msgid "Error:"
+msgstr "Ошибка:"
+
+#: src/kasasa-window.ui:114
+msgid "Menu"
+msgstr "Меню"
+
+#: src/kasasa-window.ui:125
+msgid "Retake screenshot"
+msgstr "Повторить снимок экрана"
+
+#: src/kasasa-window.ui:134
+msgid "Copy"
+msgstr "Копировать"
+
+#: src/kasasa-window.ui:150
+msgid "_Preferences"
+msgstr "_Параметры"
+
+#: src/kasasa-window.ui:154
+msgid "_Keyboard Shortcuts"
+msgstr "_Комбинации клавиш"
+
+#: src/kasasa-window.ui:158
+msgid "_About Kasasa"
+msgstr "_О приложении"
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/kasasa-application.c:109
+msgid "translator-credits"
+msgstr "Vladimir Kosolapov https://github.com/vmkspv"
+
+#: src/kasasa-preferences.ui:14
+msgid "Change opacity"
+msgstr "Изменить непрозрачность"
+
+#: src/kasasa-preferences.ui:19
+msgid "Opacity level"
+msgstr "Уровень непрозрачности"
