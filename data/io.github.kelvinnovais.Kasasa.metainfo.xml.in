@@ -33,10 +33,10 @@
       <li>&quot;Always on Top&quot; and/or &quot;Always on Visible Workspace&quot;</li>
       <li>A keyboard shortcut</li>
     </ul>
-    <!-- translators: do not include the tags <b> or <code> -->
+    <!-- translators: do not include the tags <code></code> -->
     <p>
       On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts.
-      There you can set a shortcut to run <b><code>flatpak run io.github.kelvinnovais.Kasasa</code></b>
+      There you can set a shortcut to run <code>flatpak run io.github.kelvinnovais.Kasasa</code>
     </p>
     <!-- translators: if needed, replace "&lt;" with < and "&apos;" with ' -->
     <p>

@@ -17,9 +17,9 @@ Use the Flatpak version of [GNOME Builder](https://apps.gnome.org/Builder) to bu
 
 ## Translating
 
-_Note: you can use [Translation Editor](https://flathub.org/apps/org.gnome.Gtranslator) or another app to make the translations_ 
-
 1. Fork the repository and clone it
-2. Take the po/kasasa.pot file and generate a new .po translation file from it; also add the new translation language to po/LINGUAS
-3. Submit a PR with the changed files 
+2. Take the `po/kasasa.pot` file and generate a new `.po` translation file from it; also add the new translation language to `po/LINGUAS`
+3. Submit a PR with the changed files
+
+_Note: you can use [Translation Editor](https://flathub.org/apps/org.gnome.Gtranslator) or another app to make the translations_ 
 

@@ -78,73 +78,79 @@
 
         <!-- VERTICAL MENU -->
         <child>
-          <object class="GtkWindowHandle" id="vertical_menu">
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">1</property>
-                <property name="valign">fill</property>
+          <object class="GtkRevealer" id="menu_revealer">
+            <property name="reveal-child">true</property>
+            <property name="transition-type">slide-left</property>
+            <property name="child">
+              <object class="GtkWindowHandle" id="vertical_menu">
                 <child>
-                  <object class="GtkBox" id="tool-box">
+                  <object class="GtkBox">
                     <property name="orientation">1</property>
-                    <property name="width-request">46</property>
-                    <property name="margin-bottom">6</property>
-                    <property name="halign">fill</property>
                     <property name="valign">fill</property>
-                    <property name="vexpand">true</property>
-                    <!-- Close button -->
                     <child>
-                      <object class="GtkWindowControls" id="controls">
-                        <property name="decoration-layout">close</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-end">6</property>
-                      </object>
-                    </child>
-                    <!-- Padding GtkBox -->
-                    <child>
-                      <object class="GtkBox">
+                      <object class="GtkBox" id="tool-box">
+                        <property name="orientation">1</property>
+                        <property name="width-request">46</property>
+                        <property name="margin-bottom">6</property>
+                        <property name="halign">fill</property>
+                        <property name="valign">fill</property>
                         <property name="vexpand">true</property>
-                        <property name="hexpand">true</property>
-                      </object>
-                    </child>
-                    <!-- Other buttons (settings, retake screenshot, copy) -->
-                    <child>
-                      <object class="GtkMenuButton">
-                        <!-- Add margins to make it look like a GtkButton (have the same size) -->
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="can-shrink">true</property>
-                        <property name="has-frame">false</property>
-                        <property name="direction">left</property>
-                        <property name="primary">true</property>
-                        <property name="icon-name">open-menu-symbolic</property>
-                        <property name="tooltip-text" translatable="yes">Menu</property>
-                        <property name="menu-model">primary_menu</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="retake_screenshot_button">
-                        <property name="visible">true</property>
-                        <property name="margin-top">6</property>
-                        <property name="halign">center</property>
-                        <property name="css-classes">flat</property>
-                        <property name="icon-name">view-refresh-symbolic</property>
-                        <property name="tooltip-text" translatable="yes">Retake screenshot</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="copy_button">
-                        <property name="margin-top">6</property>
-                        <property name="halign">center</property>
-                        <property name="css-classes">flat</property>
-                        <property name="icon-name">edit-copy-symbolic</property>
-                        <property name="tooltip-text" translatable="yes">Copy</property>
+                        <!-- Close button -->
+                        <child>
+                          <object class="GtkWindowControls" id="controls">
+                            <property name="decoration-layout">close</property>
+                            <property name="margin-start">6</property>
+                            <property name="margin-top">6</property>
+                            <property name="margin-end">6</property>
+                          </object>
+                        </child>
+                        <!-- Padding GtkBox -->
+                        <child>
+                          <object class="GtkBox">
+                            <property name="vexpand">true</property>
+                            <property name="hexpand">true</property>
+                          </object>
+                        </child>
+                        <!-- Other buttons (settings, retake screenshot, copy) -->
+                        <child>
+                          <object class="GtkMenuButton" id="menu_button">
+                            <!-- Add margins to make it look like a GtkButton (have the same size) -->
+                            <property name="margin-start">6</property>
+                            <property name="margin-end">6</property>
+                            <property name="can-shrink">true</property>
+                            <property name="has-frame">false</property>
+                            <property name="direction">left</property>
+                            <property name="primary">true</property>
+                            <property name="icon-name">open-menu-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Menu</property>
+                            <property name="menu-model">primary_menu</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="retake_screenshot_button">
+                            <property name="visible">true</property>
+                            <property name="margin-top">6</property>
+                            <property name="halign">center</property>
+                            <property name="css-classes">flat</property>
+                            <property name="icon-name">view-refresh-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Retake screenshot</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="copy_button">
+                            <property name="margin-top">6</property>
+                            <property name="halign">center</property>
+                            <property name="css-classes">flat</property>
+                            <property name="icon-name">edit-copy-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Copy</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
-            </child>
+            </property>
           </object>
         </child>
       </object>

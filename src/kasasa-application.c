@@ -35,7 +35,7 @@ G_DEFINE_FINAL_TYPE (KasasaApplication, kasasa_application, ADW_TYPE_APPLICATION
 
 KasasaApplication *
 kasasa_application_new (const char        *application_id,
-                         GApplicationFlags  flags)
+                        GApplicationFlags  flags)
 {
   g_return_val_if_fail (application_id != NULL, NULL);
 

@@ -8,6 +8,7 @@
     <child>
       <object class="AdwPreferencesPage">
         <child>
+          <!-- OPACITY -->
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSwitchRow" id="opacity_switch">
@@ -30,6 +31,18 @@
             </child>
           </object>
         </child>
+
+        <!-- AUTO HIDE VERTICAL MENU -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="AdwSwitchRow" id="auto_hide_menu_switch">
+                <property name="title" translatable="true">Auto hide the vertical menu</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
       </object>
     </child>
   </template>

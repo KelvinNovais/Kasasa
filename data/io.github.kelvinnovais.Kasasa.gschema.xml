@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="kasasa">
 	<schema id="io.github.kelvinnovais.Kasasa" path="/io/github/kelvinnovais/Kasasa/">
+	  <key name="auto-hide-menu" type="b">
+      <default>false</default>
+    </key>
+
 	  <key name="change-opacity" type="b">
       <default>true</default>
     </key>
