@@ -78,6 +78,8 @@
         <p>Features:</p>
         <ul>
           <li>Move the window from anywhere on the picture</li>
+          <li>Option to auto hide the vertical menu</li>
+          <li>Smooth animation when changing opacity</li>
           <li>Added translations</li>
         </ul>
       </description>

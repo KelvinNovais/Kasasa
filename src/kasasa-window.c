@@ -29,6 +29,12 @@
 #define WIDTH_REQUEST   360
 #define HEIGHT_REQUEST  190
 
+enum Opacity
+{
+  OPACITY_INCREASE,
+  OPACITY_DECREASE
+};
+
 struct _KasasaWindow
 {
   AdwApplicationWindow  parent_instance;
@@ -58,6 +64,7 @@ struct _KasasaWindow
   GtkEventController  *window_event_controller;
   GtkEventController  *menu_event_controller;
   GFile               *file;
+  AdwAnimation        *window_opcity_animation;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -204,27 +211,37 @@ on_screenshot_taken (GObject      *object,
 }
 
 static void
-increase_opacity (KasasaWindow *self)
+change_opacity_cb (double         value,
+                     KasasaWindow  *self)
 {
-  if (!self->change_opacity)
-    return;
-
-  gtk_widget_set_opacity (GTK_WIDGET (self), 1.00);
+  gtk_widget_set_opacity (GTK_WIDGET (self), value);
 }
 
 static void
-decrease_opacity (KasasaWindow *self)
+change_opacity (KasasaWindow *self, enum Opacity opacity)
 {
+  AdwAnimationTarget *target = NULL;
+
+  // Set from and to target values, according to the mode (increase or decrease opacity)
+  gdouble from  = (opacity == OPACITY_INCREASE) ? self->opacity : 1.00;
+  gdouble to    = (opacity == OPACITY_INCREASE) ? 1.00          : self->opacity;
+
   if (!self->change_opacity)
     return;
 
-  /*
-   * Setting an element to visible/invisible seems to be needed to correctly
-   * "update" the window
-   */
-  gtk_widget_set_visible (GTK_WIDGET (self->picture), FALSE);
-  gtk_widget_set_opacity (GTK_WIDGET (self), self->opacity);
-  gtk_widget_set_visible (GTK_WIDGET (self->picture), TRUE);
+  target =
+    adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
+                                       self,
+                                       NULL);
+
+  self->window_opcity_animation = adw_timed_animation_new (
+    GTK_WIDGET (self),    // widget
+    from, to,             // opacity from to
+    250,                  // duration
+    target                // target
+  );
+
+  adw_animation_play (self->window_opcity_animation);
 }
 
 static void
@@ -259,7 +276,7 @@ on_mouse_enter_window (GtkEventControllerMotion *event_controller_motion,
   if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (self)) != NULL)
     return;
 
-  decrease_opacity (self);
+  change_opacity (self, OPACITY_DECREASE);
 
   if (self->auto_hide_menu)
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
@@ -276,7 +293,7 @@ on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
 
   self->mouse_over_window = FALSE;
 
-  increase_opacity (self);
+  change_opacity (self, OPACITY_INCREASE);
 
   // Hide the vertical menu if this option is enabled
   if (self->auto_hide_menu)
@@ -300,7 +317,7 @@ on_mouse_enter_menu (GtkEventControllerMotion *event_controller_motion,
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
-  increase_opacity (self);
+  change_opacity (self, OPACITY_INCREASE);
 }
 
 // Increase window opacity when the pointer leaves it
@@ -313,7 +330,7 @@ on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
-  decrease_opacity (self);
+  change_opacity (self, OPACITY_DECREASE);
 }
 
 // Retake screenshot
