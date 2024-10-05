@@ -22,12 +22,16 @@
 
 #include <libportal-gtk4/portal-gtk4.h>
 #include <glib/gi18n.h>
+#include <math.h>
 
 #include "kasasa-window.h"
 
-// Size request of the window
-#define WIDTH_REQUEST   360
-#define HEIGHT_REQUEST  190
+// Screens with this resolution or smaller are handled as small
+#define SMALL_SCREEN_AREA (1280 * 1024)
+// For small monitors, occupy X% of the screen area
+#define SMALL_OCCUPY_SCREEN 0.10
+// For large enough monitors, occupy Y% of the screen area when opening a window with a video
+#define DEFAULT_OCCUPY_SCREEN 0.15
 
 enum Opacity
 {
@@ -64,35 +68,162 @@ struct _KasasaWindow
   GtkEventController  *window_event_controller;
   GtkEventController  *menu_event_controller;
   GFile               *file;
-  AdwAnimation        *window_opcity_animation;
+  AdwAnimation        *window_opacity_animation;
+  gint                 default_height;
+  gint                 default_width;
+  gdouble              nat_width;
+  gdouble              nat_height;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
 
-// If (picture.height > picture.width), the window gets its height wrong (much
-// taller than should be)
+static void
+resize_width_animated (AdwAnimation* previous_animation,
+                       gpointer user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+  g_autoptr (AdwAnimation) animation = NULL;
+  AdwAnimationTarget *target = NULL;
+
+  target =
+    adw_property_animation_target_new (G_OBJECT (self), "default-width");
+
+  // Animation for resing height
+  animation = adw_timed_animation_new (
+    GTK_WIDGET (self),                      // widget
+    (gdouble) self->default_width,          // from
+    self->nat_width,                        // to
+    500,                                    // duration
+    target                                  // target
+  );
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation), ADW_EASE_OUT_EXPO);
+  adw_animation_play (animation);
+}
+
+static void
+resize_height_animated (KasasaWindow *self)
+{
+  g_autoptr (AdwAnimation) animation = NULL;
+  AdwAnimationTarget *target = NULL;
+
+  target =
+    adw_property_animation_target_new (G_OBJECT (self), "default-height");
+
+  // Animation for resing height
+  animation = adw_timed_animation_new (
+    GTK_WIDGET (self),                      // widget
+    (gdouble) self->default_height,         // from
+    self->nat_height,                       // to
+    500,                                    // duration
+    target                                  // target
+  );
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation), ADW_EASE_OUT_EXPO);
+  adw_animation_play (animation);
+
+  g_signal_connect (animation, "done", G_CALLBACK (resize_width_animated), self);
+}
+
 static void
 resize_window (KasasaWindow *self)
 {
+  // Based on:
+  // https://gitlab.gnome.org/GNOME/Incubator/showtime/-/blob/main/showtime/window.py?ref_type=heads#L836
+  // https://gitlab.gnome.org/GNOME/loupe/-/blob/4ca5f9e03d18667db5d72325597cebc02887777a/src/widgets/image/rendering.rs#L151
   g_autoptr (GdkTexture) texture = NULL;
   g_autoptr (GError) error = NULL;
-  gint image_height, image_width;
+  GtkNative *native = NULL;
+  GdkDisplay *display = NULL;
+  GdkSurface *surface = NULL;
+  GdkMonitor *monitor = NULL;
+  GdkRectangle monitor_geometry;
+  // gints
+  gint monitor_area, hidpi_scale, logical_monitor_area,
+  image_height, image_width, image_area, max_width, max_height;
+  // gdoubles
+  gdouble occupy_area_factor, size_scale, target_scale;
 
   texture = gdk_texture_new_from_file (self->file, &error);
-
   if (error != NULL)
     {
       g_warning ("%s", error->message);
       return;
     }
 
+  display = gdk_display_get_default ();
+  if (display == NULL)
+    {
+      g_warning ("Couldn't get GdkDisplay, can't find the best window size");
+      return;
+    }
+
+  native = gtk_widget_get_native (GTK_WIDGET (self));
+  if (native == NULL)
+    {
+      g_warning ("Couldn't get GtkNative, can't find the best window size");
+      return;
+    }
+
+  surface = gtk_native_get_surface (native);
+  if (surface == NULL)
+    {
+      g_warning ("Couldn't get GdkSurface, can't find the best window size");
+      return;
+    }
+
+  monitor = gdk_display_get_monitor_at_surface (display, surface);
+  if (monitor == NULL)
+    {
+      g_warning ("Couldn't get GdkMonitor, can't find the best window size");
+      return;
+    }
+
+  gtk_window_get_default_size (GTK_WINDOW (self), &self->default_width, &self->default_height);
+
+  // AREAS
   image_height = gdk_texture_get_height (texture);
   image_width = gdk_texture_get_width (texture);
+  image_area = image_height * image_width;
 
-  if (image_height > image_width)
-    gtk_window_set_default_size (GTK_WINDOW (self),
-                                 -1,                   // width unset
-                                 MAX (HEIGHT_REQUEST, image_height));
+  hidpi_scale = gdk_surface_get_scale_factor (surface);
+
+  gdk_monitor_get_geometry (monitor, &monitor_geometry);
+  monitor_area = monitor_geometry.width * monitor_geometry.height;
+
+  logical_monitor_area = monitor_area * hidpi_scale * hidpi_scale;
+
+  // TODO allow the user change this percentage
+  occupy_area_factor = (logical_monitor_area <= SMALL_SCREEN_AREA) ?
+                       SMALL_OCCUPY_SCREEN : DEFAULT_OCCUPY_SCREEN;
+
+  // factor for width and height that will achieve the desired area
+  // occupation derived from:
+  // monitor_area * occupy_area_factor ==
+  //   (image_width * size_scale) * (image_height * size_scale)
+  size_scale = sqrt (monitor_area / image_area * occupy_area_factor);
+  // ensure that we never increase image size
+  target_scale = MIN (1, size_scale);
+  self->nat_width = image_width * target_scale;
+  self->nat_height = image_height * target_scale;
+
+  // Scale down if targeted occupation does not fit horizontally
+  // Add some margin to not touch corners
+  max_width = monitor_geometry.width - 20;
+  if (self->nat_width > max_width)
+    {
+      self->nat_width = max_width;
+      self->nat_height = image_height * self->nat_width / image_width;
+    }
+
+  // Same for vertical size
+  // Additionally substract some space for HeaderBar and Shell bar
+  max_height = monitor_geometry.height - (50 + 35 + 20) * hidpi_scale;
+  if (self->nat_height > max_height)
+    {
+      self->nat_height = max_height;
+      self->nat_width = image_width * self->nat_height / image_height;
+    }
+
+  resize_height_animated (self);
 }
 
 // Set an "missing image" icon when screenshoting fails
@@ -150,13 +281,8 @@ load_screenshot (KasasaWindow *self, const gchar *uri)
 {
   if (uri == NULL)
     return TRUE;
-
   self->file = g_file_new_for_uri (uri);
-
   gtk_picture_set_file (self->picture, self->file);
-
-  resize_window (self);
-
   return FALSE;
 }
 
@@ -206,13 +332,16 @@ on_screenshot_taken (GObject      *object,
   if (failed)
     on_fail (self, error_message);
 
+  // Set opacity to 100%, if the retake_screenshot_button was pressed, opactiy gets decreased
+  gtk_widget_set_opacity (GTK_WIDGET (self), 1.00);
   // Finally, present the window after the screenshot was taken
   gtk_window_present (GTK_WINDOW (self));
+  if (!failed) resize_window (KASASA_WINDOW (user_data));
 }
 
 static void
 change_opacity_cb (double         value,
-                     KasasaWindow  *self)
+                   KasasaWindow  *self)
 {
   gtk_widget_set_opacity (GTK_WIDGET (self), value);
 }
@@ -234,14 +363,14 @@ change_opacity (KasasaWindow *self, enum Opacity opacity)
                                        self,
                                        NULL);
 
-  self->window_opcity_animation = adw_timed_animation_new (
+  self->window_opacity_animation = adw_timed_animation_new (
     GTK_WIDGET (self),    // widget
     from, to,             // opacity from to
     250,                  // duration
     target                // target
   );
 
-  adw_animation_play (self->window_opcity_animation);
+  adw_animation_play (self->window_opacity_animation);
 }
 
 static void
@@ -433,9 +562,6 @@ kasasa_window_init (KasasaWindow *self)
 
   // Read settings
   load_settings (self);
-
-  // Set size request
-  gtk_widget_set_size_request (GTK_WIDGET (self), WIDTH_REQUEST, HEIGHT_REQUEST);
 
   // Connect signal to track when settings are changed
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);

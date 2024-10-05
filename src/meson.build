@@ -11,6 +11,8 @@ kasasa_deps = [
   dependency('libportal-gtk4')
 ]
 
+kasasa_deps += cc.find_library('m', required : true)
+
 kasasa_sources += gnome.compile_resources('kasasa-resources',
   'kasasa.gresource.xml',
   c_name: 'kasasa'
