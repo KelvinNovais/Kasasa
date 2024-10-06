@@ -13,5 +13,10 @@
       <range min="0.10" max="1.00"/>
       <default>0.35</default>
     </key>
+
+	  <key name="occupy-screen" type="d">
+      <range min="0.10" max="0.75"/>
+      <default>0.15</default>
+    </key>
 	</schema>
 </schemalist>

@@ -26,13 +26,6 @@
 
 #include "kasasa-window.h"
 
-// Screens with this resolution or smaller are handled as small
-#define SMALL_SCREEN_AREA (1280 * 1024)
-// For small monitors, occupy X% of the screen area
-#define SMALL_OCCUPY_SCREEN 0.10
-// For large enough monitors, occupy Y% of the screen area when opening a window with a video
-#define DEFAULT_OCCUPY_SCREEN 0.15
-
 enum Opacity
 {
   OPACITY_INCREASE,
@@ -45,7 +38,7 @@ struct _KasasaWindow
 
   /* Template widgets */
   GtkPicture          *picture;
-  GtkBox              *picture_container;
+  GtkWindowHandle     *picture_container;
   GtkButton           *retake_screenshot_button;
   GtkButton           *copy_button;
   AdwToastOverlay     *toast_overlay;
@@ -137,8 +130,8 @@ resize_window (KasasaWindow *self)
   GdkMonitor *monitor = NULL;
   GdkRectangle monitor_geometry;
   // gints
-  gint monitor_area, hidpi_scale, logical_monitor_area,
-  image_height, image_width, image_area, max_width, max_height;
+  gint monitor_area, hidpi_scale, image_height, image_width, image_area,
+  max_width, max_height;
   // gdoubles
   gdouble occupy_area_factor, size_scale, target_scale;
 
@@ -189,11 +182,7 @@ resize_window (KasasaWindow *self)
   gdk_monitor_get_geometry (monitor, &monitor_geometry);
   monitor_area = monitor_geometry.width * monitor_geometry.height;
 
-  logical_monitor_area = monitor_area * hidpi_scale * hidpi_scale;
-
-  // TODO allow the user change this percentage
-  occupy_area_factor = (logical_monitor_area <= SMALL_SCREEN_AREA) ?
-                       SMALL_OCCUPY_SCREEN : DEFAULT_OCCUPY_SCREEN;
+  occupy_area_factor = g_settings_get_double (self->settings, "occupy-screen");
 
   // factor for width and height that will achieve the desired area
   // occupation derived from:
@@ -284,14 +273,6 @@ load_screenshot (KasasaWindow *self, const gchar *uri)
   self->file = g_file_new_for_uri (uri);
   gtk_picture_set_file (self->picture, self->file);
   return FALSE;
-}
-
-static void
-load_settings (KasasaWindow *self)
-{
-  self->auto_hide_menu = g_settings_get_boolean (self->settings, "auto-hide-menu");
-  self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");
-  self->opacity = g_settings_get_double (self->settings, "opacity");
 }
 
 // Callback for xdp_portal_take_screenshot ()
@@ -385,8 +366,10 @@ hide_vertical_menu_cb (gpointer user_data)
   KasasaWindow *self = KASASA_WINDOW (user_data);
   self->hide_menu_requested = FALSE;
 
-  // Hidding was queried because at some moment the mouse pointer left the window,
-  // however, don't hide the menu if it returned and is still over the window
+  /*
+   * Hidding was queried because at some moment the mouse pointer left the window,
+   * however, don't hide the menu if it returned and is still over the window
+   */
   if (self->mouse_over_window)
     return;
 
@@ -523,12 +506,56 @@ on_copy_button_clicked (GtkButton *button,
 }
 
 static void
-on_settings_updated (GSettings* self,
+on_settings_updated (GSettings* settings,
                      gchar* key,
                      gpointer user_data)
 {
-  load_settings (KASASA_WINDOW (user_data));
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+
+  if (g_strcmp0 (key, "auto-hide-menu") == 0)
+    {
+      self->auto_hide_menu = g_settings_get_boolean (self->settings, "auto-hide-menu");
+      if (self->auto_hide_menu == FALSE)
+        gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
+    }
+  else if (g_strcmp0 (key, "change-opacity") == 0)
+    self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");
+  else if (g_strcmp0 (key, "opacity") == 0)
+    self->opacity = g_settings_get_double (self->settings, "opacity");
 }
+
+/* static gboolean */
+/* on_close_request (GtkWindow *window, */
+/*                   gpointer   user_data) */
+/* { */
+/*   g_auto (GStrv) strv; */
+/*   g_autofree gchar *path = NULL; */
+/*   g_autoptr (GFile) file = NULL; */
+/*   guint length = 0; */
+/*   g_autoptr (GError) error = NULL; */
+/*   KasasaWindow *self = KASASA_WINDOW (user_data); */
+
+/*   if (self->file == NULL */
+/*       || (path = g_file_get_path (self->file)) == NULL) */
+/*     return FALSE; */
+
+  /* // Split the path to the screenshot */
+/*   strv = g_strsplit (path, "/", -1); */
+/*   length = g_strv_length (strv); */
+/*   // Trash the screenshot corresponding to the name */
+/*   path = g_strconcat (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES), // Pictures */
+/*                       "/Screenshots/",                                    // folder */
+/*                       strv[length-1],                                     // image name */
+/*                       NULL); */
+
+/*   file = g_file_new_for_path (path); */
+
+/*   g_file_delete (file, NULL, &error); */
+/*   if (error != NULL) */
+/*     g_warning ("%s", error->message); */
+
+/*   return FALSE; */
+/* } */
 
 static void
 kasasa_window_dispose (GObject *kasasa_window)
@@ -572,11 +599,12 @@ kasasa_window_init (KasasaWindow *self)
   self->file = NULL;
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
 
-  // Read settings
-  load_settings (self);
-
-  // Connect signal to track when settings are changed
+  // Connect signal to track when settings are changed; get the necessary values
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
+  // Get the first needed values
+  self->auto_hide_menu = g_settings_get_boolean (self->settings, "auto-hide-menu");
+  self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");
+  self->opacity        = g_settings_get_double (self->settings, "opacity");
 
   // Connect buttons to the callbacks
   g_signal_connect (self->retake_screenshot_button, "clicked",
@@ -595,6 +623,8 @@ kasasa_window_init (KasasaWindow *self)
   g_signal_connect (self->menu_event_controller, "enter", G_CALLBACK (on_mouse_enter_menu), self);
   g_signal_connect (self->menu_event_controller, "leave", G_CALLBACK (on_mouse_leave_menu), self);
   gtk_widget_add_controller (GTK_WIDGET (self->vertical_menu), self->menu_event_controller);
+
+  /* g_signal_connect (GTK_WINDOW (self), "close-request", G_CALLBACK (on_close_request), self); */
 
   // Request a screenshot
   xdp_portal_take_screenshot (

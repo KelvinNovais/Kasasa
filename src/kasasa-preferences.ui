@@ -42,6 +42,27 @@
           </object>
         </child>
 
+        <!-- OCCUPYING SCREEN PERCENTAGE -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="AdwSpinRow">
+                <property name="title" translatable="true">Occupying screen percentage</property>
+                <property name="subtitle" translatable="true">Max percentage of the screen that Kasasa can use</property>
+                <property name="digits">2</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment" id="occupy_screen_adjustment">
+                    <property name="lower">0.10</property>
+                    <property name="upper">0.75</property>
+                    <property name="step-increment">0.01</property>
+                    <property name="value">0.15</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+
       </object>
     </child>
   </template>
