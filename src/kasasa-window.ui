@@ -45,7 +45,7 @@
         <!-- PICTURE -->
         <child>
           <!-- Handle (allow moving the window from anywhere on the picture) -->
-          <object class="GtkWindowHandle" id="picture_container">
+          <object class="GtkWindowHandle">
             <property name="vexpand">true</property>
             <property name="hexpand">true</property>
             <property name="child">
@@ -55,7 +55,7 @@
                   <object class="AdwToastOverlay" id="toast_overlay">
                     <property name="child">
                       <!-- Picture -->
-                      <object class="GtkBox">
+                      <object class="GtkBox" id="picture_container">
                         <property name="orientation">vertical</property>
                         <property name="vexpand">true</property>
                         <property name="hexpand">true</property>

@@ -45,7 +45,7 @@ struct _KasasaWindow
 
   /* Template widgets */
   GtkPicture          *picture;
-  GtkWindowHandle     *picture_container;
+  GtkBox              *picture_container;
   GtkButton           *retake_screenshot_button;
   GtkButton           *copy_button;
   AdwToastOverlay     *toast_overlay;
@@ -347,7 +347,7 @@ change_opacity_cb (double         value,
 }
 
 static void
-change_opacity (KasasaWindow *self, enum Opacity opacity)
+change_opacity_animated (KasasaWindow *self, enum Opacity opacity)
 {
   AdwAnimationTarget *target = NULL;
 
@@ -355,7 +355,13 @@ change_opacity (KasasaWindow *self, enum Opacity opacity)
   gdouble from  = (opacity == OPACITY_INCREASE) ? self->opacity : 1.00;
   gdouble to    = (opacity == OPACITY_INCREASE) ? 1.00          : self->opacity;
 
+  // Return if this option is disabled
   if (!self->change_opacity)
+    return;
+
+  // Return if the opacity is already 100%
+  if (opacity == OPACITY_INCREASE
+      && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
     return;
 
   target =
@@ -374,7 +380,7 @@ change_opacity (KasasaWindow *self, enum Opacity opacity)
 }
 
 static void
-hide_vertical_menu (gpointer user_data)
+hide_vertical_menu_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
   self->hide_menu_requested = FALSE;
@@ -388,10 +394,24 @@ hide_vertical_menu (gpointer user_data)
 }
 
 static void
-on_mouse_enter_window (GtkEventControllerMotion *event_controller_motion,
-                       gdouble                   x,
-                       gdouble                   y,
-                       gpointer                  user_data)
+hide_vertical_menu (KasasaWindow *self)
+{
+  // Hide the vertical menu if this option is enabled
+  if (self->auto_hide_menu)
+    // As soon as this action has a delay:
+    // if already requested, do nothing; else, request hiding
+    if (self->hide_menu_requested == FALSE)
+      {
+        self->hide_menu_requested = TRUE;
+        g_timeout_add_seconds_once (2, hide_vertical_menu_cb, self);
+      }
+}
+
+static void
+on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_motion,
+                                  gdouble                   x,
+                                  gdouble                   y,
+                                  gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -405,15 +425,15 @@ on_mouse_enter_window (GtkEventControllerMotion *event_controller_motion,
   if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (self)) != NULL)
     return;
 
-  change_opacity (self, OPACITY_DECREASE);
+  change_opacity_animated (self, OPACITY_DECREASE);
 
   if (self->auto_hide_menu)
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
 }
 
 static void
-on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
-                       gpointer                  user_data)
+on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_motion,
+                                  gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -421,18 +441,8 @@ on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
   self->mouse_over_window = FALSE;
-
-  change_opacity (self, OPACITY_INCREASE);
-
-  // Hide the vertical menu if this option is enabled
-  if (self->auto_hide_menu)
-    // As soon as this action has a delay:
-    // if already requested, do nothing; else, request hiding
-    if (self->hide_menu_requested == FALSE)
-      {
-        self->hide_menu_requested = TRUE;
-        g_timeout_add_seconds_once (2, hide_vertical_menu, self);
-      }
+  change_opacity_animated (self, OPACITY_INCREASE);
+  hide_vertical_menu (self);
 }
 
 static void
@@ -446,7 +456,8 @@ on_mouse_enter_menu (GtkEventControllerMotion *event_controller_motion,
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
-  change_opacity (self, OPACITY_INCREASE);
+  self->mouse_over_window = TRUE;
+  change_opacity_animated (self, OPACITY_INCREASE);
 }
 
 // Increase window opacity when the pointer leaves it
@@ -459,7 +470,8 @@ on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
-  change_opacity (self, OPACITY_DECREASE);
+  self->mouse_over_window = FALSE;
+  hide_vertical_menu (self);
 }
 
 // Retake screenshot
@@ -572,12 +584,12 @@ kasasa_window_init (KasasaWindow *self)
   g_signal_connect (self->copy_button, "clicked",
                     G_CALLBACK (on_copy_button_clicked), self);
 
-  // Create motion event controllers to monitor when the mouse cursor is over the window or the menu
-  // window
+  // Create motion event controllers to monitor when the mouse cursor is over the picture container or the menu
+  // picture container
   self->window_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->window_event_controller, "enter", G_CALLBACK (on_mouse_enter_window), self);
-  g_signal_connect (self->window_event_controller, "leave", G_CALLBACK (on_mouse_leave_window), self);
-  gtk_widget_add_controller (GTK_WIDGET (self), self->window_event_controller);
+  g_signal_connect (self->window_event_controller, "enter", G_CALLBACK (on_mouse_enter_picture_container), self);
+  g_signal_connect (self->window_event_controller, "leave", G_CALLBACK (on_mouse_leave_picture_container), self);
+  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->window_event_controller);
   // menu
   self->menu_event_controller = gtk_event_controller_motion_new ();
   g_signal_connect (self->menu_event_controller, "enter", G_CALLBACK (on_mouse_enter_menu), self);
