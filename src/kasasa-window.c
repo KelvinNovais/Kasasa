@@ -18,6 +18,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/* No implemented (needs improvments):
+ * feat: ### Auto delete screenshot ###
+ */
+
 #include "config.h"
 
 #include <libportal-gtk4/portal-gtk4.h>
@@ -66,54 +70,55 @@ struct _KasasaWindow
   gint                 default_width;
   gdouble              nat_width;
   gdouble              nat_height;
+  gboolean             first_run;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
 
 static void
-resize_width_animated (AdwAnimation* previous_animation,
-                       gpointer user_data)
+resize_window_animated (KasasaWindow *self)
 {
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-  g_autoptr (AdwAnimation) animation = NULL;
-  AdwAnimationTarget *target = NULL;
+  g_autoptr (AdwAnimation) animation_height = NULL;
+  g_autoptr (AdwAnimation) animation_width = NULL;
+  AdwAnimationTarget *target_h = NULL;
+  AdwAnimationTarget *target_w = NULL;
 
-  target =
+  target_h =
+    adw_property_animation_target_new (G_OBJECT (self), "default-height");
+  target_w =
     adw_property_animation_target_new (G_OBJECT (self), "default-width");
 
-  // Animation for resing height
-  animation = adw_timed_animation_new (
-    GTK_WIDGET (self),                      // widget
-    (gdouble) self->default_width,          // from
-    self->nat_width,                        // to
-    500,                                    // duration
-    target                                  // target
-  );
-  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation), ADW_EASE_OUT_EXPO);
-  adw_animation_play (animation);
-}
-
-static void
-resize_height_animated (KasasaWindow *self)
-{
-  g_autoptr (AdwAnimation) animation = NULL;
-  AdwAnimationTarget *target = NULL;
-
-  target =
-    adw_property_animation_target_new (G_OBJECT (self), "default-height");
-
-  // Animation for resing height
-  animation = adw_timed_animation_new (
+  // Animation for resizing height
+  animation_height = adw_timed_animation_new (
     GTK_WIDGET (self),                      // widget
     (gdouble) self->default_height,         // from
     self->nat_height,                       // to
     500,                                    // duration
-    target                                  // target
+    target_h                                // target
   );
-  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation), ADW_EASE_OUT_EXPO);
-  adw_animation_play (animation);
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_height), ADW_EASE_OUT_EXPO);
 
-  g_signal_connect (animation, "done", G_CALLBACK (resize_width_animated), self);
+  // Animation for resizing width
+  animation_width = adw_timed_animation_new (
+    GTK_WIDGET (self),                      // widget
+    (gdouble) self->default_width,          // from
+    self->nat_width,                        // to
+    500,                                    // duration
+    target_w                                // target
+  );
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_width), ADW_EASE_OUT_EXPO);
+
+  if (self->first_run)
+    {
+      adw_animation_skip (animation_width);
+      adw_animation_skip (animation_height);
+      self->first_run = FALSE;
+    }
+  else
+    {
+      adw_animation_play (animation_width);
+      adw_animation_play (animation_height);
+    }
 }
 
 static void
@@ -212,7 +217,7 @@ resize_window (KasasaWindow *self)
       self->nat_width = image_width * self->nat_height / image_height;
     }
 
-  resize_height_animated (self);
+  resize_window_animated (self);
 }
 
 // Set an "missing image" icon when screenshoting fails
@@ -524,39 +529,6 @@ on_settings_updated (GSettings* settings,
     self->opacity = g_settings_get_double (self->settings, "opacity");
 }
 
-/* static gboolean */
-/* on_close_request (GtkWindow *window, */
-/*                   gpointer   user_data) */
-/* { */
-/*   g_auto (GStrv) strv; */
-/*   g_autofree gchar *path = NULL; */
-/*   g_autoptr (GFile) file = NULL; */
-/*   guint length = 0; */
-/*   g_autoptr (GError) error = NULL; */
-/*   KasasaWindow *self = KASASA_WINDOW (user_data); */
-
-/*   if (self->file == NULL */
-/*       || (path = g_file_get_path (self->file)) == NULL) */
-/*     return FALSE; */
-
-  /* // Split the path to the screenshot */
-/*   strv = g_strsplit (path, "/", -1); */
-/*   length = g_strv_length (strv); */
-/*   // Trash the screenshot corresponding to the name */
-/*   path = g_strconcat (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES), // Pictures */
-/*                       "/Screenshots/",                                    // folder */
-/*                       strv[length-1],                                     // image name */
-/*                       NULL); */
-
-/*   file = g_file_new_for_path (path); */
-
-/*   g_file_delete (file, NULL, &error); */
-/*   if (error != NULL) */
-/*     g_warning ("%s", error->message); */
-
-/*   return FALSE; */
-/* } */
-
 static void
 kasasa_window_dispose (GObject *kasasa_window)
 {
@@ -598,6 +570,7 @@ kasasa_window_init (KasasaWindow *self)
   self->portal = xdp_portal_new ();
   self->file = NULL;
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
+  self->first_run = TRUE;
 
   // Connect signal to track when settings are changed; get the necessary values
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
@@ -624,6 +597,7 @@ kasasa_window_init (KasasaWindow *self)
   g_signal_connect (self->menu_event_controller, "leave", G_CALLBACK (on_mouse_leave_menu), self);
   gtk_widget_add_controller (GTK_WIDGET (self->vertical_menu), self->menu_event_controller);
 
+  // feat: ### Auto delete screenshot ###
   /* g_signal_connect (GTK_WINDOW (self), "close-request", G_CALLBACK (on_close_request), self); */
 
   // Request a screenshot
@@ -646,3 +620,38 @@ kasasa_window_init (KasasaWindow *self)
  * The menu button seemd to behave differently from the other widgets, so it can
  * make the mouse "enter/leave" the window when activated; ignore these situations
  */
+
+
+// feat: ### Auto delete screenshot ###
+/* static gboolean */
+/* on_close_request (GtkWindow *window, */
+/*                   gpointer   user_data) */
+/* { */
+/*   g_auto (GStrv) strv; */
+/*   g_autofree gchar *path = NULL; */
+/*   g_autoptr (GFile) file = NULL; */
+/*   guint length = 0; */
+/*   g_autoptr (GError) error = NULL; */
+/*   KasasaWindow *self = KASASA_WINDOW (user_data); */
+
+/*   if (self->file == NULL */
+/*       || (path = g_file_get_path (self->file)) == NULL) */
+/*     return FALSE; */
+
+  /* // Split the path to the screenshot */
+/*   strv = g_strsplit (path, "/", -1); */
+/*   length = g_strv_length (strv); */
+/*   // Trash the screenshot corresponding to the name */
+/*   path = g_strconcat (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES), // Pictures */
+/*                       "/Screenshots/",                                    // folder */
+/*                       strv[length-1],                                     // image name */
+/*                       NULL); */
+
+/*   file = g_file_new_for_path (path); */
+
+/*   g_file_delete (file, NULL, &error); */
+/*   if (error != NULL) */
+/*     g_warning ("%s", error->message); */
+
+/*   return FALSE; */
+/* } */
