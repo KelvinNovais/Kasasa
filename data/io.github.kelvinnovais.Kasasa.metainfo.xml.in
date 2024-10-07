@@ -3,7 +3,7 @@
   <id>io.github.kelvinnovais.Kasasa</id>
 
   <name>Kasasa</name>
-  <summary>Make floating windows of clippings</summary>
+  <summary>Snip and pin useful information</summary>
   <developer id="io.github.kelvinnovais">
     <name translate="no">Kelvin Novais</name>
   </developer>
@@ -24,8 +24,8 @@
 
   <description>
     <p>
-      Take screenshots and put them on small floating windows;
-      the application also allows you to decrease the window opacity when the mouse pointer is over it.
+      Clip what's important to a small floating window, so you don't have to switch between windows or workspaces repeatedly.
+      The application allows you to see what's behind the window by hovering over it.
     </p>
     <p>Best used with:</p>
     <ul>
@@ -72,14 +72,14 @@
   </branding>
 
   <releases>
-    <!-- TODO: update before publishing -->
-    <release date="2024-12-01" version="1.1.0">
+    <release date="2024-10-06" version="1.1.0">
       <description translate="no">
         <p>Features:</p>
         <ul>
           <li>Move the window from anywhere on the picture</li>
           <li>Option to auto hide the vertical menu</li>
           <li>Smooth animation when changing opacity</li>
+          <li>Implemented max occupying screen percentage</li>
           <li>Added translations</li>
         </ul>
         <p>Fix:</p>
