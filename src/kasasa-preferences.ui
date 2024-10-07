@@ -11,12 +11,12 @@
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSwitchRow" id="opacity_switch">
-                <property name="title" translatable="true">Change opacity</property>
+                <property name="title" translatable="yes">Change opacity</property>
               </object>
             </child>
             <child>
               <object class="AdwSpinRow">
-                <property name="title" translatable="true">Opacity level</property>
+                <property name="title" translatable="yes">Opacity level</property>
                 <property name="digits">2</property>
                 <property name="adjustment">
                   <object class="GtkAdjustment" id="opacity_adjustment">
@@ -36,7 +36,7 @@
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSwitchRow" id="auto_hide_menu_switch">
-                <property name="title" translatable="true">Auto hide the vertical menu</property>
+                <property name="title" translatable="yes">Auto hide the vertical menu</property>
               </object>
             </child>
           </object>
@@ -47,8 +47,8 @@
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSpinRow">
-                <property name="title" translatable="true">Occupying screen percentage</property>
-                <property name="subtitle" translatable="true">Max percentage of the screen that Kasasa can use</property>
+                <property name="title" translatable="yes">Occupying screen percentage</property>
+                <property name="subtitle" translatable="yes">Max percentage of the screen that Kasasa can use</property>
                 <property name="digits">2</property>
                 <property name="adjustment">
                   <object class="GtkAdjustment" id="occupy_screen_adjustment">

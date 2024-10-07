@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-06 22:11-0300\n"
+"POT-Creation-Date: 2024-10-06 22:25-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,16 +23,13 @@ msgstr ""
 msgid "Kasasa"
 msgstr ""
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:4 src/kasasa-application.c:102
-msgid "Create ephemeral floating screenshot windows"
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
+msgid "Snip and pin useful information"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:10
-msgid "screenshot;clipping;image;"
-msgstr ""
-
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
-msgid "Snip and pin useful information"
+msgid "screenshot;clipping;snip;image;"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
@@ -147,7 +144,31 @@ msgstr ""
 msgid "_About Kasasa"
 msgstr ""
 
+#: src/kasasa-application.c:102
+msgid "Create ephemeral floating screenshot windows"
+msgstr ""
+
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:109
 msgid "translator-credits"
+msgstr ""
+
+#: src/kasasa-preferences.ui:14
+msgid "Change opacity"
+msgstr ""
+
+#: src/kasasa-preferences.ui:19
+msgid "Opacity level"
+msgstr ""
+
+#: src/kasasa-preferences.ui:39
+msgid "Auto hide the vertical menu"
+msgstr ""
+
+#: src/kasasa-preferences.ui:50
+msgid "Occupying screen percentage"
+msgstr ""
+
+#: src/kasasa-preferences.ui:51
+msgid "Max percentage of the screen that Kasasa can use"
 msgstr ""

@@ -1,10 +1,10 @@
 [Desktop Entry]
 Name=Kasasa
-Comment=Create ephemeral floating screenshot windows
+Comment=Snip and pin useful information
 Exec=kasasa
 Icon=io.github.kelvinnovais.Kasasa
 Terminal=false
 Type=Application
 Categories=Utility;GTK;GNOME;
-Keywords=screenshot;clipping;image;
+Keywords=screenshot;clipping;snip;image;
 StartupNotify=false

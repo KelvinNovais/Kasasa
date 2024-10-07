@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-06 22:11-0300\n"
+"POT-Creation-Date: 2024-10-06 22:25-0300\n"
 "PO-Revision-Date: 2024-10-02 20:28+0300\n"
 "Last-Translator: volkov <volkovissocool@gmail.com>\n"
 "Language-Team: volkov <volkovissocool@gmail.com>\n"
@@ -25,16 +25,13 @@ msgstr ""
 msgid "Kasasa"
 msgstr "Клаптик"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:4 src/kasasa-application.c:102
-msgid "Create ephemeral floating screenshot windows"
-msgstr "Створюйте ефемерні плаваючи знімки вікон"
-
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
-msgid "screenshot;clipping;image;"
-msgstr ""
-
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
+msgstr ""
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
+msgid "screenshot;clipping;snip;image;"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
@@ -160,10 +157,34 @@ msgstr "_Клавіатурні скорочення"
 msgid "_About Kasasa"
 msgstr "_Про Клаптик"
 
+#: src/kasasa-application.c:102
+msgid "Create ephemeral floating screenshot windows"
+msgstr "Створюйте ефемерні плаваючи знімки вікон"
+
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:109
 msgid "translator-credits"
 msgstr "volkov <volkovissocool@gmail.com>"
+
+#: src/kasasa-preferences.ui:14
+msgid "Change opacity"
+msgstr "Змінити непрозорість"
+
+#: src/kasasa-preferences.ui:19
+msgid "Opacity level"
+msgstr "Рівень непрозорості"
+
+#: src/kasasa-preferences.ui:39
+msgid "Auto hide the vertical menu"
+msgstr ""
+
+#: src/kasasa-preferences.ui:50
+msgid "Occupying screen percentage"
+msgstr ""
+
+#: src/kasasa-preferences.ui:51
+msgid "Max percentage of the screen that Kasasa can use"
+msgstr ""
 
 #~ msgid ""
 #~ "Take screenshots and put them on small floating windows; the application "
@@ -173,9 +194,3 @@ msgstr "volkov <volkovissocool@gmail.com>"
 #~ "Робіть знімки екрану і кладіть їх у маленьке плавуче вікно; додаток також "
 #~ "дозволяє вам зменшити непрозорість вікна коли курсор знаходиться поверх "
 #~ "нього."
-
-#~ msgid "Change opacity"
-#~ msgstr "Змінити непрозорість"
-
-#~ msgid "Opacity level"
-#~ msgstr "Рівень непрозорості"

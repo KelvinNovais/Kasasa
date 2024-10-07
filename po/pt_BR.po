@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-06 22:11-0300\n"
+"POT-Creation-Date: 2024-10-06 22:25-0300\n"
 "PO-Revision-Date: 2024-09-27 14:12-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -25,16 +25,13 @@ msgstr ""
 msgid "Kasasa"
 msgstr "Kasasa"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:4 src/kasasa-application.c:102
-msgid "Create ephemeral floating screenshot windows"
-msgstr "Crie janelas flutuantes de captura de tela"
-
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
-msgid "screenshot;clipping;image;"
-msgstr ""
-
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
+msgstr ""
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
+msgid "screenshot;clipping;snip;image;"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
@@ -162,10 +159,34 @@ msgstr "_Atalhos de teclado"
 msgid "_About Kasasa"
 msgstr "_Sobre Kasasa"
 
+#: src/kasasa-application.c:102
+msgid "Create ephemeral floating screenshot windows"
+msgstr "Crie janelas flutuantes de captura de tela"
+
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:109
 msgid "translator-credits"
 msgstr "Kelvin Ribeiro Novais"
+
+#: src/kasasa-preferences.ui:14
+msgid "Change opacity"
+msgstr "Mudar opacidade"
+
+#: src/kasasa-preferences.ui:19
+msgid "Opacity level"
+msgstr "Nível de opacidade"
+
+#: src/kasasa-preferences.ui:39
+msgid "Auto hide the vertical menu"
+msgstr ""
+
+#: src/kasasa-preferences.ui:50
+msgid "Occupying screen percentage"
+msgstr ""
+
+#: src/kasasa-preferences.ui:51
+msgid "Max percentage of the screen that Kasasa can use"
+msgstr ""
 
 #~ msgid ""
 #~ "Take screenshots and put them on small floating windows; the application "
@@ -175,12 +196,6 @@ msgstr "Kelvin Ribeiro Novais"
 #~ "Faça capturas de tela e coloque-as em pequenas janelas flutuantes; a "
 #~ "aplicação também permite diminuir a opacidade da janela quando o ponteiro "
 #~ "do mouse estiver sobre ela."
-
-#~ msgid "Change opacity"
-#~ msgstr "Mudar opacidade"
-
-#~ msgid "Opacity level"
-#~ msgstr "Nível de opacidade"
 
 #~ msgid "Save"
 #~ msgstr "Salvar"

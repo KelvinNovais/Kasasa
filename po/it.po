@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-06 22:11-0300\n"
+"POT-Creation-Date: 2024-10-06 22:25-0300\n"
 "PO-Revision-Date: 2024-09-30 18:31+0100\n"
 "Last-Translator: Albano Battistella <albanobattistella@gmail.com>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -22,16 +22,13 @@ msgstr ""
 msgid "Kasasa"
 msgstr "Kasasa"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:4 src/kasasa-application.c:102
-msgid "Create ephemeral floating screenshot windows"
-msgstr "Crea finestre di screenshot mobili effimere"
-
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
-msgid "screenshot;clipping;image;"
-msgstr ""
-
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
+msgstr ""
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
+msgid "screenshot;clipping;snip;image;"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
@@ -157,10 +154,34 @@ msgstr "_Scorciatoie da tastiera"
 msgid "_About Kasasa"
 msgstr "_Informazioni su Kasasa"
 
+#: src/kasasa-application.c:102
+msgid "Create ephemeral floating screenshot windows"
+msgstr "Crea finestre di screenshot mobili effimere"
+
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:109
 msgid "translator-credits"
 msgstr "Albano Battistella <albanobattistella@gmail.com>"
+
+#: src/kasasa-preferences.ui:14
+msgid "Change opacity"
+msgstr "Cambia opacità"
+
+#: src/kasasa-preferences.ui:19
+msgid "Opacity level"
+msgstr "Livello di opacità"
+
+#: src/kasasa-preferences.ui:39
+msgid "Auto hide the vertical menu"
+msgstr ""
+
+#: src/kasasa-preferences.ui:50
+msgid "Occupying screen percentage"
+msgstr ""
+
+#: src/kasasa-preferences.ui:51
+msgid "Max percentage of the screen that Kasasa can use"
+msgstr ""
 
 #~ msgid ""
 #~ "Take screenshots and put them on small floating windows; the application "
@@ -170,9 +191,3 @@ msgstr "Albano Battistella <albanobattistella@gmail.com>"
 #~ "Cattura schermate e inseriscile in piccole finestre mobili; "
 #~ "l'applicazione consente anche di diminuire l'opacità della finestra "
 #~ "quando il puntatore del mouse è sopra di essa."
-
-#~ msgid "Change opacity"
-#~ msgstr "Cambia opacità"
-
-#~ msgid "Opacity level"
-#~ msgstr "Livello di opacità"
