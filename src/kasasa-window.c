@@ -217,6 +217,10 @@ resize_window (KasasaWindow *self)
       self->nat_width = image_width * self->nat_height / image_height;
     }
 
+  // If the vertical menu is NOT hiding, then the window width must have more 46 px
+  self->nat_width +=
+    (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46;
+
   resize_window_animated (self);
 }
 
@@ -382,6 +386,13 @@ hide_vertical_menu_cb (gpointer user_data)
 }
 
 static void
+reveal_vertical_menu_cb (gpointer user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
+}
+
+static void
 hide_vertical_menu (KasasaWindow *self)
 {
   // Hide the vertical menu if this option is enabled
@@ -521,7 +532,7 @@ on_settings_updated (GSettings* settings,
     {
       self->auto_hide_menu = g_settings_get_boolean (self->settings, "auto-hide-menu");
       if (self->auto_hide_menu == FALSE)
-        gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
+        g_timeout_add_seconds_once (2, reveal_vertical_menu_cb, self);
     }
   else if (g_strcmp0 (key, "change-opacity") == 0)
     self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");
