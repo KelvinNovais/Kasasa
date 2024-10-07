@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-06 22:25-0300\n"
-"PO-Revision-Date: 2024-09-27 14:12-0300\n"
+"PO-Revision-Date: 2024-10-06 22:33-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Gtranslator 46.1\n"
+"X-Generator: Gtranslator 47.0\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:6
@@ -28,11 +28,11 @@ msgstr "Kasasa"
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:4
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
-msgstr ""
+msgstr "Recorte e fixe informações úteis"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:10
 msgid "screenshot;clipping;snip;image;"
-msgstr ""
+msgstr "captura de tela;recorte;recortar;imagem;"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
 msgid ""
@@ -40,6 +40,9 @@ msgid ""
 "switch between windows or workspaces repeatedly. The application allows you "
 "to see what's behind the window by hovering over it."
 msgstr ""
+"Recorte o que é importante para uma pequena janela flutuante, para não ter "
+"que alternar entre janelas ou áreas de trabalho repetidamente. O aplicativo "
+"permite que você veja o que está atrás da janela passando o mouse sobre ela."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
 msgid "Best used with:"
@@ -58,7 +61,6 @@ msgstr "Um atalho de teclado"
 
 #. translators: do not include the tags <code></code>
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
-#, fuzzy
 msgid ""
 "On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
 "Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
@@ -66,7 +68,7 @@ msgid ""
 msgstr ""
 "No GNOME, vá para Configurações → Teclado → Visualizar e personalizar "
 "atalhos → Atalhos personalizados. Lá você pode definir um atalho para "
-"executar <em><code>flatpak run io.github.kelvinnovais.Kasasa</code></em> "
+"executar flatpak run io.github.kelvinnovais.Kasasa "
 
 #. translators: if needed, replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
@@ -116,9 +118,8 @@ msgid "Error"
 msgstr "Erro"
 
 #: src/kasasa-window.c:259
-#, fuzzy
 msgid "Ok"
-msgstr "_Ok"
+msgstr "Ok"
 
 #: src/kasasa-window.c:306
 msgid "Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
@@ -127,7 +128,6 @@ msgstr ""
 "Configurações → Aplicativos → Kasasa"
 
 #: src/kasasa-window.c:315
-#, fuzzy
 msgid "Couldn't load the screenshot"
 msgstr "Não foi possível carregar a captura de tela"
 
@@ -178,15 +178,15 @@ msgstr "Nível de opacidade"
 
 #: src/kasasa-preferences.ui:39
 msgid "Auto hide the vertical menu"
-msgstr ""
+msgstr "Ocultar automaticamente o menu vertical"
 
 #: src/kasasa-preferences.ui:50
 msgid "Occupying screen percentage"
-msgstr ""
+msgstr "Porcentagem de tela ocupada"
 
 #: src/kasasa-preferences.ui:51
 msgid "Max percentage of the screen that Kasasa can use"
-msgstr ""
+msgstr "Porcentagem máxima da tela que o Kasasa pode usar"
 
 #~ msgid ""
 #~ "Take screenshots and put them on small floating windows; the application "
