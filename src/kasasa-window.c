@@ -531,8 +531,12 @@ on_settings_updated (GSettings* settings,
   if (g_strcmp0 (key, "auto-hide-menu") == 0)
     {
       self->auto_hide_menu = g_settings_get_boolean (self->settings, "auto-hide-menu");
-      if (self->auto_hide_menu == FALSE)
+      if (self->auto_hide_menu)
+        hide_vertical_menu (self);
+      else
         g_timeout_add_seconds_once (2, reveal_vertical_menu_cb, self);
+      // Resize the window to free/occupy the vertical menu space
+      resize_window (self);
     }
   else if (g_strcmp0 (key, "change-opacity") == 0)
     self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");

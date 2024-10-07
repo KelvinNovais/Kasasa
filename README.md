@@ -2,7 +2,8 @@
 
 # Kasasa
 
-Kasasa lets you take screenshots and put them on a small floating window; the application also allows you to decrease the window opacity when the mouse pointer is over it.
+Clip and pin what's important to a small floating window, so you don't have to switch between windows or workspaces repeatedly. 
+The application allows you to see what's behind the window by hovering over it.
 
 Best used with:
  - "Always on Top" and/or "Always on Visible Workspace"
