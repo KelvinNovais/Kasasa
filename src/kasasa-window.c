@@ -20,6 +20,11 @@
 
 /* No implemented (needs improvments):
  * feat: ### Auto delete screenshot ###
+ * TODO: search at most on a subfolder, try without adding a permission, delete with portal
+ */
+
+/* TODO:
+ * minimize window when retaking screenshot
  */
 
 #include "config.h"
@@ -75,6 +80,7 @@ struct _KasasaWindow
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
 
+// After the size is computed, this function resizes the window with an animation
 static void
 resize_window_animated (KasasaWindow *self)
 {
@@ -121,6 +127,8 @@ resize_window_animated (KasasaWindow *self)
     }
 }
 
+// This function just computes the window size;it has to call
+// resize_window_animated() to effectly resize the window with an animation
 static void
 resize_window (KasasaWindow *self)
 {
@@ -632,7 +640,7 @@ kasasa_window_init (KasasaWindow *self)
 
 
 /* [1] Note:
- * The menu button seemd to behave differently from the other widgets, so it can
+ * The menu button seems to behave differently from the other widgets, so it can
  * make the mouse "enter/leave" the window when activated; ignore these situations
  */
 
@@ -670,3 +678,4 @@ kasasa_window_init (KasasaWindow *self)
 
 /*   return FALSE; */
 /* } */
+

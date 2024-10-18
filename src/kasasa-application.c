@@ -62,8 +62,8 @@ kasasa_application_activate (GApplication *app)
 
 static void
 kasasa_application_preferences_action (GSimpleAction *action,
-                                        GVariant      *parameter,
-                                        gpointer       app)
+                                       GVariant      *parameter,
+                                       gpointer       app)
 {
   KasasaPreferences *preferences;
   GtkWindow *window;
@@ -83,8 +83,8 @@ kasasa_application_class_init (KasasaApplicationClass *klass)
 
 static void
 kasasa_application_about_action (GSimpleAction *action,
-                                  GVariant      *parameter,
-                                  gpointer       user_data)
+                                 GVariant      *parameter,
+                                 gpointer       user_data)
 {
   static const char *developers[] = {"Kelvin Ribeiro Novais", NULL};
   KasasaApplication *self = user_data;
@@ -99,7 +99,8 @@ kasasa_application_about_action (GSimpleAction *action,
                          "application-icon", "io.github.kelvinnovais.Kasasa",
                          "developer-name", "Kelvin Ribeiro Novais",
                          "version", "0.1.1",
-                         "comments", _("Create ephemeral floating screenshot windows"),
+                         "comments", _("Snip and pin useful information"
+                                       "\n\nIf you liked the app ❤️, consider giving it a star ⭐:"),
                          "issue-url", "https://github.com/KelvinNovais/Kasasa/issues",
                          "website", "https://github.com/KelvinNovais/Kasasa",
                          "developers", developers,
@@ -112,8 +113,8 @@ kasasa_application_about_action (GSimpleAction *action,
 
 static void
 kasasa_application_quit_action (GSimpleAction *action,
-                                 GVariant      *parameter,
-                                 gpointer       user_data)
+                                GVariant      *parameter,
+                                gpointer       user_data)
 {
   KasasaApplication *self = user_data;
 
@@ -139,3 +140,4 @@ kasasa_application_init (KasasaApplication *self)
                                          "app.quit",
                                          (const char *[]) { "<primary>q", NULL });
 }
+
