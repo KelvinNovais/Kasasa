@@ -232,7 +232,15 @@ resize_window (KasasaWindow *self)
   resize_window_animated (self);
 }
 
+static void
+close_window (AdwAlertDialog *dialog,
+              gpointer        user_data)
+{
+  gtk_window_close (GTK_WINDOW (KASASA_WINDOW (user_data)));
+}
+
 // Set an "missing image" icon when screenshoting fails
+// Currently the dialog covers it, but can used in the future
 static void
 on_fail (KasasaWindow *self, const gchar *error_message)
 {
@@ -249,17 +257,21 @@ on_fail (KasasaWindow *self, const gchar *error_message)
     icon_theme,                         // icon theme
     "image-missing-symbolic",           // icon name
     NULL,                               // fallbacks
-    180,                                // icon size
+    200,                                // icon size
     1,                                  // scale
     GTK_TEXT_DIR_NONE,                  // text direction
     GTK_ICON_LOOKUP_FORCE_SYMBOLIC      // flags
   );
 
   // Add margins
-  gtk_widget_set_margin_top (GTK_WIDGET (self->picture), 25);
-  gtk_widget_set_margin_bottom (GTK_WIDGET (self->picture), 25);
-  gtk_widget_set_margin_start (GTK_WIDGET (self->picture), 25);
-  gtk_widget_set_margin_end (GTK_WIDGET (self->picture), 25);
+  gtk_widget_set_margin_top (GTK_WIDGET (self->picture), 30);
+  gtk_widget_set_margin_bottom (GTK_WIDGET (self->picture), 30);
+  gtk_widget_set_margin_start (GTK_WIDGET (self->picture), 80);
+  gtk_widget_set_margin_end (GTK_WIDGET (self->picture), 80);
+
+  gtk_window_set_default_size (GTK_WINDOW (self), -1, -1);
+  // Bug: currently, if the window is not resizable, GTK detaches the dialog from the window
+  gtk_window_set_resizable (GTK_WINDOW (self), TRUE);
 
   // Set icon
   gtk_picture_set_paintable (self->picture, GDK_PAINTABLE (icon));
@@ -272,13 +284,16 @@ on_fail (KasasaWindow *self, const gchar *error_message)
                                   NULL);
   adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
   adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "ok");
-  adw_dialog_present (dialog, GTK_WIDGET (self));
 
   // Disable opacity decrease
   self->change_opacity = FALSE;
 
-  // Make the copy button insensitive
+  // Make the buttons insensitive
   gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
+
+  g_signal_connect (dialog, "response", G_CALLBACK (close_window), self);
+  adw_dialog_present (dialog, GTK_WIDGET (self));
 }
 
 // Load the screenshot to the GtkPicture widget
@@ -585,6 +600,20 @@ kasasa_window_class_init (KasasaWindowClass *klass)
 }
 
 static void
+test (
+  GObject* source_object,
+  GAsyncResult* res,
+  gpointer data
+)
+{
+  gboolean success = xdp_portal_trash_file_finish (XDP_PORTAL (source_object), res, NULL);
+  if (success)
+    g_message ("Hurray!");
+  else
+    g_message ("Uh oh!");
+}
+
+static void
 kasasa_window_init (KasasaWindow *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
@@ -632,6 +661,8 @@ kasasa_window_init (KasasaWindow *self)
     on_screenshot_taken,
     self
   );
+
+  xdp_portal_trash_file (self->portal, "~/Pictures/Screenshots/TEST.png", NULL, test, NULL);
 
   // Hide the vertical menu if this option is enabled
   if (self->auto_hide_menu)
