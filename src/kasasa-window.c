@@ -23,10 +23,6 @@
  * TODO: search at most on a subfolder, try without adding a permission, delete with portal
  */
 
-/* TODO:
- * minimize window when retaking screenshot
- */
-
 #include "config.h"
 
 #include <libportal-gtk4/portal-gtk4.h>
@@ -80,57 +76,9 @@ struct _KasasaWindow
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
 
-// After the size is computed, this function resizes the window with an animation
-static void
-resize_window_animated (KasasaWindow *self)
-{
-  g_autoptr (AdwAnimation) animation_height = NULL;
-  g_autoptr (AdwAnimation) animation_width = NULL;
-  AdwAnimationTarget *target_h = NULL;
-  AdwAnimationTarget *target_w = NULL;
-
-  target_h =
-    adw_property_animation_target_new (G_OBJECT (self), "default-height");
-  target_w =
-    adw_property_animation_target_new (G_OBJECT (self), "default-width");
-
-  // Animation for resizing height
-  animation_height = adw_timed_animation_new (
-    GTK_WIDGET (self),                      // widget
-    (gdouble) self->default_height,         // from
-    self->nat_height,                       // to
-    500,                                    // duration
-    target_h                                // target
-  );
-  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_height), ADW_EASE_OUT_EXPO);
-
-  // Animation for resizing width
-  animation_width = adw_timed_animation_new (
-    GTK_WIDGET (self),                      // widget
-    (gdouble) self->default_width,          // from
-    self->nat_width,                        // to
-    500,                                    // duration
-    target_w                                // target
-  );
-  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_width), ADW_EASE_OUT_EXPO);
-
-  if (self->first_run)
-    {
-      adw_animation_skip (animation_width);
-      adw_animation_skip (animation_height);
-      self->first_run = FALSE;
-    }
-  else
-    {
-      adw_animation_play (animation_width);
-      adw_animation_play (animation_height);
-    }
-}
-
-// This function just computes the window size;it has to call
-// resize_window_animated() to effectly resize the window with an animation
-static void
-resize_window (KasasaWindow *self)
+// Compute the window size
+static gboolean
+compute_size (KasasaWindow *self)
 {
   // Based on:
   // https://gitlab.gnome.org/GNOME/Incubator/showtime/-/blob/main/showtime/window.py?ref_type=heads#L836
@@ -152,35 +100,35 @@ resize_window (KasasaWindow *self)
   if (error != NULL)
     {
       g_warning ("%s", error->message);
-      return;
+      return TRUE;
     }
 
   display = gdk_display_get_default ();
   if (display == NULL)
     {
       g_warning ("Couldn't get GdkDisplay, can't find the best window size");
-      return;
+      return TRUE;
     }
 
   native = gtk_widget_get_native (GTK_WIDGET (self));
   if (native == NULL)
     {
       g_warning ("Couldn't get GtkNative, can't find the best window size");
-      return;
+      return TRUE;
     }
 
   surface = gtk_native_get_surface (native);
   if (surface == NULL)
     {
       g_warning ("Couldn't get GdkSurface, can't find the best window size");
-      return;
+      return TRUE;
     }
 
   monitor = gdk_display_get_monitor_at_surface (display, surface);
   if (monitor == NULL)
     {
       g_warning ("Couldn't get GdkMonitor, can't find the best window size");
-      return;
+      return TRUE;
     }
 
   gtk_window_get_default_size (GTK_WINDOW (self), &self->default_width, &self->default_height);
@@ -229,7 +177,57 @@ resize_window (KasasaWindow *self)
   self->nat_width +=
     (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46;
 
-  resize_window_animated (self);
+  return FALSE;
+}
+
+// Resize the window with an animation
+static void
+resize_window (KasasaWindow *self)
+{
+  g_autoptr (AdwAnimation) animation_height = NULL;
+  g_autoptr (AdwAnimation) animation_width = NULL;
+  AdwAnimationTarget *target_h = NULL;
+  AdwAnimationTarget *target_w = NULL;
+
+  if (compute_size (self) == TRUE)
+    return;
+
+  target_h =
+    adw_property_animation_target_new (G_OBJECT (self), "default-height");
+  target_w =
+    adw_property_animation_target_new (G_OBJECT (self), "default-width");
+
+  // Animation for resizing height
+  animation_height = adw_timed_animation_new (
+    GTK_WIDGET (self),                      // widget
+    (gdouble) self->default_height,         // from
+    self->nat_height,                       // to
+    500,                                    // duration
+    target_h                                // target
+  );
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_height), ADW_EASE_OUT_EXPO);
+
+  // Animation for resizing width
+  animation_width = adw_timed_animation_new (
+    GTK_WIDGET (self),                      // widget
+    (gdouble) self->default_width,          // from
+    self->nat_width,                        // to
+    500,                                    // duration
+    target_w                                // target
+  );
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_width), ADW_EASE_OUT_EXPO);
+
+  if (self->first_run)
+    {
+      adw_animation_skip (animation_width);
+      adw_animation_skip (animation_height);
+      self->first_run = FALSE;
+    }
+  else
+    {
+      adw_animation_play (animation_width);
+      adw_animation_play (animation_height);
+    }
 }
 
 static void
@@ -242,7 +240,7 @@ close_window (AdwAlertDialog *dialog,
 // Set an "missing image" icon when screenshoting fails
 // Currently the dialog covers it, but can used in the future
 static void
-on_fail (KasasaWindow *self, const gchar *error_message)
+on_screenshot_fails (KasasaWindow *self, const gchar *error_message)
 {
   GtkIconTheme *icon_theme;
   g_autoptr (GtkIconPaintable) icon = NULL;
@@ -343,7 +341,7 @@ on_screenshot_taken (GObject      *object,
     }
 
   if (failed)
-    on_fail (self, error_message);
+    on_screenshot_fails (self, error_message);
 
   // Set opacity to 100%, if the retake_screenshot_button was pressed, opactiy gets decreased
   gtk_widget_set_opacity (GTK_WIDGET (self), 1.00);
@@ -600,20 +598,6 @@ kasasa_window_class_init (KasasaWindowClass *klass)
 }
 
 static void
-test (
-  GObject* source_object,
-  GAsyncResult* res,
-  gpointer data
-)
-{
-  gboolean success = xdp_portal_trash_file_finish (XDP_PORTAL (source_object), res, NULL);
-  if (success)
-    g_message ("Hurray!");
-  else
-    g_message ("Uh oh!");
-}
-
-static void
 kasasa_window_init (KasasaWindow *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
@@ -661,8 +645,6 @@ kasasa_window_init (KasasaWindow *self)
     on_screenshot_taken,
     self
   );
-
-  xdp_portal_trash_file (self->portal, "~/Pictures/Screenshots/TEST.png", NULL, test, NULL);
 
   // Hide the vertical menu if this option is enabled
   if (self->auto_hide_menu)
