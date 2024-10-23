@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="kasasa">
 	<schema id="io.github.kelvinnovais.Kasasa" path="/io/github/kelvinnovais/Kasasa/">
+	  <!-- AUTO HIDE -->
 	  <key name="auto-hide-menu" type="b">
       <default>false</default>
     </key>
 
+	  <!-- OPACITY -->
 	  <key name="change-opacity" type="b">
       <default>true</default>
     </key>
@@ -14,9 +16,20 @@
       <default>0.35</default>
     </key>
 
+	  <!-- OCCUPY SCREEN -->
 	  <key name="occupy-screen" type="d">
       <range min="0.10" max="0.75"/>
       <default>0.15</default>
+    </key>
+
+	  <!-- AUTO DISCARD -->
+	  <key name="auto-discard-window" type="b">
+      <default>false</default>
+    </key>
+
+	  <key name="auto-discard-window-time" type="d">
+      <range min="1.0" max="60.0"/>
+      <default>1.0</default>
     </key>
 	</schema>
 </schemalist>

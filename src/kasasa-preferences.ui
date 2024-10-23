@@ -6,8 +6,8 @@
     <property name="search-enabled">false</property>
     <child>
       <object class="AdwPreferencesPage">
+        <!-- OPACITY -->
         <child>
-          <!-- OPACITY -->
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSwitchRow" id="opacity_switch">
@@ -56,6 +56,32 @@
                     <property name="upper">0.75</property>
                     <property name="step-increment">0.01</property>
                     <property name="value">0.15</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- AUTO DISCARD -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="AdwSwitchRow" id="auto_discard_switch">
+                <property name="title" translatable="yes">Auto discard window</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwSpinRow">
+                <!-- translators: this refers to the time to auto discard the window -->
+                <property name="title" translatable="yes">Time (in minutes)</property>
+                <property name="digits">0</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment" id="auto_discard_adjustment">
+                    <property name="lower">1</property>
+                    <property name="upper">60</property>
+                    <property name="step-increment">1</property>
+                    <property name="value">1</property>
                   </object>
                 </property>
               </object>

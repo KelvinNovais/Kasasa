@@ -51,17 +51,12 @@ struct _KasasaWindow
   GtkWindowHandle     *vertical_menu;
   GtkMenuButton       *menu_button;
 
-  /* Settings */
-  GSettings           *settings;
-  gboolean             auto_hide_menu;
-  gboolean             change_opacity;
-  gdouble              opacity;
-
   /* State variables */
   gboolean             hide_menu_requested;
   gboolean             mouse_over_window;
 
   /* Instance variables */
+  GSettings           *settings;
   XdpPortal           *portal;
   GtkEventController  *window_event_controller;
   GtkEventController  *menu_event_controller;
@@ -234,7 +229,18 @@ static void
 close_window (AdwAlertDialog *dialog,
               gpointer        user_data)
 {
-  gtk_window_close (GTK_WINDOW (KASASA_WINDOW (user_data)));
+  gtk_window_close (GTK_WINDOW (user_data));
+}
+
+static gboolean
+auto_discard_window (gpointer user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+
+  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+    gtk_window_close (GTK_WINDOW (self));
+
+  return G_SOURCE_REMOVE;
 }
 
 // Set an "missing image" icon when screenshoting fails
@@ -282,9 +288,6 @@ on_screenshot_fails (KasasaWindow *self, const gchar *error_message)
                                   NULL);
   adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
   adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "ok");
-
-  // Disable opacity decrease
-  self->change_opacity = FALSE;
 
   // Make the buttons insensitive
   gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
@@ -347,7 +350,18 @@ on_screenshot_taken (GObject      *object,
   gtk_widget_set_opacity (GTK_WIDGET (self), 1.00);
   // Finally, present the window after the screenshot was taken
   gtk_window_present (GTK_WINDOW (self));
-  if (!failed) resize_window (KASASA_WINDOW (user_data));
+  if (!failed)
+    {
+      resize_window (KASASA_WINDOW (user_data));
+
+      if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+        g_timeout_add_seconds_full (G_PRIORITY_LOW,
+                                    (int) (60 * g_settings_get_double (self->settings,
+                                                                       "auto-discard-window-time")),
+                                    auto_discard_window,
+                                    self,
+                                    NULL);
+    }
 }
 
 static void
@@ -358,16 +372,17 @@ change_opacity_cb (double         value,
 }
 
 static void
-change_opacity_animated (KasasaWindow *self, enum Opacity opacity)
+change_opacity_animated (KasasaWindow *self, enum Opacity opacity_direction)
 {
   AdwAnimationTarget *target = NULL;
+  gdouble opacity = g_settings_get_double (self->settings, "opacity");
 
   // Set from and to target values, according to the mode (increase or decrease opacity)
-  gdouble from  = (opacity == OPACITY_INCREASE) ? self->opacity : 1.00;
-  gdouble to    = (opacity == OPACITY_INCREASE) ? 1.00          : self->opacity;
+  gdouble from  = (opacity_direction == OPACITY_INCREASE) ? opacity : 1.00;
+  gdouble to    = (opacity_direction == OPACITY_INCREASE) ? 1.00    : opacity;
 
   // Return if this option is disabled
-  if (!self->change_opacity)
+  if (!g_settings_get_boolean (self->settings, "change-opacity"))
     return;
 
   // Return if the opacity is already 100%
@@ -417,7 +432,7 @@ static void
 hide_vertical_menu (KasasaWindow *self)
 {
   // Hide the vertical menu if this option is enabled
-  if (self->auto_hide_menu)
+  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     // As soon as this action has a delay:
     // if already requested, do nothing; else, request hiding
     if (self->hide_menu_requested == FALSE)
@@ -447,7 +462,7 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
 
   change_opacity_animated (self, OPACITY_DECREASE);
 
-  if (self->auto_hide_menu)
+  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
 }
 
@@ -551,18 +566,25 @@ on_settings_updated (GSettings* settings,
 
   if (g_strcmp0 (key, "auto-hide-menu") == 0)
     {
-      self->auto_hide_menu = g_settings_get_boolean (self->settings, "auto-hide-menu");
-      if (self->auto_hide_menu)
+      if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
         hide_vertical_menu (self);
       else
         g_timeout_add_seconds_once (2, reveal_vertical_menu_cb, self);
+
       // Resize the window to free/occupy the vertical menu space
       resize_window (self);
     }
-  else if (g_strcmp0 (key, "change-opacity") == 0)
-    self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");
-  else if (g_strcmp0 (key, "opacity") == 0)
-    self->opacity = g_settings_get_double (self->settings, "opacity");
+
+  else if (g_strcmp0 (key, "auto-discard-window") == 0)
+    {
+      if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+        g_timeout_add_seconds_full (G_PRIORITY_LOW,
+                                    (int) (60 * g_settings_get_double (self->settings,
+                                                                       "auto-discard-window-time")),
+                                    auto_discard_window,
+                                    self,
+                                    NULL);
+    }
 }
 
 static void
@@ -610,10 +632,6 @@ kasasa_window_init (KasasaWindow *self)
 
   // Connect signal to track when settings are changed; get the necessary values
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
-  // Get the first needed values
-  self->auto_hide_menu = g_settings_get_boolean (self->settings, "auto-hide-menu");
-  self->change_opacity = g_settings_get_boolean (self->settings, "change-opacity");
-  self->opacity        = g_settings_get_double (self->settings, "opacity");
 
   // Connect buttons to the callbacks
   g_signal_connect (self->retake_screenshot_button, "clicked",
@@ -621,16 +639,30 @@ kasasa_window_init (KasasaWindow *self)
   g_signal_connect (self->copy_button, "clicked",
                     G_CALLBACK (on_copy_button_clicked), self);
 
-  // Create motion event controllers to monitor when the mouse cursor is over the picture container or the menu
-  // picture container
+  // MOTION EVENT CONTORLLERS: Create motion event controllers to monitor when
+  // the mouse cursor is over the picture container or the menu
+  // (I) Picture container
   self->window_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->window_event_controller, "enter", G_CALLBACK (on_mouse_enter_picture_container), self);
-  g_signal_connect (self->window_event_controller, "leave", G_CALLBACK (on_mouse_leave_picture_container), self);
+  g_signal_connect (self->window_event_controller,
+                    "enter",
+                    G_CALLBACK (on_mouse_enter_picture_container),
+                    self);
+  g_signal_connect (self->window_event_controller,
+                    "leave",
+                    G_CALLBACK (on_mouse_leave_picture_container),
+                    self);
   gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->window_event_controller);
-  // menu
+
+  // (II) Menu
   self->menu_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->menu_event_controller, "enter", G_CALLBACK (on_mouse_enter_menu), self);
-  g_signal_connect (self->menu_event_controller, "leave", G_CALLBACK (on_mouse_leave_menu), self);
+  g_signal_connect (self->menu_event_controller,
+                    "enter",
+                    G_CALLBACK (on_mouse_enter_menu),
+                    self);
+  g_signal_connect (self->menu_event_controller,
+                    "leave",
+                    G_CALLBACK (on_mouse_leave_menu),
+                    self);
   gtk_widget_add_controller (GTK_WIDGET (self->vertical_menu), self->menu_event_controller);
 
   // feat: ### Auto delete screenshot ###
@@ -647,7 +679,7 @@ kasasa_window_init (KasasaWindow *self)
   );
 
   // Hide the vertical menu if this option is enabled
-  if (self->auto_hide_menu)
+  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), FALSE);
 }
 
