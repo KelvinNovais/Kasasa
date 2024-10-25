@@ -6,7 +6,6 @@
     <property name="title" translatable="yes">Kasasa</property>
     <property name="resizable">false</property>
     <property name="width-request">360</property>
-    <property name="height-request">170</property>
 
     <child>
       <object class="GtkOverlay" id="overlay">
@@ -61,7 +60,9 @@
                     <!-- Vertical separator -->
                     <child>
                       <object class="GtkSeparator" id="v_separator">
-                        <property name="visible">true</property>
+                        <style>
+                          <class name="hc"/>
+                        </style>
                       </object>
                     </child>
 
@@ -89,7 +90,6 @@
                                     <property name="decoration-layout">close</property>
                                     <property name="margin-start">6</property>
                                     <property name="margin-top">6</property>
-                                    <property name="margin-end">6</property>
                                   </object>
                                 </child>
                                 <!-- Padding GtkBox -->
@@ -103,6 +103,7 @@
                                 <!-- Menu button -->
                                 <child>
                                   <object class="GtkMenuButton" id="menu_button">
+                                    <property name="margin-top">3</property>
                                     <!-- Add margins to make it look like a GtkButton (have the same size) -->
                                     <property name="margin-start">6</property>
                                     <property name="margin-end">6</property>
@@ -115,11 +116,22 @@
                                     <property name="menu-model">primary_menu</property>
                                   </object>
                                 </child>
+                                <!-- Auto discard button -->
+                                <child>
+                                  <object class="GtkToggleButton" id="auto_discard_button">
+                                    <property name="visible">true</property>
+                                    <property name="margin-top">3</property>
+                                    <property name="halign">center</property>
+                                    <property name="css-classes">flat</property>
+                                    <property name="icon-name">timer-symbolic</property>
+                                    <property name="tooltip-text" translatable="yes">Trigger auto discard timer</property>
+                                  </object>
+                                </child>
                                 <!-- Retake screenshot button -->
                                 <child>
                                   <object class="GtkButton" id="retake_screenshot_button">
                                     <property name="visible">true</property>
-                                    <property name="margin-top">6</property>
+                                    <property name="margin-top">3</property>
                                     <property name="halign">center</property>
                                     <property name="css-classes">flat</property>
                                     <property name="icon-name">view-refresh-symbolic</property>
@@ -129,7 +141,8 @@
                                 <!-- Copy button -->
                                 <child>
                                   <object class="GtkButton" id="copy_button">
-                                    <property name="margin-top">6</property>
+                                    <property name="margin-top">3</property>
+                                    <property name="margin-bottom">6</property>
                                     <property name="halign">center</property>
                                     <property name="css-classes">flat</property>
                                     <property name="icon-name">edit-copy-symbolic</property>

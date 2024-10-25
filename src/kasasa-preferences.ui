@@ -69,6 +69,7 @@
             <child>
               <object class="AdwSwitchRow" id="auto_discard_switch">
                 <property name="title" translatable="yes">Auto discard window</property>
+                <property name="subtitle" translatable="yes">Auto close the window after a certain time</property>
               </object>
             </child>
             <child>

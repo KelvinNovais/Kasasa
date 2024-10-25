@@ -88,7 +88,7 @@ kasasa_preferences_init (KasasaPreferences *self)
                    self->occupy_screen_adjustment, "value",
                    G_SETTINGS_BIND_DEFAULT);
 
-  // Opacity
+  // Auto discard
   g_settings_bind (self->settings, "auto-discard-window",
                    self->auto_discard_switch, "active",
                    G_SETTINGS_BIND_DEFAULT);

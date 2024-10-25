@@ -50,6 +50,7 @@ struct _KasasaWindow
   GtkRevealer         *menu_revealer;
   GtkWindowHandle     *vertical_menu;
   GtkMenuButton       *menu_button;
+  GtkToggleButton     *auto_discard_button;
 
   /* State variables */
   gboolean             hide_menu_requested;
@@ -67,6 +68,7 @@ struct _KasasaWindow
   gdouble              nat_width;
   gdouble              nat_height;
   gboolean             first_run;
+  GCancellable        *auto_discard_canceller;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -232,15 +234,51 @@ close_window (AdwAlertDialog *dialog,
   gtk_window_close (GTK_WINDOW (user_data));
 }
 
-static gboolean
-auto_discard_window (gpointer user_data)
+static void
+auto_discard_window_thread (GTask         *task,
+                            gpointer       source_object,
+                            gpointer       task_data,
+                            GCancellable  *cancellable)
 {
-  KasasaWindow *self = KASASA_WINDOW (user_data);
+  KasasaWindow *self = KASASA_WINDOW (task_data);
+  gdouble time_seconds = 60;
 
-  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+  time_seconds = g_settings_get_double (self->settings, "auto-discard-window-time");
+  sleep ((unsigned int) (60 * time_seconds));
+
+  // TODO check docs https://docs.gtk.org/gio/method.Task.return_pointer.html
+  g_task_return_pointer (task, NULL, NULL);
+}
+
+static void
+auto_discard_window_cb (GObject        *source_object,
+                        GAsyncResult   *res,
+                        gpointer        data)
+{
+  KasasaWindow *self = KASASA_WINDOW (source_object);
+  gboolean cancelled = g_cancellable_is_cancelled (self->auto_discard_canceller);
+
+  g_cancellable_reset (self->auto_discard_canceller);
+
+  if (!cancelled)
     gtk_window_close (GTK_WINDOW (self));
+}
 
-  return G_SOURCE_REMOVE;
+static void
+auto_discard_window (KasasaWindow *self)
+{
+  GTask *task = NULL;
+
+  // If auto_discard wasn't queued or was cancelled
+  if (self->auto_discard_canceller == NULL)
+    self->auto_discard_canceller = g_cancellable_new ();
+
+  task = g_task_new (G_OBJECT (self), self->auto_discard_canceller, auto_discard_window_cb, NULL);
+  // Set the task data passed to auto_discard_window_thread ()
+  g_task_set_task_data (task, self, NULL);
+  g_task_set_return_on_cancel (task, TRUE);
+  g_task_run_in_thread (task, auto_discard_window_thread);
+  g_object_unref (task);
 }
 
 // Set an "missing image" icon when screenshoting fails
@@ -346,7 +384,7 @@ on_screenshot_taken (GObject      *object,
   if (failed)
     on_screenshot_fails (self, error_message);
 
-  // Set opacity to 100%, if the retake_screenshot_button was pressed, opactiy gets decreased
+  // Set opacity to 100%: if the retake_screenshot_button was pressed, opactiy gets decreased
   gtk_widget_set_opacity (GTK_WIDGET (self), 1.00);
   // Finally, present the window after the screenshot was taken
   gtk_window_present (GTK_WINDOW (self));
@@ -355,12 +393,7 @@ on_screenshot_taken (GObject      *object,
       resize_window (KASASA_WINDOW (user_data));
 
       if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-        g_timeout_add_seconds_full (G_PRIORITY_LOW,
-                                    (int) (60 * g_settings_get_double (self->settings,
-                                                                       "auto-discard-window-time")),
-                                    auto_discard_window,
-                                    self,
-                                    NULL);
+        auto_discard_window (self);
     }
 }
 
@@ -558,6 +591,24 @@ on_copy_button_clicked (GtkButton *button,
 }
 
 static void
+on_auto_discard_button_toggled (GtkToggleButton   *button,
+                                gpointer           user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+
+  if (gtk_toggle_button_get_active (button))
+    {
+      gtk_widget_add_css_class (GTK_WIDGET (self->auto_discard_button), "warning");
+      auto_discard_window (self);
+    }
+  else
+    {
+      gtk_widget_remove_css_class (GTK_WIDGET (self->auto_discard_button), "warning");
+      g_cancellable_cancel (self->auto_discard_canceller);
+    }
+}
+
+static void
 on_settings_updated (GSettings* settings,
                      gchar* key,
                      gpointer user_data)
@@ -578,12 +629,9 @@ on_settings_updated (GSettings* settings,
   else if (g_strcmp0 (key, "auto-discard-window") == 0)
     {
       if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-        g_timeout_add_seconds_full (G_PRIORITY_LOW,
-                                    (int) (60 * g_settings_get_double (self->settings,
-                                                                       "auto-discard-window-time")),
-                                    auto_discard_window,
-                                    self,
-                                    NULL);
+        auto_discard_window (self);
+      else
+        g_cancellable_cancel (self->auto_discard_canceller);
     }
 }
 
@@ -594,6 +642,7 @@ kasasa_window_dispose (GObject *kasasa_window)
 
   g_clear_object (&self->portal);
   g_clear_object (&self->settings);
+  g_clear_object (&self->auto_discard_canceller);
   if (self->file != NULL)
     g_object_unref (self->file);
 
@@ -617,6 +666,7 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_revealer);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, vertical_menu);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_button);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);
 }
 
 static void
@@ -629,6 +679,7 @@ kasasa_window_init (KasasaWindow *self)
   self->file = NULL;
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
   self->first_run = TRUE;
+  self->auto_discard_canceller = NULL;
 
   // Connect signal to track when settings are changed; get the necessary values
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
@@ -664,6 +715,15 @@ kasasa_window_init (KasasaWindow *self)
                     G_CALLBACK (on_mouse_leave_menu),
                     self);
   gtk_widget_add_controller (GTK_WIDGET (self->vertical_menu), self->menu_event_controller);
+
+  // Auto discard button
+  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+    gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
+
+  g_signal_connect (self->auto_discard_button,
+                    "toggled",
+                    G_CALLBACK (on_auto_discard_button_toggled),
+                    self);
 
   // feat: ### Auto delete screenshot ###
   /* g_signal_connect (GTK_WINDOW (self), "close-request", G_CALLBACK (on_close_request), self); */
