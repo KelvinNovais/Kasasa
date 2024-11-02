@@ -58,6 +58,10 @@ kasasa_application_activate (GApplication *app)
     window = g_object_new (KASASA_TYPE_WINDOW,
                            "application", app,
                            NULL);
+
+  gtk_window_present (GTK_WINDOW (window));
+  // The window will be set to visible (on kasasa-window.c) when the screenshot is taken
+  gtk_widget_set_visible (GTK_WIDGET (window), FALSE);
 }
 
 static void
@@ -124,9 +128,9 @@ kasasa_application_quit_action (GSimpleAction *action,
 }
 
 static const GActionEntry app_actions[] = {
-	{ "quit", kasasa_application_quit_action },
-	{ "about", kasasa_application_about_action },
-        { "preferences", kasasa_application_preferences_action }
+  { "quit", kasasa_application_quit_action },
+  { "about", kasasa_application_about_action },
+  { "preferences", kasasa_application_preferences_action }
 };
 
 static void

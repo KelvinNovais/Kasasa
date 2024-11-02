@@ -335,25 +335,11 @@ on_screenshot_fails (KasasaWindow *self, const gchar *error_message)
 }
 
 // Load the screenshot to the GtkPicture widget
-static gboolean
+static void
 load_screenshot (KasasaWindow *self, const gchar *uri)
 {
-  if (uri == NULL)
-    {
-      g_autofree gchar *error_msg = _("Couldn't load the screenshot");
-      AdwToast *toast = adw_toast_new (error_msg);
-      adw_toast_set_action_target_value (toast, g_variant_new_string (error_msg));
-      adw_toast_set_button_label (toast, _("Copy"));
-      adw_toast_set_action_name (toast, "toast.copy_error");
-      adw_toast_overlay_add_toast (self->toast_overlay, toast);
-      g_warning ("%s", error_msg);
-      return TRUE;
-    }
-
   self->file = g_file_new_for_uri (uri);
   gtk_picture_set_file (self->picture, self->file);
-
-  return FALSE;
 }
 
 // Callback for xdp_portal_take_screenshot ()
@@ -366,7 +352,8 @@ on_screenshot_taken (GObject      *object,
   g_autoptr (GError) error = NULL;
   g_autofree gchar *uri = NULL;
   g_autofree gchar *error_message = NULL;
-  gboolean failed = FALSE;
+  g_autoptr (GNotification) notification = NULL;
+  g_autoptr (GIcon) icon = NULL;
 
   uri =  xdp_portal_take_screenshot_finish (
     self->portal,
@@ -377,34 +364,38 @@ on_screenshot_taken (GObject      *object,
   // If failed to get the URI, set the error message
   if (error != NULL)
     {
-      error_message = g_strdup_printf (
-        "\"%s\"\n\n%s", error->message,
-        _("Ensure Screenshot permission is enabled in Settings → Apps → Kasasa")
-      );
-      g_warning ("%s", error->message);
-      failed = TRUE;
+      error_message = g_strconcat (_("Reason: "), error->message, NULL);
+      goto ERROR_NOTIFICATION;
     }
-  // Try to load the image and handle possible errors
-  else
+
+  if (uri == NULL)
     {
-      if ((failed = load_screenshot (self, uri)))
-        error_message = _("Couldn't load the screenshot");
+      error_message = g_strconcat (_("Reason: "), _("Couldn't load the screenshot"), NULL);
+      goto ERROR_NOTIFICATION;
     }
 
-  if (failed)
-    on_screenshot_fails (self, error_message);
+  load_screenshot (self, uri);
 
-  // Set opacity to 100%: if the retake_screenshot_button was pressed, opactiy gets decreased
-  gtk_widget_set_opacity (GTK_WIDGET (self), 1.00);
-  // Finally, present the window after the screenshot was taken
-  gtk_window_present (GTK_WINDOW (self));
-  if (!failed)
-    {
-      resize_window (KASASA_WINDOW (user_data));
+  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+    auto_discard_window (self);
 
-      if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-        auto_discard_window (self);
-    }
+  resize_window (KASASA_WINDOW (user_data));
+  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
+  return;
+
+ERROR_NOTIFICATION:
+  icon = g_themed_icon_new ("screenshooter-symbolic");
+  notification = g_notification_new (_("Screenshot failed"));
+  g_notification_set_icon (notification, icon);
+  g_notification_set_body (notification, error_message);
+  g_application_send_notification (g_application_get_default (),
+                                   "io.github.kelvinnovais.Kasasa",
+                                   notification);
+
+  g_warning ("%s", error->message);
+
+  gtk_window_close (GTK_WINDOW (self));
+  return;
 }
 
 static void
@@ -436,8 +427,20 @@ on_screenshot_retaken (GObject      *object,
       return;
     }
 
-  if (load_screenshot (self, uri) == FALSE)
-    resize_window (self);
+  if (uri == NULL)
+    {
+      g_autofree gchar *error_message = _("Couldn't load the screenshot");
+      AdwToast *toast = adw_toast_new (error_message);
+      adw_toast_set_action_target_value (toast, g_variant_new_string (error_message));
+      adw_toast_set_button_label (toast, _("Copy"));
+      adw_toast_set_action_name (toast, "toast.copy_error");
+      adw_toast_overlay_add_toast (self->toast_overlay, toast);
+      g_warning ("%s", error_message);
+      return;
+    }
+
+  load_screenshot (self, uri);
+  resize_window (self);
 }
 
 static void
@@ -647,7 +650,6 @@ on_copy_button_clicked (GtkButton *button,
   gdk_clipboard_set_texture (clipboard, texture);
   toast = adw_toast_new (_("Copied to the clibboard"));
   adw_toast_overlay_add_toast (self->toast_overlay, toast);
-  adw_toast_set_timeout (toast, 2);
 }
 
 static void
@@ -701,9 +703,9 @@ copy_error_cb (GtkWidget  *sender,
                GVariant   *param)
 {
   GdkClipboard *clipboard = NULL;
-
   clipboard = gdk_display_get_clipboard (gdk_display_get_default ());
 
+  // Copy the error message to the clipboard
   gdk_clipboard_set_text (clipboard, g_variant_get_string (param, NULL));
 }
 
