@@ -67,7 +67,6 @@ struct _KasasaWindow
   gint                 default_width;
   gdouble              nat_width;
   gdouble              nat_height;
-  gboolean             first_run;
   GCancellable        *auto_discard_canceller;
 };
 
@@ -185,6 +184,7 @@ resize_window (KasasaWindow *self)
   g_autoptr (AdwAnimation) animation_width = NULL;
   AdwAnimationTarget *target_h = NULL;
   AdwAnimationTarget *target_w = NULL;
+  static gboolean first_run = TRUE;
 
   if (compute_size (self) == TRUE)
     return;
@@ -214,11 +214,11 @@ resize_window (KasasaWindow *self)
   );
   adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_width), ADW_EASE_OUT_EXPO);
 
-  if (self->first_run)
+  if (first_run)
     {
       adw_animation_skip (animation_width);
       adw_animation_skip (animation_height);
-      self->first_run = FALSE;
+      first_run = FALSE;
     }
   else
     {
@@ -339,10 +339,13 @@ on_screenshot_fails (KasasaWindow *self, const gchar *error_message)
 static gboolean
 load_screenshot (KasasaWindow *self, const gchar *uri)
 {
+  // TODO set error to ToastOverlay
   if (uri == NULL)
     return TRUE;
+
   self->file = g_file_new_for_uri (uri);
   gtk_picture_set_file (self->picture, self->file);
+
   return FALSE;
 }
 
@@ -395,6 +398,50 @@ on_screenshot_taken (GObject      *object,
       if (g_settings_get_boolean (self->settings, "auto-discard-window"))
         auto_discard_window (self);
     }
+}
+
+static void
+on_screenshot_retaken (GObject      *object,
+                       GAsyncResult *res,
+                       gpointer      user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+  g_autoptr (GError) error = NULL;
+  g_autofree gchar *uri = NULL;
+
+  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), TRUE);
+
+  uri =  xdp_portal_take_screenshot_finish (
+    self->portal,
+    res,
+    &error
+  );
+
+  if (error != NULL)
+    {
+      g_warning ("%s", error->message);
+      // TODO set error on ToastOverlay
+      return;
+    }
+
+  if (load_screenshot (self, uri) == FALSE)
+    resize_window (self);
+}
+
+static void
+retake_screenshot (gpointer user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+
+  xdp_portal_take_screenshot (
+    self->portal,
+    NULL,
+    XDP_SCREENSHOT_FLAG_INTERACTIVE,
+    NULL,
+    on_screenshot_retaken,
+    self
+  );
 }
 
 static void
@@ -549,14 +596,11 @@ on_retake_screenshot_button_clicked (GtkButton *button,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  xdp_portal_take_screenshot (
-    self->portal,
-    NULL,
-    XDP_SCREENSHOT_FLAG_INTERACTIVE,
-    NULL,
-    on_screenshot_taken,
-    self
-  );
+  gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
+
+  g_timeout_add_once (500, retake_screenshot, self);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
 }
 
 // Copy the image to the clipboard
@@ -575,18 +619,20 @@ on_copy_button_clicked (GtkButton *button,
 
   if (error != NULL)
     {
-      g_autofree gchar *msg = g_strdup_printf ("%s %s", _("Error:"), error->message);
+      // TODO add option to copy the error
+      g_autofree gchar *error_msg = g_strdup_printf ("%s %s", _("Error:"), error->message);
 
       // Make the copy button insensitive on failure
       gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
       g_warning ("%s", error->message);
 
       // Show error on UI
-      adw_toast_overlay_add_toast (self->toast_overlay, adw_toast_new (msg));
+      adw_toast_overlay_add_toast (self->toast_overlay, adw_toast_new (error_msg));
 
       return;
     }
 
+  adw_toast_overlay_add_toast (self->toast_overlay, adw_toast_new (_("Copied to the clibboard")));
   gdk_clipboard_set_texture (clipboard, texture);
 }
 
@@ -678,7 +724,6 @@ kasasa_window_init (KasasaWindow *self)
   self->portal = xdp_portal_new ();
   self->file = NULL;
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
-  self->first_run = TRUE;
   self->auto_discard_canceller = NULL;
 
   // Connect signal to track when settings are changed; get the necessary values
@@ -783,4 +828,3 @@ kasasa_window_init (KasasaWindow *self)
 
 /*   return FALSE; */
 /* } */
-
