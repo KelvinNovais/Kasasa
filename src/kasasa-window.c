@@ -246,7 +246,6 @@ auto_discard_window_thread (GTask         *task,
   time_seconds = g_settings_get_double (self->settings, "auto-discard-window-time");
   sleep ((unsigned int) (60 * time_seconds));
 
-  // TODO check docs https://docs.gtk.org/gio/method.Task.return_pointer.html
   g_task_return_pointer (task, NULL, NULL);
 }
 
@@ -339,9 +338,17 @@ on_screenshot_fails (KasasaWindow *self, const gchar *error_message)
 static gboolean
 load_screenshot (KasasaWindow *self, const gchar *uri)
 {
-  // TODO set error to ToastOverlay
   if (uri == NULL)
-    return TRUE;
+    {
+      g_autofree gchar *error_msg = _("Couldn't load the screenshot");
+      AdwToast *toast = adw_toast_new (error_msg);
+      adw_toast_set_action_target_value (toast, g_variant_new_string (error_msg));
+      adw_toast_set_button_label (toast, _("Copy"));
+      adw_toast_set_action_name (toast, "toast.copy_error");
+      adw_toast_overlay_add_toast (self->toast_overlay, toast);
+      g_warning ("%s", error_msg);
+      return TRUE;
+    }
 
   self->file = g_file_new_for_uri (uri);
   gtk_picture_set_file (self->picture, self->file);
@@ -420,8 +427,12 @@ on_screenshot_retaken (GObject      *object,
 
   if (error != NULL)
     {
+      AdwToast *toast =  adw_toast_new_format (_("Error: %s"), error->message);
+      adw_toast_set_action_target_value (toast, g_variant_new_string (error->message));
+      adw_toast_set_button_label (toast, _("Copy"));
+      adw_toast_set_action_name (toast, "toast.copy_error");
+      adw_toast_overlay_add_toast (self->toast_overlay, toast);
       g_warning ("%s", error->message);
-      // TODO set error on ToastOverlay
       return;
     }
 
@@ -610,8 +621,9 @@ on_copy_button_clicked (GtkButton *button,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
   g_autoptr (GError) error = NULL;
-  GdkClipboard *clipboard;
+  GdkClipboard *clipboard = NULL;
   g_autoptr (GdkTexture) texture = NULL;
+  AdwToast *toast = NULL;
 
   clipboard = gdk_display_get_clipboard (gdk_display_get_default ());
 
@@ -619,21 +631,23 @@ on_copy_button_clicked (GtkButton *button,
 
   if (error != NULL)
     {
-      // TODO add option to copy the error
-      g_autofree gchar *error_msg = g_strdup_printf ("%s %s", _("Error:"), error->message);
+      toast =  adw_toast_new_format (_("Error: %s"), error->message);
+      adw_toast_set_action_target_value (toast, g_variant_new_string (error->message));
+      adw_toast_set_button_label (toast, _("Copy"));
+      adw_toast_set_action_name (toast, "toast.copy_error");
+      adw_toast_overlay_add_toast (self->toast_overlay, toast);
+      g_warning ("%s", error->message);
 
       // Make the copy button insensitive on failure
       gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
-      g_warning ("%s", error->message);
-
-      // Show error on UI
-      adw_toast_overlay_add_toast (self->toast_overlay, adw_toast_new (error_msg));
 
       return;
     }
 
-  adw_toast_overlay_add_toast (self->toast_overlay, adw_toast_new (_("Copied to the clibboard")));
   gdk_clipboard_set_texture (clipboard, texture);
+  toast = adw_toast_new (_("Copied to the clibboard"));
+  adw_toast_overlay_add_toast (self->toast_overlay, toast);
+  adw_toast_set_timeout (toast, 2);
 }
 
 static void
@@ -682,6 +696,18 @@ on_settings_updated (GSettings* settings,
 }
 
 static void
+copy_error_cb (GtkWidget  *sender,
+               const char *action,
+               GVariant   *param)
+{
+  GdkClipboard *clipboard = NULL;
+
+  clipboard = gdk_display_get_clipboard (gdk_display_get_default ());
+
+  gdk_clipboard_set_text (clipboard, g_variant_get_string (param, NULL));
+}
+
+static void
 kasasa_window_dispose (GObject *kasasa_window)
 {
   KasasaWindow *self = KASASA_WINDOW (kasasa_window);
@@ -702,6 +728,8 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->dispose = kasasa_window_dispose;
+
+  gtk_widget_class_install_action (widget_class, "toast.copy_error", "s", copy_error_cb);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Kasasa/kasasa-window.ui");
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, picture);
