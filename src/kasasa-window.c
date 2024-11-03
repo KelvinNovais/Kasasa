@@ -18,11 +18,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-/* No implemented (needs improvments):
- * feat: ### Auto delete screenshot ###
- * TODO: search at most on a subfolder, try without adding a permission, delete with portal
- */
-
 #include "config.h"
 
 #include <libportal-gtk4/portal-gtk4.h>
@@ -71,6 +66,97 @@ struct _KasasaWindow
 };
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
+
+// Returns FALSE if not trashed
+static gboolean
+search_and_trash_image (const gchar *directory_name,
+                        const gchar *file_name)
+{
+  g_autoptr (GFile) directory = NULL;
+  g_autoptr (GError) error = NULL;
+  g_autoptr (GFileEnumerator) enumerator = NULL;
+  GFileInfo *info = NULL;
+
+  // Get the pictures directory
+  directory = g_file_new_for_path (directory_name);
+
+  enumerator = g_file_enumerate_children (directory,                            // directory
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME,       // attributes
+                                          G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,  // flags
+                                          NULL,                                 // cancellable
+                                          &error);                              // error
+
+  if (error != NULL)
+    {
+      g_warning ("Error while deleting screenshot - couldn't enumerate directory: %s",
+                 error->message);
+      return FALSE;
+    }
+
+  while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL)
+    {
+      const gchar *name = g_file_info_get_name (info);  // no need to free
+      GFile *file = g_file_get_child (directory, name);
+
+      if (g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY)
+        {
+          // Recursively search in subdirectories
+          g_autofree gchar *path = g_file_get_path (file);
+          g_message ("Entering %s ...", path); // TODO
+
+          // If returned TRUE, finalize the loop returning TRUE
+          if (search_and_trash_image (path, file_name) == TRUE)
+            return TRUE;
+        }
+      else if (g_strcmp0 (name, file_name) == 0)
+        {
+          // Trash the image
+          g_autofree gchar *parent_path = g_file_get_path (file);
+          g_autoptr (GFile) trash_file = g_file_new_for_path (parent_path);
+
+          g_file_trash (trash_file, NULL, &error);
+          if (error != NULL)
+            g_warning ("Error while deleting screenshot: %s", error->message);
+
+          // Finilize
+          g_message ("Trasehd \"%s\" at %s", file_name, parent_path); // TODO
+          g_clear_object (&info);
+          g_object_unref (file);
+          return TRUE;
+        }
+
+      g_object_unref (info);
+      g_object_unref (file);
+    }
+
+  g_clear_object (&info);
+  return FALSE;
+}
+
+static gboolean
+trash_image (GtkWindow *window,
+             gpointer   user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+  g_autofree gchar *base_name = NULL;
+
+  // Return if auto trashing screenshot is not enabled
+  if (g_settings_get_boolean (self->settings, "auto-trash-image") == FALSE)
+    return FALSE;
+
+  // Get the image base name
+  if (self->file == NULL
+      || (base_name = g_file_get_basename (self->file)) == NULL)
+    {
+      g_warning ("Error while deleting screenshot: no reference to image");
+      return FALSE;
+    }
+
+  search_and_trash_image (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES),
+                          base_name);
+
+  return FALSE;
+}
 
 // Compute the window size
 static gboolean
@@ -257,6 +343,8 @@ auto_discard_window_cb (GObject        *source_object,
   KasasaWindow *self = KASASA_WINDOW (source_object);
   gboolean cancelled = g_cancellable_is_cancelled (self->auto_discard_canceller);
 
+  gtk_widget_remove_css_class (GTK_WIDGET (self->auto_discard_button), "warning");
+
   g_cancellable_reset (self->auto_discard_canceller);
 
   if (!cancelled)
@@ -267,6 +355,8 @@ static void
 auto_discard_window (KasasaWindow *self)
 {
   GTask *task = NULL;
+
+  gtk_widget_add_css_class (GTK_WIDGET (self->auto_discard_button), "warning");
 
   // If auto_discard wasn't queued or was cancelled
   if (self->auto_discard_canceller == NULL)
@@ -659,15 +749,9 @@ on_auto_discard_button_toggled (GtkToggleButton   *button,
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   if (gtk_toggle_button_get_active (button))
-    {
-      gtk_widget_add_css_class (GTK_WIDGET (self->auto_discard_button), "warning");
-      auto_discard_window (self);
-    }
+    auto_discard_window (self);
   else
-    {
-      gtk_widget_remove_css_class (GTK_WIDGET (self->auto_discard_button), "warning");
-      g_cancellable_cancel (self->auto_discard_canceller);
-    }
+    g_cancellable_cancel (self->auto_discard_canceller);
 }
 
 static void
@@ -800,8 +884,7 @@ kasasa_window_init (KasasaWindow *self)
                     G_CALLBACK (on_auto_discard_button_toggled),
                     self);
 
-  // feat: ### Auto delete screenshot ###
-  /* g_signal_connect (GTK_WINDOW (self), "close-request", G_CALLBACK (on_close_request), self); */
+  g_signal_connect (GTK_WINDOW (self), "close-request", G_CALLBACK (trash_image), self);
 
   // Request a screenshot
   xdp_portal_take_screenshot (
@@ -823,38 +906,3 @@ kasasa_window_init (KasasaWindow *self)
  * The menu button seems to behave differently from the other widgets, so it can
  * make the mouse "enter/leave" the window when activated; ignore these situations
  */
-
-
-// feat: ### Auto delete screenshot ###
-/* static gboolean */
-/* on_close_request (GtkWindow *window, */
-/*                   gpointer   user_data) */
-/* { */
-/*   g_auto (GStrv) strv; */
-/*   g_autofree gchar *path = NULL; */
-/*   g_autoptr (GFile) file = NULL; */
-/*   guint length = 0; */
-/*   g_autoptr (GError) error = NULL; */
-/*   KasasaWindow *self = KASASA_WINDOW (user_data); */
-
-/*   if (self->file == NULL */
-/*       || (path = g_file_get_path (self->file)) == NULL) */
-/*     return FALSE; */
-
-  /* // Split the path to the screenshot */
-/*   strv = g_strsplit (path, "/", -1); */
-/*   length = g_strv_length (strv); */
-/*   // Trash the screenshot corresponding to the name */
-/*   path = g_strconcat (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES), // Pictures */
-/*                       "/Screenshots/",                                    // folder */
-/*                       strv[length-1],                                     // image name */
-/*                       NULL); */
-
-/*   file = g_file_new_for_path (path); */
-
-/*   g_file_delete (file, NULL, &error); */
-/*   if (error != NULL) */
-/*     g_warning ("%s", error->message); */
-
-/*   return FALSE; */
-/* } */

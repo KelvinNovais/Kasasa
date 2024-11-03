@@ -22,7 +22,7 @@
       <default>0.15</default>
     </key>
 
-	  <!-- AUTO DISCARD -->
+	  <!-- AUTO DISCARD WINDOW -->
 	  <key name="auto-discard-window" type="b">
       <default>false</default>
     </key>
@@ -30,6 +30,11 @@
 	  <key name="auto-discard-window-time" type="d">
       <range min="1.0" max="60.0"/>
       <default>1.0</default>
+    </key>
+
+	  <!-- AUTO TRASH IMAGE -->
+	  <key name="auto-trash-image" type="b">
+      <default>false</default>
     </key>
 	</schema>
 </schemalist>

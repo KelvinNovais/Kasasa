@@ -18,6 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#include <glib/gi18n.h>
 #include "kasasa-preferences.h"
 
 struct _KasasaPreferences
@@ -25,12 +26,18 @@ struct _KasasaPreferences
   AdwPreferencesDialog   parent_instance;
 
   GSettings             *settings;
+
   GtkWidget             *opacity_switch;
   GtkWidget             *opacity_adjustment;
+
   GtkWidget             *auto_hide_menu_switch;
+
   GtkWidget             *occupy_screen_adjustment;
-  GtkWidget             *auto_discard_switch;
-  GtkWidget             *auto_discard_adjustment;
+
+  GtkWidget             *auto_discard_window_switch;
+  GtkWidget             *auto_discard_window_adjustment;
+
+  GtkWidget             *auto_trash_image_switch;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaPreferences, kasasa_preferences, ADW_TYPE_PREFERENCES_DIALOG)
@@ -54,12 +61,18 @@ kasasa_preferences_class_init (KasasaPreferencesClass *klass)
   object_class->dispose = kasasa_preferences_dispose;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Kasasa/kasasa-preferences.ui");
+
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, opacity_switch);
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, opacity_adjustment);
+
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_hide_menu_switch);
+
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, occupy_screen_adjustment);
-  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_discard_switch);
-  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_discard_adjustment);
+
+  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_discard_window_switch);
+  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_discard_window_adjustment);
+
+  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_trash_image_switch);
 }
 
 
@@ -88,12 +101,17 @@ kasasa_preferences_init (KasasaPreferences *self)
                    self->occupy_screen_adjustment, "value",
                    G_SETTINGS_BIND_DEFAULT);
 
-  // Auto discard
+  // Auto discard window
   g_settings_bind (self->settings, "auto-discard-window",
-                   self->auto_discard_switch, "active",
+                   self->auto_discard_window_switch, "active",
                    G_SETTINGS_BIND_DEFAULT);
   g_settings_bind (self->settings, "auto-discard-window-time",
-                   self->auto_discard_adjustment, "value",
+                   self->auto_discard_window_adjustment, "value",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  // Auto trash image
+  g_settings_bind (self->settings, "auto-trash-image",
+                   self->auto_trash_image_switch, "active",
                    G_SETTINGS_BIND_DEFAULT);
 }
 

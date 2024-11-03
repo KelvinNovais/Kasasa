@@ -63,11 +63,11 @@
           </object>
         </child>
 
-        <!-- AUTO DISCARD -->
+        <!-- AUTO DISCARD WINDOW -->
         <child>
           <object class="AdwPreferencesGroup">
             <child>
-              <object class="AdwSwitchRow" id="auto_discard_switch">
+              <object class="AdwSwitchRow" id="auto_discard_window_switch">
                 <property name="title" translatable="yes">Auto discard window</property>
                 <property name="subtitle" translatable="yes">Auto close the window after a certain time</property>
               </object>
@@ -78,13 +78,25 @@
                 <property name="title" translatable="yes">Time (in minutes)</property>
                 <property name="digits">0</property>
                 <property name="adjustment">
-                  <object class="GtkAdjustment" id="auto_discard_adjustment">
+                  <object class="GtkAdjustment" id="auto_discard_window_adjustment">
                     <property name="lower">1</property>
                     <property name="upper">60</property>
                     <property name="step-increment">1</property>
                     <property name="value">1</property>
                   </object>
                 </property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- AUTO TRASH IMAGE -->
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="AdwSwitchRow" id="auto_trash_image_switch">
+                <property name="title" translatable="yes">Auto trash image</property>
+                <property name="subtitle" translatable="yes">Auto trash the image when closing the window or retaking a screenshtot</property>
               </object>
             </child>
           </object>
