@@ -398,6 +398,7 @@ on_screenshot_taken (GObject      *object,
 
   if (uri == NULL)
     {
+      // translators: reason which the screenshot failed
       error_message = g_strconcat (_("Reason: "), _("Couldn't load the screenshot"), NULL);
       goto ERROR_NOTIFICATION;
     }

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-06 22:25-0300\n"
+"POT-Creation-Date: 2024-11-08 20:03-0300\n"
 "PO-Revision-Date: 2024-09-30 18:31+0100\n"
 "Last-Translator: Albano Battistella <albanobattistella@gmail.com>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:6
-#: src/kasasa-application.c:98
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:15
+#: src/kasasa-application.c:102
 msgid "Kasasa"
 msgstr "Kasasa"
 
@@ -105,61 +105,67 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Esci"
 
-#. Present a dialog with the message
-#: src/kasasa-window.c:256
-msgid "Error"
-msgstr "Errore"
-
-#: src/kasasa-window.c:259
-#, fuzzy
-msgid "Ok"
-msgstr "_Ok"
-
-#: src/kasasa-window.c:306
-msgid "Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
+#. translators: reason which the screenshot failed
+#: src/kasasa-window.c:395 src/kasasa-window.c:402
+msgid "Reason: "
 msgstr ""
-"Assicurati che l'autorizzazione per lo Screenshot sia abilitata in "
-"Impostazioni → App → Kasasa"
 
-#: src/kasasa-window.c:315
+#: src/kasasa-window.c:402 src/kasasa-window.c:461
 #, fuzzy
 msgid "Couldn't load the screenshot"
 msgstr "Impossibile caricare lo screenshot"
 
-#: src/kasasa-window.c:498
-msgid "Error:"
+#: src/kasasa-window.c:417
+msgid "Screenshot failed"
+msgstr ""
+
+#: src/kasasa-window.c:450 src/kasasa-window.c:678
+#, fuzzy, c-format
+msgid "Error: %s"
 msgstr "Errore:"
 
-#: src/kasasa-window.ui:135
-msgid "Menu"
-msgstr "Menu"
-
-#: src/kasasa-window.ui:147
-msgid "Retake screenshot"
-msgstr "Acquisisci nuovamente lo screenshot"
-
-#: src/kasasa-window.ui:157
+#: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
+#: src/kasasa-window.ui:56
 msgid "Copy"
 msgstr "Copia"
 
-#: src/kasasa-window.ui:178
+#: src/kasasa-window.c:692
+msgid "Copied to the clibboard"
+msgstr ""
+
+#: src/kasasa-window.ui:47
+msgid "Retake screenshot"
+msgstr "Acquisisci nuovamente lo screenshot"
+
+#: src/kasasa-window.ui:68
+msgid "Trigger auto discard timer"
+msgstr ""
+
+#: src/kasasa-window.ui:80
+msgid "Auto delete image when closing window"
+msgstr ""
+
+#: src/kasasa-window.ui:89
+msgid "Menu"
+msgstr "Menu"
+
+#: src/kasasa-window.ui:150
 msgid "_Preferences"
 msgstr "_Preferenze"
 
-#: src/kasasa-window.ui:182
-msgid "_Keyboard Shortcuts"
-msgstr "_Scorciatoie da tastiera"
-
-#: src/kasasa-window.ui:186
+#: src/kasasa-window.ui:154
 msgid "_About Kasasa"
 msgstr "_Informazioni su Kasasa"
 
-#: src/kasasa-application.c:102
-msgid "Create ephemeral floating screenshot windows"
-msgstr "Crea finestre di screenshot mobili effimere"
+#: src/kasasa-application.c:106
+msgid ""
+"Snip and pin useful information\n"
+"\n"
+"If you liked the app ❤️, consider giving it a star ⭐:"
+msgstr ""
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/kasasa-application.c:109
+#: src/kasasa-application.c:114
 msgid "translator-credits"
 msgstr "Albano Battistella <albanobattistella@gmail.com>"
 
@@ -182,6 +188,45 @@ msgstr ""
 #: src/kasasa-preferences.ui:51
 msgid "Max percentage of the screen that Kasasa can use"
 msgstr ""
+
+#: src/kasasa-preferences.ui:71
+msgid "Auto discard window"
+msgstr ""
+
+#: src/kasasa-preferences.ui:72
+msgid "Auto close the window after a certain time"
+msgstr ""
+
+#. translators: this refers to the time to auto discard the window
+#: src/kasasa-preferences.ui:78
+msgid "Time (in minutes)"
+msgstr ""
+
+#: src/kasasa-preferences.ui:98
+msgid "Auto trash image"
+msgstr ""
+
+#: src/kasasa-preferences.ui:99
+msgid "Auto delete the image when closing the window or retaking a screenshtot"
+msgstr ""
+
+#~ msgid "Error"
+#~ msgstr "Errore"
+
+#, fuzzy
+#~ msgid "Ok"
+#~ msgstr "_Ok"
+
+#~ msgid "Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
+#~ msgstr ""
+#~ "Assicurati che l'autorizzazione per lo Screenshot sia abilitata in "
+#~ "Impostazioni → App → Kasasa"
+
+#~ msgid "_Keyboard Shortcuts"
+#~ msgstr "_Scorciatoie da tastiera"
+
+#~ msgid "Create ephemeral floating screenshot windows"
+#~ msgstr "Crea finestre di screenshot mobili effimere"
 
 #~ msgid ""
 #~ "Take screenshots and put them on small floating windows; the application "
