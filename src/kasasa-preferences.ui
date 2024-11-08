@@ -96,7 +96,7 @@
             <child>
               <object class="AdwSwitchRow" id="auto_trash_image_switch">
                 <property name="title" translatable="yes">Auto trash image</property>
-                <property name="subtitle" translatable="yes">Auto trash the image when closing the window or retaking a screenshtot</property>
+                <property name="subtitle" translatable="yes">Auto delete the image when closing the window or retaking a screenshtot</property>
               </object>
             </child>
           </object>

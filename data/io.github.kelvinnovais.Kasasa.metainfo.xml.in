@@ -72,6 +72,24 @@
   </branding>
 
   <releases>
+    <release date="2024-11-08" version="0.1.2">
+      <description translate="no">
+        <p>Features:</p>
+        <ul>
+          <li>Minimize window when retaking screenshot</li>
+          <li>Auto delete image</li>
+          <li>Auto discard window</li>
+          <li>Resize window after toggling auto hide menu</li>
+          <li>UI improved</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>Error reporting</li>
+          <li>Image getting shrunk</li>
+          <li>Other minor fixes</li>
+        </ul>
+      </description>
+    </release>
     <release date="2024-10-06" version="0.1.1">
       <description translate="no">
         <p>Features:</p>

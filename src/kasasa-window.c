@@ -43,7 +43,7 @@ struct _KasasaWindow
   GtkButton           *copy_button;
   AdwToastOverlay     *toast_overlay;
   GtkRevealer         *menu_revealer;
-  GtkWindowHandle     *menu;
+  AdwHeaderBar        *menu;
   GtkMenuButton       *menu_button;
   GtkToggleButton     *auto_discard_button;
   GtkToggleButton     *auto_trash_button;
@@ -477,7 +477,7 @@ on_screenshot_taken (GObject      *object,
   return;
 
 ERROR_NOTIFICATION:
-  icon = g_themed_icon_new ("screenshooter-symbolic");
+  icon = g_themed_icon_new ("dialog-warning-symbolic");
   notification = g_notification_new (_("Screenshot failed"));
   g_notification_set_icon (notification, icon);
   g_notification_set_body (notification, error_message);
@@ -739,7 +739,7 @@ on_copy_button_clicked (GtkButton *button,
 
   if (error != NULL)
     {
-      toast =  adw_toast_new_format (_("Error: %s"), error->message);
+      toast = adw_toast_new_format (_("Error: %s"), error->message);
       adw_toast_set_action_target_value (toast, g_variant_new_string (error->message));
       adw_toast_set_button_label (toast, _("Copy"));
       adw_toast_set_action_name (toast, "toast.copy_error");
@@ -822,13 +822,18 @@ kasasa_window_dispose (GObject *kasasa_window)
 {
   KasasaWindow *self = KASASA_WINDOW (kasasa_window);
 
-  g_clear_object (&self->portal);
   g_clear_object (&self->settings);
-  g_clear_object (&self->auto_discard_canceller);
+  g_clear_object (&self->portal);
   if (self->file != NULL)
     g_object_unref (self->file);
 
   G_OBJECT_CLASS (kasasa_window_parent_class)->dispose (kasasa_window);
+}
+
+static void
+kasasa_window_finalize (GObject *kasasa_window)
+{
+    G_OBJECT_CLASS (kasasa_window_parent_class)->finalize (kasasa_window);
 }
 
 static void
@@ -838,6 +843,7 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->dispose = kasasa_window_dispose;
+  object_class->finalize = kasasa_window_finalize;
 
   gtk_widget_class_install_action (widget_class, "toast.copy_error", "s", copy_error_cb);
 
