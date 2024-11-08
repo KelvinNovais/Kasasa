@@ -259,12 +259,12 @@ compute_size (KasasaWindow *self)
     }
 
   // If the header bar is NOT hiding, then the window height must have more 46 px
-  /* self->nat_height += */
-  /*   (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46; */
+  self->nat_height +=
+    (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46;
 
   // If the vertical menu is NOT hiding, then the window width must have more 46 px
-  self->nat_width +=
-    (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46;
+  /* self->nat_width += */
+  /*   (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46; */
 
   return FALSE;
 }
@@ -572,7 +572,7 @@ change_opacity_animated (KasasaWindow *self, enum Opacity opacity_direction)
   gdouble opacity = g_settings_get_double (self->settings, "opacity");
 
   // Set from and to target values, according to the mode (increase or decrease opacity)
-  gdouble from  = (opacity_direction == OPACITY_INCREASE) ? opacity : 1.00;
+  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
   gdouble to    = (opacity_direction == OPACITY_INCREASE) ? 1.00    : opacity;
 
   // Return if this option is disabled
@@ -584,6 +584,11 @@ change_opacity_animated (KasasaWindow *self, enum Opacity opacity_direction)
       && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
     return;
 
+  // Pause an animation
+  // The "if" verifies if the animation was called at least once
+  if (ADW_IS_ANIMATION (self->window_opacity_animation))
+    adw_animation_pause (self->window_opacity_animation);
+
   target =
     adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
                                        self,
@@ -592,7 +597,7 @@ change_opacity_animated (KasasaWindow *self, enum Opacity opacity_direction)
   self->window_opacity_animation = adw_timed_animation_new (
     GTK_WIDGET (self),    // widget
     from, to,             // opacity from to
-    250,                  // duration
+    270,                  // duration
     target                // target
   );
 
@@ -784,10 +789,11 @@ on_settings_updated (GSettings* settings,
 
   else if (g_strcmp0 (key, "auto-discard-window") == 0)
     {
+      // Just change the button state; the button callback signal will trigger the auto discarding
       if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-        auto_discard_window (self);
+        gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
       else
-        g_cancellable_cancel (self->auto_discard_canceller);
+        gtk_toggle_button_set_active (self->auto_discard_button, FALSE);
     }
 
   else if (g_strcmp0 (key, "auto-trash-image") == 0)
