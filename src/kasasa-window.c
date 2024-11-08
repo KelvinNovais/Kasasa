@@ -262,10 +262,6 @@ compute_size (KasasaWindow *self)
   self->nat_height +=
     (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46;
 
-  // If the vertical menu is NOT hiding, then the window width must have more 46 px
-  /* self->nat_width += */
-  /*   (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46; */
-
   return FALSE;
 }
 
@@ -321,13 +317,6 @@ resize_window (KasasaWindow *self)
 }
 
 static void
-close_window (AdwAlertDialog *dialog,
-              gpointer        user_data)
-{
-  gtk_window_close (GTK_WINDOW (user_data));
-}
-
-static void
 auto_discard_window_thread (GTask         *task,
                             gpointer       source_object,
                             gpointer       task_data,
@@ -371,60 +360,6 @@ auto_discard_window (KasasaWindow *self)
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread (task, auto_discard_window_thread);
   g_object_unref (task);
-}
-
-// Set an "missing image" icon when screenshoting fails
-// Currently the dialog covers it, but can used in the future
-static void
-on_screenshot_fails (KasasaWindow *self, const gchar *error_message)
-{
-  GtkIconTheme *icon_theme;
-  g_autoptr (GtkIconPaintable) icon = NULL;
-  AdwDialog *dialog;
-
-  // Set error icon
-  icon_theme = gtk_icon_theme_get_for_display (
-    gtk_widget_get_display (GTK_WIDGET (self))
-  );
-
-  icon = gtk_icon_theme_lookup_icon (
-    icon_theme,                         // icon theme
-    "image-missing-symbolic",           // icon name
-    NULL,                               // fallbacks
-    200,                                // icon size
-    1,                                  // scale
-    GTK_TEXT_DIR_NONE,                  // text direction
-    GTK_ICON_LOOKUP_FORCE_SYMBOLIC      // flags
-  );
-
-  // Add margins
-  gtk_widget_set_margin_top (GTK_WIDGET (self->picture), 30);
-  gtk_widget_set_margin_bottom (GTK_WIDGET (self->picture), 30);
-  gtk_widget_set_margin_start (GTK_WIDGET (self->picture), 80);
-  gtk_widget_set_margin_end (GTK_WIDGET (self->picture), 80);
-
-  gtk_window_set_default_size (GTK_WINDOW (self), -1, -1);
-  // Bug: currently, if the window is not resizable, GTK detaches the dialog from the window
-  gtk_window_set_resizable (GTK_WINDOW (self), TRUE);
-
-  // Set icon
-  gtk_picture_set_paintable (self->picture, GDK_PAINTABLE (icon));
-
-  // Present a dialog with the message
-  dialog = adw_alert_dialog_new (_("Error"), NULL);
-  adw_alert_dialog_format_body (ADW_ALERT_DIALOG (dialog), "%s", error_message);
-  adw_alert_dialog_add_responses (ADW_ALERT_DIALOG (dialog),
-                                  "ok",  _("Ok"),
-                                  NULL);
-  adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
-  adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "ok");
-
-  // Make the buttons insensitive
-  gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
-
-  g_signal_connect (dialog, "response", G_CALLBACK (close_window), self);
-  adw_dialog_present (dialog, GTK_WIDGET (self));
 }
 
 // Load the screenshot to the GtkPicture widget
