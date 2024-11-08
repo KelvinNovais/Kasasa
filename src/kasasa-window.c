@@ -43,9 +43,10 @@ struct _KasasaWindow
   GtkButton           *copy_button;
   AdwToastOverlay     *toast_overlay;
   GtkRevealer         *menu_revealer;
-  GtkWindowHandle     *vertical_menu;
+  GtkWindowHandle     *menu;
   GtkMenuButton       *menu_button;
   GtkToggleButton     *auto_discard_button;
+  GtkToggleButton     *auto_trash_button;
 
   /* State variables */
   gboolean             hide_menu_requested;
@@ -102,7 +103,7 @@ search_and_trash_image (const gchar *directory_name,
         {
           // Recursively search in subdirectories
           g_autofree gchar *path = g_file_get_path (file);
-          g_message ("Entering %s ...", path); // TODO
+          g_message ("Searching on %s ...", path);
 
           // If returned TRUE, finalize the loop returning TRUE
           if (search_and_trash_image (path, file_name) == TRUE)
@@ -119,7 +120,7 @@ search_and_trash_image (const gchar *directory_name,
             g_warning ("Error while deleting screenshot: %s", error->message);
 
           // Finilize
-          g_message ("Trasehd \"%s\" at %s", file_name, parent_path); // TODO
+          g_message ("Trasehd %s", parent_path);
           g_clear_object (&info);
           g_object_unref (file);
           return TRUE;
@@ -141,8 +142,10 @@ trash_image (GtkWindow *window,
   g_autofree gchar *base_name = NULL;
 
   // Return if auto trashing screenshot is not enabled
-  if (g_settings_get_boolean (self->settings, "auto-trash-image") == FALSE)
+  if (gtk_toggle_button_get_active (self->auto_trash_button) == FALSE)
     return FALSE;
+
+  g_message ("Auto trashing screenshot...");
 
   // Get the image base name
   if (self->file == NULL
@@ -255,6 +258,10 @@ compute_size (KasasaWindow *self)
       self->nat_width = image_width * self->nat_height / image_height;
     }
 
+  // If the header bar is NOT hiding, then the window height must have more 46 px
+  /* self->nat_height += */
+  /*   (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46; */
+
   // If the vertical menu is NOT hiding, then the window width must have more 46 px
   self->nat_width +=
     (g_settings_get_boolean (self->settings, "auto-hide-menu")) ? 0 : 46;
@@ -343,8 +350,6 @@ auto_discard_window_cb (GObject        *source_object,
   KasasaWindow *self = KASASA_WINDOW (source_object);
   gboolean cancelled = g_cancellable_is_cancelled (self->auto_discard_canceller);
 
-  gtk_widget_remove_css_class (GTK_WIDGET (self->auto_discard_button), "warning");
-
   g_cancellable_reset (self->auto_discard_canceller);
 
   if (!cancelled)
@@ -355,8 +360,6 @@ static void
 auto_discard_window (KasasaWindow *self)
 {
   GTask *task = NULL;
-
-  gtk_widget_add_css_class (GTK_WIDGET (self->auto_discard_button), "warning");
 
   // If auto_discard wasn't queued or was cancelled
   if (self->auto_discard_canceller == NULL)
@@ -529,8 +532,15 @@ on_screenshot_retaken (GObject      *object,
       return;
     }
 
+  // Auto trash previous image, if this option is enabled
+  trash_image (NULL, self);
+
+  // Load new image and resize the window
   load_screenshot (self, uri);
   resize_window (self);
+
+  // Set the focus to the retake_screenshot_button
+  gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
 }
 
 static void
@@ -590,7 +600,7 @@ change_opacity_animated (KasasaWindow *self, enum Opacity opacity_direction)
 }
 
 static void
-hide_vertical_menu_cb (gpointer user_data)
+hide_menu_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
   self->hide_menu_requested = FALSE;
@@ -606,14 +616,14 @@ hide_vertical_menu_cb (gpointer user_data)
 }
 
 static void
-reveal_vertical_menu_cb (gpointer user_data)
+reveal_menu_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
   gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
 }
 
 static void
-hide_vertical_menu (KasasaWindow *self)
+hide_menu (KasasaWindow *self)
 {
   // Hide the vertical menu if this option is enabled
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
@@ -622,7 +632,7 @@ hide_vertical_menu (KasasaWindow *self)
     if (self->hide_menu_requested == FALSE)
       {
         self->hide_menu_requested = TRUE;
-        g_timeout_add_seconds_once (2, hide_vertical_menu_cb, self);
+        g_timeout_add_seconds_once (2, hide_menu_cb, self);
       }
 }
 
@@ -661,7 +671,7 @@ on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_mot
 
   self->mouse_over_window = FALSE;
   change_opacity_animated (self, OPACITY_INCREASE);
-  hide_vertical_menu (self);
+  hide_menu (self);
 }
 
 static void
@@ -690,7 +700,7 @@ on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
   self->mouse_over_window = FALSE;
-  hide_vertical_menu (self);
+  hide_menu (self);
 }
 
 // Retake screenshot
@@ -764,9 +774,9 @@ on_settings_updated (GSettings* settings,
   if (g_strcmp0 (key, "auto-hide-menu") == 0)
     {
       if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-        hide_vertical_menu (self);
+        hide_menu (self);
       else
-        g_timeout_add_seconds_once (2, reveal_vertical_menu_cb, self);
+        g_timeout_add_seconds_once (2, reveal_menu_cb, self);
 
       // Resize the window to free/occupy the vertical menu space
       resize_window (self);
@@ -778,6 +788,14 @@ on_settings_updated (GSettings* settings,
         auto_discard_window (self);
       else
         g_cancellable_cancel (self->auto_discard_canceller);
+    }
+
+  else if (g_strcmp0 (key, "auto-trash-image") == 0)
+    {
+      if (g_settings_get_boolean (self->settings, "auto-trash-image"))
+        gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
+      else
+        gtk_toggle_button_set_active (self->auto_trash_button, FALSE);
     }
 }
 
@@ -824,9 +842,10 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, copy_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, toast_overlay);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_revealer);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, vertical_menu);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_trash_button);
 }
 
 static void
@@ -842,12 +861,6 @@ kasasa_window_init (KasasaWindow *self)
 
   // Connect signal to track when settings are changed; get the necessary values
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
-
-  // Connect buttons to the callbacks
-  g_signal_connect (self->retake_screenshot_button, "clicked",
-                    G_CALLBACK (on_retake_screenshot_button_clicked), self);
-  g_signal_connect (self->copy_button, "clicked",
-                    G_CALLBACK (on_copy_button_clicked), self);
 
   // MOTION EVENT CONTORLLERS: Create motion event controllers to monitor when
   // the mouse cursor is over the picture container or the menu
@@ -873,16 +886,31 @@ kasasa_window_init (KasasaWindow *self)
                     "leave",
                     G_CALLBACK (on_mouse_leave_menu),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->vertical_menu), self->menu_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->menu), self->menu_event_controller);
+
+  // BUTTONS
+  // Connect buttons to the callbacks
+  g_signal_connect (self->retake_screenshot_button, "clicked",
+                    G_CALLBACK (on_retake_screenshot_button_clicked), self);
+  g_signal_connect (self->copy_button, "clicked",
+                    G_CALLBACK (on_copy_button_clicked), self);
 
   // Auto discard button
   if (g_settings_get_boolean (self->settings, "auto-discard-window"))
     gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
 
+
   g_signal_connect (self->auto_discard_button,
                     "toggled",
                     G_CALLBACK (on_auto_discard_button_toggled),
                     self);
+
+  // Auto trash button
+  if (g_settings_get_boolean (self->settings, "auto-trash-image"))
+    gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
+
+  // Set the focus to the retake_screenshot_button
+  gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
 
   g_signal_connect (GTK_WINDOW (self), "close-request", G_CALLBACK (trash_image), self);
 
