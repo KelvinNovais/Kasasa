@@ -8,7 +8,9 @@
   <requires lib="libadwaita" version="1.4"/>
 
   <template class="KasasaWindow" parent="AdwApplicationWindow">
-    <!-- Gtk recommends 360px as minimun width -->
+    <!-- AdwWindow recommends 360×200 px as the minimun size -->
+    <!-- See https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/class.Window.html -->
+    <!-- If having problems on future releases, change it here -->
     <property name="width-request">260</property>
     <property name="height-request">70</property>
     <property name="resizable">false</property>
@@ -156,3 +158,4 @@
     </section>
   </menu>
 </interface>
+

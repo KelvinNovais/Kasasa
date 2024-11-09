@@ -8,5 +8,4 @@ Type=Application
 Categories=Utility;GTK;GNOME;
 Keywords=screenshot;clipping;snip;image;
 StartupNotify=true
-DBusActivatable=true
 X-GNOME-UsesNotifications=true
