@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 20:03-0300\n"
+"POT-Creation-Date: 2024-11-08 22:54-0300\n"
 "PO-Revision-Date: 2024-11-08 21:45-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Generator: Gtranslator 47.0\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:15
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
 #: src/kasasa-application.c:102
 msgid "Kasasa"
 msgstr "Kasasa"
@@ -131,7 +131,7 @@ msgid "Error: %s"
 msgstr "Erro: %s"
 
 #: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
-#: src/kasasa-window.ui:56
+#: src/kasasa-window.ui:58
 msgid "Copy"
 msgstr "Copiar"
 
@@ -139,27 +139,27 @@ msgstr "Copiar"
 msgid "Copied to the clibboard"
 msgstr "Copiado para área de transferência"
 
-#: src/kasasa-window.ui:47
+#: src/kasasa-window.ui:49
 msgid "Retake screenshot"
 msgstr "Refazer captura de tela"
 
-#: src/kasasa-window.ui:68
+#: src/kasasa-window.ui:70
 msgid "Trigger auto discard timer"
 msgstr "Ativar temporizador de fechamento automático"
 
-#: src/kasasa-window.ui:80
+#: src/kasasa-window.ui:82
 msgid "Auto delete image when closing window"
 msgstr "Excluir imagem automaticamente ao fechar a janela"
 
-#: src/kasasa-window.ui:89
+#: src/kasasa-window.ui:91
 msgid "Menu"
 msgstr "Menu"
 
-#: src/kasasa-window.ui:150
+#: src/kasasa-window.ui:152
 msgid "_Preferences"
 msgstr "_Preferências"
 
-#: src/kasasa-window.ui:154
+#: src/kasasa-window.ui:156
 msgid "_About Kasasa"
 msgstr "_Sobre Kasasa"
 
@@ -187,8 +187,8 @@ msgid "Opacity level"
 msgstr "Nível de opacidade"
 
 #: src/kasasa-preferences.ui:39
-msgid "Auto hide the vertical menu"
-msgstr "Ocultar automaticamente o menu vertical"
+msgid "Auto hide the header bar"
+msgstr "Ocultar automaticamente a barra de título"
 
 #: src/kasasa-preferences.ui:50
 msgid "Occupying screen percentage"
@@ -199,7 +199,7 @@ msgid "Max percentage of the screen that Kasasa can use"
 msgstr "Porcentagem máxima da tela que o Kasasa pode usar"
 
 #: src/kasasa-preferences.ui:71
-msgid "Auto discard window"
+msgid "Auto close window"
 msgstr "Fechar janela automaticamente"
 
 #: src/kasasa-preferences.ui:72

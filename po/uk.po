@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 20:03-0300\n"
+"POT-Creation-Date: 2024-11-08 22:54-0300\n"
 "PO-Revision-Date: 2024-10-02 20:28+0300\n"
 "Last-Translator: volkov <volkovissocool@gmail.com>\n"
 "Language-Team: volkov <volkovissocool@gmail.com>\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 # Із гітхаба програми: "Kasasa" (قصاصة) is an Arabic term meaning a scrap of paper torn from a book, a magazine or a newspaper.
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:15
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
 #: src/kasasa-application.c:102
 msgid "Kasasa"
 msgstr "Клаптик"
@@ -128,7 +128,7 @@ msgid "Error: %s"
 msgstr "Помилка:"
 
 #: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
-#: src/kasasa-window.ui:56
+#: src/kasasa-window.ui:58
 msgid "Copy"
 msgstr "Скопіювати"
 
@@ -136,27 +136,27 @@ msgstr "Скопіювати"
 msgid "Copied to the clibboard"
 msgstr ""
 
-#: src/kasasa-window.ui:47
+#: src/kasasa-window.ui:49
 msgid "Retake screenshot"
 msgstr "Ще раз зробити знімок екрану"
 
-#: src/kasasa-window.ui:68
+#: src/kasasa-window.ui:70
 msgid "Trigger auto discard timer"
 msgstr ""
 
-#: src/kasasa-window.ui:80
+#: src/kasasa-window.ui:82
 msgid "Auto delete image when closing window"
 msgstr ""
 
-#: src/kasasa-window.ui:89
+#: src/kasasa-window.ui:91
 msgid "Menu"
 msgstr "Меню"
 
-#: src/kasasa-window.ui:150
+#: src/kasasa-window.ui:152
 msgid "_Preferences"
 msgstr "_Налаштування"
 
-#: src/kasasa-window.ui:154
+#: src/kasasa-window.ui:156
 msgid "_About Kasasa"
 msgstr "_Про Клаптик"
 
@@ -181,7 +181,7 @@ msgid "Opacity level"
 msgstr "Рівень непрозорості"
 
 #: src/kasasa-preferences.ui:39
-msgid "Auto hide the vertical menu"
+msgid "Auto hide the header bar"
 msgstr ""
 
 #: src/kasasa-preferences.ui:50
@@ -193,7 +193,7 @@ msgid "Max percentage of the screen that Kasasa can use"
 msgstr ""
 
 #: src/kasasa-preferences.ui:71
-msgid "Auto discard window"
+msgid "Auto close window"
 msgstr ""
 
 #: src/kasasa-preferences.ui:72

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 20:03-0300\n"
+"POT-Creation-Date: 2024-11-08 22:54-0300\n"
 "PO-Revision-Date: 2024-09-30 18:31+0100\n"
 "Last-Translator: Albano Battistella <albanobattistella@gmail.com>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:15
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
 #: src/kasasa-application.c:102
 msgid "Kasasa"
 msgstr "Kasasa"
@@ -125,7 +125,7 @@ msgid "Error: %s"
 msgstr "Errore:"
 
 #: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
-#: src/kasasa-window.ui:56
+#: src/kasasa-window.ui:58
 msgid "Copy"
 msgstr "Copia"
 
@@ -133,27 +133,27 @@ msgstr "Copia"
 msgid "Copied to the clibboard"
 msgstr ""
 
-#: src/kasasa-window.ui:47
+#: src/kasasa-window.ui:49
 msgid "Retake screenshot"
 msgstr "Acquisisci nuovamente lo screenshot"
 
-#: src/kasasa-window.ui:68
+#: src/kasasa-window.ui:70
 msgid "Trigger auto discard timer"
 msgstr ""
 
-#: src/kasasa-window.ui:80
+#: src/kasasa-window.ui:82
 msgid "Auto delete image when closing window"
 msgstr ""
 
-#: src/kasasa-window.ui:89
+#: src/kasasa-window.ui:91
 msgid "Menu"
 msgstr "Menu"
 
-#: src/kasasa-window.ui:150
+#: src/kasasa-window.ui:152
 msgid "_Preferences"
 msgstr "_Preferenze"
 
-#: src/kasasa-window.ui:154
+#: src/kasasa-window.ui:156
 msgid "_About Kasasa"
 msgstr "_Informazioni su Kasasa"
 
@@ -178,7 +178,7 @@ msgid "Opacity level"
 msgstr "Livello di opacità"
 
 #: src/kasasa-preferences.ui:39
-msgid "Auto hide the vertical menu"
+msgid "Auto hide the header bar"
 msgstr ""
 
 #: src/kasasa-preferences.ui:50
@@ -190,7 +190,7 @@ msgid "Max percentage of the screen that Kasasa can use"
 msgstr ""
 
 #: src/kasasa-preferences.ui:71
-msgid "Auto discard window"
+msgid "Auto close window"
 msgstr ""
 
 #: src/kasasa-preferences.ui:72

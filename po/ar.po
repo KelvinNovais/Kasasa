@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 20:03-0300\n"
+"POT-Creation-Date: 2024-11-08 22:54-0300\n"
 "PO-Revision-Date: 2024-09-27 18:29+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Poedit 3.4.4\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:15
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
 #: src/kasasa-application.c:102
 msgid "Kasasa"
 msgstr "Kasasa"
@@ -127,7 +127,7 @@ msgid "Error: %s"
 msgstr "خطء:"
 
 #: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
-#: src/kasasa-window.ui:56
+#: src/kasasa-window.ui:58
 msgid "Copy"
 msgstr "أنسخ"
 
@@ -135,27 +135,27 @@ msgstr "أنسخ"
 msgid "Copied to the clibboard"
 msgstr ""
 
-#: src/kasasa-window.ui:47
+#: src/kasasa-window.ui:49
 msgid "Retake screenshot"
 msgstr "إعادة أخذ لقطة الشاشة"
 
-#: src/kasasa-window.ui:68
+#: src/kasasa-window.ui:70
 msgid "Trigger auto discard timer"
 msgstr ""
 
-#: src/kasasa-window.ui:80
+#: src/kasasa-window.ui:82
 msgid "Auto delete image when closing window"
 msgstr ""
 
-#: src/kasasa-window.ui:89
+#: src/kasasa-window.ui:91
 msgid "Menu"
 msgstr "القائمة"
 
-#: src/kasasa-window.ui:150
+#: src/kasasa-window.ui:152
 msgid "_Preferences"
 msgstr "الا_عدادات"
 
-#: src/kasasa-window.ui:154
+#: src/kasasa-window.ui:156
 msgid "_About Kasasa"
 msgstr "حول _Kasasa"
 
@@ -180,7 +180,7 @@ msgid "Opacity level"
 msgstr "درجة التعميم"
 
 #: src/kasasa-preferences.ui:39
-msgid "Auto hide the vertical menu"
+msgid "Auto hide the header bar"
 msgstr ""
 
 #: src/kasasa-preferences.ui:50
@@ -192,7 +192,7 @@ msgid "Max percentage of the screen that Kasasa can use"
 msgstr ""
 
 #: src/kasasa-preferences.ui:71
-msgid "Auto discard window"
+msgid "Auto close window"
 msgstr ""
 
 #: src/kasasa-preferences.ui:72

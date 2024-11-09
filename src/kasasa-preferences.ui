@@ -36,7 +36,7 @@
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSwitchRow" id="auto_hide_menu_switch">
-                <property name="title" translatable="yes">Auto hide the vertical menu</property>
+                <property name="title" translatable="yes">Auto hide the header bar</property>
               </object>
             </child>
           </object>
@@ -68,7 +68,7 @@
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSwitchRow" id="auto_discard_window_switch">
-                <property name="title" translatable="yes">Auto discard window</property>
+                <property name="title" translatable="yes">Auto close window</property>
                 <property name="subtitle" translatable="yes">Auto close the window after a certain time</property>
               </object>
             </child>
