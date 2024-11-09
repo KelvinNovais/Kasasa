@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-08 20:03-0300\n"
-"PO-Revision-Date: 2024-10-06 22:33-0300\n"
+"PO-Revision-Date: 2024-11-08 21:45-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
@@ -115,7 +115,7 @@ msgstr "Sair"
 #. translators: reason which the screenshot failed
 #: src/kasasa-window.c:395 src/kasasa-window.c:402
 msgid "Reason: "
-msgstr ""
+msgstr "Motivo: "
 
 #: src/kasasa-window.c:402 src/kasasa-window.c:461
 msgid "Couldn't load the screenshot"
@@ -123,12 +123,12 @@ msgstr "Não foi possível carregar a captura de tela"
 
 #: src/kasasa-window.c:417
 msgid "Screenshot failed"
-msgstr ""
+msgstr "Captura de tela falhou"
 
 #: src/kasasa-window.c:450 src/kasasa-window.c:678
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s"
-msgstr "Erro:"
+msgstr "Erro: %s"
 
 #: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
 #: src/kasasa-window.ui:56
@@ -137,7 +137,7 @@ msgstr "Copiar"
 
 #: src/kasasa-window.c:692
 msgid "Copied to the clibboard"
-msgstr ""
+msgstr "Copiado para área de transferência"
 
 #: src/kasasa-window.ui:47
 msgid "Retake screenshot"
@@ -145,11 +145,11 @@ msgstr "Refazer captura de tela"
 
 #: src/kasasa-window.ui:68
 msgid "Trigger auto discard timer"
-msgstr ""
+msgstr "Ativar temporizador de fechamento automático"
 
 #: src/kasasa-window.ui:80
 msgid "Auto delete image when closing window"
-msgstr ""
+msgstr "Excluir imagem automaticamente ao fechar a janela"
 
 #: src/kasasa-window.ui:89
 msgid "Menu"
@@ -169,6 +169,9 @@ msgid ""
 "\n"
 "If you liked the app ❤️, consider giving it a star ⭐:"
 msgstr ""
+"Recorte e fixe informações úteis\n"
+"\n"
+"Se você gostou da aplicação ❤️, considere dar uma estrela ⭐:"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:114
@@ -197,24 +200,26 @@ msgstr "Porcentagem máxima da tela que o Kasasa pode usar"
 
 #: src/kasasa-preferences.ui:71
 msgid "Auto discard window"
-msgstr ""
+msgstr "Fechar janela automaticamente"
 
 #: src/kasasa-preferences.ui:72
 msgid "Auto close the window after a certain time"
-msgstr ""
+msgstr "Fechar janela automaticamente após certo tempo"
 
 #. translators: this refers to the time to auto discard the window
 #: src/kasasa-preferences.ui:78
 msgid "Time (in minutes)"
-msgstr ""
+msgstr "Tempo (em minutos)"
 
 #: src/kasasa-preferences.ui:98
 msgid "Auto trash image"
-msgstr ""
+msgstr "Auto deletar a imagem"
 
 #: src/kasasa-preferences.ui:99
 msgid "Auto delete the image when closing the window or retaking a screenshtot"
 msgstr ""
+"Excluir automaticamente a imagem ao fechar a janela ou ao tirar uma nova "
+"captura de tela"
 
 #~ msgid "Error"
 #~ msgstr "Erro"
