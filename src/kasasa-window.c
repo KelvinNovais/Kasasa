@@ -317,6 +317,89 @@ resize_window (KasasaWindow *self)
 }
 
 static void
+change_opacity_cb (double         value,
+                   KasasaWindow  *self)
+{
+  gtk_widget_set_opacity (GTK_WIDGET (self), value);
+}
+
+static void
+change_opacity_animated (KasasaWindow *self, enum Opacity opacity_direction)
+{
+  AdwAnimationTarget *target = NULL;
+  gdouble opacity = g_settings_get_double (self->settings, "opacity");
+
+  // Set from and to target values, according to the mode (increase or decrease opacity)
+  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
+  gdouble to    = (opacity_direction == OPACITY_INCREASE) ? 1.00    : opacity;
+
+  // Return if this option is disabled
+  if (!g_settings_get_boolean (self->settings, "change-opacity"))
+    return;
+
+  // Return if the opacity is already 100%
+  if (opacity == OPACITY_INCREASE
+      && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
+    return;
+
+  // Pause an animation
+  // The "if" verifies if the animation was called at least once
+  if (ADW_IS_ANIMATION (self->window_opacity_animation))
+    adw_animation_pause (self->window_opacity_animation);
+
+  target =
+    adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
+                                       self,
+                                       NULL);
+
+  self->window_opacity_animation = adw_timed_animation_new (
+    GTK_WIDGET (self),    // widget
+    from, to,             // opacity from to
+    270,                  // duration
+    target                // target
+  );
+
+  adw_animation_play (self->window_opacity_animation);
+}
+
+/*
+ * Hide/reveal the window by changing its opacity
+ * Hide if "hide" is TRUE
+ * Reveal if "hide" is FALSE
+ *
+ * This trick is required because by using gtk_widget_set_visible (window, FALSE),
+ * cause the window to be unpinned.
+ */
+static void
+hide_window (KasasaWindow *self, gboolean hide)
+{
+  AdwAnimationTarget *target = NULL;
+
+  // Set from and to target values
+  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
+  gdouble to    = (hide) ? 0.00    : 1.00;
+
+  // Pause an animation
+  // The "if" verifies if the animation was called at least once
+  if (ADW_IS_ANIMATION (self->window_opacity_animation))
+    adw_animation_pause (self->window_opacity_animation);
+
+  target =
+    adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
+                                       self,
+                                       NULL);
+
+  self->window_opacity_animation = adw_timed_animation_new (
+    GTK_WIDGET (self),    // widget
+    from, to,             // opacity from to
+    100,                  // duration
+    target                // target
+  );
+
+  adw_animation_play (self->window_opacity_animation);
+}
+
+static void
 auto_discard_window_thread (GTask         *task,
                             gpointer       source_object,
                             gpointer       task_data,
@@ -367,6 +450,10 @@ static void
 load_screenshot (KasasaWindow *self, const gchar *uri)
 {
   self->file = g_file_new_for_uri (uri);
+
+  // Explicity unset the previous image: for some reason the old image doesn't get
+  // replaced if the new image have the same size
+  gtk_picture_set_file (self->picture, NULL);
   gtk_picture_set_file (self->picture, self->file);
 }
 
@@ -436,7 +523,7 @@ on_screenshot_retaken (GObject      *object,
   g_autoptr (GError) error = NULL;
   g_autofree gchar *uri = NULL;
 
-  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
+  hide_window (self, FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), TRUE);
 
   uri =  xdp_portal_take_screenshot_finish (
@@ -492,52 +579,6 @@ retake_screenshot (gpointer user_data)
     on_screenshot_retaken,
     self
   );
-}
-
-static void
-change_opacity_cb (double         value,
-                   KasasaWindow  *self)
-{
-  gtk_widget_set_opacity (GTK_WIDGET (self), value);
-}
-
-static void
-change_opacity_animated (KasasaWindow *self, enum Opacity opacity_direction)
-{
-  AdwAnimationTarget *target = NULL;
-  gdouble opacity = g_settings_get_double (self->settings, "opacity");
-
-  // Set from and to target values, according to the mode (increase or decrease opacity)
-  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
-  gdouble to    = (opacity_direction == OPACITY_INCREASE) ? 1.00    : opacity;
-
-  // Return if this option is disabled
-  if (!g_settings_get_boolean (self->settings, "change-opacity"))
-    return;
-
-  // Return if the opacity is already 100%
-  if (opacity == OPACITY_INCREASE
-      && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
-    return;
-
-  // Pause an animation
-  // The "if" verifies if the animation was called at least once
-  if (ADW_IS_ANIMATION (self->window_opacity_animation))
-    adw_animation_pause (self->window_opacity_animation);
-
-  target =
-    adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
-                                       self,
-                                       NULL);
-
-  self->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (self),    // widget
-    from, to,             // opacity from to
-    270,                  // duration
-    target                // target
-  );
-
-  adw_animation_play (self->window_opacity_animation);
 }
 
 static void
@@ -651,9 +692,9 @@ on_retake_screenshot_button_clicked (GtkButton *button,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  gtk_widget_set_visible (GTK_WIDGET (self), FALSE);
+  hide_window (self, TRUE);
 
-  g_timeout_add_once (500, retake_screenshot, self);
+  g_timeout_add_once (200, retake_screenshot, self);
 
   gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
 }
