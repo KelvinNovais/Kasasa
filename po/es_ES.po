@@ -1,0 +1,222 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the kasasa package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Kelvin Ribeiro Novais <>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kasasa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-08 22:54-0300\n"
+"PO-Revision-Date: 2024-11-10 14:21-0300\n"
+"Last-Translator: Kelvin Ribeiro Novais <>\n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 47.0\n"
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
+#: src/kasasa-application.c:102
+msgid "Kasasa"
+msgstr "Kasasa"
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
+msgid "Snip and pin useful information"
+msgstr "Recortar y fijar información útil"
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
+msgid "screenshot;clipping;snip;image;"
+msgstr "captura de pantalla;recorte;imagen"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
+msgid ""
+"Clip what's important to a small floating window, so you don't have to "
+"switch between windows or workspaces repeatedly. The application allows you "
+"to see what's behind the window by hovering over it."
+msgstr ""
+"Recorta lo que es importante en una pequeña ventana flotante, de modo que no "
+"tengas que cambiar de ventana o de espacio de trabajo repetidamente. La "
+"aplicación te permite ver lo que hay detrás de la ventana al pasar el cursor "
+"sobre ella."
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
+msgid "Best used with:"
+msgstr "Se utiliza mejor con:"
+
+#. translators: replace &quot; with "
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:33
+msgid "\"Always on Top\" and/or \"Always on Visible Workspace\""
+msgstr "\"Siempre encima\" y/o \"Siempre en el área de trabajo visible\""
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:34
+msgid "A keyboard shortcut"
+msgstr "Un atajo de teclado"
+
+#. translators: do not include the tags <code></code>
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
+msgid ""
+"On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
+"Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
+"kelvinnovais.Kasasa</code> "
+msgstr ""
+"En GNOME, vaya a Configuración → Teclado → Ver y personalizar atajos → Atajo "
+"personalizado. Allí puedes configurar un acceso directo para ejecutar "
+"flatpak run io.github.kelvinnovais.Kasasa"
+
+#. translators: if needed, replace "&lt;" with < and "&apos;" with '
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
+msgid ""
+"Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the "
+"screenshot, instead of directly using the GNOME's screenshoter; this may be "
+"inconvenient."
+msgstr ""
+"Nota: En versiones de GNOME menores a 46, aparecerá un cuadro de diálogo "
+"para configurar y tomar la captura de pantalla, en lugar de usar "
+"directamente el generador de capturas de pantalla de GNOME; esto puede "
+"resultar inconveniente."
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:52
+msgid "A small window, in dark mode"
+msgstr "Una pequeña ventana, en modo oscuro."
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:56
+msgid "A small window, in light mode"
+msgstr "Una pequeña ventana, en modo claro."
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:60
+msgid "Kasasa over another application"
+msgstr "Kasasa sobre otra aplicación"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:64
+msgid "Kasasa over another application, with opacity decreased"
+msgstr "Kasasa sobre otra aplicación, con opacidad disminuida"
+
+#: src/gtk/help-overlay.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "General"
+
+#: src/gtk/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Mostrar accesos directos"
+
+#: src/gtk/help-overlay.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Cerrar"
+
+#. translators: reason which the screenshot failed
+#: src/kasasa-window.c:395 src/kasasa-window.c:402
+msgid "Reason: "
+msgstr "Razón: "
+
+#: src/kasasa-window.c:402 src/kasasa-window.c:461
+msgid "Couldn't load the screenshot"
+msgstr "No se pudo cargar la captura de pantalla"
+
+#: src/kasasa-window.c:417
+msgid "Screenshot failed"
+msgstr "Error en la captura de pantalla"
+
+#: src/kasasa-window.c:450 src/kasasa-window.c:678
+#, c-format
+msgid "Error: %s"
+msgstr "Error: %s"
+
+#: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
+#: src/kasasa-window.ui:58
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/kasasa-window.c:692
+msgid "Copied to the clibboard"
+msgstr "Copiado al portapapeles"
+
+#: src/kasasa-window.ui:49
+msgid "Retake screenshot"
+msgstr "Volver a tomar captura de pantalla"
+
+#: src/kasasa-window.ui:70
+msgid "Trigger auto discard timer"
+msgstr "Activar temporizador de descarte automático"
+
+#: src/kasasa-window.ui:82
+msgid "Auto delete image when closing window"
+msgstr "Eliminar imagen automáticamente al cerrar la ventana"
+
+#: src/kasasa-window.ui:91
+msgid "Menu"
+msgstr "Menú"
+
+#: src/kasasa-window.ui:152
+msgid "_Preferences"
+msgstr "_Preferencias"
+
+#: src/kasasa-window.ui:156
+msgid "_About Kasasa"
+msgstr "_Acerca de Kasasa"
+
+#: src/kasasa-application.c:106
+msgid ""
+"Snip and pin useful information\n"
+"\n"
+"If you liked the app ❤️, consider giving it a star ⭐:"
+msgstr ""
+"Recorta y fija información útil\n"
+"\n"
+"Si te gustó la aplicación ❤️, considera darle una estrella ⭐:"
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/kasasa-application.c:114
+msgid "translator-credits"
+msgstr "Kelvin Ribeiro Novais"
+
+#: src/kasasa-preferences.ui:14
+msgid "Change opacity"
+msgstr "Cambiar opacidad"
+
+#: src/kasasa-preferences.ui:19
+msgid "Opacity level"
+msgstr "Nivel de opacidad"
+
+#: src/kasasa-preferences.ui:39
+msgid "Auto hide the header bar"
+msgstr "Ocultar automáticamente la barra de encabezado"
+
+#: src/kasasa-preferences.ui:50
+msgid "Occupying screen percentage"
+msgstr "Porcentaje de pantalla ocupada"
+
+#: src/kasasa-preferences.ui:51
+msgid "Max percentage of the screen that Kasasa can use"
+msgstr "Porcentaje máximo de la pantalla que Kasasa puede usar"
+
+#: src/kasasa-preferences.ui:71
+msgid "Auto close window"
+msgstr "Cerrar ventana automáticamente"
+
+#: src/kasasa-preferences.ui:72
+msgid "Auto close the window after a certain time"
+msgstr "Cerrar automáticamente la ventana después de un tiempo determinado"
+
+#. translators: this refers to the time to auto discard the window
+#: src/kasasa-preferences.ui:78
+msgid "Time (in minutes)"
+msgstr "Tiempo (en minutos)"
+
+#: src/kasasa-preferences.ui:98
+msgid "Auto trash image"
+msgstr "Eliminar imagen automáticamente"
+
+#: src/kasasa-preferences.ui:99
+msgid "Auto delete the image when closing the window or retaking a screenshtot"
+msgstr ""
+"Eliminar automáticamente la imagen al cerrar la ventana o volver a tomar una "
+"captura de pantalla"
