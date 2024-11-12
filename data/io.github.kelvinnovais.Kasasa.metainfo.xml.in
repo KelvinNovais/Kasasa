@@ -72,6 +72,14 @@
   </branding>
 
   <releases>
+    <release date="2024-11-12" version="0.1.3">
+      <description translate="no">
+        <ul>
+          <li>Added/updated translations</li>
+          <li>Fixed unpinning window while retaking a screenshot</li>
+        </ul>
+      </description>
+    </release>
     <release date="2024-11-09" version="0.1.2">
       <description translate="no">
         <p>Features:</p>

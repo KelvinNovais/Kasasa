@@ -1,4 +1,5 @@
 _build
 builddir
 repo
+test
 .flatpak-builder

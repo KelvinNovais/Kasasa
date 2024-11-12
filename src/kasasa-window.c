@@ -26,6 +26,9 @@
 
 #include "kasasa-window.h"
 
+#define HIDE_WINDOW_TIME 110
+#define WAITING_HIDE_WINDOW_TIME (2 * HIDE_WINDOW_TIME)
+
 enum Opacity
 {
   OPACITY_INCREASE,
@@ -51,6 +54,7 @@ struct _KasasaWindow
   /* State variables */
   gboolean             hide_menu_requested;
   gboolean             mouse_over_window;
+  gboolean             hiding_window;
 
   /* Instance variables */
   GSettings           *settings;
@@ -337,6 +341,11 @@ change_opacity_animated (KasasaWindow *self, enum Opacity opacity_direction)
   if (!g_settings_get_boolean (self->settings, "change-opacity"))
     return;
 
+  // Return if the window is hiding/hidden when retaking the screenshot
+  // it prevents the opacity increase again if the mouse leave the window
+  if (self->hiding_window)
+    return;
+
   // Return if the opacity is already 100%
   if (opacity == OPACITY_INCREASE
       && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
@@ -379,6 +388,9 @@ hide_window (KasasaWindow *self, gboolean hide)
   gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
   gdouble to    = (hide) ? 0.00    : 1.00;
 
+  // Set if the window is hiding or being revealed
+  self->hiding_window = (hide) ? TRUE : FALSE;
+
   // Pause an animation
   // The "if" verifies if the animation was called at least once
   if (ADW_IS_ANIMATION (self->window_opacity_animation))
@@ -390,10 +402,10 @@ hide_window (KasasaWindow *self, gboolean hide)
                                        NULL);
 
   self->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (self),    // widget
-    from, to,             // opacity from to
-    100,                  // duration
-    target                // target
+    GTK_WIDGET (self),                  // widget
+    from, to,                           // opacity from to
+    (hide) ? HIDE_WINDOW_TIME : 200,    // duration
+    target                              // target
   );
 
   adw_animation_play (self->window_opacity_animation);
@@ -694,7 +706,7 @@ on_retake_screenshot_button_clicked (GtkButton *button,
 
   hide_window (self, TRUE);
 
-  g_timeout_add_once (200, retake_screenshot, self);
+  g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, retake_screenshot, self);
 
   gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
 }
@@ -847,6 +859,7 @@ kasasa_window_init (KasasaWindow *self)
   self->file = NULL;
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
   self->auto_discard_canceller = NULL;
+  self->hiding_window = FALSE;
 
   // Connect signal to track when settings are changed; get the necessary values
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
