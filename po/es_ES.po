@@ -136,7 +136,7 @@ msgid "Copy"
 msgstr "Copiar"
 
 #: src/kasasa-window.c:692
-msgid "Copied to the clibboard"
+msgid "Copied to the clipboard"
 msgstr "Copiado al portapapeles"
 
 #: src/kasasa-window.ui:49
@@ -212,11 +212,11 @@ msgid "Time (in minutes)"
 msgstr "Tiempo (en minutos)"
 
 #: src/kasasa-preferences.ui:98
-msgid "Auto trash image"
+msgid "Auto delete image"
 msgstr "Eliminar imagen automáticamente"
 
 #: src/kasasa-preferences.ui:99
-msgid "Auto delete the image when closing the window or retaking a screenshtot"
+msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
 "Eliminar automáticamente la imagen al cerrar la ventana o volver a tomar una "
 "captura de pantalla"

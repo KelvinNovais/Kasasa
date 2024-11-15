@@ -133,7 +133,7 @@ msgid "Copy"
 msgstr "Скопіювати"
 
 #: src/kasasa-window.c:692
-msgid "Copied to the clibboard"
+msgid "Copied to the clipboard"
 msgstr ""
 
 #: src/kasasa-window.ui:49
@@ -206,11 +206,11 @@ msgid "Time (in minutes)"
 msgstr ""
 
 #: src/kasasa-preferences.ui:98
-msgid "Auto trash image"
+msgid "Auto delete image"
 msgstr ""
 
 #: src/kasasa-preferences.ui:99
-msgid "Auto delete the image when closing the window or retaking a screenshtot"
+msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
 
 #~ msgid "Error"

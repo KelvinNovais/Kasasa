@@ -95,8 +95,8 @@
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSwitchRow" id="auto_trash_image_switch">
-                <property name="title" translatable="yes">Auto trash image</property>
-                <property name="subtitle" translatable="yes">Auto delete the image when closing the window or retaking a screenshtot</property>
+                <property name="title" translatable="yes">Auto delete image</property>
+                <property name="subtitle" translatable="yes">Auto delete the image when closing the window or retaking a screenshot</property>
               </object>
             </child>
           </object>

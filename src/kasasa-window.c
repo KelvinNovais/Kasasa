@@ -742,7 +742,7 @@ on_copy_button_clicked (GtkButton *button,
     }
 
   gdk_clipboard_set_texture (clipboard, texture);
-  toast = adw_toast_new (_("Copied to the clibboard"));
+  toast = adw_toast_new (_("Copied to the clipboard"));
   adw_toast_overlay_add_toast (self->toast_overlay, toast);
 }
 
