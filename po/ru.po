@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: https://github.com/KelvinNovais/Kasasa/issues\n"
 "POT-Creation-Date: 2024-11-08 22:54-0300\n"
-"PO-Revision-Date: 2024-10-03 14:25+0000\n"
+"PO-Revision-Date: 2024-11-17 14:00+0000\n"
 "Last-Translator: Vladimir Kosolapov\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -27,11 +27,11 @@ msgstr "Kasasa"
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:4
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
-msgstr ""
+msgstr "Выделяйте и закрепляйте полезную информацию"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:10
 msgid "screenshot;clipping;snip;image;"
-msgstr ""
+msgstr "скриншот;выделение;закрепление;изображение"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
 msgid ""
@@ -39,6 +39,9 @@ msgid ""
 "switch between windows or workspaces repeatedly. The application allows you "
 "to see what's behind the window by hovering over it."
 msgstr ""
+"Закрепите всё важное в небольшом плавающем окне, чтобы не переключаться между "
+"окнами или рабочими пространствами. Приложение позволяет увидеть, что "
+"находится за окном, при наведении курсора."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
 msgid "Best used with:"
@@ -55,16 +58,14 @@ msgstr "Клавиатурное сокращение"
 
 #. translators: do not include the tags <code></code>
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
-#, fuzzy
 msgid ""
 "On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
 "Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
 "kelvinnovais.Kasasa</code> "
 msgstr ""
 "В GNOME перейдите в Настройки → Клавиатура → Просмотр и изменение комбинаций "
-"клавиш → Дополнительные комбинации клавиш. Там вы сможете настроить "
-"сочетание для запуска <em><code>flatpak run io.github.kelvinnovais.Kasasa</"
-"code></em> "
+"клавиш → Дополнительные комбинации клавиш. Там вы сможете настроить сочетание "
+"для запуска <code>flatpak run io.github.kelvinnovais.Kasasa</code> "
 
 #. translators: if needed, replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
@@ -110,7 +111,7 @@ msgstr "Выход"
 #. translators: reason which the screenshot failed
 #: src/kasasa-window.c:395 src/kasasa-window.c:402
 msgid "Reason: "
-msgstr ""
+msgstr "Причина: "
 
 #: src/kasasa-window.c:402 src/kasasa-window.c:461
 #, fuzzy
@@ -119,12 +120,12 @@ msgstr "Не удалось загрузить снимок экрана"
 
 #: src/kasasa-window.c:417
 msgid "Screenshot failed"
-msgstr ""
+msgstr "Не удалось сделать снимок экрана"
 
 #: src/kasasa-window.c:450 src/kasasa-window.c:678
 #, fuzzy, c-format
 msgid "Error: %s"
-msgstr "Ошибка:"
+msgstr "Ошибка: %s"
 
 #: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
 #: src/kasasa-window.ui:58
@@ -133,7 +134,7 @@ msgstr "Копировать"
 
 #: src/kasasa-window.c:692
 msgid "Copied to the clipboard"
-msgstr ""
+msgstr "Скопировано в буфер обмена"
 
 #: src/kasasa-window.ui:49
 msgid "Retake screenshot"
@@ -141,11 +142,11 @@ msgstr "Повторить снимок экрана"
 
 #: src/kasasa-window.ui:70
 msgid "Trigger auto discard timer"
-msgstr ""
+msgstr "Таймер автоматического сбрасывания"
 
 #: src/kasasa-window.ui:82
 msgid "Auto delete image when closing window"
-msgstr ""
+msgstr "Автоматическое удаление изображения при закрытии окна"
 
 #: src/kasasa-window.ui:91
 msgid "Menu"
@@ -165,6 +166,9 @@ msgid ""
 "\n"
 "If you liked the app ❤️, consider giving it a star ⭐:"
 msgstr ""
+"Выделяйте и закрепляйте полезную информацию\n"
+"\n"
+"Если вам понравилось приложение ❤️, поставьте звезду ⭐:"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:114
@@ -181,60 +185,35 @@ msgstr "Уровень непрозрачности"
 
 #: src/kasasa-preferences.ui:39
 msgid "Auto hide the header bar"
-msgstr ""
+msgstr "Автоматическое скрытие панели заголовка"
 
 #: src/kasasa-preferences.ui:50
 msgid "Occupying screen percentage"
-msgstr ""
+msgstr "Процент занимаемого экрана"
 
 #: src/kasasa-preferences.ui:51
 msgid "Max percentage of the screen that Kasasa can use"
-msgstr ""
+msgstr "Максимальный процент экрана, который может использовать Kasasa"
 
 #: src/kasasa-preferences.ui:71
 msgid "Auto close window"
-msgstr ""
+msgstr "Автоматическое закрытие окна"
 
 #: src/kasasa-preferences.ui:72
 msgid "Auto close the window after a certain time"
-msgstr ""
+msgstr "Автоматическое закрытие окна через определённое время"
 
 #. translators: this refers to the time to auto discard the window
 #: src/kasasa-preferences.ui:78
 msgid "Time (in minutes)"
-msgstr ""
+msgstr "Время (в минутах)"
 
 #: src/kasasa-preferences.ui:98
 msgid "Auto delete image"
-msgstr ""
+msgstr "Автоматическое удаление изображения"
 
 #: src/kasasa-preferences.ui:99
 msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
-
-#~ msgid "Error"
-#~ msgstr "Ошибка"
-
-#, fuzzy
-#~ msgid "Ok"
-#~ msgstr "_Хорошо"
-
-#~ msgid "Ensure Screenshot permission is enabled in Settings → Apps → Kasasa"
-#~ msgstr ""
-#~ "Убедитесь, что разрешение на снимки экрана включено в Настройки → "
-#~ "Приложения → Kasasa"
-
-#~ msgid "_Keyboard Shortcuts"
-#~ msgstr "_Комбинации клавиш"
-
-#~ msgid "Create ephemeral floating screenshot windows"
-#~ msgstr "Создавайте эфемерные плавающие окна скриншотов"
-
-#~ msgid ""
-#~ "Take screenshots and put them on small floating windows; the application "
-#~ "also allows you to decrease the window opacity when the mouse pointer is "
-#~ "over it."
-#~ msgstr ""
-#~ "Делайте скриншоты и помещайте их в маленькие плавающие окна; приложение "
-#~ "также позволяет уменьшать непрозрачность окна, когда курсор находится над "
-#~ "ним."
+"Автоматическое удаление изображения при закрытии окна или повторном "
+"снимке экрана"
