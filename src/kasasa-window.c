@@ -491,8 +491,7 @@ on_screenshot_taken (GObject      *object,
   // If failed to get the URI, set the error message
   if (error != NULL)
     {
-      error_message = g_strconcat (_("Reason: "), error->message, NULL);
-      goto ERROR_NOTIFICATION;
+      goto EXIT_APP;
     }
 
   if (uri == NULL)
@@ -520,6 +519,7 @@ ERROR_NOTIFICATION:
                                    "io.github.kelvinnovais.Kasasa",
                                    notification);
 
+EXIT_APP:
   g_warning ("%s", error->message);
 
   gtk_window_close (GTK_WINDOW (self));
