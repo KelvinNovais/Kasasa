@@ -107,7 +107,7 @@ search_and_trash_image (const gchar *directory_name,
         {
           // Recursively search in subdirectories
           g_autofree gchar *path = g_file_get_path (file);
-          g_message ("Searching on %s ...", path);
+          g_debug ("Searching on %s ...", path);
 
           // If returned TRUE, finalize the loop returning TRUE
           if (search_and_trash_image (path, file_name) == TRUE)
@@ -124,7 +124,7 @@ search_and_trash_image (const gchar *directory_name,
             g_warning ("Error while deleting screenshot: %s", error->message);
 
           // Finilize
-          g_message ("Trasehd %s", parent_path);
+          g_debug ("Trasehd %s", parent_path);
           g_clear_object (&info);
           g_object_unref (file);
           return TRUE;
@@ -149,7 +149,7 @@ trash_image (GtkWindow *window,
   if (gtk_toggle_button_get_active (self->auto_trash_button) == FALSE)
     return FALSE;
 
-  g_message ("Auto trashing screenshot...");
+  g_debug ("Auto trashing screenshot...");
 
   // Get the image base name
   if (self->file == NULL
