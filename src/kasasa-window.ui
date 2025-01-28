@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Cambalache 0.92.1 -->
 <interface>
   <!-- interface-name kasasa-window.ui -->
@@ -11,7 +11,7 @@
     <!-- AdwWindow recommends 360×200 px as the minimun size -->
     <!-- See https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/class.Window.html -->
     <!-- If having problems on future releases, change it here -->
-    <property name="width-request">260</property>
+    <property name="width-request">297</property>
     <property name="height-request">70</property>
     <property name="resizable">false</property>
     <property name="title" translatable="yes">Kasasa</property>
@@ -42,62 +42,89 @@
                             <property name="vexpand">false</property>
                             <child type="start">
                               <object class="GtkBox">
-                                <!-- Retake screenshot button -->
                                 <child>
-                                  <object class="GtkButton" id="retake_screenshot_button">
-                                    <property name="css-classes">flat</property>
-                                    <property name="halign">center</property>
-                                    <property name="icon-name">view-refresh-symbolic</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="tooltip-text" translatable="yes">Retake screenshot</property>
-                                  </object>
-                                </child>
-                                <!-- Copy button -->
-                                <child>
-                                  <object class="GtkButton" id="copy_button">
-                                    <property name="css-classes">flat</property>
-                                    <property name="halign">center</property>
-                                    <property name="icon-name">edit-copy-symbolic</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="tooltip-text" translatable="yes">Copy</property>
-                                  </object>
-                                </child>
-                                <!-- Auto discard window button -->
-                                <child>
-                                  <object class="GtkToggleButton" id="auto_discard_button">
+                                  <object class="GtkBox">
                                     <style>
-                                      <class name="flat"/>
-                                      <class name="warning"/>
+                                      <class name="linked" />
+                                      <class name="round" />
                                     </style>
-                                    <property name="halign">center</property>
-                                    <property name="icon-name">timer-symbolic</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="tooltip-text" translatable="yes">Trigger auto discard timer</property>
+                                    <!-- Retake screenshot button -->
+                                    <child>
+                                      <object class="GtkButton" id="retake_screenshot_button">
+                                        <property name="icon-name">view-refresh-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Retake screenshot</property>
+                                      </object>
+                                    </child>
+                                     <!-- Copy button -->
+                                    <child>
+                                      <object class="GtkButton" id="copy_button">
+                                        <property name="icon-name">edit-copy-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Copy screenshot</property>
+                                      </object>
+                                    </child>
+                                    <!-- Add button -->
+                                    <child>
+                                      <object class="GtkButton" id="add_screenshot_button">
+                                        <property name="icon-name">plus-large-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Add screenshot</property>
+                                      </object>
+                                    </child>
+                                    <!-- Remove button -->
+                                    <child>
+                                      <object class="GtkButton" id="remove_screenshot_button">
+                                        <property name="sensitive">false</property>
+                                        <property name="icon-name">minus-large-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Remove screenshot</property>
+                                      </object>
+                                    </child>
+                                    <!-- Menu button -->
+                                    <child>
+                                      <object class="GtkMenuButton" id="menu_button">
+                                        <property name="icon-name">open-menu-symbolic</property>
+                                        <!-- <property name="margin-start">6</property> -->
+                                        <property name="menu-model">primary_menu</property>
+                                        <property name="primary">true</property>
+                                        <property name="tooltip-text" translatable="yes">Menu</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
-                                <!-- Auto dele image button -->
                                 <child>
-                                  <object class="GtkToggleButton" id="auto_trash_button">
-                                    <style>
-                                      <class name="flat"/>
-                                      <class name="error"/>
-                                    </style>
-                                    <property name="halign">center</property>
-                                    <property name="icon-name">user-trash-symbolic</property>
+                                  <object class="GtkBox">
                                     <property name="margin-start">6</property>
-                                    <property name="tooltip-text" translatable="yes">Auto delete image when closing window</property>
+                                    <property name="css-classes">linked</property>
+                                    <!-- Auto discard window button -->
+                                    <child>
+                                      <object class="GtkToggleButton" id="auto_discard_button">
+                                        <style>
+                                          <class name="warning"/>
+                                        </style>
+                                        <property name="icon-name">timer-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Trigger auto discard timer</property>
+                                      </object>
+                                    </child>
+                                    <!-- Auto delete image button -->
+                                    <child>
+                                      <object class="GtkToggleButton" id="auto_trash_button">
+                                        <style>
+                                          <class name="error"/>
+                                        </style>
+                                        <property name="icon-name">user-trash-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Auto delete image when closing window</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                                 <!-- Menu button -->
-                                <child>
-                                  <object class="GtkMenuButton" id="menu_button">
-                                    <property name="icon-name">open-menu-symbolic</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="menu-model">primary_menu</property>
-                                    <property name="primary">true</property>
-                                    <property name="tooltip-text" translatable="yes">Menu</property>
-                                  </object>
-                                </child>
+                                <!-- <child> -->
+                                <!--   <object class="GtkMenuButton" id="menu_button"> -->
+                                <!--     <property name="icon-name">open-menu-symbolic</property> -->
+                                <!--     <property name="margin-start">6</property> -->
+                                <!--     <property name="menu-model">primary_menu</property> -->
+                                <!--     <property name="primary">true</property> -->
+                                <!--     <property name="tooltip-text" translatable="yes">Menu</property> -->
+                                <!--   </object> -->
+                                <!-- </child> -->
                               </object>
                             </child>
                           </object>
@@ -129,12 +156,10 @@
                             <property name="orientation">vertical</property>
                             <property name="valign">end</property>
                             <property name="vexpand">true</property>
-                            <!-- Picture -->
                             <child>
-                              <object class="GtkPicture" id="picture">
-                                <property name="can-shrink">true</property>
-                                <property name="content-fit">contain</property>
-                                <property name="valign">end</property>
+                              <!-- Caroussel -->
+                              <object class="AdwCarousel" id="carousel">
+                                <property name="allow-mouse-drag">false</property>
                               </object>
                             </child>
                           </object>

@@ -1,4 +1,4 @@
-/* kasasa-window.h
+/* kasasa-window-private.h
  *
  * Copyright 2024 Kelvin
  *
@@ -20,12 +20,10 @@
 
 #pragma once
 
-#include <adwaita.h>
+#include "kasasa-window.h"
 
 G_BEGIN_DECLS
 
-#define KASASA_TYPE_WINDOW (kasasa_window_get_type ())
-
-G_DECLARE_FINAL_TYPE (KasasaWindow, kasasa_window, KASASA, WINDOW, AdwApplicationWindow)
+gboolean kasasa_window_get_trash_button_active (KasasaWindow *self);
 
 G_END_DECLS
