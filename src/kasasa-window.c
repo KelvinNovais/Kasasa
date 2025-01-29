@@ -62,12 +62,14 @@ struct _KasasaWindow
   gboolean             hide_menu_requested;
   gboolean             mouse_over_window;
   gboolean             hiding_window;
+  gboolean             ctrl_is_pressed;
 
   /* Instance variables */
   GSettings           *settings;
   XdpPortal           *portal;
-  GtkEventController  *window_event_controller;
-  GtkEventController  *menu_event_controller;
+  GtkEventController  *win_motion_event_controller;
+  GtkEventController  *win_scroll_event_controller;
+  GtkEventController  *menu_motion_event_controller;
   AdwAnimation        *window_opacity_animation;
   gint                 default_height;
   gint                 default_width;
@@ -469,60 +471,6 @@ append_screenshot (KasasaWindow *self,
   adw_carousel_scroll_to (self->carousel, GTK_WIDGET (new_screenshot), TRUE);
 }
 
-// Callback for xdp_portal_take_screenshot ()
-static void
-on_first_screenshot_taken (GObject      *object,
-                     GAsyncResult *res,
-                     gpointer      user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-  g_autoptr (GError) error = NULL;
-  g_autofree gchar *uri = NULL;
-  g_autofree gchar *error_message = NULL;
-  g_autoptr (GNotification) notification = NULL;
-  g_autoptr (GIcon) icon = NULL;
-
-  uri =  xdp_portal_take_screenshot_finish (
-    self->portal,
-    res,
-    &error
-  );
-
-  // If failed to get the URI, set the error message
-  if (error != NULL)
-    goto EXIT_APP;
-
-  if (uri == NULL)
-    {
-      // translators: reason which the screenshot failed
-      error_message = g_strconcat (_("Reason: "), _("Couldn't load the screenshot"), NULL);
-      goto ERROR_NOTIFICATION;
-    }
-
-  append_screenshot (self, uri);
-
-  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-    auto_discard_window (self);
-
-  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
-  return;
-
-ERROR_NOTIFICATION:
-  icon = g_themed_icon_new ("dialog-warning-symbolic");
-  notification = g_notification_new (_("Screenshot failed"));
-  g_notification_set_icon (notification, icon);
-  g_notification_set_body (notification, error_message);
-  g_application_send_notification (g_application_get_default (),
-                                   "io.github.kelvinnovais.Kasasa",
-                                   notification);
-
-EXIT_APP:
-  g_warning ("%s", error->message);
-
-  gtk_window_close (GTK_WINDOW (self));
-  return;
-}
-
 static void
 handle_taken_screenshot (GObject      *object,
                          GAsyncResult *res,
@@ -579,6 +527,59 @@ handle_taken_screenshot (GObject      *object,
 
   // Set the focus to the retake_screenshot_button
   gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
+}
+
+static void
+on_first_screenshot_taken (GObject      *object,
+                     GAsyncResult *res,
+                     gpointer      user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+  g_autoptr (GError) error = NULL;
+  g_autofree gchar *uri = NULL;
+  g_autofree gchar *error_message = NULL;
+  g_autoptr (GNotification) notification = NULL;
+  g_autoptr (GIcon) icon = NULL;
+
+  uri =  xdp_portal_take_screenshot_finish (
+    self->portal,
+    res,
+    &error
+  );
+
+  // If failed to get the URI, set the error message
+  if (error != NULL)
+    goto EXIT_APP;
+
+  if (uri == NULL)
+    {
+      // translators: reason which the screenshot failed
+      error_message = g_strconcat (_("Reason: "), _("Couldn't load the screenshot"), NULL);
+      goto ERROR_NOTIFICATION;
+    }
+
+  append_screenshot (self, uri);
+
+  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+    auto_discard_window (self);
+
+  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
+  return;
+
+ERROR_NOTIFICATION:
+  icon = g_themed_icon_new ("dialog-warning-symbolic");
+  notification = g_notification_new (_("Screenshot failed"));
+  g_notification_set_icon (notification, icon);
+  g_notification_set_body (notification, error_message);
+  g_application_send_notification (g_application_get_default (),
+                                   "io.github.kelvinnovais.Kasasa",
+                                   notification);
+
+EXIT_APP:
+  g_warning ("%s", error->message);
+
+  gtk_window_close (GTK_WINDOW (self));
+  return;
 }
 
 static void
@@ -744,6 +745,14 @@ on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
 
   self->mouse_over_window = FALSE;
   hide_menu (self);
+}
+
+static void
+on_scroll (GtkEventControllerScroll *self,
+           gpointer                  user_data)
+{
+  change_opacity_animated (KASASA_WINDOW (user_data),
+                           OPACITY_INCREASE);
 }
 
 // Retake screenshot
@@ -992,39 +1001,42 @@ kasasa_window_init (KasasaWindow *self)
   self->auto_discard_canceller = NULL;
   self->hiding_window = FALSE;
 
-  // Connect signal to track when settings are changed; get the necessary values
-  g_signal_connect (self->settings,
-                    "changed",
-                    G_CALLBACK (on_settings_updated),
-                    self);
-
   // MOTION EVENT CONTORLLERS: Create motion event controllers to monitor when
   // the mouse cursor is over the picture container or the menu
   // (I) Picture container
-  self->window_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->window_event_controller,
+  self->win_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (self->win_motion_event_controller,
                     "enter",
                     G_CALLBACK (on_mouse_enter_picture_container),
                     self);
-  g_signal_connect (self->window_event_controller,
+  g_signal_connect (self->win_motion_event_controller,
                     "leave",
                     G_CALLBACK (on_mouse_leave_picture_container),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->window_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->win_motion_event_controller);
 
   // (II) Menu
-  self->menu_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->menu_event_controller,
+  self->menu_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (self->menu_motion_event_controller,
                     "enter",
                     G_CALLBACK (on_mouse_enter_menu),
                     self);
-  g_signal_connect (self->menu_event_controller,
+  g_signal_connect (self->menu_motion_event_controller,
                     "leave",
                     G_CALLBACK (on_mouse_leave_menu),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->menu), self->menu_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->menu), self->menu_motion_event_controller);
 
-  // BUTTONS
+  // Increase opacity when the user scrolls the screenshot
+  self->win_scroll_event_controller =
+    gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL);
+  g_signal_connect (self->win_scroll_event_controller,
+                    "scroll-begin",
+                    G_CALLBACK (on_scroll),
+                    self);
+  gtk_widget_add_controller (GTK_WIDGET (self), self->win_scroll_event_controller);
+
+  // SIGNALS
   // Connect buttons to the callbacks
   g_signal_connect (self->retake_screenshot_button,
                     "clicked",
@@ -1042,24 +1054,12 @@ kasasa_window_init (KasasaWindow *self)
                     "clicked",
                     G_CALLBACK (on_copy_button_clicked),
                     self);
-
-  // Auto discard button
-  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-    gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
-
-
   g_signal_connect (self->auto_discard_button,
                     "toggled",
                     G_CALLBACK (on_auto_discard_button_toggled),
                     self);
 
-  // Auto trash button
-  if (g_settings_get_boolean (self->settings, "auto-trash-image"))
-    gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
-
-  // Set the focus to the retake_screenshot_button
-  gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
-
+  // Listen to events
   g_signal_connect (GTK_WINDOW (self),
                     "close-request",
                     G_CALLBACK (on_close_request),
@@ -1069,6 +1069,22 @@ kasasa_window_init (KasasaWindow *self)
                     "page-changed",
                     G_CALLBACK (on_page_changed),
                     self);
+  g_signal_connect (self->settings,
+                    "changed",
+                    G_CALLBACK (on_settings_updated),
+                    self);
+
+  // PERFFORM ACTIONS ON WIDGETS
+  // Auto discard button
+  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+    gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
+
+  // Auto trash button
+  if (g_settings_get_boolean (self->settings, "auto-trash-image"))
+    gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
+
+  // Set the focus to the retake_screenshot_button
+  gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
 
   // Hide the vertical menu if this option is enabled
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
