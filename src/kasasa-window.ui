@@ -167,6 +167,9 @@
                               <!-- Caroussel -->
                               <object class="AdwCarousel" id="carousel">
                                 <property name="allow-mouse-drag">false</property>
+                                <!-- This forces the carousel to do not expand horizontally, -->
+                                <!-- so small images do not appear together in the same window -->
+                                <property name="halign">center</property>
                               </object>
                             </child>
                           </object>
