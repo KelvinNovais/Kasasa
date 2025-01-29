@@ -57,6 +57,7 @@ struct _KasasaWindow
   GtkToggleButton     *auto_discard_button;
   GtkToggleButton     *auto_trash_button;
   AdwCarousel         *carousel;
+  GtkProgressBar      *progress_bar;
 
   /* State variables */
   gboolean             hide_menu_requested;
@@ -394,9 +395,23 @@ auto_discard_window_thread (GTask         *task,
 {
   KasasaWindow *self = KASASA_WINDOW (task_data);
   gdouble time_seconds = 60;
+  gboolean use_usleep = FALSE;
 
-  time_seconds = g_settings_get_double (self->settings, "auto-discard-window-time");
-  sleep ((unsigned int) (60 * time_seconds));
+  time_seconds *= g_settings_get_double (self->settings, "auto-discard-window-time");
+
+  // Use usleep if the wating time 'time_seconds' is <= 120 seconds...
+  use_usleep = (time_seconds <= 120);
+  // and multiply by 5 the total time
+  time_seconds *= (use_usleep) ? 5 : 1;
+
+  for (gint time = time_seconds; time >= 0; time--)
+    {
+      if (g_cancellable_is_cancelled (cancellable))
+        break;
+
+      gtk_progress_bar_set_fraction (self->progress_bar, (time / time_seconds));
+      (use_usleep) ? usleep (200000) : sleep (1);
+    }
 
   g_task_return_pointer (task, NULL, NULL);
 }
@@ -409,10 +424,11 @@ auto_discard_window_cb (GObject        *source_object,
   KasasaWindow *self = KASASA_WINDOW (source_object);
   gboolean cancelled = g_cancellable_is_cancelled (self->auto_discard_canceller);
 
-  g_cancellable_reset (self->auto_discard_canceller);
-
   if (!cancelled)
     gtk_window_close (GTK_WINDOW (self));
+
+  g_cancellable_reset (self->auto_discard_canceller);
+  gtk_progress_bar_set_fraction (self->progress_bar, 0);
 }
 
 static void
@@ -427,7 +443,7 @@ auto_discard_window (KasasaWindow *self)
   task = g_task_new (G_OBJECT (self), self->auto_discard_canceller, auto_discard_window_cb, NULL);
   // Set the task data passed to auto_discard_window_thread ()
   g_task_set_task_data (task, self, NULL);
-  g_task_set_return_on_cancel (task, TRUE);
+  g_task_set_return_on_cancel (task, FALSE);
   g_task_run_in_thread (task, auto_discard_window_thread);
   g_object_unref (task);
 }
@@ -988,6 +1004,7 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_trash_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, carousel);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, progress_bar);
 }
 
 static void

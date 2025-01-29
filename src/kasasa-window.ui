@@ -24,6 +24,7 @@
             <!-- HEADER BAR -->
             <child type="overlay">
               <object class="GtkBox">
+                <property name="orientation">vertical</property>
                 <property name="valign">start</property>
                 <child>
                   <!-- Revealer -->
@@ -140,13 +141,22 @@
                         <child>
                           <object class="GtkSeparator">
                             <property name="orientation">horizontal</property>
-                            <property name="margin-bottom">1</property>
+                            <!-- <property name="margin-bottom">1</property> -->
                           </object>
                         </child>
                       </object>
                     </child>
                   </object>
                 </child>
+
+                <child>
+                  <object class="GtkProgressBar" id="progress_bar">
+                    <style>
+                      <class name="osd" />
+                    </style>
+                  </object>
+                </child>
+
               </object>
             </child>
 
