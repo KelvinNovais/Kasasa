@@ -1,0 +1,7 @@
+.custom_headerbar {
+  background-color: @headerbar_bg_color;
+  color: @headerbar_fg_color;
+  /* Border is not working */
+  /* border: @headerbar_border_color; */
+  /* box-shadow: @headerbar_shade_color; */
+}

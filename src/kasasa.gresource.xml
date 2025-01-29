@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
+  <!-- UI -->
   <gresource prefix="/io/github/kelvinnovais/Kasasa">
     <file preprocess="xml-stripblanks">kasasa-window.ui</file>
     <file preprocess="xml-stripblanks">kasasa-preferences.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
+
+    <file alias="style.css">style.css</file>
   </gresource>
 
+  <!-- ICONS -->
   <gresource prefix="/io/github/kelvinnovais/Kasasa">
     <file preprocess="xml-stripblanks">icons/scalable/actions/timer-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/plus-large-symbolic.svg</file>

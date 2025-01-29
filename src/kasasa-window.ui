@@ -11,7 +11,7 @@
     <!-- AdwWindow recommends 360×200 px as the minimun size -->
     <!-- See https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/class.Window.html -->
     <!-- If having problems on future releases, change it here -->
-    <property name="width-request">297</property>
+    <property name="width-request">280</property>
     <property name="height-request">70</property>
     <property name="resizable">false</property>
     <property name="title" translatable="yes">Kasasa</property>
@@ -28,20 +28,25 @@
                 <child>
                   <!-- Revealer -->
                   <object class="GtkRevealer" id="menu_revealer">
-                    <property name="reveal-child">True</property>
+                    <property name="reveal-child">true</property>
                     <property name="valign">start</property>
                     <child>
                       <object class="GtkBox">
                         <property name="valign">start</property>
                         <child>
                           <!-- Header Bar -->
-                          <object class="AdwHeaderBar" id="menu">
+                          <object class="GtkWindowHandle" id="menu">
                             <property name="hexpand">true</property>
-                            <property name="show-title">false</property>
                             <property name="valign">start</property>
                             <property name="vexpand">false</property>
-                            <child type="start">
+                            <property name="height-request">46</property>
+                            <style>
+                              <class name="custom_headerbar"/>
+                            </style>
+                            <child>
                               <object class="GtkBox">
+                                <property name="margin-start">6</property>
+                                <property name="valign">center</property>
                                 <child>
                                   <object class="GtkBox">
                                     <style>
@@ -81,7 +86,6 @@
                                     <child>
                                       <object class="GtkMenuButton" id="menu_button">
                                         <property name="icon-name">open-menu-symbolic</property>
-                                        <!-- <property name="margin-start">6</property> -->
                                         <property name="menu-model">primary_menu</property>
                                         <property name="primary">true</property>
                                         <property name="tooltip-text" translatable="yes">Menu</property>
@@ -115,16 +119,19 @@
                                     </child>
                                   </object>
                                 </child>
-                                <!-- Menu button -->
-                                <!-- <child> -->
-                                <!--   <object class="GtkMenuButton" id="menu_button"> -->
-                                <!--     <property name="icon-name">open-menu-symbolic</property> -->
-                                <!--     <property name="margin-start">6</property> -->
-                                <!--     <property name="menu-model">primary_menu</property> -->
-                                <!--     <property name="primary">true</property> -->
-                                <!--     <property name="tooltip-text" translatable="yes">Menu</property> -->
-                                <!--   </object> -->
-                                <!-- </child> -->
+                                <!-- Spacer -->
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="hexpand">true</property>
+                                  </object>
+                                </child>
+                                <!-- Close button -->
+                                <child>
+                                  <object class="GtkWindowControls">
+                                    <property name="decoration-layout">close</property>
+                                    <property name="margin-end">3</property>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                           </object>
