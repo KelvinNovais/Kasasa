@@ -26,7 +26,9 @@ struct _KasasaScreenshot
   AdwBin parent_instance;
 
   /* Instance variables */
+  // TODO dispose
   GFile *file;
+  // TODO dispose
   GtkPicture *picture;
   gdouble nat_width;
   gdouble nat_height;
@@ -153,8 +155,9 @@ kasasa_screenshot_trash_image (KasasaScreenshot *self)
       return;
     }
 
-  search_and_trash_image (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES),
-                          base_name);
+  if (search_and_trash_image (g_get_user_special_dir (G_USER_DIRECTORY_PICTURES),
+                              base_name))
+    gtk_picture_set_file (self->picture, NULL);
 
   return;
 }
@@ -176,9 +179,22 @@ kasasa_screenshot_load_screenshot (KasasaScreenshot *self,
 }
 
 static void
+kasasa_screenshot_dispose (GObject *object)
+{
+  KasasaScreenshot *self = KASASA_SCREENSHOT (object);
+
+  if (self->file != NULL)
+    g_object_unref (self->file);
+
+  G_OBJECT_CLASS (kasasa_screenshot_parent_class)->dispose (object);
+}
+
+static void
 kasasa_screenshot_class_init (KasasaScreenshotClass *klass)
 {
-  // Empty
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->dispose = kasasa_screenshot_dispose;
 }
 
 static void

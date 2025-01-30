@@ -411,7 +411,10 @@ auto_discard_window_cb (GObject        *source_object,
   gboolean cancelled = g_cancellable_is_cancelled (self->auto_discard_canceller);
 
   if (!cancelled)
-    gtk_window_close (GTK_WINDOW (self));
+    {
+      gtk_window_close (GTK_WINDOW (self));
+      return;
+    }
 
   g_cancellable_reset (self->auto_discard_canceller);
   gtk_progress_bar_set_fraction (self->progress_bar, 0);
@@ -976,6 +979,8 @@ kasasa_window_dispose (GObject *kasasa_window)
 
   g_clear_object (&self->settings);
   g_clear_object (&self->portal);
+
+  gtk_widget_dispose_template (GTK_WIDGET (kasasa_window), KASASA_TYPE_WINDOW);
 
   G_OBJECT_CLASS (kasasa_window_parent_class)->dispose (kasasa_window);
 }

@@ -18,15 +18,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include <glib/gi18n.h>
 #include "kasasa-preferences.h"
 
 struct _KasasaPreferences
 {
   AdwPreferencesDialog   parent_instance;
 
-  GSettings             *settings;
-
+  /* Template widgets */
   GtkWidget             *opacity_switch;
   GtkWidget             *opacity_adjustment;
 
@@ -38,6 +36,9 @@ struct _KasasaPreferences
   GtkWidget             *auto_discard_window_adjustment;
 
   GtkWidget             *auto_trash_image_switch;
+
+  /* Instance variables */
+  GSettings             *settings;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaPreferences, kasasa_preferences, ADW_TYPE_PREFERENCES_DIALOG)
@@ -48,6 +49,8 @@ kasasa_preferences_dispose (GObject *kasasa_preferences)
   KasasaPreferences *self = KASASA_PREFERENCES (kasasa_preferences);
 
   g_clear_object (&self->settings);
+
+  gtk_widget_dispose_template (GTK_WIDGET (kasasa_preferences), KASASA_TYPE_PREFERENCES);
 
   G_OBJECT_CLASS (kasasa_preferences_parent_class)->dispose (kasasa_preferences);
 }
