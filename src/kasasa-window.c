@@ -281,20 +281,6 @@ resize_window (KasasaWindow *self)
 }
 
 static void
-on_page_changed (AdwCarousel *self,
-                 guint        index,
-                 gpointer     user_data)
-{
-  g_debug ("Resizing window for image at index %d", index);
-
-  // If the carousel is empty, return
-  if ((int) index == -1)
-    return;
-
-  resize_window (KASASA_WINDOW (user_data));
-}
-
-static void
 change_opacity_cb (double         value,
                    KasasaWindow  *self)
 {
@@ -721,6 +707,24 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
 }
 
 static void
+on_page_changed (AdwCarousel *self,
+                 guint        index,
+                 gpointer     user_data)
+{
+  g_debug ("Page changed");
+  // If the carousel is empty, return
+  if ((int) index == -1)
+    return;
+
+  // Ensure that the window is visible
+  change_opacity_animated (KASASA_WINDOW (user_data),
+                           OPACITY_INCREASE);
+
+  g_debug ("Resizing window for image at index %d due to page change", index);
+  resize_window (KASASA_WINDOW (user_data));
+}
+
+static void
 on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_motion,
                                   gpointer                  user_data)
 {
@@ -765,6 +769,8 @@ on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
 
 static void
 on_scroll (GtkEventControllerScroll *self,
+           gdouble                   dx,
+           gdouble                   dy,
            gpointer                  user_data)
 {
   change_opacity_animated (KASASA_WINDOW (user_data),
@@ -1046,9 +1052,9 @@ kasasa_window_init (KasasaWindow *self)
 
   // Increase opacity when the user scrolls the screenshot
   self->win_scroll_event_controller =
-    gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL);
+    gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES);
   g_signal_connect (self->win_scroll_event_controller,
-                    "scroll-begin",
+                    "scroll",
                     G_CALLBACK (on_scroll),
                     self);
   gtk_widget_add_controller (GTK_WIDGET (self), self->win_scroll_event_controller);

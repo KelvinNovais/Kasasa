@@ -141,7 +141,6 @@
                         <child>
                           <object class="GtkSeparator">
                             <property name="orientation">horizontal</property>
-                            <!-- <property name="margin-bottom">1</property> -->
                           </object>
                         </child>
                       </object>
