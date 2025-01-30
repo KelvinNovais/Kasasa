@@ -770,7 +770,7 @@ on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
   hide_menu (self);
 }
 
-static void
+static gboolean
 on_scroll (GtkEventControllerScroll *self,
            gdouble                   dx,
            gdouble                   dy,
@@ -778,6 +778,8 @@ on_scroll (GtkEventControllerScroll *self,
 {
   change_opacity_animated (KASASA_WINDOW (user_data),
                            OPACITY_INCREASE);
+
+  return TRUE;
 }
 
 // Retake screenshot
