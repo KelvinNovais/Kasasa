@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 22:54-0300\n"
+"POT-Creation-Date: 2025-01-31 12:14-0300\n"
 "PO-Revision-Date: 2024-11-09 22:31+0100\n"
 "Last-Translator: Albano Battistella <albanobattistella@gmail.com>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -37,9 +37,10 @@ msgid ""
 "switch between windows or workspaces repeatedly. The application allows you "
 "to see what's behind the window by hovering over it."
 msgstr ""
-"Ritaglia ciò che è importante in una piccola finestra mobile, così non dovrai "
-"passare ripetutamente da una finestra all'altra o da un'area di lavoro all'altra. L'applicazione ti consente di "
-"vedere cosa c'è dietro la finestra passandoci sopra con il mouse."
+"Ritaglia ciò che è importante in una piccola finestra mobile, così non "
+"dovrai passare ripetutamente da una finestra all'altra o da un'area di "
+"lavoro all'altra. L'applicazione ti consente di vedere cosa c'è dietro la "
+"finestra passandoci sopra con il mouse."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
 msgid "Best used with:"
@@ -61,9 +62,9 @@ msgid ""
 "Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
 "kelvinnovais.Kasasa</code> "
 msgstr ""
-"Su GNOME, vai su Impostazioni → Tastiera → Visualizza e personalizza scorciatoie → Scorciatoie "
-"personalizzate. Lì puoi impostare una scorciatoia per eseguire <code>flatpak run io.github."
-"kelvinnovais.Kasasa</code> "
+"Su GNOME, vai su Impostazioni → Tastiera → Visualizza e personalizza "
+"scorciatoie → Scorciatoie personalizzate. Lì puoi impostare una scorciatoia "
+"per eseguire <code>flatpak run io.github.kelvinnovais.Kasasa</code> "
 
 #. translators: if needed, replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
@@ -107,53 +108,68 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Esci"
 
-#. translators: reason which the screenshot failed
-#: src/kasasa-window.c:395 src/kasasa-window.c:402
-msgid "Reason: "
-msgstr "Motivo: "
-
-#: src/kasasa-window.c:402 src/kasasa-window.c:461
-msgid "Couldn't load the screenshot"
-msgstr "Impossibile caricare lo screenshot"
-
-#: src/kasasa-window.c:417
-msgid "Screenshot failed"
-msgstr "Screenshot non riuscito"
-
-#: src/kasasa-window.c:450 src/kasasa-window.c:678
+#: src/kasasa-window.c:495 src/kasasa-window.c:874
+#, c-format
 msgid "Error: %s"
 msgstr "Errore: %s"
 
-#: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
-#: src/kasasa-window.ui:58
+#: src/kasasa-window.c:497 src/kasasa-window.c:509 src/kasasa-window.c:876
 msgid "Copy"
 msgstr "Copia"
 
-#: src/kasasa-window.c:692
+#: src/kasasa-window.c:506 src/kasasa-window.c:558
+msgid "Couldn't load the screenshot"
+msgstr "Impossibile caricare lo screenshot"
+
+#. translators: reason which the screenshot failed
+#: src/kasasa-window.c:558
+msgid "Reason: "
+msgstr "Motivo: "
+
+#: src/kasasa-window.c:572
+msgid "Screenshot failed"
+msgstr "Screenshot non riuscito"
+
+#: src/kasasa-window.c:888
 msgid "Copied to the clipboard"
 msgstr "Copiato negli appunti"
 
-#: src/kasasa-window.ui:49
+#: src/kasasa-window.ui:62
 msgid "Retake screenshot"
 msgstr "Acquisisci nuovamente lo screenshot"
 
-#: src/kasasa-window.ui:70
-msgid "Trigger auto discard timer"
-msgstr "Attiva il timer di scarto automatico"
+#: src/kasasa-window.ui:69
+#, fuzzy
+msgid "Copy screenshot"
+msgstr "Acquisisci nuovamente lo screenshot"
 
-#: src/kasasa-window.ui:82
-msgid "Auto delete image when closing window"
-msgstr "Elimina automaticamente l'immagine quando si chiude la finestra"
+#: src/kasasa-window.ui:76
+#, fuzzy
+msgid "Add screenshot"
+msgstr "Acquisisci nuovamente lo screenshot"
 
-#: src/kasasa-window.ui:91
+#: src/kasasa-window.ui:84
+#, fuzzy
+msgid "Remove screenshot"
+msgstr "Acquisisci nuovamente lo screenshot"
+
+#: src/kasasa-window.ui:93
 msgid "Menu"
 msgstr "Menu"
 
-#: src/kasasa-window.ui:152
+#: src/kasasa-window.ui:109
+msgid "Trigger auto discard timer"
+msgstr "Attiva il timer di scarto automatico"
+
+#: src/kasasa-window.ui:119
+msgid "Auto delete image when closing window"
+msgstr "Elimina automaticamente l'immagine quando si chiude la finestra"
+
+#: src/kasasa-window.ui:211
 msgid "_Preferences"
 msgstr "_Preferenze"
 
-#: src/kasasa-window.ui:156
+#: src/kasasa-window.ui:215
 msgid "_About Kasasa"
 msgstr "_Informazioni su Kasasa"
 
@@ -211,7 +227,9 @@ msgstr "Elimina automaticamente l'immagine"
 
 #: src/kasasa-preferences.ui:99
 msgid "Auto delete the image when closing the window or retaking a screenshot"
-msgstr "Elimina automaticamente l'immagine quando si chiude la finestra o si esegue nuovamente uno screenshot"
+msgstr ""
+"Elimina automaticamente l'immagine quando si chiude la finestra o si esegue "
+"nuovamente uno screenshot"
 
 #~ msgid "Error"
 #~ msgstr "Errore"

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
-"Report-Msgid-Bugs-To: https://github.com/KelvinNovais/Kasasa/issues\n"
-"POT-Creation-Date: 2024-11-08 22:54-0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-31 12:14-0300\n"
 "PO-Revision-Date: 2024-11-17 14:00+0000\n"
 "Last-Translator: Vladimir Kosolapov\n"
 "Language-Team: Russian\n"
@@ -39,8 +39,8 @@ msgid ""
 "switch between windows or workspaces repeatedly. The application allows you "
 "to see what's behind the window by hovering over it."
 msgstr ""
-"Закрепите всё важное в небольшом плавающем окне, чтобы не переключаться между "
-"окнами или рабочими пространствами. Приложение позволяет увидеть, что "
+"Закрепите всё важное в небольшом плавающем окне, чтобы не переключаться "
+"между окнами или рабочими пространствами. Приложение позволяет увидеть, что "
 "находится за окном, при наведении курсора."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
@@ -64,8 +64,8 @@ msgid ""
 "kelvinnovais.Kasasa</code> "
 msgstr ""
 "В GNOME перейдите в Настройки → Клавиатура → Просмотр и изменение комбинаций "
-"клавиш → Дополнительные комбинации клавиш. Там вы сможете настроить сочетание "
-"для запуска <code>flatpak run io.github.kelvinnovais.Kasasa</code> "
+"клавиш → Дополнительные комбинации клавиш. Там вы сможете настроить "
+"сочетание для запуска <code>flatpak run io.github.kelvinnovais.Kasasa</code> "
 
 #. translators: if needed, replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
@@ -108,55 +108,69 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Выход"
 
-#. translators: reason which the screenshot failed
-#: src/kasasa-window.c:395 src/kasasa-window.c:402
-msgid "Reason: "
-msgstr "Причина: "
-
-#: src/kasasa-window.c:402 src/kasasa-window.c:461
-#, fuzzy
-msgid "Couldn't load the screenshot"
-msgstr "Не удалось загрузить снимок экрана"
-
-#: src/kasasa-window.c:417
-msgid "Screenshot failed"
-msgstr "Не удалось сделать снимок экрана"
-
-#: src/kasasa-window.c:450 src/kasasa-window.c:678
+#: src/kasasa-window.c:495 src/kasasa-window.c:874
 #, fuzzy, c-format
 msgid "Error: %s"
 msgstr "Ошибка: %s"
 
-#: src/kasasa-window.c:452 src/kasasa-window.c:464 src/kasasa-window.c:680
-#: src/kasasa-window.ui:58
+#: src/kasasa-window.c:497 src/kasasa-window.c:509 src/kasasa-window.c:876
 msgid "Copy"
 msgstr "Копировать"
 
-#: src/kasasa-window.c:692
+#: src/kasasa-window.c:506 src/kasasa-window.c:558
+#, fuzzy
+msgid "Couldn't load the screenshot"
+msgstr "Не удалось загрузить снимок экрана"
+
+#. translators: reason which the screenshot failed
+#: src/kasasa-window.c:558
+msgid "Reason: "
+msgstr "Причина: "
+
+#: src/kasasa-window.c:572
+msgid "Screenshot failed"
+msgstr "Не удалось сделать снимок экрана"
+
+#: src/kasasa-window.c:888
 msgid "Copied to the clipboard"
 msgstr "Скопировано в буфер обмена"
 
-#: src/kasasa-window.ui:49
+#: src/kasasa-window.ui:62
 msgid "Retake screenshot"
 msgstr "Повторить снимок экрана"
 
-#: src/kasasa-window.ui:70
-msgid "Trigger auto discard timer"
-msgstr "Таймер автоматического сбрасывания"
+#: src/kasasa-window.ui:69
+#, fuzzy
+msgid "Copy screenshot"
+msgstr "Повторить снимок экрана"
 
-#: src/kasasa-window.ui:82
-msgid "Auto delete image when closing window"
-msgstr "Автоматическое удаление изображения при закрытии окна"
+#: src/kasasa-window.ui:76
+#, fuzzy
+msgid "Add screenshot"
+msgstr "Повторить снимок экрана"
 
-#: src/kasasa-window.ui:91
+#: src/kasasa-window.ui:84
+#, fuzzy
+msgid "Remove screenshot"
+msgstr "Повторить снимок экрана"
+
+#: src/kasasa-window.ui:93
 msgid "Menu"
 msgstr "Меню"
 
-#: src/kasasa-window.ui:152
+#: src/kasasa-window.ui:109
+msgid "Trigger auto discard timer"
+msgstr "Таймер автоматического сбрасывания"
+
+#: src/kasasa-window.ui:119
+msgid "Auto delete image when closing window"
+msgstr "Автоматическое удаление изображения при закрытии окна"
+
+#: src/kasasa-window.ui:211
 msgid "_Preferences"
 msgstr "_Параметры"
 
-#: src/kasasa-window.ui:156
+#: src/kasasa-window.ui:215
 msgid "_About Kasasa"
 msgstr "_О приложении"
 
@@ -215,5 +229,5 @@ msgstr "Автоматическое удаление изображения"
 #: src/kasasa-preferences.ui:99
 msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
-"Автоматическое удаление изображения при закрытии окна или повторном "
-"снимке экрана"
+"Автоматическое удаление изображения при закрытии окна или повторном снимке "
+"экрана"
