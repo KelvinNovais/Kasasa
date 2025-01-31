@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the kasasa package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Kelvin Ribeiro Novais <>, 2024.
+# Kelvin Ribeiro Novais <>, 2024-2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-31 12:14-0300\n"
-"PO-Revision-Date: 2024-11-08 21:45-0300\n"
+"PO-Revision-Date: 2025-01-31 12:19-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Gtranslator 47.0\n"
+"X-Generator: Gtranslator 47.1\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:3
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
@@ -143,19 +143,16 @@ msgid "Retake screenshot"
 msgstr "Refazer captura de tela"
 
 #: src/kasasa-window.ui:69
-#, fuzzy
 msgid "Copy screenshot"
-msgstr "Refazer captura de tela"
+msgstr "Copiar captura de tela"
 
 #: src/kasasa-window.ui:76
-#, fuzzy
 msgid "Add screenshot"
-msgstr "Refazer captura de tela"
+msgstr "Adicionar captura de tela"
 
 #: src/kasasa-window.ui:84
-#, fuzzy
 msgid "Remove screenshot"
-msgstr "Refazer captura de tela"
+msgstr "Remover captura de tela"
 
 #: src/kasasa-window.ui:93
 msgid "Menu"
