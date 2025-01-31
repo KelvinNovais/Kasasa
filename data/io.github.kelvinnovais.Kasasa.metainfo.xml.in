@@ -72,6 +72,20 @@
   </branding>
 
   <releases>
+    <release date="2025-01-31" version="1.0.0">
+      <description translate="no">
+        <p>Features:</p>
+        <ul>
+          <li>Add up to 5 screenshots on the same instance</li>
+          <li>UI improvements</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>Icon color</li>
+          <li>Removed error notification when screenshot is cancelled (Marcin Jahn @marcinjahn)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2024-11-20" version="0.1.4">
       <description translate="no">
         <ul>
