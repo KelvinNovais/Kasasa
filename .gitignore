@@ -3,3 +3,5 @@ builddir
 repo
 test
 .flatpak-builder
+
+io.github.kelvinnovais.Kasasa.json~

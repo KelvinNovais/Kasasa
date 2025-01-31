@@ -32,6 +32,9 @@ KasasaScreenshot *kasasa_screenshot_new (void);
 
 GFile *kasasa_screenshot_get_file (KasasaScreenshot *self);
 
+gint kasasa_screenshot_get_image_height (KasasaScreenshot *self);
+gint kasasa_screenshot_get_image_width (KasasaScreenshot *self);
+
 gdouble kasasa_screenshot_get_nat_width (KasasaScreenshot *self);
 gdouble kasasa_screenshot_get_nat_height (KasasaScreenshot *self);
 

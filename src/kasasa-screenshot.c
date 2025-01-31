@@ -23,34 +23,51 @@
 
 struct _KasasaScreenshot
 {
-  AdwBin parent_instance;
+  AdwBin                  parent_instance;
 
   /* Instance variables */
-  // TODO dispose
-  GFile *file;
-  // TODO dispose
-  GtkPicture *picture;
-  gdouble nat_width;
-  gdouble nat_height;
+  GFile                  *file;
+  GtkPicture             *picture;
+  gdouble                 nat_width;
+  gdouble                 nat_height;
+  gint                    image_height;
+  gint                    image_width;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaScreenshot, kasasa_screenshot, ADW_TYPE_BIN)
 
+gint
+kasasa_screenshot_get_image_height (KasasaScreenshot *self)
+{
+  g_return_val_if_fail (KASASA_IS_SCREENSHOT (self), -1);
+  return self->image_height;
+}
+
+gint
+kasasa_screenshot_get_image_width (KasasaScreenshot *self)
+{
+  g_return_val_if_fail (KASASA_IS_SCREENSHOT (self), -1);
+  return self->image_width;
+}
+
 GFile *
 kasasa_screenshot_get_file (KasasaScreenshot *self)
 {
+  g_return_val_if_fail (KASASA_IS_SCREENSHOT (self), NULL);
   return self->file;
 }
 
 gdouble
 kasasa_screenshot_get_nat_width (KasasaScreenshot *self)
 {
+  g_return_val_if_fail (KASASA_IS_SCREENSHOT (self), -1);
   return self->nat_width;
 }
 
 gdouble
 kasasa_screenshot_get_nat_height (KasasaScreenshot *self)
 {
+  g_return_val_if_fail (KASASA_IS_SCREENSHOT (self), -1);
   return self->nat_height;
 }
 
@@ -58,6 +75,7 @@ void
 kasasa_screenshot_set_nat_width (KasasaScreenshot *self,
                                  gdouble           nat_width)
 {
+  g_return_if_fail (KASASA_IS_SCREENSHOT (self));
   self->nat_width = nat_width;
 }
 
@@ -65,6 +83,7 @@ void
 kasasa_screenshot_set_nat_height (KasasaScreenshot *self,
                                   gdouble           nat_height)
 {
+  g_return_if_fail (KASASA_IS_SCREENSHOT (self));
   self->nat_height = nat_height;
 }
 
@@ -137,9 +156,14 @@ search_and_trash_image (const gchar *directory_name,
 void
 kasasa_screenshot_trash_image (KasasaScreenshot *self)
 {
-  GtkRoot *root = gtk_widget_get_root (GTK_WIDGET (self));
-  KasasaWindow *window = KASASA_WINDOW (root);
+  GtkRoot *root = NULL;
+  KasasaWindow *window = NULL;
   g_autofree gchar *base_name = NULL;
+
+  g_return_if_fail (KASASA_IS_SCREENSHOT (self));
+
+  root = gtk_widget_get_root (GTK_WIDGET (self));
+  window = KASASA_WINDOW (root);
 
   // Return if auto trashing screenshot is not enabled
   if (kasasa_window_get_trash_button_active (window) == FALSE)
@@ -167,10 +191,20 @@ void
 kasasa_screenshot_load_screenshot (KasasaScreenshot *self,
                                    const gchar      *uri)
 {
+  g_autoptr (GError) error = NULL;
+  g_autoptr (GdkTexture) texture = NULL;
+
+  g_return_if_fail (KASASA_IS_SCREENSHOT (self) || uri == NULL);
+
   if (self->file != NULL)
     kasasa_screenshot_trash_image (self);
 
   self->file = g_file_new_for_uri (uri);
+
+  // Save image information
+  texture = gdk_texture_new_from_file (self->file, &error);
+  self->image_height = gdk_texture_get_height (texture);
+  self->image_width = gdk_texture_get_width (texture);
 
   // Explicity unset the previous image: for some reason the old image doesn't get
   // replaced if the new image have the same size

@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include <libportal-gtk4/portal-gtk4.h>
+#include <libportal/portal.h>
 #include <glib/gi18n.h>
 #include <math.h>
 
@@ -63,7 +63,6 @@ struct _KasasaWindow
   gboolean             hide_menu_requested;
   gboolean             mouse_over_window;
   gboolean             hiding_window;
-  gboolean             ctrl_is_pressed;
 
   /* Instance variables */
   GSettings           *settings;
@@ -109,7 +108,6 @@ compute_size (KasasaWindow     *self,
   // Based on:
   // https://gitlab.gnome.org/GNOME/Incubator/showtime/-/blob/main/showtime/window.py?ref_type=heads#L836
   // https://gitlab.gnome.org/GNOME/loupe/-/blob/4ca5f9e03d18667db5d72325597cebc02887777a/src/widgets/image/rendering.rs#L151
-  g_autoptr (GdkTexture) texture = NULL;
   g_autoptr (GError) error = NULL;
   GtkNative *native = NULL;
   GdkDisplay *display = NULL;
@@ -122,8 +120,6 @@ compute_size (KasasaWindow     *self,
   // gdoubles
   gdouble occupy_area_factor, size_scale, target_scale;
 
-  texture = gdk_texture_new_from_file (kasasa_screenshot_get_file (screenshot),
-                                       &error);
   if (error != NULL)
     {
       g_warning ("%s", error->message);
@@ -162,8 +158,8 @@ compute_size (KasasaWindow     *self,
                                &self->default_width, &self->default_height);
 
   // AREAS
-  image_height = gdk_texture_get_height (texture);
-  image_width = gdk_texture_get_width (texture);
+  image_height = kasasa_screenshot_get_image_height (screenshot);
+  image_width = kasasa_screenshot_get_image_width (screenshot);
   image_area = image_height * image_width;
 
   hidpi_scale = gdk_surface_get_scale_factor (surface);
@@ -952,7 +948,9 @@ on_close_request (GtkWindow *window,
   // the image is only deleted by KasasaScreenshot if the trash_button is toggled
   for (gint i = n_pages-1; i >= 0; i--)
     {
-      KasasaScreenshot *screenshot = KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel, i));
+      KasasaScreenshot *screenshot =
+        KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel, i));
+
       // First trash the image (it needs a reference to the parent window)...
       kasasa_screenshot_trash_image (screenshot);
       // ...then remove it from the carousel
@@ -1031,6 +1029,23 @@ kasasa_window_init (KasasaWindow *self)
   self->auto_discard_canceller = NULL;
   self->hiding_window = FALSE;
 
+  // PERFFORM ACTIONS ON WIDGETS (this should be done before connecting signals
+  // to avoid triggering them)
+  // Auto discard button
+  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
+    gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
+
+  // Auto trash button
+  if (g_settings_get_boolean (self->settings, "auto-trash-image"))
+    gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
+
+  // Set the focus to the retake_screenshot_button
+  gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
+
+  // Hide the vertical menu if this option is enabled
+  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
+    gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), FALSE);
+
   // MOTION EVENT CONTORLLERS: Create motion event controllers to monitor when
   // the mouse cursor is over the picture container or the menu
   // (I) Picture container
@@ -1094,7 +1109,6 @@ kasasa_window_init (KasasaWindow *self)
                     "close-request",
                     G_CALLBACK (on_close_request),
                     self);
-
   g_signal_connect (self->carousel,
                     "page-changed",
                     G_CALLBACK (on_page_changed),
@@ -1103,22 +1117,6 @@ kasasa_window_init (KasasaWindow *self)
                     "changed",
                     G_CALLBACK (on_settings_updated),
                     self);
-
-  // PERFFORM ACTIONS ON WIDGETS
-  // Auto discard button
-  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-    gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
-
-  // Auto trash button
-  if (g_settings_get_boolean (self->settings, "auto-trash-image"))
-    gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
-
-  // Set the focus to the retake_screenshot_button
-  gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
-
-  // Hide the vertical menu if this option is enabled
-  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), FALSE);
 
   // Request a screenshot
   xdp_portal_take_screenshot (

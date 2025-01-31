@@ -9,7 +9,7 @@ kasasa_sources = [
 kasasa_deps = [
   dependency('gtk4'),
   dependency('libadwaita-1', version: '>= 1.4'),
-  dependency('libportal-gtk4')
+  dependency('libportal')
 ]
 
 kasasa_deps += cc.find_library('m', required : true)
