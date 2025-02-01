@@ -1,14 +1,14 @@
 # ITALIAN TRANSLATION.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the kasasa package.
-# ALBANO BATTISTELLA <ALBANOBATTISTELLA@GMAIL.COM>, 2024.
+# ALBANO BATTISTELLA <ALBANOBATTISTELLA@GMAIL.COM>, 2024,2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-31 12:14-0300\n"
-"PO-Revision-Date: 2024-11-09 22:31+0100\n"
+"PO-Revision-Date: 2025-02-01 07:31+0100\n"
 "Last-Translator: Albano Battistella <albanobattistella@gmail.com>\n"
 "Language-Team: Italian <LL@li.org>\n"
 "Language: it\n"
@@ -139,19 +139,16 @@ msgid "Retake screenshot"
 msgstr "Acquisisci nuovamente lo screenshot"
 
 #: src/kasasa-window.ui:69
-#, fuzzy
 msgid "Copy screenshot"
-msgstr "Acquisisci nuovamente lo screenshot"
+msgstr "Copia screenshot"
 
 #: src/kasasa-window.ui:76
-#, fuzzy
 msgid "Add screenshot"
-msgstr "Acquisisci nuovamente lo screenshot"
+msgstr "Aggiungi screenshot"
 
 #: src/kasasa-window.ui:84
-#, fuzzy
 msgid "Remove screenshot"
-msgstr "Acquisisci nuovamente lo screenshot"
+msgstr "Rimuovi screenshot"
 
 #: src/kasasa-window.ui:93
 msgid "Menu"
