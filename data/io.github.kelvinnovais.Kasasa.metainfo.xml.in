@@ -72,6 +72,14 @@
   </branding>
 
   <releases>
+    <release date="2025-03-15" version="1.0.1">
+      <description translate="no">
+        <ul>
+          <li>Added Dutch translation (Heimen Stoffels @Vistaus)</li>
+          <li>Updated Italian translation (Albano Battistella @albanobattistella)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2025-01-31" version="1.0.0">
       <description translate="no">
         <p>Features:</p>
