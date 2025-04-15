@@ -910,7 +910,14 @@ on_settings_updated (GSettings *settings,
 
   if (g_strcmp0 (key, "auto-hide-menu") == 0)
     {
-      if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
+      gboolean auto_hide = g_settings_get_boolean (self->settings, "auto-hide-menu");
+
+      if (auto_hide)
+        gtk_widget_add_css_class (GTK_WIDGET (self->menu), "auto-hide");
+      else
+        gtk_widget_remove_css_class (GTK_WIDGET (self->menu), "auto-hide");
+
+      if (auto_hide)
         hide_menu (self);
       else
         g_timeout_add_seconds_once (2, reveal_menu_cb, self);
@@ -1029,6 +1036,8 @@ kasasa_window_init (KasasaWindow *self)
   self->auto_discard_canceller = NULL;
   self->hiding_window = FALSE;
 
+  g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
+
   // PERFFORM ACTIONS ON WIDGETS (this should be done before connecting signals
   // to avoid triggering them)
   // Auto discard button
@@ -1041,6 +1050,9 @@ kasasa_window_init (KasasaWindow *self)
 
   // Set the focus to the retake_screenshot_button
   gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
+
+  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
+    gtk_widget_add_css_class (GTK_WIDGET (self->menu), "auto-hide");
 
   // Hide the vertical menu if this option is enabled
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
@@ -1112,10 +1124,6 @@ kasasa_window_init (KasasaWindow *self)
   g_signal_connect (self->carousel,
                     "page-changed",
                     G_CALLBACK (on_page_changed),
-                    self);
-  g_signal_connect (self->settings,
-                    "changed",
-                    G_CALLBACK (on_settings_updated),
                     self);
 
   // Request a screenshot
