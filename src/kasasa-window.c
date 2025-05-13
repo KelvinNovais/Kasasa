@@ -28,6 +28,7 @@
 #include "kasasa-screenshot.h"
 #include "take-first-screenshot.h"
 #include "add-screenshot.h"
+#include "retake-screenshot.h"
 
 enum Opacity
 {
@@ -490,40 +491,6 @@ kasasa_window_handle_taken_screenshot (GObject      *object,
 }
 
 static void
-on_screenshot_retaken (GObject      *object,
-                       GAsyncResult *res,
-                       gpointer      user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  kasasa_window_handle_taken_screenshot (object, res, user_data, TRUE);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button),
-                            TRUE);
-
-  // Enable carousel again
-  adw_carousel_set_interactive (self->carousel, TRUE);
-}
-
-static void
-retake_screenshot (gpointer user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  // Avoid changing the carousel page
-  adw_carousel_set_interactive (self->carousel, FALSE);
-
-  xdp_portal_take_screenshot (
-    self->portal,
-    NULL,
-    XDP_SCREENSHOT_FLAG_INTERACTIVE,
-    NULL,
-    on_screenshot_retaken,
-    self
-  );
-}
-
-static void
 hide_menu_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
@@ -655,20 +622,6 @@ on_scroll (GtkEventControllerScroll *self,
                            OPACITY_INCREASE);
 
   return TRUE;
-}
-
-// Retake screenshot
-static void
-on_retake_screenshot_button_clicked (GtkButton *button,
-                                     gpointer   user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
-
-  kasasa_window_hide_window (self, TRUE);
-
-  g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, retake_screenshot, self);
 }
 
 static void
@@ -963,7 +916,7 @@ kasasa_window_init (KasasaWindow *self)
   // Connect buttons to the callbacks
   g_signal_connect (self->retake_screenshot_button,
                     "clicked",
-                    G_CALLBACK (on_retake_screenshot_button_clicked),
+                    G_CALLBACK (retake_screenshot),
                     self);
   g_signal_connect (self->add_screenshot_button,
                     "clicked",

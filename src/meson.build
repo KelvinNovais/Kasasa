@@ -5,7 +5,8 @@ kasasa_sources = [
   'kasasa-preferences.c',
   'kasasa-screenshot.c',
   'take-first-screenshot.c',
-  'add-screenshot.c'
+  'add-screenshot.c',
+  'retake-screenshot.c'
 ]
 
 kasasa_deps = [
