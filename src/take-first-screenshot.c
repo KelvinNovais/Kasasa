@@ -19,6 +19,7 @@
  */
 
 #include <glib/gi18n.h>
+#include <libportal/portal.h>
 
 #include <take-first-screenshot.h>
 

@@ -1,4 +1,4 @@
-/* take-first-screenshot.h
+/* add-screenshot.h
  *
  * Copyright 2025 Kelvin
  *
@@ -24,6 +24,6 @@
 
 G_BEGIN_DECLS
 
-void take_first_screenshot (KasasaWindow *window);
+void add_screenshot (GtkButton *button, gpointer user_data);
 
 G_END_DECLS

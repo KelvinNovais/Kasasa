@@ -27,11 +27,7 @@
 #include "kasasa-window-private.h"
 #include "kasasa-screenshot.h"
 #include "take-first-screenshot.h"
-
-#define HIDE_WINDOW_TIME 110
-#define WAITING_HIDE_WINDOW_TIME (2 * HIDE_WINDOW_TIME)
-
-#define MAX_SCREENSHOTS 5
+#include "add-screenshot.h"
 
 enum Opacity
 {
@@ -299,9 +295,9 @@ change_opacity_animated (KasasaWindow *self,
  * This trick is required because by using gtk_widget_set_visible (window, FALSE),
  * cause the window to be unpinned.
  */
-static void
-hide_window (KasasaWindow *self,
-             gboolean hide)
+void
+kasasa_window_hide_window (KasasaWindow *self,
+                           gboolean hide)
 {
   AdwAnimationTarget *target = NULL;
 
@@ -396,8 +392,8 @@ kasasa_window_auto_discard_window (KasasaWindow *self)
   g_object_unref (task);
 }
 
-static void
-update_buttons_sensibility (KasasaWindow *self)
+void
+kasasa_window_update_buttons_sensibility (KasasaWindow *self)
 {
   if (adw_carousel_get_n_pages (self->carousel) < MAX_SCREENSHOTS)
     gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button),
@@ -435,17 +431,17 @@ kasasa_window_append_screenshot (KasasaWindow *self,
   adw_carousel_scroll_to (self->carousel, GTK_WIDGET (new_screenshot), TRUE);
 }
 
-static void
-handle_taken_screenshot (GObject      *object,
-                         GAsyncResult *res,
-                         gpointer      user_data,
-                         gboolean      retaking_screenshot)
+void
+kasasa_window_handle_taken_screenshot (GObject      *object,
+                                       GAsyncResult *res,
+                                       gpointer      user_data,
+                                       gboolean      retaking_screenshot)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
   g_autoptr (GError) error = NULL;
   g_autofree gchar *uri = NULL;
 
-  hide_window (self, FALSE);
+  kasasa_window_hide_window (self, FALSE);
 
   uri =  xdp_portal_take_screenshot_finish (
     self->portal,
@@ -500,25 +496,13 @@ on_screenshot_retaken (GObject      *object,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  handle_taken_screenshot (object, res, user_data, TRUE);
+  kasasa_window_handle_taken_screenshot (object, res, user_data, TRUE);
 
   gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button),
                             TRUE);
 
   // Enable carousel again
   adw_carousel_set_interactive (self->carousel, TRUE);
-}
-
-static void
-on_screenshot_taken (GObject      *object,
-                     GAsyncResult *res,
-                     gpointer      user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  handle_taken_screenshot (object, res, user_data, FALSE);
-
-  update_buttons_sensibility (self);
 }
 
 static void
@@ -535,21 +519,6 @@ retake_screenshot (gpointer user_data)
     XDP_SCREENSHOT_FLAG_INTERACTIVE,
     NULL,
     on_screenshot_retaken,
-    self
-  );
-}
-
-static void
-take_screenshot (gpointer user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  xdp_portal_take_screenshot (
-    self->portal,
-    NULL,
-    XDP_SCREENSHOT_FLAG_INTERACTIVE,
-    NULL,
-    on_screenshot_taken,
     self
   );
 }
@@ -697,22 +666,9 @@ on_retake_screenshot_button_clicked (GtkButton *button,
 
   gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
 
-  hide_window (self, TRUE);
+  kasasa_window_hide_window (self, TRUE);
 
   g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, retake_screenshot, self);
-}
-
-static void
-on_add_screenshot_button_clicked (GtkButton *button,
-                                  gpointer   user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button), FALSE);
-
-  hide_window (self, TRUE);
-
-  g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, take_screenshot, self);
 }
 
 static void
@@ -758,7 +714,7 @@ on_remove_screenshot_button_clicked (GtkButton *button,
 
   adw_carousel_scroll_to (self->carousel, GTK_WIDGET (neighbor_screenshot), TRUE);
 
-  update_buttons_sensibility (self);
+  kasasa_window_update_buttons_sensibility (self);
 
   adw_carousel_set_interactive (self->carousel, TRUE);
 }
@@ -1011,7 +967,7 @@ kasasa_window_init (KasasaWindow *self)
                     self);
   g_signal_connect (self->add_screenshot_button,
                     "clicked",
-                    G_CALLBACK (on_add_screenshot_button_clicked),
+                    G_CALLBACK (add_screenshot),
                     self);
   g_signal_connect (self->remove_screenshot_button,
                     "clicked",

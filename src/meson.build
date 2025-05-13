@@ -4,7 +4,8 @@ kasasa_sources = [
   'kasasa-window.c',
   'kasasa-preferences.c',
   'kasasa-screenshot.c',
-  'take-first-screenshot.c'
+  'take-first-screenshot.c',
+  'add-screenshot.c'
 ]
 
 kasasa_deps = [

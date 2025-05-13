@@ -26,6 +26,11 @@
 
 G_BEGIN_DECLS
 
+#define HIDE_WINDOW_TIME 110
+#define WAITING_HIDE_WINDOW_TIME (2 * HIDE_WINDOW_TIME)
+
+#define MAX_SCREENSHOTS 5
+
 struct _KasasaWindow
 {
   AdwApplicationWindow  parent_instance;
@@ -66,6 +71,12 @@ struct _KasasaWindow
 gboolean kasasa_window_get_trash_button_active (KasasaWindow *window);
 void kasasa_window_append_screenshot (KasasaWindow *self, const gchar  *uri);
 void kasasa_window_auto_discard_window (KasasaWindow *self);
+void kasasa_window_hide_window (KasasaWindow *self, gboolean hide);
+void kasasa_window_handle_taken_screenshot (GObject      *object,
+                                            GAsyncResult *res,
+                                            gpointer      user_data,
+                                            gboolean      retaking_screenshot);
+void kasasa_window_update_buttons_sensibility (KasasaWindow *self);
 
 G_END_DECLS
 
