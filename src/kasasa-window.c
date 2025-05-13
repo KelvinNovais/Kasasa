@@ -20,13 +20,13 @@
 
 #include "config.h"
 
-#include <libportal/portal.h>
 #include <glib/gi18n.h>
 #include <math.h>
 
 #include "kasasa-window.h"
 #include "kasasa-window-private.h"
 #include "kasasa-screenshot.h"
+#include "take-first-screenshot.h"
 
 #define HIDE_WINDOW_TIME 110
 #define WAITING_HIDE_WINDOW_TIME (2 * HIDE_WINDOW_TIME)
@@ -37,43 +37,6 @@ enum Opacity
 {
   OPACITY_INCREASE,
   OPACITY_DECREASE
-};
-
-struct _KasasaWindow
-{
-  AdwApplicationWindow  parent_instance;
-
-  /* Template widgets */
-  GtkPicture          *picture;
-  GtkWindowHandle     *picture_container;
-  GtkButton           *retake_screenshot_button;
-  GtkButton           *add_screenshot_button;
-  GtkButton           *remove_screenshot_button;
-  GtkButton           *copy_button;
-  AdwToastOverlay     *toast_overlay;
-  GtkRevealer         *menu_revealer;
-  GtkWidget           *menu;
-  GtkMenuButton       *menu_button;
-  GtkToggleButton     *auto_discard_button;
-  GtkToggleButton     *auto_trash_button;
-  AdwCarousel         *carousel;
-  GtkProgressBar      *progress_bar;
-
-  /* State variables */
-  gboolean             hide_menu_requested;
-  gboolean             mouse_over_window;
-  gboolean             hiding_window;
-
-  /* Instance variables */
-  GSettings           *settings;
-  XdpPortal           *portal;
-  GtkEventController  *win_motion_event_controller;
-  GtkEventController  *win_scroll_event_controller;
-  GtkEventController  *menu_motion_event_controller;
-  AdwAnimation        *window_opacity_animation;
-  gint                 default_height;
-  gint                 default_width;
-  GCancellable        *auto_discard_canceller;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -416,8 +379,8 @@ auto_discard_window_cb (GObject        *source_object,
   gtk_progress_bar_set_fraction (self->progress_bar, 0);
 }
 
-static void
-auto_discard_window (KasasaWindow *self)
+void
+kasasa_window_auto_discard_window (KasasaWindow *self)
 {
   GTask *task = NULL;
 
@@ -452,9 +415,9 @@ update_buttons_sensibility (KasasaWindow *self)
 }
 
 // Load the screenshot to the GtkPicture widget
-static void
-append_screenshot (KasasaWindow *self,
-                   const gchar  *uri)
+void
+kasasa_window_append_screenshot (KasasaWindow *self,
+                                 const gchar  *uri)
 {
   KasasaScreenshot *new_screenshot = NULL;
   guint n_pages = adw_carousel_get_n_pages (self->carousel);
@@ -523,64 +486,11 @@ handle_taken_screenshot (GObject      *object,
   else
     {
       // Add new screenshot
-      append_screenshot (self, uri);
+      kasasa_window_append_screenshot (self, uri);
     }
 
   // Set the focus to the retake_screenshot_button
   gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
-}
-
-static void
-on_first_screenshot_taken (GObject      *object,
-                     GAsyncResult *res,
-                     gpointer      user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-  g_autoptr (GError) error = NULL;
-  g_autofree gchar *uri = NULL;
-  g_autofree gchar *error_message = NULL;
-  g_autoptr (GNotification) notification = NULL;
-  g_autoptr (GIcon) icon = NULL;
-
-  uri =  xdp_portal_take_screenshot_finish (
-    self->portal,
-    res,
-    &error
-  );
-
-  // If failed to get the URI, set the error message
-  if (error != NULL)
-    goto EXIT_APP;
-
-  if (uri == NULL)
-    {
-      // translators: reason which the screenshot failed
-      error_message = g_strconcat (_("Reason: "), _("Couldn't load the screenshot"), NULL);
-      goto ERROR_NOTIFICATION;
-    }
-
-  append_screenshot (self, uri);
-
-  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-    auto_discard_window (self);
-
-  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
-  return;
-
-ERROR_NOTIFICATION:
-  icon = g_themed_icon_new ("dialog-warning-symbolic");
-  notification = g_notification_new (_("Screenshot failed"));
-  g_notification_set_icon (notification, icon);
-  g_notification_set_body (notification, error_message);
-  g_application_send_notification (g_application_get_default (),
-                                   "io.github.kelvinnovais.Kasasa",
-                                   notification);
-
-EXIT_APP:
-  g_warning ("%s", error->message);
-
-  gtk_window_close (GTK_WINDOW (self));
-  return;
 }
 
 static void
@@ -896,7 +806,7 @@ on_auto_discard_button_toggled (GtkToggleButton   *button,
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   if (gtk_toggle_button_get_active (button))
-    auto_discard_window (self);
+    kasasa_window_auto_discard_window (self);
   else
     g_cancellable_cancel (self->auto_discard_canceller);
 }
@@ -1126,15 +1036,8 @@ kasasa_window_init (KasasaWindow *self)
                     G_CALLBACK (on_page_changed),
                     self);
 
-  // Request a screenshot
-  xdp_portal_take_screenshot (
-    self->portal,
-    NULL,
-    XDP_SCREENSHOT_FLAG_INTERACTIVE,
-    NULL,
-    on_first_screenshot_taken,
-    self
-  );
+  // Request the first screenshot
+  take_first_screenshot (self);
 }
 
 

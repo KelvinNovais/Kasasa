@@ -20,10 +20,58 @@
 
 #pragma once
 
+#include <libportal/portal.h>
+
 #include "kasasa-window.h"
 
 G_BEGIN_DECLS
 
-gboolean kasasa_window_get_trash_button_active (KasasaWindow *self);
+struct _KasasaWindow
+{
+  AdwApplicationWindow  parent_instance;
+
+  /* Template widgets */
+  GtkPicture          *picture;
+  GtkWindowHandle     *picture_container;
+  GtkButton           *retake_screenshot_button;
+  GtkButton           *add_screenshot_button;
+  GtkButton           *remove_screenshot_button;
+  GtkButton           *copy_button;
+  AdwToastOverlay     *toast_overlay;
+  GtkRevealer         *menu_revealer;
+  GtkWidget           *menu;
+  GtkMenuButton       *menu_button;
+  GtkToggleButton     *auto_discard_button;
+  GtkToggleButton     *auto_trash_button;
+  AdwCarousel         *carousel;
+  GtkProgressBar      *progress_bar;
+
+  /* State variables */
+  gboolean             hide_menu_requested;
+  gboolean             mouse_over_window;
+  gboolean             hiding_window;
+
+  /* Instance variables */
+  GSettings           *settings;
+  XdpPortal           *portal;
+  GtkEventController  *win_motion_event_controller;
+  GtkEventController  *win_scroll_event_controller;
+  GtkEventController  *menu_motion_event_controller;
+  AdwAnimation        *window_opacity_animation;
+  gint                 default_height;
+  gint                 default_width;
+  GCancellable        *auto_discard_canceller;
+};
+
+gboolean kasasa_window_get_trash_button_active (KasasaWindow *window);
+void kasasa_window_append_screenshot (KasasaWindow *self, const gchar  *uri);
+void kasasa_window_auto_discard_window (KasasaWindow *self);
 
 G_END_DECLS
+
+/*
+ * Descanxe em paz, tia Eldenir
+ * nós te amamos muito.
+ *
+ * 10/05/25
+ */
