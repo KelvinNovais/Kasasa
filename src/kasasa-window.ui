@@ -37,15 +37,10 @@
                         <property name="valign">start</property>
                         <child>
                           <!-- Header Bar -->
-                          <object class="GtkWindowHandle" id="menu">
-                            <property name="hexpand">true</property>
-                            <property name="valign">start</property>
-                            <property name="vexpand">false</property>
-                            <property name="height-request">46</property>
-                            <style>
-                              <class name="custom_headerbar"/>
-                            </style>
-                            <child>
+                          <object class="AdwHeaderBar" id="menu">
+                            <property name="show-title">false</property>
+                            <property name="decoration-layout">:close</property>
+                            <child type="start">
                               <object class="GtkBox">
                                 <property name="margin-start">6</property>
                                 <property name="valign">center</property>
@@ -121,26 +116,8 @@
                                     </child>
                                   </object>
                                 </child>
-                                <!-- Spacer -->
-                                <child>
-                                  <object class="GtkBox">
-                                    <property name="hexpand">true</property>
-                                  </object>
-                                </child>
-                                <!-- Close button -->
-                                <child>
-                                  <object class="GtkWindowControls">
-                                    <property name="decoration-layout">close</property>
-                                    <property name="margin-end">3</property>
-                                  </object>
-                                </child>
                               </object>
                             </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkSeparator">
-                            <property name="orientation">horizontal</property>
                           </object>
                         </child>
                       </object>

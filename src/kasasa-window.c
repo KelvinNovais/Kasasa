@@ -165,11 +165,11 @@ compute_size (KasasaWindow     *self,
       kasasa_screenshot_set_nat_height (screenshot, new_nat_height);
     }
 
-  // If the header bar is NOT hiding, then the window height must have more 46 px
+  // If the header bar is NOT hiding, then the window height must have more 47 px
   if (!g_settings_get_boolean (self->settings, "auto-hide-menu"))
     {
       guint previous_nat_height = kasasa_screenshot_get_nat_height (screenshot);
-      kasasa_screenshot_set_nat_height (screenshot, previous_nat_height + 46);
+      kasasa_screenshot_set_nat_height (screenshot, previous_nat_height + 47);
     }
 
   return FALSE;
@@ -732,9 +732,9 @@ on_settings_updated (GSettings *settings,
       gboolean auto_hide = g_settings_get_boolean (self->settings, "auto-hide-menu");
 
       if (auto_hide)
-        gtk_widget_add_css_class (GTK_WIDGET (self->menu), "auto-hide");
+        gtk_widget_add_css_class (GTK_WIDGET (self->menu), "headerbar-no-dimming");
       else
-        gtk_widget_remove_css_class (GTK_WIDGET (self->menu), "auto-hide");
+        gtk_widget_remove_css_class (GTK_WIDGET (self->menu), "headerbar-no-dimming");
 
       if (auto_hide)
         hide_menu (self);
@@ -871,7 +871,7 @@ kasasa_window_init (KasasaWindow *self)
   gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
 
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_widget_add_css_class (GTK_WIDGET (self->menu), "auto-hide");
+    gtk_widget_add_css_class (GTK_WIDGET (self->menu), "headerbar-no-dimming");
 
   // Hide the vertical menu if this option is enabled
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
