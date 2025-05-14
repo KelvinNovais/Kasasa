@@ -1,7 +1,7 @@
 {
     "id" : "io.github.kelvinnovais.Kasasa",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "47",
+    "runtime-version" : "48",
     "sdk" : "org.gnome.Sdk",
     "command" : "kasasa",
     "finish-args" : [
@@ -42,7 +42,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/flatpak/libportal.git",
-                    "tag" : "0.8.1"
+                    "tag" : "0.9.1"
                 }
             ]
         },
