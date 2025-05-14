@@ -43,8 +43,9 @@ struct _KasasaWindow
   GtkButton           *remove_screenshot_button;
   GtkButton           *copy_button;
   AdwToastOverlay     *toast_overlay;
-  GtkRevealer         *menu_revealer;
-  AdwHeaderBar        *menu;
+  AdwHeaderBar        *header_bar;
+  GtkRevealer         *header_bar_revealer;
+  GtkRevealer         *toolbar_revealer;
   GtkMenuButton       *menu_button;
   GtkToggleButton     *auto_discard_button;
   GtkToggleButton     *auto_trash_button;
@@ -61,7 +62,7 @@ struct _KasasaWindow
   XdpPortal           *portal;
   GtkEventController  *win_motion_event_controller;
   GtkEventController  *win_scroll_event_controller;
-  GtkEventController  *menu_motion_event_controller;
+  GtkEventController  *header_bar_motion_event_controller;
   AdwAnimation        *window_opacity_animation;
   gint                 default_height;
   gint                 default_width;

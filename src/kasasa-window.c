@@ -491,30 +491,45 @@ kasasa_window_handle_taken_screenshot (GObject      *object,
 }
 
 static void
-hide_menu_cb (gpointer user_data)
+hide_header_bar_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
   self->hide_menu_requested = FALSE;
 
   /*
    * Hidding was queried because at some moment the mouse pointer left the window,
-   * however, don't hide the menu if it returned and is still over the window
+   * however, don't hide the HeaderBar if it returned and is still over the window
    */
   if (self->mouse_over_window)
     return;
 
-  gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), FALSE);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
 }
 
 static void
-reveal_menu_cb (gpointer user_data)
+hide_toolbar_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
-  gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
+
+  /*
+   * Hidding was queried because at some moment the mouse pointer left the window,
+   * however, don't hide the Toolbar if it returned and is still over the window
+   */
+  if (self->mouse_over_window)
+    return;
+
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->toolbar_revealer), FALSE);
 }
 
 static void
-hide_menu (KasasaWindow *self)
+reveal_header_bar_cb (gpointer user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
+}
+
+static void
+hide_header_bar (KasasaWindow *self)
 {
   // Hide the vertical menu if this option is enabled
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
@@ -523,7 +538,7 @@ hide_menu (KasasaWindow *self)
     if (self->hide_menu_requested == FALSE)
       {
         self->hide_menu_requested = TRUE;
-        g_timeout_add_seconds_once (2, hide_menu_cb, self);
+        g_timeout_add_seconds_once (2, hide_header_bar_cb, self);
       }
 }
 
@@ -548,7 +563,9 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
   change_opacity_animated (self, OPACITY_DECREASE);
 
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
+    gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
+
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->toolbar_revealer), TRUE);
 }
 
 static void
@@ -580,14 +597,15 @@ on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_mot
 
   self->mouse_over_window = FALSE;
   change_opacity_animated (self, OPACITY_INCREASE);
-  hide_menu (self);
+  hide_header_bar (self);
+  g_timeout_add_seconds_once (2, hide_toolbar_cb, self);
 }
 
 static void
-on_mouse_enter_menu (GtkEventControllerMotion *event_controller_motion,
-                     gdouble                   x,
-                     gdouble                   y,
-                     gpointer                  user_data)
+on_mouse_enter_header_bar (GtkEventControllerMotion *event_controller_motion,
+                           gdouble                   x,
+                           gdouble                   y,
+                           gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -600,8 +618,8 @@ on_mouse_enter_menu (GtkEventControllerMotion *event_controller_motion,
 
 // Increase window opacity when the pointer leaves it
 static void
-on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
-                     gpointer                  user_data)
+on_mouse_leave_header_bar (GtkEventControllerMotion *event_controller_motion,
+                           gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -609,7 +627,7 @@ on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
   self->mouse_over_window = FALSE;
-  hide_menu (self);
+  hide_header_bar (self);
 }
 
 static gboolean
@@ -732,14 +750,14 @@ on_settings_updated (GSettings *settings,
       gboolean auto_hide = g_settings_get_boolean (self->settings, "auto-hide-menu");
 
       if (auto_hide)
-        gtk_widget_add_css_class (GTK_WIDGET (self->menu), "headerbar-no-dimming");
+        gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
       else
-        gtk_widget_remove_css_class (GTK_WIDGET (self->menu), "headerbar-no-dimming");
+        gtk_widget_remove_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
 
       if (auto_hide)
-        hide_menu (self);
+        hide_header_bar (self);
       else
-        g_timeout_add_seconds_once (2, reveal_menu_cb, self);
+        g_timeout_add_seconds_once (2, reveal_header_bar_cb, self);
 
       // Resize the window to free/occupy the vertical menu space
       resize_window (self);
@@ -835,8 +853,9 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, remove_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, copy_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, toast_overlay);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_revealer);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar_revealer);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, toolbar_revealer);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_trash_button);
@@ -871,11 +890,11 @@ kasasa_window_init (KasasaWindow *self)
   gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
 
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_widget_add_css_class (GTK_WIDGET (self->menu), "headerbar-no-dimming");
+    gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
 
-  // Hide the vertical menu if this option is enabled
+  // Hide the HeaderBar if this option is enabled
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), FALSE);
+    gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
 
   // MOTION EVENT CONTORLLERS: Create motion event controllers to monitor when
   // the mouse cursor is over the picture container or the menu
@@ -891,17 +910,18 @@ kasasa_window_init (KasasaWindow *self)
                     self);
   gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->win_motion_event_controller);
 
-  // (II) Menu
-  self->menu_motion_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->menu_motion_event_controller,
+  // (II) HeaderBar
+  self->header_bar_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (self->header_bar_motion_event_controller,
                     "enter",
-                    G_CALLBACK (on_mouse_enter_menu),
+                    G_CALLBACK (on_mouse_enter_header_bar),
                     self);
-  g_signal_connect (self->menu_motion_event_controller,
+  g_signal_connect (self->header_bar_motion_event_controller,
                     "leave",
-                    G_CALLBACK (on_mouse_leave_menu),
+                    G_CALLBACK (on_mouse_leave_header_bar),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->menu), self->menu_motion_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->header_bar),
+                             self->header_bar_motion_event_controller);
 
   // Increase opacity when the user scrolls the screenshot
   self->win_scroll_event_controller =
