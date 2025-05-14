@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Cambalache 0.92.1 -->
 <interface>
-  <!-- interface-name kasasa-window.ui -->
   <requires lib="Adw" version="1.0"/>
   <requires lib="gio" version="2.0"/>
   <requires lib="gtk" version="4.0"/>
@@ -128,74 +126,79 @@
 
                     <!-- TOOBAR -->
                     <child type="overlay">
-                      <object class="GtkRevealer" id="toolbar_revealer">
+                      <object class="GtkRevealer" id="start_toolbar_revealer">
+                        <property name="valign">end</property>
+                        <property name="halign">start</property>
                         <property name="transition-type">crossfade</property>
                         <property name="transition-duration">1250</property>
-                        <property name="valign">end</property>
-                        <property name="margin-start">20</property>
-                        <property name="margin-end">20</property>
-                        <property name="margin-bottom">20</property>
                         <child>
                           <object class="GtkBox">
                             <property name="orientation">horizontal</property>
                             <property name="valign">end</property>
-                            <property name="halign">fill</property>
+                            <property name="halign">start</property>
+                            <property name="margin-start">18</property>
+                            <property name="margin-end">18</property>
+                            <property name="margin-bottom">18</property>
+                            <property name="css-classes">linked</property>
+
+                            <!-- Add button -->
                             <child>
-                              <object class="GtkBox">
-                                <property name="css-classes">linked</property>
-                                <!-- Add button -->
-                                <child>
-                                  <object class="GtkButton" id="add_screenshot_button">
-                                    <property name="css-classes">osd</property>
-                                    <property name="icon-name">plus-large-symbolic</property>
-                                    <property name="tooltip-text" translatable="yes">Add screenshot</property>
-                                  </object>
-                                </child>
-                                <!-- Remove button -->
-                                <child>
-                                  <object class="GtkButton" id="remove_screenshot_button">
-                                    <property name="css-classes">osd</property>
-                                    <property name="sensitive">false</property>
-                                    <property name="icon-name">minus-large-symbolic</property>
-                                    <property name="tooltip-text" translatable="yes">Remove screenshot</property>
-                                  </object>
-                                </child>
+                              <object class="GtkButton" id="add_screenshot_button">
+                                <property name="css-classes">osd</property>
+                                <property name="halign">start</property>
+                                <property name="icon-name">plus-large-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Add screenshot</property>
                               </object>
                             </child>
-
-                            <!-- Spacer -->
+                            <!-- Remove button -->
                             <child>
-                              <object class="GtkBox">
-                                <property name="hexpand">true</property>
-                                <property name="vexpand">false</property>
-                              </object>
-                            </child>
-
-                            <child>
-                              <object class="GtkBox">
-                                <property name="css-classes">linked</property>
-                                <!-- Retake screenshot button -->
-                                <child>
-                                  <object class="GtkButton" id="retake_screenshot_button">
-                                    <property name="css-classes">osd</property>
-                                    <property name="icon-name">view-refresh-symbolic</property>
-                                    <property name="tooltip-text" translatable="yes">Retake screenshot</property>
-                                  </object>
-                                </child>
-                                 <!-- Copy button -->
-                                <child>
-                                  <object class="GtkButton" id="copy_button">
-                                    <property name="css-classes">osd</property>
-                                    <property name="icon-name">edit-copy-symbolic</property>
-                                    <property name="tooltip-text" translatable="yes">Copy screenshot</property>
-                                  </object>
-                                </child>
+                              <object class="GtkButton" id="remove_screenshot_button">
+                                <property name="css-classes">osd</property>
+                                <property name="sensitive">false</property>
+                                <property name="icon-name">minus-large-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Remove screenshot</property>
                               </object>
                             </child>
                           </object>
                         </child>
                       </object>
                     </child>
+                    <child type="overlay">
+                      <object class="GtkRevealer" id="end_toolbar_revealer">
+                        <property name="transition-type">crossfade</property>
+                        <property name="transition-duration">1250</property>
+                        <property name="valign">end</property>
+                        <property name="halign">end</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="valign">end</property>
+                            <property name="halign">end</property>
+                            <property name="margin-start">18</property>
+                            <property name="margin-end">18</property>
+                            <property name="margin-bottom">18</property>
+                            <property name="css-classes">linked</property>
+
+                            <!-- Retake screenshot button -->
+                            <child>
+                              <object class="GtkButton" id="retake_screenshot_button">
+                                <property name="css-classes">osd</property>
+                                <property name="icon-name">view-refresh-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Retake screenshot</property>
+                              </object>
+                            </child>
+                             <!-- Copy button -->
+                            <child>
+                              <object class="GtkButton" id="copy_button">
+                                <property name="css-classes">osd</property>
+                                <property name="icon-name">edit-copy-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Copy screenshot</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+
                   </object>
                 </property>
               </object>

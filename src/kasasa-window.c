@@ -518,7 +518,8 @@ hide_toolbar_cb (gpointer user_data)
   if (self->mouse_over_window)
     return;
 
-  gtk_revealer_set_reveal_child (GTK_REVEALER (self->toolbar_revealer), FALSE);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->start_toolbar_revealer), FALSE);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->end_toolbar_revealer), FALSE);
 }
 
 static void
@@ -565,7 +566,8 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
-  gtk_revealer_set_reveal_child (GTK_REVEALER (self->toolbar_revealer), TRUE);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->start_toolbar_revealer), TRUE);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->end_toolbar_revealer), TRUE);
 }
 
 static void
@@ -854,7 +856,8 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, copy_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, toast_overlay);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar_revealer);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, toolbar_revealer);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, start_toolbar_revealer);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, end_toolbar_revealer);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);

@@ -45,7 +45,8 @@ struct _KasasaWindow
   AdwToastOverlay     *toast_overlay;
   AdwHeaderBar        *header_bar;
   GtkRevealer         *header_bar_revealer;
-  GtkRevealer         *toolbar_revealer;
+  GtkRevealer         *start_toolbar_revealer;
+  GtkRevealer         *end_toolbar_revealer;
   GtkMenuButton       *menu_button;
   GtkToggleButton     *auto_discard_button;
   GtkToggleButton     *auto_trash_button;
