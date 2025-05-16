@@ -9,204 +9,228 @@
     <!-- AdwWindow recommends 360×200 px as the minimun size -->
     <!-- See https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/class.Window.html -->
     <!-- If having problems on future releases, change it here -->
-    <property name="width-request">207</property>
-    <property name="height-request">110</property>
+    <!-- TODO 207 -->
+    <property name="width-request">30</property>
+    <!-- TODO 110 -->
+    <property name="height-request">30</property>
     <property name="resizable">false</property>
     <property name="title" translatable="yes">Kasasa</property>
 
     <child>
-      <object class="GtkBox" id="main_box">
+      <object class="GtkStack" id="window_mode_switcher">
         <child>
-          <object class="GtkOverlay" id="overlay">
-
-            <!-- HEADER BAR -->
-            <child type="overlay">
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-                <property name="valign">start</property>
+          <object class="GtkStackPage">
+            <property name="name">main_page</property>
+            <property name="child">
+              <object class="GtkBox" id="main_box">
                 <child>
-                  <!-- Revealer -->
-                  <object class="GtkRevealer" id="header_bar_revealer">
-                    <property name="reveal-child">true</property>
-                    <property name="valign">start</property>
-                    <child>
+                  <object class="GtkOverlay" id="overlay">
+
+                    <!-- HEADER BAR -->
+                    <child type="overlay">
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
                         <property name="valign">start</property>
                         <child>
-                          <!-- Header Bar -->
-                          <object class="AdwHeaderBar" id="header_bar">
-                            <property name="show-title">false</property>
-                            <property name="decoration-layout">:close</property>
-                            <child type="start">
+                          <!-- Revealer -->
+                          <object class="GtkRevealer" id="header_bar_revealer">
+                            <property name="reveal-child">true</property>
+                            <property name="valign">start</property>
+                            <child>
                               <object class="GtkBox">
-                                <property name="valign">center</property>
-                                <child>
-                                  <object class="GtkToggleButton" id="auto_discard_button">
-                                    <property name="css-classes">warning</property>
-                                    <property name="icon-name">timer-symbolic</property>
-                                    <property name="tooltip-text" translatable="yes">Trigger auto discard timer</property>
-                                  </object>
-                                </child>
-                                <!-- Auto delete image button -->
-                                <child>
-                                  <object class="GtkToggleButton" id="auto_trash_button">
-                                    <property name="css-classes">error</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="icon-name">user-trash-symbolic</property>
-                                    <property name="tooltip-text" translatable="yes">Auto delete image when closing window</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child type="end">
-                              <!-- Menu button -->
-                              <object class="GtkMenuButton" id="menu_button">
-                                <property name="icon-name">open-menu-symbolic</property>
-                                <property name="menu-model">primary_menu</property>
-                                <property name="primary">true</property>
-                                <property name="tooltip-text" translatable="yes">Menu</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-
-                <child>
-                  <object class="GtkProgressBar" id="progress_bar">
-                    <style>
-                      <class name="osd" />
-                    </style>
-                  </object>
-                </child>
-
-              </object>
-            </child>
-
-            <!-- PICTURE -->
-            <child>
-              <!-- Handle (allow moving the window from anywhere on the picture) -->
-              <object class="GtkWindowHandle" id="picture_container">
-                <property name="hexpand">true</property>
-                <property name="vexpand">true</property>
-                <property name="valign">end</property>
-                <property name="child">
-                  <object class="GtkOverlay">
-                    <child>
-                      <object class="GtkBox">
-                        <property name="valign">end</property>
-                        <child>
-                          <!-- Toast overlay -->
-                          <object class="AdwToastOverlay" id="toast_overlay">
-                            <property name="child">
-                              <object class="GtkBox">
-                                <property name="halign">center</property>
-                                <property name="hexpand">true</property>
                                 <property name="orientation">vertical</property>
-                                <property name="valign">end</property>
-                                <property name="vexpand">true</property>
+                                <property name="valign">start</property>
                                 <child>
-                                  <!-- Caroussel -->
-                                  <object class="AdwCarousel" id="carousel">
-                                    <property name="allow-mouse-drag">false</property>
-                                    <!-- This forces the carousel to do not expand horizontally, -->
-                                    <!-- so small images do not appear together in the same window -->
-                                    <property name="halign">center</property>
+                                  <!-- Header Bar -->
+                                  <object class="AdwHeaderBar" id="header_bar">
+                                    <property name="show-title">false</property>
+                                    <child type="start">
+                                      <object class="GtkBox">
+                                        <property name="valign">center</property>
+                                        <child>
+                                          <object class="GtkToggleButton" id="auto_discard_button">
+                                            <property name="css-classes">warning</property>
+                                            <property name="icon-name">timer-symbolic</property>
+                                            <property name="tooltip-text" translatable="yes">Trigger auto discard timer</property>
+                                          </object>
+                                        </child>
+                                        <!-- Auto delete image button -->
+                                        <child>
+                                          <object class="GtkToggleButton" id="auto_trash_button">
+                                            <property name="css-classes">error</property>
+                                            <property name="margin-start">6</property>
+                                            <property name="icon-name">user-trash-symbolic</property>
+                                            <property name="tooltip-text" translatable="yes">Auto delete image when closing window</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child type="end">
+                                      <!-- Menu button -->
+                                      <object class="GtkMenuButton" id="menu_button">
+                                        <property name="icon-name">open-menu-symbolic</property>
+                                        <property name="menu-model">primary_menu</property>
+                                        <property name="primary">true</property>
+                                        <property name="tooltip-text" translatable="yes">Menu</property>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
-                            </property>
+                            </child>
                           </object>
                         </child>
+
+                        <child>
+                          <object class="GtkProgressBar" id="progress_bar">
+                            <style>
+                              <class name="osd" />
+                            </style>
+                          </object>
+                        </child>
+
                       </object>
                     </child>
 
-                    <!-- TOOBAR -->
-                    <child type="overlay">
-                      <object class="GtkRevealer" id="start_toolbar_revealer">
+                    <!-- PICTURE -->
+                    <child>
+                      <!-- Handle (allow moving the window from anywhere on the picture) -->
+                      <object class="GtkWindowHandle" id="picture_container">
+                        <property name="hexpand">true</property>
+                        <property name="vexpand">true</property>
                         <property name="valign">end</property>
-                        <property name="halign">start</property>
-                        <property name="transition-type">crossfade</property>
-                        <property name="transition-duration">1250</property>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">horizontal</property>
-                            <property name="valign">end</property>
-                            <property name="halign">start</property>
-                            <property name="margin-start">18</property>
-                            <property name="margin-end">18</property>
-                            <property name="margin-bottom">18</property>
-                            <property name="css-classes">linked</property>
-
-                            <!-- Add button -->
+                        <property name="child">
+                          <object class="GtkOverlay">
                             <child>
-                              <object class="GtkButton" id="add_screenshot_button">
-                                <property name="css-classes">osd</property>
+                              <object class="GtkBox">
+                                <property name="valign">end</property>
+                                <child>
+                                  <!-- Toast overlay -->
+                                  <object class="AdwToastOverlay" id="toast_overlay">
+                                    <property name="child">
+                                      <object class="GtkBox">
+                                        <property name="halign">center</property>
+                                        <property name="hexpand">true</property>
+                                        <property name="orientation">vertical</property>
+                                        <property name="valign">end</property>
+                                        <property name="vexpand">true</property>
+                                        <child>
+                                          <!-- Caroussel -->
+                                          <object class="AdwCarousel" id="carousel">
+                                            <property name="allow-mouse-drag">false</property>
+                                            <!-- This forces the carousel to do not expand horizontally, -->
+                                            <!-- so small images do not appear together in the same window -->
+                                            <property name="halign">center</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                            <!-- TOOBAR -->
+                            <child type="overlay">
+                              <object class="GtkRevealer" id="start_toolbar_revealer">
+                                <property name="valign">end</property>
                                 <property name="halign">start</property>
-                                <property name="icon-name">plus-large-symbolic</property>
-                                <property name="tooltip-text" translatable="yes">Add screenshot</property>
+                                <property name="transition-type">crossfade</property>
+                                <property name="transition-duration">1250</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">horizontal</property>
+                                    <property name="valign">end</property>
+                                    <property name="halign">start</property>
+                                    <property name="margin-start">18</property>
+                                    <property name="margin-end">18</property>
+                                    <property name="margin-bottom">18</property>
+                                    <property name="css-classes">linked</property>
+
+                                    <!-- Add button -->
+                                    <child>
+                                      <object class="GtkButton" id="add_screenshot_button">
+                                        <property name="css-classes">osd</property>
+                                        <property name="halign">start</property>
+                                        <property name="icon-name">plus-large-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Add screenshot</property>
+                                      </object>
+                                    </child>
+                                    <!-- Remove button -->
+                                    <child>
+                                      <object class="GtkButton" id="remove_screenshot_button">
+                                        <property name="css-classes">osd</property>
+                                        <property name="sensitive">false</property>
+                                        <property name="icon-name">minus-large-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Remove screenshot</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
                               </object>
                             </child>
-                            <!-- Remove button -->
-                            <child>
-                              <object class="GtkButton" id="remove_screenshot_button">
-                                <property name="css-classes">osd</property>
-                                <property name="sensitive">false</property>
-                                <property name="icon-name">minus-large-symbolic</property>
-                                <property name="tooltip-text" translatable="yes">Remove screenshot</property>
+                            <child type="overlay">
+                              <object class="GtkRevealer" id="end_toolbar_revealer">
+                                <property name="transition-type">crossfade</property>
+                                <property name="transition-duration">1250</property>
+                                <property name="valign">end</property>
+                                <property name="halign">end</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="valign">end</property>
+                                    <property name="halign">end</property>
+                                    <property name="margin-start">18</property>
+                                    <property name="margin-end">18</property>
+                                    <property name="margin-bottom">18</property>
+                                    <property name="css-classes">linked</property>
+
+                                    <!-- Retake screenshot button -->
+                                    <child>
+                                      <object class="GtkButton" id="retake_screenshot_button">
+                                        <property name="css-classes">osd</property>
+                                        <property name="icon-name">view-refresh-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Retake screenshot</property>
+                                      </object>
+                                    </child>
+                                     <!-- Copy button -->
+                                    <child>
+                                      <object class="GtkButton" id="copy_button">
+                                        <property name="css-classes">osd</property>
+                                        <property name="icon-name">edit-copy-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Copy screenshot</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
                               </object>
                             </child>
+
                           </object>
-                        </child>
+                        </property>
                       </object>
                     </child>
-                    <child type="overlay">
-                      <object class="GtkRevealer" id="end_toolbar_revealer">
-                        <property name="transition-type">crossfade</property>
-                        <property name="transition-duration">1250</property>
-                        <property name="valign">end</property>
-                        <property name="halign">end</property>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="valign">end</property>
-                            <property name="halign">end</property>
-                            <property name="margin-start">18</property>
-                            <property name="margin-end">18</property>
-                            <property name="margin-bottom">18</property>
-                            <property name="css-classes">linked</property>
-
-                            <!-- Retake screenshot button -->
-                            <child>
-                              <object class="GtkButton" id="retake_screenshot_button">
-                                <property name="css-classes">osd</property>
-                                <property name="icon-name">view-refresh-symbolic</property>
-                                <property name="tooltip-text" translatable="yes">Retake screenshot</property>
-                              </object>
-                            </child>
-                             <!-- Copy button -->
-                            <child>
-                              <object class="GtkButton" id="copy_button">
-                                <property name="css-classes">osd</property>
-                                <property name="icon-name">edit-copy-symbolic</property>
-                                <property name="tooltip-text" translatable="yes">Copy screenshot</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-
                   </object>
-                </property>
+                </child>
               </object>
-            </child>
+            </property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkStackPage">
+            <property name="name">miniature_page</property>
+            <property name="child">
+              <object class="GtkWindowHandle">
+                <child>
+                  <object class="AdwStatusPage">
+                    <property name="icon-name">plus-large-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </property>
           </object>
         </child>
       </object>
-
     </child>
 
   </template>

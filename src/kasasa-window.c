@@ -632,6 +632,24 @@ on_mouse_leave_header_bar (GtkEventControllerMotion *event_controller_motion,
   hide_header_bar (self);
 }
 
+static void
+on_mouse_enter_window (GtkEventControllerMotion *event_controller_motion,
+                       gpointer                  user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+
+  gtk_stack_set_visible_child_name (self->window_mode_switcher, "main_page");
+}
+
+static void
+on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
+                       gpointer                  user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+
+  gtk_stack_set_visible_child_name (self->window_mode_switcher, "miniature_page");
+}
+
 static gboolean
 on_scroll (GtkEventControllerScroll *self,
            gdouble                   dx,
@@ -864,6 +882,7 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_trash_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, carousel);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, progress_bar);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, window_mode_switcher);
 }
 
 static void
@@ -902,29 +921,43 @@ kasasa_window_init (KasasaWindow *self)
   // MOTION EVENT CONTORLLERS: Create motion event controllers to monitor when
   // the mouse cursor is over the picture container or the menu
   // (I) Picture container
-  self->win_motion_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->win_motion_event_controller,
+  self->pc_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (self->pc_motion_event_controller,
                     "enter",
                     G_CALLBACK (on_mouse_enter_picture_container),
                     self);
-  g_signal_connect (self->win_motion_event_controller,
+  g_signal_connect (self->pc_motion_event_controller,
                     "leave",
                     G_CALLBACK (on_mouse_leave_picture_container),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->win_motion_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->pc_motion_event_controller);
 
   // (II) HeaderBar
-  self->header_bar_motion_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->header_bar_motion_event_controller,
+  self->hb_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (self->hb_motion_event_controller,
                     "enter",
                     G_CALLBACK (on_mouse_enter_header_bar),
                     self);
-  g_signal_connect (self->header_bar_motion_event_controller,
+  g_signal_connect (self->hb_motion_event_controller,
                     "leave",
                     G_CALLBACK (on_mouse_leave_header_bar),
                     self);
   gtk_widget_add_controller (GTK_WIDGET (self->header_bar),
-                             self->header_bar_motion_event_controller);
+                             self->hb_motion_event_controller);
+
+  // (III) Window
+  self->win_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (self->win_motion_event_controller,
+                    "enter",
+                    G_CALLBACK (on_mouse_enter_window),
+                    self);
+  g_signal_connect (self->win_motion_event_controller,
+                    "leave",
+                    G_CALLBACK (on_mouse_leave_window),
+                    self);
+  gtk_widget_add_controller (GTK_WIDGET (self),
+                             self->win_motion_event_controller);
+
 
   // Increase opacity when the user scrolls the screenshot
   self->win_scroll_event_controller =

@@ -52,6 +52,7 @@ struct _KasasaWindow
   GtkToggleButton     *auto_trash_button;
   AdwCarousel         *carousel;
   GtkProgressBar      *progress_bar;
+  GtkStack            *window_mode_switcher;
 
   /* State variables */
   gboolean             hide_menu_requested;
@@ -61,9 +62,10 @@ struct _KasasaWindow
   /* Instance variables */
   GSettings           *settings;
   XdpPortal           *portal;
+  GtkEventController  *pc_motion_event_controller;
+  GtkEventController  *hb_motion_event_controller;
   GtkEventController  *win_motion_event_controller;
   GtkEventController  *win_scroll_event_controller;
-  GtkEventController  *header_bar_motion_event_controller;
   AdwAnimation        *window_opacity_animation;
   gint                 default_height;
   gint                 default_width;
