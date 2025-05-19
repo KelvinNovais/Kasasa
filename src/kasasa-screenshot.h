@@ -29,24 +29,12 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (KasasaScreenshot, kasasa_screenshot, KASASA, SCREENSHOT, AdwBin)
 
 KasasaScreenshot *kasasa_screenshot_new (void);
-
-GFile *kasasa_screenshot_get_file (KasasaScreenshot *self);
-
-gint kasasa_screenshot_get_image_height (KasasaScreenshot *self);
-gint kasasa_screenshot_get_image_width (KasasaScreenshot *self);
-
-gdouble kasasa_screenshot_get_nat_width (KasasaScreenshot *self);
-gdouble kasasa_screenshot_get_nat_height (KasasaScreenshot *self);
-
-void kasasa_screenshot_set_nat_width (KasasaScreenshot *self,
-                                      gdouble           nat_width);
-void kasasa_screenshot_set_nat_height (KasasaScreenshot *self,
-                                       gdouble           nat_height);
-
-
-void kasasa_screenshot_load_screenshot (KasasaScreenshot *self,
+GFile *kasasa_screenshot_get_file (KasasaScreenshot *screenshot);
+void kasasa_secreenshot_get_dimensions (KasasaScreenshot *screenshot,
+                                        gint             *height,
+                                        gint             *width);
+void kasasa_screenshot_load_screenshot (KasasaScreenshot *screenshot,
                                         const gchar      *uri);
-
-void kasasa_screenshot_trash_image (KasasaScreenshot *self);
+void kasasa_screenshot_trash_image (KasasaScreenshot *screenshot);
 
 G_END_DECLS

@@ -1,4 +1,4 @@
-/* take-first-screenshot.h
+/* routines.h
  *
  * Copyright 2025 Kelvin
  *
@@ -20,10 +20,12 @@
 
 #pragma once
 
-#include "kasasa-window-private.h"
+#include "kasasa-picture-container.h"
 
 G_BEGIN_DECLS
 
-void take_first_screenshot (KasasaWindow *window);
+void routines_take_first_screenshot (KasasaPictureContainer *pc);
+void routines_add_screenshot (GtkButton *button, gpointer pc);
+void routines_retake_screenshot (GtkButton *button, gpointer pc);
 
 G_END_DECLS
