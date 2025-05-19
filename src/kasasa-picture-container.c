@@ -28,7 +28,7 @@
 #include "kasasa-screenshot.h"
 #include "routines.h"
 
-G_DEFINE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, ADW_TYPE_BIN)
+G_DEFINE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, ADW_TYPE_BREAKPOINT_BIN)
 
 static KasasaScreenshot * get_current_screenshot (KasasaPictureContainer *self);
 
@@ -358,7 +358,6 @@ kasasa_picture_container_class_init (KasasaPictureContainerClass *klass)
 
   gtk_widget_class_install_action (widget_class, "toast.copy_error", "s", copy_error_cb);
 
-  gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, picture_container);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, toast_overlay);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, carousel);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, retake_screenshot_button);

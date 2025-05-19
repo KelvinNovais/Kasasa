@@ -9,7 +9,6 @@
     <!-- AdwWindow recommends 360×200 px as the minimun size -->
     <!-- See https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/class.Window.html -->
     <!-- If having problems on future releases, change it here -->
-    <!-- 210 -->
     <property name="width-request">190</property>
     <property name="height-request">110</property>
     <property name="resizable">false</property>

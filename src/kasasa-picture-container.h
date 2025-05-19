@@ -29,7 +29,7 @@ G_BEGIN_DECLS
 
 #define KASASA_TYPE_PICTURE_CONTAINER (kasasa_picture_container_get_type ())
 
-G_DECLARE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, KASASA, PICTURE_CONTAINER, AdwBin)
+G_DECLARE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, KASASA, PICTURE_CONTAINER, AdwBreakpointBin)
 
 KasasaPictureContainer *kasasa_picture_container_new (void);
 void

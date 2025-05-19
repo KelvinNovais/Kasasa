@@ -24,10 +24,9 @@ G_BEGIN_DECLS
 
 struct _KasasaPictureContainer
 {
-  AdwBin                   parent_instance;
+  AdwBreakpointBin         parent_instance;
 
   /* Template widgets */
-  GtkWindowHandle         *picture_container;
   AdwToastOverlay         *toast_overlay;
   AdwCarousel             *carousel;
   GtkButton               *retake_screenshot_button;

@@ -589,10 +589,6 @@ kasasa_window_init (KasasaWindow *self)
   if (g_settings_get_boolean (self->settings, "auto-trash-image"))
     gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
 
-  // Set the focus to the retake_screenshot_button
-  // TODO
-  /* gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button)); */
-
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
 
