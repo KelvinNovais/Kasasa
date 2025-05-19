@@ -9,9 +9,8 @@
     <!-- AdwWindow recommends 360×200 px as the minimun size -->
     <!-- See https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/class.Window.html -->
     <!-- If having problems on future releases, change it here -->
-    <!-- TODO 207 -->
-    <property name="width-request">207</property>
-    <!-- TODO 110 -->
+    <!-- 210 -->
+    <property name="width-request">190</property>
     <property name="height-request">110</property>
     <property name="resizable">false</property>
     <property name="title" translatable="yes">Kasasa</property>

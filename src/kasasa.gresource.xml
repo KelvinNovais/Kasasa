@@ -8,6 +8,7 @@
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
 
     <file alias="style.css">style.css</file>
+    <file alias="style-dark.css">style-dark.css</file>
   </gresource>
 
   <!-- ICONS -->

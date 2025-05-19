@@ -46,76 +46,99 @@
             </child>
 
             <!-- TOOBAR -->
-            <!-- TODO apply loupe styles -->
-            <!-- TODO use breakpoint to decrese toolbar size -->
             <child type="overlay">
-              <object class="GtkOverlay">
-                <property name="valign">end</property>
-                <!-- Start -->
-                <child type="overlay">
-                  <object class="GtkRevealer" id="revealer_start_buttons">
-                    <property name="transition-type">crossfade</property>
-                    <property name="transition-duration">1250</property>
-                    <property name="halign">start</property>
-                    <property name="valign">end</property>
-                    <property name="margin-start">18</property>
-                    <property name="margin-end">18</property>
-                    <property name="margin-bottom">18</property>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="orientation">horizontal</property>
-                        <property name="css-classes">linked</property>
+              <object class="AdwBreakpointBin">
+                <property name="height-request">100</property>
+                <property name="width-request">100</property>
+                <child>
+                  <object class="AdwBreakpoint">
+                    <condition>max-width: 215px</condition>
+                    <setter object="box_start" property="spacing">0</setter>
+                    <setter object="box_end" property="spacing">0</setter>
+                    <setter object="revealer_start_buttons" property="margin-start">7</setter>
+                    <setter object="revealer_start_buttons" property="margin-end">7</setter>
+                    <setter object="revealer_start_buttons" property="margin-bottom">7</setter>
+                    <setter object="revealer_end_buttons" property="margin-start">7</setter>
+                    <setter object="revealer_end_buttons" property="margin-end">7</setter>
+                    <setter object="revealer_end_buttons" property="margin-bottom">7</setter>
+                  </object>
+                </child>
 
-                        <!-- Add button -->
+                <child>
+                  <object class="GtkOverlay">
+                    <property name="valign">end</property>
+                    <!-- Start -->
+                    <child type="overlay">
+                      <object class="GtkRevealer" id="revealer_start_buttons">
+                        <property name="transition-type">crossfade</property>
+                        <property name="transition-duration">1250</property>
+                        <property name="overflow">visible</property>
+                        <property name="halign">start</property>
+                        <property name="valign">end</property>
+                        <property name="margin-start">18</property>
+                        <property name="margin-end">18</property>
+                        <property name="margin-bottom">18</property>
                         <child>
-                          <object class="GtkButton" id="add_screenshot_button">
-                            <property name="css-classes">osd</property>
-                            <property name="halign">start</property>
-                            <property name="icon-name">plus-large-symbolic</property>
-                            <property name="tooltip-text" translatable="yes">Add screenshot</property>
-                          </object>
-                        </child>
-                        <!-- Remove button -->
-                        <child>
-                          <object class="GtkButton" id="remove_screenshot_button">
-                            <property name="css-classes">osd</property>
-                            <property name="sensitive">false</property>
-                            <property name="icon-name">minus-large-symbolic</property>
-                            <property name="tooltip-text" translatable="yes">Remove screenshot</property>
+                          <object class="GtkBox" id="box_start">
+                            <property name="orientation">horizontal</property>
+                            <property name="css-classes">osd-box</property>
+                            <property name="spacing">6</property>
+
+                            <!-- Add button -->
+                            <child>
+                              <object class="GtkButton" id="add_screenshot_button">
+                                <property name="css-classes">flat</property>
+                                <property name="halign">start</property>
+                                <property name="icon-name">plus-large-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Add screenshot</property>
+                              </object>
+                            </child>
+                            <!-- Remove button -->
+                            <child>
+                              <object class="GtkButton" id="remove_screenshot_button">
+                                <property name="css-classes">flat</property>
+                                <property name="sensitive">false</property>
+                                <property name="icon-name">minus-large-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Remove screenshot</property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
                     </child>
-                  </object>
-                </child>
 
-                <!-- End -->
-                <child type="overlay">
-                  <object class="GtkRevealer" id="revealer_end_buttons">
-                    <property name="transition-type">crossfade</property>
-                    <property name="transition-duration">1250</property>
-                    <property name="halign">end</property>
-                    <property name="valign">end</property>
-                    <property name="margin-start">18</property>
-                    <property name="margin-end">18</property>
-                    <property name="margin-bottom">18</property>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="css-classes">linked</property>
-                        <!-- Retake screenshot button -->
+                    <!-- End -->
+                    <child type="overlay">
+                      <object class="GtkRevealer" id="revealer_end_buttons">
+                        <property name="transition-type">crossfade</property>
+                        <property name="transition-duration">1250</property>
+                        <property name="overflow">visible</property>
+                        <property name="overflow">visible</property>
+                        <property name="halign">end</property>
+                        <property name="valign">end</property>
+                        <property name="margin-start">18</property>
+                        <property name="margin-end">18</property>
+                        <property name="margin-bottom">18</property>
                         <child>
-                          <object class="GtkButton" id="retake_screenshot_button">
-                            <property name="css-classes">osd</property>
-                            <property name="icon-name">view-refresh-symbolic</property>
-                            <property name="tooltip-text" translatable="yes">Retake screenshot</property>
-                          </object>
-                        </child>
-                         <!-- Copy screenshot button -->
-                        <child>
-                          <object class="GtkButton" id="copy_screenshot_button">
-                            <property name="css-classes">osd</property>
-                            <property name="icon-name">edit-copy-symbolic</property>
-                            <property name="tooltip-text" translatable="yes">Copy screenshot</property>
+                          <object class="GtkBox" id="box_end">
+                            <property name="css-classes">osd-box</property>
+                            <property name="spacing">6</property>
+                            <!-- Retake screenshot button -->
+                            <child>
+                              <object class="GtkButton" id="retake_screenshot_button">
+                                <property name="css-classes">flat</property>
+                                <property name="icon-name">view-refresh-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Retake screenshot</property>
+                              </object>
+                            </child>
+                             <!-- Copy screenshot button -->
+                            <child>
+                              <object class="GtkButton" id="copy_screenshot_button">
+                                <property name="css-classes">flat</property>
+                                <property name="icon-name">edit-copy-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Copy screenshot</property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
