@@ -18,8 +18,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-// TODO do not decrease opacity when the pointer is over toolbar
-
 #include <glib/gi18n.h>
 #include <math.h>
 
@@ -215,6 +213,30 @@ kasasa_picture_container_handle_taken_screenshot (GObject      *object,
 }
 
 static void
+on_mouse_enter_toolbar (GtkEventControllerMotion *event_controller_motion,
+                        gdouble                   x,
+                        gdouble                   y,
+                        gpointer                  user_data)
+{
+  KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
+
+  kasasa_window_change_opacity (window, OPACITY_INCREASE);
+}
+
+static void
+on_mouse_leave_toolbar (GtkEventControllerMotion *event_controller_motion,
+                        gdouble                   x,
+                        gdouble                   y,
+                        gpointer                  user_data)
+{
+  KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
+
+  kasasa_window_change_opacity (window, OPACITY_DECREASE);
+}
+
+static void
 on_page_changed (AdwCarousel *carousel,
                  guint        index,
                  gpointer     user_data)
@@ -368,11 +390,14 @@ kasasa_picture_container_class_init (KasasaPictureContainerClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, copy_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, revealer_start_buttons);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, revealer_end_buttons);
+  gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, toolbar_overlay);
 }
 
 static void
 kasasa_picture_container_init (KasasaPictureContainer *self)
 {
+  GtkEventController *toolbar_motion_event_controller = NULL;
+
   gtk_widget_init_template (GTK_WIDGET (self));
 
   self->portal = xdp_portal_new ();
@@ -398,6 +423,18 @@ kasasa_picture_container_init (KasasaPictureContainer *self)
                     "clicked",
                     G_CALLBACK (on_copy_screenshot_button_clicked),
                     self);
+
+  // Event controllers
+  toolbar_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (toolbar_motion_event_controller,
+                    "enter",
+                    G_CALLBACK (on_mouse_enter_toolbar),
+                    self);
+  g_signal_connect (toolbar_motion_event_controller,
+                    "leave",
+                    G_CALLBACK (on_mouse_leave_toolbar),
+                    self);
+  gtk_widget_add_controller (GTK_WIDGET (self->toolbar_overlay), toolbar_motion_event_controller);
 }
 
 KasasaPictureContainer *

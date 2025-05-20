@@ -65,7 +65,7 @@
 
             <!-- TOOBAR -->
             <child type="overlay">
-              <object class="GtkOverlay">
+              <object class="GtkOverlay" id="toolbar_overlay">
                 <property name="valign">end</property>
                 <!-- Start -->
                 <child type="overlay">

@@ -35,6 +35,7 @@ struct _KasasaPictureContainer
   GtkButton               *copy_screenshot_button;
   GtkRevealer             *revealer_end_buttons;
   GtkRevealer             *revealer_start_buttons;
+  GtkOverlay              *toolbar_overlay;
 
   /* Instance variables */
   XdpPortal               *portal;
