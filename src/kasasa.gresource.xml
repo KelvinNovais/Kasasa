@@ -16,5 +16,7 @@
     <file preprocess="xml-stripblanks">icons/scalable/actions/timer-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/plus-large-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/minus-large-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/image-round-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/dot-symbolic.svg</file>
   </gresource>
 </gresources>

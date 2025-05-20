@@ -6,13 +6,15 @@
   <requires lib="libadwaita" version="1.4"/>
 
   <template class="KasasaPictureContainer" parent="AdwBreakpointBin">
-    <property name="width-request">190</property>
-    <property name="height-request">110</property>
+    <property name="width-request">75</property>
+    <property name="height-request">75</property>
     <child>
       <object class="AdwBreakpoint">
         <condition>max-width: 215px</condition>
         <setter object="box_start" property="spacing">0</setter>
+        <setter object="box_start" property="css-classes">osd-box-no-padding</setter>
         <setter object="box_end" property="spacing">0</setter>
+        <setter object="box_end" property="css-classes">osd-box-no-padding</setter>
         <setter object="revealer_start_buttons" property="margin-start">7</setter>
         <setter object="revealer_start_buttons" property="margin-end">7</setter>
         <setter object="revealer_start_buttons" property="margin-bottom">7</setter>
@@ -69,7 +71,7 @@
                 <child type="overlay">
                   <object class="GtkRevealer" id="revealer_start_buttons">
                     <property name="transition-type">crossfade</property>
-                    <property name="transition-duration">1250</property>
+                    <!-- <property name="transition-duration">1250</property> -->
                     <property name="overflow">visible</property>
                     <property name="halign">start</property>
                     <property name="valign">end</property>
@@ -109,7 +111,7 @@
                 <child type="overlay">
                   <object class="GtkRevealer" id="revealer_end_buttons">
                     <property name="transition-type">crossfade</property>
-                    <property name="transition-duration">1250</property>
+                    <!-- <property name="transition-duration">1250</property> -->
                     <property name="overflow">visible</property>
                     <property name="overflow">visible</property>
                     <property name="halign">end</property>

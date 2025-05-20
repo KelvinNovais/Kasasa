@@ -45,7 +45,9 @@ void kasasa_window_change_opacity (KasasaWindow *window,
 void kasasa_window_resize_window (KasasaWindow *window,
                                   gdouble       new_height,
                                   gdouble       new_width);
-void kasasa_window_auto_discard_window (KasasaWindow *self);
+void kasasa_window_auto_discard_window (KasasaWindow *window);
+void kasasa_window_miniaturize_window (KasasaWindow *window, gboolean miniaturize);
+void kasasa_window_block_miniaturization (KasasaWindow *window, gboolean block);
 
 G_END_DECLS
 

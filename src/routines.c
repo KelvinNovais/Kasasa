@@ -68,6 +68,7 @@ on_first_screenshot_taken (GObject      *object,
     kasasa_window_auto_discard_window (window);
 
   gtk_widget_set_visible (GTK_WIDGET (window), TRUE);
+  kasasa_window_miniaturize_window (window, TRUE);
   return;
 
 ERROR_NOTIFICATION:
@@ -111,10 +112,13 @@ on_screenshot_taken (GObject      *object,
                      gpointer      user_data)
 {
   KasasaPictureContainer *pc = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (pc));
 
   kasasa_picture_container_handle_taken_screenshot (object, res, user_data, FALSE);
 
   kasasa_picture_container_update_buttons_sensibility (pc);
+
+  kasasa_window_block_miniaturization (window, FALSE);
 }
 
 static void
@@ -146,6 +150,8 @@ routines_add_screenshot (GtkButton *button,
 
   gtk_widget_set_sensitive (GTK_WIDGET (pc->add_screenshot_button), FALSE);
 
+  kasasa_window_block_miniaturization (window, TRUE);
+
   kasasa_window_hide_window (window, TRUE);
 
   g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, take_screenshot, pc);
@@ -161,6 +167,9 @@ on_screenshot_retaken (GObject      *object,
                        gpointer      user_data)
 {
   KasasaPictureContainer *pc = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (pc));
+
+  kasasa_window_block_miniaturization (window, FALSE);
 
   kasasa_picture_container_handle_taken_screenshot (object, res, user_data, TRUE);
 
@@ -201,6 +210,8 @@ routines_retake_screenshot (GtkButton *button, gpointer user_data)
   window = kasasa_window_get_window_reference (GTK_WIDGET (pc));
 
   gtk_widget_set_sensitive (GTK_WIDGET (pc->retake_screenshot_button), FALSE);
+
+  kasasa_window_block_miniaturization (window, TRUE);
 
   kasasa_window_hide_window (window, TRUE);
 

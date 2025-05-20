@@ -37,17 +37,19 @@ struct _KasasaWindow
   GtkToggleButton           *auto_discard_button;
   GtkToggleButton           *auto_trash_button;
   GtkProgressBar            *progress_bar;
-  /* GtkStack                  *window_mode_switcher; */
+  GtkStack                  *stack;
 
   /* State variables */
   gboolean                   hide_menu_requested;
   gboolean                   mouse_over_window;
   gboolean                   hiding_window;
+  gboolean                   block_miniaturization;
 
   /* Instance variables */
   GSettings                 *settings;
   AdwAnimation              *window_opacity_animation;
   GCancellable              *auto_discard_canceller;
+  GCancellable              *miniaturization_canceller;
   AdwAnimation              *animation_height;
   AdwAnimation              *animation_width;
 };
@@ -202,7 +204,7 @@ kasasa_window_change_opacity (KasasaWindow *window,
  */
 void
 kasasa_window_hide_window (KasasaWindow *window,
-                           gboolean hide)
+                           gboolean      hide)
 {
   AdwAnimationTarget *target = NULL;
   gdouble from, to;
@@ -303,6 +305,89 @@ kasasa_window_auto_discard_window (KasasaWindow *self)
 }
 
 static void
+window_miniaturization_thread (GTask        *task,
+                               gpointer      source_object,
+                               gpointer      task_data,
+                               GCancellable *cancellable)
+{
+  KasasaWindow *self = KASASA_WINDOW (source_object);
+  gboolean cancelled;
+
+  sleep (3);
+
+  cancelled = g_cancellable_is_cancelled (cancellable);
+
+  if (!cancelled
+      && !self->block_miniaturization)
+    {
+      gtk_widget_add_css_class (GTK_WIDGET (self), "circular-window");
+      kasasa_window_resize_window (self, 75, 75);
+      gtk_stack_set_visible_child_name (self->stack, "miniature_page");
+    }
+
+  g_task_return_pointer (task, NULL, NULL);
+}
+
+/*
+ * If miniaturize == TRUE, this function will miniaturize the window after some time
+ *
+ * If miniaturize == FALSE, previous requests will be cancelled, and the window
+ * will immediately return to its default visual
+ */
+void
+kasasa_window_miniaturize_window (KasasaWindow *self,
+                                  gboolean      miniaturize)
+{
+  GTask *task = NULL;
+
+  g_return_if_fail (KASASA_IS_WINDOW (self));
+
+  // Cancel a (possible) previous request
+  g_cancellable_cancel (self->miniaturization_canceller);
+  self->miniaturization_canceller = NULL;
+
+  if (miniaturize)
+    {
+      if (!g_settings_get_boolean (self->settings, "miniaturize-window"))
+        return;
+
+      self->miniaturization_canceller = g_cancellable_new ();
+      task = g_task_new (G_OBJECT (self), self->miniaturization_canceller, NULL, NULL);
+      g_task_set_return_on_cancel (task, FALSE);
+      g_task_run_in_thread (task, window_miniaturization_thread);
+      g_object_unref (task);
+    }
+  else
+    {
+      gtk_widget_remove_css_class (GTK_WIDGET (self), "circular-window");
+      kasasa_picture_container_request_window_resize (self->picture_container);
+      gtk_stack_set_visible_child_name (self->stack, "main_page");
+    }
+}
+
+void
+kasasa_window_block_miniaturization (KasasaWindow *self,
+                                     gboolean       block)
+{
+  g_return_if_fail (KASASA_IS_WINDOW (self));
+
+  if (block)
+    {
+      // Sets a block
+      self->block_miniaturization = TRUE;
+      // Restore window
+      kasasa_window_miniaturize_window (self, FALSE);
+    }
+  else
+    {
+      // Remove the block
+      self->block_miniaturization = FALSE;
+      // Miniaturize window
+      kasasa_window_miniaturize_window (self, TRUE);
+    }
+}
+
+static void
 hide_header_bar_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
@@ -374,6 +459,11 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
 
   kasasa_window_change_opacity (self, OPACITY_DECREASE);
 
+  // Do not reveal HeaderBar/Toolbar if miniaturization is active; this will done
+  // after clicking the window
+  if (g_settings_get_boolean (self->settings, "miniaturize-window"))
+    return;
+
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
@@ -428,20 +518,32 @@ static void
 on_mouse_enter_window (GtkEventControllerMotion *event_controller_motion,
                        gpointer                  user_data)
 {
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  /* TODO */
-  /* gtk_stack_set_visible_child_name (self->window_mode_switcher, "main_page"); */
+  kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), FALSE);
 }
 
 static void
 on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
                        gpointer                  user_data)
 {
+  kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
+}
+
+static void
+on_window_click_released (GtkGestureClick *gesture_click,
+                          gint             n_press,
+                          gdouble          x,
+                          gdouble          y,
+                          gpointer         user_data)
+{
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  /* TODO */
-  /* gtk_stack_set_visible_child_name (self->window_mode_switcher, "miniature_page"); */
+  if (!g_settings_get_boolean (self->settings, "miniaturize-window"))
+    return;
+
+  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
+    gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
+
+  kasasa_picture_container_reveal_toolbar (self->picture_container, TRUE);
 }
 
 static gboolean
@@ -509,6 +611,12 @@ on_settings_updated (GSettings *settings,
       else
         gtk_toggle_button_set_active (self->auto_trash_button, FALSE);
     }
+
+  else if (g_strcmp0 (key, "miniaturize-window") == 0)
+    {
+      if (!g_settings_get_boolean (self->settings, "miniaturize-window"))
+        kasasa_window_miniaturize_window (self, FALSE);
+    }
 }
 
 static gboolean
@@ -557,7 +665,7 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_trash_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, progress_bar);
-  /* gtk_widget_class_bind_template_child (widget_class, KasasaWindow, window_mode_switcher); */
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, stack);
 }
 
 static void
@@ -567,14 +675,16 @@ kasasa_window_init (KasasaWindow *self)
   GtkEventController *hb_motion_event_controller = NULL;
   GtkEventController *win_motion_event_controller = NULL;
   GtkEventController *win_scroll_event_controller = NULL;
+  GtkGesture *win_gesture_click = NULL;
 
   g_type_ensure (KASASA_TYPE_PICTURE_CONTAINER);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  // Initialize variables
+  // Initialize self variables
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
   self->auto_discard_canceller = NULL;
+  self->miniaturization_canceller = NULL;
   self->hiding_window = FALSE;
 
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
@@ -635,6 +745,14 @@ kasasa_window_init (KasasaWindow *self)
                     self);
   gtk_widget_add_controller (GTK_WIDGET (self),
                              win_motion_event_controller);
+
+  win_gesture_click = gtk_gesture_click_new ();
+  g_signal_connect (win_gesture_click,
+                    "released",
+                    G_CALLBACK (on_window_click_released),
+                    self);
+  gtk_widget_add_controller (GTK_WIDGET (self),
+                             GTK_EVENT_CONTROLLER (win_gesture_click));
 
 
   // Increase opacity when the user scrolls the screenshot; this is combined with

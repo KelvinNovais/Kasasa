@@ -11,7 +11,15 @@
 }
 
 
-/* Loupe osd buttons */
+/* WINDOW */
+.circular-window {
+  border-radius: 10px 37px 37px 37px;
+  opacity: 0.75;
+  /* filter: blur(1px); */
+}
+
+
+/* TOOLBAR BUTTONS */
 /* See https://gitlab.gnome.org/GNOME/loupe/-/blob/40d425ac803700511a2ed0d2ba150bd557278434/data/resources/style.css#L9 */
 :root {
   --osd-background-color: rgba(240, 240, 240, 0.75);
@@ -26,6 +34,18 @@
 }
 
 .osd-box menubutton button {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.osd-box-no-padding {
+  border-radius: 12px;
+  background-color: var(--osd-background-color);
+  box-shadow: 0px 0px 6px 0px var(--box-shadow-color);
+  padding: 1px;
+}
+
+.osd-box-no-padding menubutton button {
   padding-left: 0;
   padding-right: 0;
 }

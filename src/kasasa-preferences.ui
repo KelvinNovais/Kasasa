@@ -6,26 +6,34 @@
     <property name="search-enabled">false</property>
     <child>
       <object class="AdwPreferencesPage">
-        <!-- OPACITY -->
+        <!-- HINDING WINDOW MODE -->
         <child>
           <object class="AdwPreferencesGroup">
+            <property name="title">Hinding window mode</property>
             <child>
-              <object class="AdwSwitchRow" id="opacity_switch">
-                <property name="title" translatable="yes">Change opacity</property>
+              <object class="AdwExpanderRow" id="opacity_expander_row">
+                <property name="enable-expansion">false</property>
+                <property name="show-enable-switch">true</property>
+                <property name="title">Decrease opacity</property>
+                <child>
+                  <object class="AdwSpinRow">
+                    <property name="adjustment">
+                      <object class="GtkAdjustment" id="opacity_adjustment">
+                        <property name="lower">0.10</property>
+                        <property name="step-increment">0.01</property>
+                        <property name="upper">1.00</property>
+                        <property name="value">0.35</property>
+                      </object>
+                    </property>
+                    <property name="digits">2</property>
+                    <property name="title" translatable="yes">Opacity level</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
-              <object class="AdwSpinRow">
-                <property name="title" translatable="yes">Opacity level</property>
-                <property name="digits">2</property>
-                <property name="adjustment">
-                  <object class="GtkAdjustment" id="opacity_adjustment">
-                    <property name="lower">0.10</property>
-                    <property name="upper">1.00</property>
-                    <property name="step-increment">0.01</property>
-                    <property name="value">0.35</property>
-                  </object>
-                </property>
+              <object class="AdwSwitchRow" id="miniaturize_switch">
+                <property name="title">Miniaturize</property>
               </object>
             </child>
           </object>
@@ -106,4 +114,5 @@
     </child>
   </template>
 </interface>
+
 

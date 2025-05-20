@@ -139,6 +139,9 @@ compute_size (KasasaScreenshot *self)
       self->nat_height = new_nat_height;
     }
 
+  self->nat_width = MAX (180, self->nat_width);
+  self->nat_height = MAX (110, self->nat_height);
+
   // If the header bar is NOT hiding, then the window height must have more 47 px
   if (!g_settings_get_boolean (settings, "auto-hide-menu"))
     self->nat_height += 47;

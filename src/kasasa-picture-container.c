@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+// TODO do not decrease opacity when the pointer is over toolbar
+
 #include <glib/gi18n.h>
 #include <math.h>
 
