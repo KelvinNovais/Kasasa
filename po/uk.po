@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 12:14-0300\n"
+"POT-Creation-Date: 2025-05-20 21:43-0300\n"
 "PO-Revision-Date: 2024-10-02 20:28+0300\n"
 "Last-Translator: volkov <volkovissocool@gmail.com>\n"
 "Language-Team: volkov <volkovissocool@gmail.com>\n"
@@ -19,26 +19,27 @@ msgstr ""
 "X-Generator: Poedit 3.4.4\n"
 
 # Із гітхаба програми: "Kasasa" (قصاصة) is an Arabic term meaning a scrap of paper torn from a book, a magazine or a newspaper.
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:2
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:16
 #: src/kasasa-application.c:102
 msgid "Kasasa"
 msgstr "Клаптик"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
 msgstr ""
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:9
 msgid "screenshot;clipping;snip;image;"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
 msgid ""
 "Clip what's important to a small floating window, so you don't have to "
-"switch between windows or workspaces repeatedly. The application allows you "
-"to see what's behind the window by hovering over it."
+"switch between windows or workspaces repeatedly. The window can become "
+"miniaturized or have its opacity reduced, in order to do not block what's "
+"behind it."
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
@@ -59,17 +60,18 @@ msgstr "Клавіатурне скорочення"
 #, fuzzy
 msgid ""
 "On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
-"Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
-"kelvinnovais.Kasasa</code> "
+"Shortcuts. There you can set a shortcut to run <code>flatpak run "
+"io.github.kelvinnovais.Kasasa</code> "
 msgstr ""
 "У GNOME, перейдіть до Параметри → Клавіатура → Перегляд і налаштування "
 "скорочень → Власне скорочення. Там ви можете налаштувати скорочення, щоб "
 "запустити <em><code>flatpak run io.github.kelvinnovais.Kasasa</code></em> "
 
-#. translators: if needed, replace "&lt;" with < and "&apos;" with '
+#. translators: replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
+#, fuzzy
 msgid ""
-"Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the "
+"Note: On GNOME versions < 46, a dialog will appear to set up and take the "
 "screenshot, instead of directly using the GNOME's screenshoter; this may be "
 "inconvenient."
 msgstr ""
@@ -78,20 +80,17 @@ msgstr ""
 "знімків; це може бути не дуже зручно."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:52
-msgid "A small window, in dark mode"
-msgstr "Маленьке вікно, темний стиль"
+msgid "Main window"
+msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:56
-msgid "A small window, in light mode"
-msgstr "Маленьке вікно, світлий стиль"
+msgid "Kasasa can become a window miniature"
+msgstr ""
 
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:60
-msgid "Kasasa over another application"
-msgstr "Клаптик поверх іншого додатку"
-
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:64
-msgid "Kasasa over another application, with opacity decreased"
-msgstr "Клаптик поверх іншого додатку зі зниженою непрозорістю"
+#. translators: "its" refer to Kasasa window
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
+msgid "Or decrease its opacity"
+msgstr ""
 
 #: src/gtk/help-overlay.ui:11
 msgctxt "shortcut window"
@@ -108,69 +107,23 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Вийти"
 
-#: src/kasasa-window.c:495 src/kasasa-window.c:874
-#, fuzzy, c-format
-msgid "Error: %s"
-msgstr "Помилка:"
-
-#: src/kasasa-window.c:497 src/kasasa-window.c:509 src/kasasa-window.c:876
-msgid "Copy"
-msgstr "Скопіювати"
-
-#: src/kasasa-window.c:506 src/kasasa-window.c:558
-#, fuzzy
-msgid "Couldn't load the screenshot"
-msgstr "Не вдалося завантажити знімок екрану"
-
-#. translators: reason which the screenshot failed
-#: src/kasasa-window.c:558
-msgid "Reason: "
-msgstr ""
-
-#: src/kasasa-window.c:572
-msgid "Screenshot failed"
-msgstr ""
-
-#: src/kasasa-window.c:888
-msgid "Copied to the clipboard"
-msgstr ""
-
-#: src/kasasa-window.ui:62
-msgid "Retake screenshot"
-msgstr "Ще раз зробити знімок екрану"
-
-#: src/kasasa-window.ui:69
-#, fuzzy
-msgid "Copy screenshot"
-msgstr "Ще раз зробити знімок екрану"
-
-#: src/kasasa-window.ui:76
-#, fuzzy
-msgid "Add screenshot"
-msgstr "Ще раз зробити знімок екрану"
-
-#: src/kasasa-window.ui:84
-#, fuzzy
-msgid "Remove screenshot"
-msgstr "Ще раз зробити знімок екрану"
-
-#: src/kasasa-window.ui:93
-msgid "Menu"
-msgstr "Меню"
-
-#: src/kasasa-window.ui:109
+#: src/kasasa-window.ui:54
 msgid "Trigger auto discard timer"
 msgstr ""
 
-#: src/kasasa-window.ui:119
+#: src/kasasa-window.ui:63
 msgid "Auto delete image when closing window"
 msgstr ""
 
-#: src/kasasa-window.ui:211
+#: src/kasasa-window.ui:74
+msgid "Menu"
+msgstr "Меню"
+
+#: src/kasasa-window.ui:151
 msgid "_Preferences"
 msgstr "_Налаштування"
 
-#: src/kasasa-window.ui:215
+#: src/kasasa-window.ui:155
 msgid "_About Kasasa"
 msgstr "_Про Клаптик"
 
@@ -186,46 +139,83 @@ msgstr ""
 msgid "translator-credits"
 msgstr "volkov <volkovissocool@gmail.com>"
 
-#: src/kasasa-preferences.ui:14
-msgid "Change opacity"
-msgstr "Змінити непрозорість"
-
-#: src/kasasa-preferences.ui:19
+#: src/kasasa-preferences.ui:29
 msgid "Opacity level"
 msgstr "Рівень непрозорості"
 
-#: src/kasasa-preferences.ui:39
+#: src/kasasa-preferences.ui:47
 msgid "Auto hide the header bar"
 msgstr ""
 
-#: src/kasasa-preferences.ui:50
+#: src/kasasa-preferences.ui:58
 msgid "Occupying screen percentage"
 msgstr ""
 
-#: src/kasasa-preferences.ui:51
+#: src/kasasa-preferences.ui:59
 msgid "Max percentage of the screen that Kasasa can use"
 msgstr ""
 
-#: src/kasasa-preferences.ui:71
+#: src/kasasa-preferences.ui:79
 msgid "Auto close window"
 msgstr ""
 
-#: src/kasasa-preferences.ui:72
+#: src/kasasa-preferences.ui:80
 msgid "Auto close the window after a certain time"
 msgstr ""
 
 #. translators: this refers to the time to auto discard the window
-#: src/kasasa-preferences.ui:78
+#: src/kasasa-preferences.ui:86
 msgid "Time (in minutes)"
 msgstr ""
 
-#: src/kasasa-preferences.ui:98
+#: src/kasasa-preferences.ui:106
 msgid "Auto delete image"
 msgstr ""
 
-#: src/kasasa-preferences.ui:99
+#: src/kasasa-preferences.ui:107
 msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
+
+#~ msgid "A small window, in dark mode"
+#~ msgstr "Маленьке вікно, темний стиль"
+
+#~ msgid "A small window, in light mode"
+#~ msgstr "Маленьке вікно, світлий стиль"
+
+#~ msgid "Kasasa over another application"
+#~ msgstr "Клаптик поверх іншого додатку"
+
+#~ msgid "Kasasa over another application, with opacity decreased"
+#~ msgstr "Клаптик поверх іншого додатку зі зниженою непрозорістю"
+
+#, fuzzy, c-format
+#~ msgid "Error: %s"
+#~ msgstr "Помилка:"
+
+#~ msgid "Copy"
+#~ msgstr "Скопіювати"
+
+#, fuzzy
+#~ msgid "Couldn't load the screenshot"
+#~ msgstr "Не вдалося завантажити знімок екрану"
+
+#~ msgid "Retake screenshot"
+#~ msgstr "Ще раз зробити знімок екрану"
+
+#, fuzzy
+#~ msgid "Copy screenshot"
+#~ msgstr "Ще раз зробити знімок екрану"
+
+#, fuzzy
+#~ msgid "Add screenshot"
+#~ msgstr "Ще раз зробити знімок екрану"
+
+#, fuzzy
+#~ msgid "Remove screenshot"
+#~ msgstr "Ще раз зробити знімок екрану"
+
+#~ msgid "Change opacity"
+#~ msgstr "Змінити непрозорість"
 
 #~ msgid "Error"
 #~ msgstr "Помилка"

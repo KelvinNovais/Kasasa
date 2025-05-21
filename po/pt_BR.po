@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 12:14-0300\n"
-"PO-Revision-Date: 2025-01-31 12:19-0300\n"
+"POT-Creation-Date: 2025-05-20 21:43-0300\n"
+"PO-Revision-Date: 2025-05-20 21:47-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
@@ -17,32 +17,34 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Gtranslator 47.1\n"
+"X-Generator: Gtranslator 48.0\n"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:2
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:16
 #: src/kasasa-application.c:102
 msgid "Kasasa"
 msgstr "Kasasa"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
 msgstr "Recorte e fixe informações úteis"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:9
 msgid "screenshot;clipping;snip;image;"
 msgstr "captura de tela;recorte;recortar;imagem;"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
 msgid ""
 "Clip what's important to a small floating window, so you don't have to "
-"switch between windows or workspaces repeatedly. The application allows you "
-"to see what's behind the window by hovering over it."
+"switch between windows or workspaces repeatedly. The window can become "
+"miniaturized or have its opacity reduced, in order to do not block what's "
+"behind it."
 msgstr ""
 "Recorte o que é importante para uma pequena janela flutuante, para não ter "
-"que alternar entre janelas ou áreas de trabalho repetidamente. O aplicativo "
-"permite que você veja o que está atrás da janela passando o mouse sobre ela."
+"que alternar entre janelas ou áreas de trabalho repetidamente. A janela pode "
+"tornar-se uma miniatura ou ter a sua opacidade reduzida, a fim de não "
+"bloquear o que está atrás."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
 msgid "Best used with:"
@@ -70,32 +72,29 @@ msgstr ""
 "atalhos → Atalhos personalizados. Lá você pode definir um atalho para "
 "executar flatpak run io.github.kelvinnovais.Kasasa "
 
-#. translators: if needed, replace "&lt;" with < and "&apos;" with '
+#. translators: replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
 msgid ""
-"Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the "
+"Note: On GNOME versions < 46, a dialog will appear to set up and take the "
 "screenshot, instead of directly using the GNOME's screenshoter; this may be "
 "inconvenient."
 msgstr ""
-"Nota: Nas versões GNOME &lt; 46, uma caixa de diálogo aparecerá para "
-"configurar e fazer a captura de tela, em vez de usar diretamente o criador "
-"de capturas de tela do GNOME; isso pode ser inconveniente."
+"Nota: Nas versões GNOME < 46, uma caixa de diálogo aparecerá para configurar "
+"e fazer a captura de tela, em vez de usar diretamente o criador de capturas "
+"de tela do GNOME; isso pode ser inconveniente."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:52
-msgid "A small window, in dark mode"
-msgstr "Pequena janela, em modo escuro"
+msgid "Main window"
+msgstr "Janela principal"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:56
-msgid "A small window, in light mode"
-msgstr "Pequena janela, em modo claro"
+msgid "Kasasa can become a window miniature"
+msgstr "Kasasa pode se tornar uma miniatura"
 
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:60
-msgid "Kasasa over another application"
-msgstr "Kasasa sobre outra aplicação"
-
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:64
-msgid "Kasasa over another application, with opacity decreased"
-msgstr "Kasasa sobre outra aplicação, com opacidade reduzida"
+#. translators: "its" refer to Kasasa window
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
+msgid "Or decrease its opacity"
+msgstr "Ou reduzir sua opacidade"
 
 #: src/gtk/help-overlay.ui:11
 msgctxt "shortcut window"
@@ -112,65 +111,23 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sair"
 
-#: src/kasasa-window.c:495 src/kasasa-window.c:874
-#, c-format
-msgid "Error: %s"
-msgstr "Erro: %s"
-
-#: src/kasasa-window.c:497 src/kasasa-window.c:509 src/kasasa-window.c:876
-msgid "Copy"
-msgstr "Copiar"
-
-#: src/kasasa-window.c:506 src/kasasa-window.c:558
-msgid "Couldn't load the screenshot"
-msgstr "Não foi possível carregar a captura de tela"
-
-#. translators: reason which the screenshot failed
-#: src/kasasa-window.c:558
-msgid "Reason: "
-msgstr "Motivo: "
-
-#: src/kasasa-window.c:572
-msgid "Screenshot failed"
-msgstr "Captura de tela falhou"
-
-#: src/kasasa-window.c:888
-msgid "Copied to the clipboard"
-msgstr "Copiado para área de transferência"
-
-#: src/kasasa-window.ui:62
-msgid "Retake screenshot"
-msgstr "Refazer captura de tela"
-
-#: src/kasasa-window.ui:69
-msgid "Copy screenshot"
-msgstr "Copiar captura de tela"
-
-#: src/kasasa-window.ui:76
-msgid "Add screenshot"
-msgstr "Adicionar captura de tela"
-
-#: src/kasasa-window.ui:84
-msgid "Remove screenshot"
-msgstr "Remover captura de tela"
-
-#: src/kasasa-window.ui:93
-msgid "Menu"
-msgstr "Menu"
-
-#: src/kasasa-window.ui:109
+#: src/kasasa-window.ui:54
 msgid "Trigger auto discard timer"
 msgstr "Ativar temporizador de fechamento automático"
 
-#: src/kasasa-window.ui:119
+#: src/kasasa-window.ui:63
 msgid "Auto delete image when closing window"
 msgstr "Excluir imagem automaticamente ao fechar a janela"
 
-#: src/kasasa-window.ui:211
+#: src/kasasa-window.ui:74
+msgid "Menu"
+msgstr "Menu"
+
+#: src/kasasa-window.ui:151
 msgid "_Preferences"
 msgstr "_Preferências"
 
-#: src/kasasa-window.ui:215
+#: src/kasasa-window.ui:155
 msgid "_About Kasasa"
 msgstr "_Sobre Kasasa"
 
@@ -189,48 +146,90 @@ msgstr ""
 msgid "translator-credits"
 msgstr "Kelvin Ribeiro Novais"
 
-#: src/kasasa-preferences.ui:14
-msgid "Change opacity"
-msgstr "Mudar opacidade"
-
-#: src/kasasa-preferences.ui:19
+#: src/kasasa-preferences.ui:29
 msgid "Opacity level"
 msgstr "Nível de opacidade"
 
-#: src/kasasa-preferences.ui:39
+#: src/kasasa-preferences.ui:47
 msgid "Auto hide the header bar"
 msgstr "Ocultar automaticamente a barra de título"
 
-#: src/kasasa-preferences.ui:50
+#: src/kasasa-preferences.ui:58
 msgid "Occupying screen percentage"
 msgstr "Porcentagem de tela ocupada"
 
-#: src/kasasa-preferences.ui:51
+#: src/kasasa-preferences.ui:59
 msgid "Max percentage of the screen that Kasasa can use"
 msgstr "Porcentagem máxima da tela que o Kasasa pode usar"
 
-#: src/kasasa-preferences.ui:71
+#: src/kasasa-preferences.ui:79
 msgid "Auto close window"
 msgstr "Fechar janela automaticamente"
 
-#: src/kasasa-preferences.ui:72
+#: src/kasasa-preferences.ui:80
 msgid "Auto close the window after a certain time"
 msgstr "Fechar janela automaticamente após certo tempo"
 
 #. translators: this refers to the time to auto discard the window
-#: src/kasasa-preferences.ui:78
+#: src/kasasa-preferences.ui:86
 msgid "Time (in minutes)"
 msgstr "Tempo (em minutos)"
 
-#: src/kasasa-preferences.ui:98
+#: src/kasasa-preferences.ui:106
 msgid "Auto delete image"
 msgstr "Auto deletar a imagem"
 
-#: src/kasasa-preferences.ui:99
+#: src/kasasa-preferences.ui:107
 msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
 "Excluir automaticamente a imagem ao fechar a janela ou ao tirar uma nova "
 "captura de tela"
+
+#~ msgid "A small window, in dark mode"
+#~ msgstr "Pequena janela, em modo escuro"
+
+#~ msgid "A small window, in light mode"
+#~ msgstr "Pequena janela, em modo claro"
+
+#~ msgid "Kasasa over another application"
+#~ msgstr "Kasasa sobre outra aplicação"
+
+#~ msgid "Kasasa over another application, with opacity decreased"
+#~ msgstr "Kasasa sobre outra aplicação, com opacidade reduzida"
+
+#, c-format
+#~ msgid "Error: %s"
+#~ msgstr "Erro: %s"
+
+#~ msgid "Copy"
+#~ msgstr "Copiar"
+
+#~ msgid "Couldn't load the screenshot"
+#~ msgstr "Não foi possível carregar a captura de tela"
+
+#~ msgid "Reason: "
+#~ msgstr "Motivo: "
+
+#~ msgid "Screenshot failed"
+#~ msgstr "Captura de tela falhou"
+
+#~ msgid "Copied to the clipboard"
+#~ msgstr "Copiado para área de transferência"
+
+#~ msgid "Retake screenshot"
+#~ msgstr "Refazer captura de tela"
+
+#~ msgid "Copy screenshot"
+#~ msgstr "Copiar captura de tela"
+
+#~ msgid "Add screenshot"
+#~ msgstr "Adicionar captura de tela"
+
+#~ msgid "Remove screenshot"
+#~ msgstr "Remover captura de tela"
+
+#~ msgid "Change opacity"
+#~ msgstr "Mudar opacidade"
 
 #~ msgid "Error"
 #~ msgstr "Erro"
