@@ -364,6 +364,9 @@ kasasa_picture_container_dispose (GObject *object)
 
   g_clear_object (&self->portal);
 
+  gtk_widget_unparent (GTK_WIDGET (self->carousel));
+  g_clear_object (&self->carousel);
+
   gtk_widget_dispose_template (GTK_WIDGET (object), KASASA_TYPE_PICTURE_CONTAINER);
 
   G_OBJECT_CLASS (kasasa_picture_container_parent_class)->dispose (object);

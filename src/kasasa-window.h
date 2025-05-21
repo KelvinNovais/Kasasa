@@ -33,6 +33,11 @@ typedef enum
 #define HIDE_WINDOW_TIME 110
 #define WAITING_HIDE_WINDOW_TIME (2 * HIDE_WINDOW_TIME)
 
+// Due to miniaturization, the real min dimensions are set here (width-request
+// and height-request)
+#define WINDOW_MIN_HEIGHT 110
+#define WINDOW_MIN_WIDTH  180
+
 #define KASASA_TYPE_WINDOW (kasasa_window_get_type ())
 
 G_DECLARE_FINAL_TYPE (KasasaWindow, kasasa_window, KASASA, WINDOW, AdwApplicationWindow)

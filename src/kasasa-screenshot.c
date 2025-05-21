@@ -18,6 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+// Defined on GSchema and preferences
+#define MIN_OCCUPY_SCREEN 0.1
+
 #include "kasasa-screenshot.h"
 #include "kasasa-window.h"
 
@@ -108,6 +111,8 @@ compute_size (KasasaScreenshot *self)
   // monitor_area * occupy_area_factor ==
   //   (image_width * size_scale) * (image_height * size_scale)
   size_scale = sqrt (monitor_area / image_area * occupy_area_factor);
+  // ensure that size_scale is not ~ 0 (if image is too big, size_scale can reach 0)
+  size_scale = (size_scale < MIN_OCCUPY_SCREEN) ? 0.3 : size_scale;
   // ensure that we never increase image size
   target_scale = MIN (1, size_scale);
   self->nat_width = self->image_width * target_scale;
@@ -139,8 +144,8 @@ compute_size (KasasaScreenshot *self)
       self->nat_height = new_nat_height;
     }
 
-  self->nat_width = MAX (180, self->nat_width);
-  self->nat_height = MAX (110, self->nat_height);
+  self->nat_width = MAX (WINDOW_MIN_WIDTH, self->nat_width);
+  self->nat_height = MAX (WINDOW_MIN_HEIGHT, self->nat_height);
 
   // If the header bar is NOT hiding, then the window height must have more 47 px
   if (!g_settings_get_boolean (settings, "auto-hide-menu"))

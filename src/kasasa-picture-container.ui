@@ -15,12 +15,12 @@
         <setter object="box_start" property="css-classes">osd-box-no-padding</setter>
         <setter object="box_end" property="spacing">0</setter>
         <setter object="box_end" property="css-classes">osd-box-no-padding</setter>
-        <setter object="revealer_start_buttons" property="margin-start">7</setter>
-        <setter object="revealer_start_buttons" property="margin-end">7</setter>
-        <setter object="revealer_start_buttons" property="margin-bottom">7</setter>
-        <setter object="revealer_end_buttons" property="margin-start">7</setter>
-        <setter object="revealer_end_buttons" property="margin-end">7</setter>
-        <setter object="revealer_end_buttons" property="margin-bottom">7</setter>
+        <setter object="revealer_start_buttons" property="margin-start">9</setter>
+        <setter object="revealer_start_buttons" property="margin-end">9</setter>
+        <setter object="revealer_start_buttons" property="margin-bottom">9</setter>
+        <setter object="revealer_end_buttons" property="margin-start">9</setter>
+        <setter object="revealer_end_buttons" property="margin-end">9</setter>
+        <setter object="revealer_end_buttons" property="margin-bottom">9</setter>
       </object>
     </child>
 

@@ -44,6 +44,7 @@ struct _KasasaWindow
   gboolean                   mouse_over_window;
   gboolean                   hiding_window;
   gboolean                   block_miniaturization;
+  gboolean                   window_is_miniaturized;
 
   /* Instance variables */
   GSettings                 *settings;
@@ -320,6 +321,7 @@ window_miniaturization_thread (GTask        *task,
   if (!cancelled
       && !self->block_miniaturization)
     {
+      self->window_is_miniaturized = TRUE;
       gtk_widget_add_css_class (GTK_WIDGET (self), "circular-window");
       kasasa_window_resize_window (self, 75, 75);
       gtk_stack_set_visible_child_name (self->stack, "miniature_page");
@@ -348,6 +350,9 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
 
   if (miniaturize)
     {
+      if (self->window_is_miniaturized)
+        return;
+
       if (!g_settings_get_boolean (self->settings, "miniaturize-window"))
         return;
 
@@ -359,6 +364,10 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
     }
   else
     {
+      if (!self->window_is_miniaturized)
+        return;
+
+      self->window_is_miniaturized = FALSE;
       gtk_widget_remove_css_class (GTK_WIDGET (self), "circular-window");
       kasasa_picture_container_request_window_resize (self->picture_container);
       gtk_stack_set_visible_child_name (self->stack, "main_page");
@@ -614,7 +623,9 @@ on_settings_updated (GSettings *settings,
 
   else if (g_strcmp0 (key, "miniaturize-window") == 0)
     {
-      if (!g_settings_get_boolean (self->settings, "miniaturize-window"))
+      if (g_settings_get_boolean (self->settings, "miniaturize-window"))
+        kasasa_window_miniaturize_window (self, TRUE);
+      else
         kasasa_window_miniaturize_window (self, FALSE);
     }
 }
