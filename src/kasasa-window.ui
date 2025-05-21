@@ -14,6 +14,13 @@
     <property name="height-request">75</property>
     <property name="resizable">false</property>
     <property name="title" translatable="yes">Kasasa</property>
+    <!-- BREAKPOINT -->
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 210px</condition>
+        <setter object="header_bar" property="decoration-layout">:close</setter>
+      </object>
+    </child>
 
     <child>
       <object class="GtkStack" id="stack">
