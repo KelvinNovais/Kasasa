@@ -3,7 +3,9 @@ kasasa_sources = [
   'kasasa-application.c',
   'kasasa-window.c',
   'kasasa-preferences.c',
-  'kasasa-screenshot.c'
+  'kasasa-screenshot.c',
+  'kasasa-picture-container.c',
+  'routines.c',
 ]
 
 kasasa_deps = [

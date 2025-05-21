@@ -3,10 +3,12 @@
   <!-- UI -->
   <gresource prefix="/io/github/kelvinnovais/Kasasa">
     <file preprocess="xml-stripblanks">kasasa-window.ui</file>
+    <file preprocess="xml-stripblanks">kasasa-picture-container.ui</file>
     <file preprocess="xml-stripblanks">kasasa-preferences.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
 
     <file alias="style.css">style.css</file>
+    <file alias="style-dark.css">style-dark.css</file>
   </gresource>
 
   <!-- ICONS -->
@@ -14,5 +16,7 @@
     <file preprocess="xml-stripblanks">icons/scalable/actions/timer-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/plus-large-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/minus-large-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/image-round-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/dot-symbolic.svg</file>
   </gresource>
 </gresources>

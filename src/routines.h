@@ -1,6 +1,6 @@
-/* kasasa-window-private.h
+/* routines.h
  *
- * Copyright 2024 Kelvin
+ * Copyright 2025 Kelvin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,12 @@
 
 #pragma once
 
-#include "kasasa-window.h"
+#include "kasasa-picture-container.h"
 
 G_BEGIN_DECLS
 
-gboolean kasasa_window_get_trash_button_active (KasasaWindow *self);
+void routines_take_first_screenshot (KasasaPictureContainer *pc);
+void routines_add_screenshot (GtkButton *button, gpointer pc);
+void routines_retake_screenshot (GtkButton *button, gpointer pc);
 
 G_END_DECLS

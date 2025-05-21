@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="Adw" version="1.0"/>
+  <requires lib="gio" version="2.0"/>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.4"/>
+
+  <template class="KasasaPictureContainer" parent="AdwBreakpointBin">
+    <property name="width-request">75</property>
+    <property name="height-request">75</property>
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 215px</condition>
+        <setter object="box_start" property="spacing">0</setter>
+        <setter object="box_start" property="css-classes">osd-box-no-padding</setter>
+        <setter object="box_end" property="spacing">0</setter>
+        <setter object="box_end" property="css-classes">osd-box-no-padding</setter>
+        <setter object="revealer_start_buttons" property="margin-start">9</setter>
+        <setter object="revealer_start_buttons" property="margin-end">9</setter>
+        <setter object="revealer_start_buttons" property="margin-bottom">9</setter>
+        <setter object="revealer_end_buttons" property="margin-start">9</setter>
+        <setter object="revealer_end_buttons" property="margin-end">9</setter>
+        <setter object="revealer_end_buttons" property="margin-bottom">9</setter>
+      </object>
+    </child>
+
+    <child>
+      <!-- PICTURE CONTAINER -->
+      <!-- Handle (allow moving the window from anywhere on the picture) -->
+      <object class="GtkWindowHandle">
+        <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
+        <property name="valign">end</property>
+        <property name="child">
+          <object class="GtkOverlay">
+            <property name="valign">end</property>
+            <child>
+              <object class="GtkBox">
+                <property name="valign">end</property>
+                <child>
+                  <!-- Toast overlay -->
+                  <object class="AdwToastOverlay" id="toast_overlay">
+                    <property name="child">
+                      <object class="GtkBox">
+                        <property name="halign">center</property>
+                        <property name="hexpand">true</property>
+                        <property name="orientation">vertical</property>
+                        <property name="valign">end</property>
+                        <property name="vexpand">true</property>
+                        <child>
+                          <!-- Caroussel -->
+                          <object class="AdwCarousel" id="carousel">
+                            <property name="allow-mouse-drag">false</property>
+                            <!-- This forces the carousel to do not expand horizontally, -->
+                            <!-- so small images do not appear together in the same window -->
+                            <property name="halign">center</property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <!-- TOOBAR -->
+            <child type="overlay">
+              <object class="GtkOverlay" id="toolbar_overlay">
+                <property name="valign">end</property>
+                <!-- Start -->
+                <child type="overlay">
+                  <object class="GtkRevealer" id="revealer_start_buttons">
+                    <property name="transition-type">crossfade</property>
+                    <!-- <property name="transition-duration">1250</property> -->
+                    <property name="overflow">visible</property>
+                    <property name="halign">start</property>
+                    <property name="valign">end</property>
+                    <property name="margin-start">18</property>
+                    <property name="margin-end">18</property>
+                    <property name="margin-bottom">18</property>
+                    <child>
+                      <object class="GtkBox" id="box_start">
+                        <property name="orientation">horizontal</property>
+                        <property name="css-classes">osd-box</property>
+                        <property name="spacing">6</property>
+
+                        <!-- Add button -->
+                        <child>
+                          <object class="GtkButton" id="add_screenshot_button">
+                            <property name="css-classes">flat</property>
+                            <property name="halign">start</property>
+                            <property name="icon-name">plus-large-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Add screenshot</property>
+                          </object>
+                        </child>
+                        <!-- Remove button -->
+                        <child>
+                          <object class="GtkButton" id="remove_screenshot_button">
+                            <property name="css-classes">flat</property>
+                            <property name="sensitive">false</property>
+                            <property name="icon-name">minus-large-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Remove screenshot</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <!-- End -->
+                <child type="overlay">
+                  <object class="GtkRevealer" id="revealer_end_buttons">
+                    <property name="transition-type">crossfade</property>
+                    <!-- <property name="transition-duration">1250</property> -->
+                    <property name="overflow">visible</property>
+                    <property name="overflow">visible</property>
+                    <property name="halign">end</property>
+                    <property name="valign">end</property>
+                    <property name="margin-start">18</property>
+                    <property name="margin-end">18</property>
+                    <property name="margin-bottom">18</property>
+                    <child>
+                      <object class="GtkBox" id="box_end">
+                        <property name="css-classes">osd-box</property>
+                        <property name="spacing">6</property>
+                        <!-- Retake screenshot button -->
+                        <child>
+                          <object class="GtkButton" id="retake_screenshot_button">
+                            <property name="css-classes">flat</property>
+                            <property name="icon-name">view-refresh-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Retake screenshot</property>
+                          </object>
+                        </child>
+                         <!-- Copy screenshot button -->
+                        <child>
+                          <object class="GtkButton" id="copy_screenshot_button">
+                            <property name="css-classes">flat</property>
+                            <property name="icon-name">edit-copy-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Copy screenshot</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+          </object>
+        </property>
+      </object>
+    </child>
+  </template>
+</interface>

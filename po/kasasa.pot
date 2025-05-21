@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 12:14-0300\n"
+"POT-Creation-Date: 2025-05-20 21:43-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:17
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:2
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:16
 #: src/kasasa-application.c:102
 msgid "Kasasa"
 msgstr ""
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:4
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
 msgstr ""
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:10
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:9
 msgid "screenshot;clipping;snip;image;"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
 msgid ""
 "Clip what's important to a small floating window, so you don't have to "
-"switch between windows or workspaces repeatedly. The application allows you "
-"to see what's behind the window by hovering over it."
+"switch between windows or workspaces repeatedly. The window can become "
+"miniaturized or have its opacity reduced, in order to do not block what's "
+"behind it."
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
@@ -56,32 +57,29 @@ msgstr ""
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
 msgid ""
 "On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
-"Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
-"kelvinnovais.Kasasa</code> "
+"Shortcuts. There you can set a shortcut to run <code>flatpak run "
+"io.github.kelvinnovais.Kasasa</code> "
 msgstr ""
 
-#. translators: if needed, replace "&lt;" with < and "&apos;" with '
+#. translators: replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
 msgid ""
-"Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the "
+"Note: On GNOME versions < 46, a dialog will appear to set up and take the "
 "screenshot, instead of directly using the GNOME's screenshoter; this may be "
 "inconvenient."
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:52
-msgid "A small window, in dark mode"
+msgid "Main window"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:56
-msgid "A small window, in light mode"
+msgid "Kasasa can become a window miniature"
 msgstr ""
 
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:60
-msgid "Kasasa over another application"
-msgstr ""
-
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:64
-msgid "Kasasa over another application, with opacity decreased"
+#. translators: "its" refer to Kasasa window
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
+msgid "Or decrease its opacity"
 msgstr ""
 
 #: src/gtk/help-overlay.ui:11
@@ -99,65 +97,23 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr ""
 
-#: src/kasasa-window.c:495 src/kasasa-window.c:874
-#, c-format
-msgid "Error: %s"
-msgstr ""
-
-#: src/kasasa-window.c:497 src/kasasa-window.c:509 src/kasasa-window.c:876
-msgid "Copy"
-msgstr ""
-
-#: src/kasasa-window.c:506 src/kasasa-window.c:558
-msgid "Couldn't load the screenshot"
-msgstr ""
-
-#. translators: reason which the screenshot failed
-#: src/kasasa-window.c:558
-msgid "Reason: "
-msgstr ""
-
-#: src/kasasa-window.c:572
-msgid "Screenshot failed"
-msgstr ""
-
-#: src/kasasa-window.c:888
-msgid "Copied to the clipboard"
-msgstr ""
-
-#: src/kasasa-window.ui:62
-msgid "Retake screenshot"
-msgstr ""
-
-#: src/kasasa-window.ui:69
-msgid "Copy screenshot"
-msgstr ""
-
-#: src/kasasa-window.ui:76
-msgid "Add screenshot"
-msgstr ""
-
-#: src/kasasa-window.ui:84
-msgid "Remove screenshot"
-msgstr ""
-
-#: src/kasasa-window.ui:93
-msgid "Menu"
-msgstr ""
-
-#: src/kasasa-window.ui:109
+#: src/kasasa-window.ui:54
 msgid "Trigger auto discard timer"
 msgstr ""
 
-#: src/kasasa-window.ui:119
+#: src/kasasa-window.ui:63
 msgid "Auto delete image when closing window"
 msgstr ""
 
-#: src/kasasa-window.ui:211
+#: src/kasasa-window.ui:74
+msgid "Menu"
+msgstr ""
+
+#: src/kasasa-window.ui:151
 msgid "_Preferences"
 msgstr ""
 
-#: src/kasasa-window.ui:215
+#: src/kasasa-window.ui:155
 msgid "_About Kasasa"
 msgstr ""
 
@@ -173,43 +129,39 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/kasasa-preferences.ui:14
-msgid "Change opacity"
-msgstr ""
-
-#: src/kasasa-preferences.ui:19
+#: src/kasasa-preferences.ui:29
 msgid "Opacity level"
 msgstr ""
 
-#: src/kasasa-preferences.ui:39
+#: src/kasasa-preferences.ui:47
 msgid "Auto hide the header bar"
 msgstr ""
 
-#: src/kasasa-preferences.ui:50
+#: src/kasasa-preferences.ui:58
 msgid "Occupying screen percentage"
 msgstr ""
 
-#: src/kasasa-preferences.ui:51
+#: src/kasasa-preferences.ui:59
 msgid "Max percentage of the screen that Kasasa can use"
 msgstr ""
 
-#: src/kasasa-preferences.ui:71
+#: src/kasasa-preferences.ui:79
 msgid "Auto close window"
 msgstr ""
 
-#: src/kasasa-preferences.ui:72
+#: src/kasasa-preferences.ui:80
 msgid "Auto close the window after a certain time"
 msgstr ""
 
 #. translators: this refers to the time to auto discard the window
-#: src/kasasa-preferences.ui:78
+#: src/kasasa-preferences.ui:86
 msgid "Time (in minutes)"
 msgstr ""
 
-#: src/kasasa-preferences.ui:98
+#: src/kasasa-preferences.ui:106
 msgid "Auto delete image"
 msgstr ""
 
-#: src/kasasa-preferences.ui:99
+#: src/kasasa-preferences.ui:107
 msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""

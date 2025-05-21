@@ -20,260 +20,127 @@
 
 #include "config.h"
 
-#include <libportal/portal.h>
 #include <glib/gi18n.h>
-#include <math.h>
 
 #include "kasasa-window.h"
-#include "kasasa-window-private.h"
-#include "kasasa-screenshot.h"
-
-#define HIDE_WINDOW_TIME 110
-#define WAITING_HIDE_WINDOW_TIME (2 * HIDE_WINDOW_TIME)
-
-#define MAX_SCREENSHOTS 5
-
-enum Opacity
-{
-  OPACITY_INCREASE,
-  OPACITY_DECREASE
-};
+#include "kasasa-picture-container.h"
 
 struct _KasasaWindow
 {
-  AdwApplicationWindow  parent_instance;
+  AdwApplicationWindow       parent_instance;
 
   /* Template widgets */
-  GtkPicture          *picture;
-  GtkWindowHandle     *picture_container;
-  GtkButton           *retake_screenshot_button;
-  GtkButton           *add_screenshot_button;
-  GtkButton           *remove_screenshot_button;
-  GtkButton           *copy_button;
-  AdwToastOverlay     *toast_overlay;
-  GtkRevealer         *menu_revealer;
-  GtkWidget           *menu;
-  GtkMenuButton       *menu_button;
-  GtkToggleButton     *auto_discard_button;
-  GtkToggleButton     *auto_trash_button;
-  AdwCarousel         *carousel;
-  GtkProgressBar      *progress_bar;
+  KasasaPictureContainer    *picture_container;
+  AdwHeaderBar              *header_bar;
+  GtkRevealer               *header_bar_revealer;
+  GtkMenuButton             *menu_button;
+  GtkToggleButton           *auto_discard_button;
+  GtkToggleButton           *auto_trash_button;
+  GtkProgressBar            *progress_bar;
+  GtkStack                  *stack;
 
   /* State variables */
-  gboolean             hide_menu_requested;
-  gboolean             mouse_over_window;
-  gboolean             hiding_window;
+  gboolean                   hide_menu_requested;
+  gboolean                   mouse_over_window;
+  gboolean                   hiding_window;
+  gboolean                   block_miniaturization;
+  gboolean                   window_is_miniaturized;
 
   /* Instance variables */
-  GSettings           *settings;
-  XdpPortal           *portal;
-  GtkEventController  *win_motion_event_controller;
-  GtkEventController  *win_scroll_event_controller;
-  GtkEventController  *menu_motion_event_controller;
-  AdwAnimation        *window_opacity_animation;
-  gint                 default_height;
-  gint                 default_width;
-  GCancellable        *auto_discard_canceller;
+  GSettings                 *settings;
+  AdwAnimation              *window_opacity_animation;
+  GCancellable              *auto_discard_canceller;
+  GCancellable              *miniaturization_canceller;
+  AdwAnimation              *animation_height;
+  AdwAnimation              *animation_width;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
 
+KasasaWindow *
+kasasa_window_get_window_reference (GtkWidget *widget)
+{
+  GtkRoot *root = NULL;
+  KasasaWindow *window = NULL;
+
+  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+
+  root = gtk_widget_get_root (GTK_WIDGET (widget));
+  window = KASASA_WINDOW (root);
+
+  g_return_val_if_fail (KASASA_IS_WINDOW (window), NULL);
+
+  return window;
+}
+
 gboolean
-kasasa_window_get_trash_button_active (KasasaWindow *self)
+kasasa_window_get_trash_button_active (KasasaWindow *window)
 {
-  g_return_val_if_fail (KASASA_IS_WINDOW (self), FALSE);
-
-  return gtk_toggle_button_get_active (self->auto_trash_button);
-}
-
-static KasasaScreenshot *
-get_current_screenshot (KasasaWindow *self)
-{
-  guint position = (guint) adw_carousel_get_position (self->carousel);
-
-  g_return_val_if_fail ((position < MAX_SCREENSHOTS), NULL);
-
-  g_debug ("Carousel current position: %f; cast: %d",
-           adw_carousel_get_position (self->carousel), position);
-
-  return KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel,
-                                                       position));
-}
-
-// Compute the window size
-static gboolean
-compute_size (KasasaWindow     *self,
-              KasasaScreenshot *screenshot)
-{
-  // Based on:
-  // https://gitlab.gnome.org/GNOME/Incubator/showtime/-/blob/main/showtime/window.py?ref_type=heads#L836
-  // https://gitlab.gnome.org/GNOME/loupe/-/blob/4ca5f9e03d18667db5d72325597cebc02887777a/src/widgets/image/rendering.rs#L151
-  g_autoptr (GError) error = NULL;
-  GtkNative *native = NULL;
-  GdkDisplay *display = NULL;
-  GdkSurface *surface = NULL;
-  GdkMonitor *monitor = NULL;
-  GdkRectangle monitor_geometry;
-  // gints
-  gint monitor_area, hidpi_scale, image_height, image_width, image_area,
-  max_width, max_height;
-  // gdoubles
-  gdouble occupy_area_factor, size_scale, target_scale;
-
-  if (error != NULL)
-    {
-      g_warning ("%s", error->message);
-      return TRUE;
-    }
-
-  display = gdk_display_get_default ();
-  if (display == NULL)
-    {
-      g_warning ("Couldn't get GdkDisplay, can't find the best window size");
-      return TRUE;
-    }
-
-  native = gtk_widget_get_native (GTK_WIDGET (self));
-  if (native == NULL)
-    {
-      g_warning ("Couldn't get GtkNative, can't find the best window size");
-      return TRUE;
-    }
-
-  surface = gtk_native_get_surface (native);
-  if (surface == NULL)
-    {
-      g_warning ("Couldn't get GdkSurface, can't find the best window size");
-      return TRUE;
-    }
-
-  monitor = gdk_display_get_monitor_at_surface (display, surface);
-  if (monitor == NULL)
-    {
-      g_warning ("Couldn't get GdkMonitor, can't find the best window size");
-      return TRUE;
-    }
-
-  gtk_window_get_default_size (GTK_WINDOW (self),
-                               &self->default_width, &self->default_height);
-
-  // AREAS
-  image_height = kasasa_screenshot_get_image_height (screenshot);
-  image_width = kasasa_screenshot_get_image_width (screenshot);
-  image_area = image_height * image_width;
-
-  hidpi_scale = gdk_surface_get_scale_factor (surface);
-
-  gdk_monitor_get_geometry (monitor, &monitor_geometry);
-  monitor_area = monitor_geometry.width * monitor_geometry.height;
-
-  occupy_area_factor = g_settings_get_double (self->settings, "occupy-screen");
-
-  // factor for width and height that will achieve the desired area
-  // occupation derived from:
-  // monitor_area * occupy_area_factor ==
-  //   (image_width * size_scale) * (image_height * size_scale)
-  size_scale = sqrt (monitor_area / image_area * occupy_area_factor);
-  // ensure that we never increase image size
-  target_scale = MIN (1, size_scale);
-  kasasa_screenshot_set_nat_width (screenshot, (image_width * target_scale));
-  kasasa_screenshot_set_nat_height (screenshot, (image_height * target_scale));
-
-  // Scale down if targeted occupation does not fit horizontally
-  // Add some margin to not touch corners
-  max_width = monitor_geometry.width - 20;
-  if (kasasa_screenshot_get_nat_width (screenshot) > max_width)
-    {
-      guint previous_nat_width = kasasa_screenshot_get_nat_width (screenshot);
-      guint new_nat_width = max_width;
-      guint new_nat_height = image_height * previous_nat_width / image_width;
-
-      kasasa_screenshot_set_nat_width (screenshot, new_nat_width);
-      kasasa_screenshot_set_nat_height (screenshot, new_nat_height);
-    }
-
-  // Same for vertical size
-  // Additionally substract some space for HeaderBar and Shell bar
-  max_height = monitor_geometry.height - (50 + 35 + 20) * hidpi_scale;
-  if (kasasa_screenshot_get_nat_height (screenshot) > max_height)
-    {
-      guint previous_nat_height = kasasa_screenshot_get_nat_height (screenshot);
-      guint new_nat_height = max_height;
-      guint new_nat_width = image_width * previous_nat_height / image_height;
-
-      kasasa_screenshot_set_nat_width (screenshot, new_nat_width);
-      kasasa_screenshot_set_nat_height (screenshot, new_nat_height);
-    }
-
-  // If the header bar is NOT hiding, then the window height must have more 46 px
-  if (!g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    {
-      guint previous_nat_height = kasasa_screenshot_get_nat_height (screenshot);
-      kasasa_screenshot_set_nat_height (screenshot, previous_nat_height + 46);
-    }
-
-  return FALSE;
+  g_return_val_if_fail (KASASA_IS_WINDOW (window), FALSE);
+  return gtk_toggle_button_get_active (window->auto_trash_button);
 }
 
 // Resize the window with an animation
-static void
-resize_window (KasasaWindow *self)
+void
+kasasa_window_resize_window (KasasaWindow *window,
+                             gdouble       new_height,
+                             gdouble       new_width)
 {
-  KasasaScreenshot *screenshot = get_current_screenshot (self);
-  g_autoptr (AdwAnimation) animation_height = NULL;
-  g_autoptr (AdwAnimation) animation_width = NULL;
   AdwAnimationTarget *target_h = NULL;
   AdwAnimationTarget *target_w = NULL;
+  gint default_width, default_height;
   static gboolean first_run = TRUE;
 
+  gtk_window_get_default_size (GTK_WINDOW (window),
+                               &default_width, &default_height);
+
   // Disable the carousel navigation while the window is being resized
-  adw_carousel_set_interactive (self->carousel, FALSE);
+  kasasa_picture_container_carousel_set_interactive (window->picture_container,
+                                                     FALSE);
 
-  if (compute_size (self, screenshot) == TRUE)
-    {
-      adw_carousel_set_interactive (self->carousel, TRUE);
-      return;
-    }
-
+  // Set targets
   target_h =
-    adw_property_animation_target_new (G_OBJECT (self), "default-height");
+    adw_property_animation_target_new (G_OBJECT (window), "default-height");
   target_w =
-    adw_property_animation_target_new (G_OBJECT (self), "default-width");
+    adw_property_animation_target_new (G_OBJECT (window), "default-width");
 
   // Animation for resizing height
-  animation_height = adw_timed_animation_new (
-    GTK_WIDGET (self),                                      // widget
-    (gdouble) self->default_height,                         // from
-    kasasa_screenshot_get_nat_height (screenshot),          // to
+  window->animation_height = adw_timed_animation_new (
+    GTK_WIDGET (window),                                    // widget
+    (gdouble) default_height,                               // from
+    new_height,                                             // to
     500,                                                    // duration
     target_h                                                // target
   );
-  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_height), ADW_EASE_OUT_EXPO);
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (window->animation_height),
+                                  ADW_EASE_OUT_EXPO);
 
   // Animation for resizing width
-  animation_width = adw_timed_animation_new (
-    GTK_WIDGET (self),                                        // widget
-    (gdouble) self->default_width,                            // from
-    kasasa_screenshot_get_nat_width (screenshot),             // to
+  window->animation_width = adw_timed_animation_new (
+    GTK_WIDGET (window),                                      // widget
+    (gdouble) default_width,                                  // from
+    new_width,                                                // to
     500,                                                      // duration
     target_w                                                  // target
   );
-  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_width), ADW_EASE_OUT_EXPO);
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (window->animation_width),
+                                  ADW_EASE_OUT_EXPO);
 
   if (first_run)
     {
-      adw_animation_skip (animation_width);
-      adw_animation_skip (animation_height);
+      adw_animation_skip (window->animation_width);
+      adw_animation_skip (window->animation_height);
       first_run = FALSE;
     }
   else
     {
-      adw_animation_play (animation_width);
-      adw_animation_play (animation_height);
+      adw_animation_play (window->animation_width);
+      adw_animation_play (window->animation_height);
     }
 
   // Enable carousel again
-  adw_carousel_set_interactive (self->carousel, TRUE);
+  kasasa_picture_container_carousel_set_interactive (window->picture_container,
+                                                     TRUE);
 }
 
 static void
@@ -283,49 +150,49 @@ change_opacity_cb (double         value,
   gtk_widget_set_opacity (GTK_WIDGET (self), value);
 }
 
-static void
-change_opacity_animated (KasasaWindow *self,
-                         enum Opacity opacity_direction)
+void
+kasasa_window_change_opacity (KasasaWindow *window,
+                              Opacity       opacity_direction)
 {
   AdwAnimationTarget *target = NULL;
-  gdouble opacity = g_settings_get_double (self->settings, "opacity");
+  gdouble opacity = g_settings_get_double (window->settings, "opacity");
 
   // Set from and to target values, according to the mode (increase or decrease opacity)
-  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
+  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (window));
   gdouble to    = (opacity_direction == OPACITY_INCREASE) ? 1.00    : opacity;
 
   // Return if this option is disabled
-  if (!g_settings_get_boolean (self->settings, "change-opacity"))
+  if (!g_settings_get_boolean (window->settings, "change-opacity"))
     return;
 
   // Return if the window is hiding/hidden when retaking the screenshot
   // it prevents the opacity increase again if the mouse leave the window
-  if (self->hiding_window)
+  if (window->hiding_window)
     return;
 
   // Return if the opacity is already 100%
   if (opacity == OPACITY_INCREASE
-      && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
+      && gtk_widget_get_opacity (GTK_WIDGET (window)) == 1.00)
     return;
 
   // Pause an animation
   // The "if" verifies if the animation was called at least once
-  if (ADW_IS_ANIMATION (self->window_opacity_animation))
-    adw_animation_pause (self->window_opacity_animation);
+  if (ADW_IS_ANIMATION (window->window_opacity_animation))
+    adw_animation_pause (window->window_opacity_animation);
 
   target =
     adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
-                                       self,
+                                       window,
                                        NULL);
 
-  self->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (self),    // widget
+  window->window_opacity_animation = adw_timed_animation_new (
+    GTK_WIDGET (window),  // widget
     from, to,             // opacity from to
     270,                  // duration
     target                // target
   );
 
-  adw_animation_play (self->window_opacity_animation);
+  adw_animation_play (window->window_opacity_animation);
 }
 
 /*
@@ -336,37 +203,40 @@ change_opacity_animated (KasasaWindow *self,
  * This trick is required because by using gtk_widget_set_visible (window, FALSE),
  * cause the window to be unpinned.
  */
-static void
-hide_window (KasasaWindow *self,
-             gboolean hide)
+void
+kasasa_window_hide_window (KasasaWindow *window,
+                           gboolean      hide)
 {
   AdwAnimationTarget *target = NULL;
+  gdouble from, to;
+
+  g_return_if_fail (KASASA_IS_WINDOW (window));
 
   // Set from and to target values
-  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
-  gdouble to    = (hide) ? 0.00    : 1.00;
+  from  = gtk_widget_get_opacity (GTK_WIDGET (window));
+  to    = (hide) ? 0.00    : 1.00;
 
   // Set if the window is hiding or being revealed
-  self->hiding_window = (hide) ? TRUE : FALSE;
+  window->hiding_window = (hide) ? TRUE : FALSE;
 
   // Pause an animation
   // The "if" verifies if the animation was called at least once
-  if (ADW_IS_ANIMATION (self->window_opacity_animation))
-    adw_animation_pause (self->window_opacity_animation);
+  if (ADW_IS_ANIMATION (window->window_opacity_animation))
+    adw_animation_pause (window->window_opacity_animation);
 
   target =
     adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
-                                       self,
+                                       window,
                                        NULL);
 
-  self->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (self),                  // widget
+  window->window_opacity_animation = adw_timed_animation_new (
+    GTK_WIDGET (window),                // widget
     from, to,                           // opacity from to
     (hide) ? HIDE_WINDOW_TIME : 200,    // duration
     target                              // target
   );
 
-  adw_animation_play (self->window_opacity_animation);
+  adw_animation_play (window->window_opacity_animation);
 }
 
 static void
@@ -416,10 +286,12 @@ auto_discard_window_cb (GObject        *source_object,
   gtk_progress_bar_set_fraction (self->progress_bar, 0);
 }
 
-static void
-auto_discard_window (KasasaWindow *self)
+void
+kasasa_window_auto_discard_window (KasasaWindow *self)
 {
   GTask *task = NULL;
+
+  g_return_if_fail (KASASA_IS_WINDOW (self));
 
   // If auto_discard wasn't queued or was cancelled
   if (self->auto_discard_canceller == NULL)
@@ -434,241 +306,136 @@ auto_discard_window (KasasaWindow *self)
 }
 
 static void
-update_buttons_sensibility (KasasaWindow *self)
+window_miniaturization_thread (GTask        *task,
+                               gpointer      source_object,
+                               gpointer      task_data,
+                               GCancellable *cancellable)
 {
-  if (adw_carousel_get_n_pages (self->carousel) < MAX_SCREENSHOTS)
-    gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button),
-                              TRUE);
-  else
-    gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button),
-                              FALSE);
+  KasasaWindow *self = KASASA_WINDOW (source_object);
+  gboolean cancelled;
 
-  if (adw_carousel_get_n_pages (self->carousel) > 1)
-    gtk_widget_set_sensitive (GTK_WIDGET (self->remove_screenshot_button),
-                              TRUE);
-  else
-    gtk_widget_set_sensitive (GTK_WIDGET (self->remove_screenshot_button),
-                              FALSE);
+  sleep (3);
+
+  cancelled = g_cancellable_is_cancelled (cancellable);
+
+  if (!cancelled
+      && !self->block_miniaturization)
+    {
+      self->window_is_miniaturized = TRUE;
+      gtk_widget_add_css_class (GTK_WIDGET (self), "circular-window");
+      kasasa_window_resize_window (self, 75, 75);
+      gtk_stack_set_visible_child_name (self->stack, "miniature_page");
+    }
+
+  g_task_return_pointer (task, NULL, NULL);
 }
 
-// Load the screenshot to the GtkPicture widget
-static void
-append_screenshot (KasasaWindow *self,
-                   const gchar  *uri)
+/*
+ * If miniaturize == TRUE, this function will miniaturize the window after some time
+ *
+ * If miniaturize == FALSE, previous requests will be cancelled, and the window
+ * will immediately return to its default visual
+ */
+void
+kasasa_window_miniaturize_window (KasasaWindow *self,
+                                  gboolean      miniaturize)
 {
-  KasasaScreenshot *new_screenshot = NULL;
-  guint n_pages = adw_carousel_get_n_pages (self->carousel);
-  g_debug ("Carousel number of pages: %d", n_pages);
+  GTask *task = NULL;
 
-  if (n_pages >= MAX_SCREENSHOTS)
+  g_return_if_fail (KASASA_IS_WINDOW (self));
+
+  // Cancel a (possible) previous request
+  g_cancellable_cancel (self->miniaturization_canceller);
+  self->miniaturization_canceller = NULL;
+
+  if (miniaturize)
     {
-      g_warning ("Max number of screnshots reached");
-      return;
-    }
+      if (self->window_is_miniaturized)
+        return;
 
-  new_screenshot = kasasa_screenshot_new ();
-  kasasa_screenshot_load_screenshot (new_screenshot, uri);
-  adw_carousel_append (self->carousel, GTK_WIDGET (new_screenshot));
-  adw_carousel_scroll_to (self->carousel, GTK_WIDGET (new_screenshot), TRUE);
-}
+      if (!g_settings_get_boolean (self->settings, "miniaturize-window"))
+        return;
 
-static void
-handle_taken_screenshot (GObject      *object,
-                         GAsyncResult *res,
-                         gpointer      user_data,
-                         gboolean      retaking_screenshot)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-  g_autoptr (GError) error = NULL;
-  g_autofree gchar *uri = NULL;
-
-  hide_window (self, FALSE);
-
-  uri =  xdp_portal_take_screenshot_finish (
-    self->portal,
-    res,
-    &error
-  );
-
-  if (error != NULL)
-    {
-      AdwToast *toast =  adw_toast_new_format (_("Error: %s"), error->message);
-      adw_toast_set_action_target_value (toast, g_variant_new_string (error->message));
-      adw_toast_set_button_label (toast, _("Copy"));
-      adw_toast_set_action_name (toast, "toast.copy_error");
-      adw_toast_overlay_add_toast (self->toast_overlay, toast);
-      g_warning ("%s", error->message);
-      return;
-    }
-
-  if (uri == NULL)
-    {
-      g_autofree gchar *error_message = _("Couldn't load the screenshot");
-      AdwToast *toast = adw_toast_new (error_message);
-      adw_toast_set_action_target_value (toast, g_variant_new_string (error_message));
-      adw_toast_set_button_label (toast, _("Copy"));
-      adw_toast_set_action_name (toast, "toast.copy_error");
-      adw_toast_overlay_add_toast (self->toast_overlay, toast);
-      g_warning ("%s", error_message);
-      return;
-    }
-
-  if (retaking_screenshot)
-    {
-      // Replace with new screenshot
-      kasasa_screenshot_load_screenshot (get_current_screenshot (self), uri);
-      // Resize window
-      resize_window (self);
+      self->miniaturization_canceller = g_cancellable_new ();
+      task = g_task_new (G_OBJECT (self), self->miniaturization_canceller, NULL, NULL);
+      g_task_set_return_on_cancel (task, FALSE);
+      g_task_run_in_thread (task, window_miniaturization_thread);
+      g_object_unref (task);
     }
   else
     {
-      // Add new screenshot
-      append_screenshot (self, uri);
-    }
+      if (!self->window_is_miniaturized)
+        return;
 
-  // Set the focus to the retake_screenshot_button
-  gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
+      self->window_is_miniaturized = FALSE;
+      gtk_widget_remove_css_class (GTK_WIDGET (self), "circular-window");
+      kasasa_picture_container_request_window_resize (self->picture_container);
+      gtk_stack_set_visible_child_name (self->stack, "main_page");
+    }
 }
 
-static void
-on_first_screenshot_taken (GObject      *object,
-                     GAsyncResult *res,
-                     gpointer      user_data)
+void
+kasasa_window_block_miniaturization (KasasaWindow *self,
+                                     gboolean       block)
 {
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-  g_autoptr (GError) error = NULL;
-  g_autofree gchar *uri = NULL;
-  g_autofree gchar *error_message = NULL;
-  g_autoptr (GNotification) notification = NULL;
-  g_autoptr (GIcon) icon = NULL;
+  g_return_if_fail (KASASA_IS_WINDOW (self));
 
-  uri =  xdp_portal_take_screenshot_finish (
-    self->portal,
-    res,
-    &error
-  );
-
-  // If failed to get the URI, set the error message
-  if (error != NULL)
-    goto EXIT_APP;
-
-  if (uri == NULL)
+  if (block)
     {
-      // translators: reason which the screenshot failed
-      error_message = g_strconcat (_("Reason: "), _("Couldn't load the screenshot"), NULL);
-      goto ERROR_NOTIFICATION;
+      // Sets a block
+      self->block_miniaturization = TRUE;
+      // Restore window
+      kasasa_window_miniaturize_window (self, FALSE);
     }
-
-  append_screenshot (self, uri);
-
-  if (g_settings_get_boolean (self->settings, "auto-discard-window"))
-    auto_discard_window (self);
-
-  gtk_widget_set_visible (GTK_WIDGET (self), TRUE);
-  return;
-
-ERROR_NOTIFICATION:
-  icon = g_themed_icon_new ("dialog-warning-symbolic");
-  notification = g_notification_new (_("Screenshot failed"));
-  g_notification_set_icon (notification, icon);
-  g_notification_set_body (notification, error_message);
-  g_application_send_notification (g_application_get_default (),
-                                   "io.github.kelvinnovais.Kasasa",
-                                   notification);
-
-EXIT_APP:
-  g_warning ("%s", error->message);
-
-  gtk_window_close (GTK_WINDOW (self));
-  return;
+  else
+    {
+      // Remove the block
+      self->block_miniaturization = FALSE;
+      // Miniaturize window
+      kasasa_window_miniaturize_window (self, TRUE);
+    }
 }
 
 static void
-on_screenshot_retaken (GObject      *object,
-                       GAsyncResult *res,
-                       gpointer      user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  handle_taken_screenshot (object, res, user_data, TRUE);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button),
-                            TRUE);
-
-  // Enable carousel again
-  adw_carousel_set_interactive (self->carousel, TRUE);
-}
-
-static void
-on_screenshot_taken (GObject      *object,
-                     GAsyncResult *res,
-                     gpointer      user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  handle_taken_screenshot (object, res, user_data, FALSE);
-
-  update_buttons_sensibility (self);
-}
-
-static void
-retake_screenshot (gpointer user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  // Avoid changing the carousel page
-  adw_carousel_set_interactive (self->carousel, FALSE);
-
-  xdp_portal_take_screenshot (
-    self->portal,
-    NULL,
-    XDP_SCREENSHOT_FLAG_INTERACTIVE,
-    NULL,
-    on_screenshot_retaken,
-    self
-  );
-}
-
-static void
-take_screenshot (gpointer user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  xdp_portal_take_screenshot (
-    self->portal,
-    NULL,
-    XDP_SCREENSHOT_FLAG_INTERACTIVE,
-    NULL,
-    on_screenshot_taken,
-    self
-  );
-}
-
-static void
-hide_menu_cb (gpointer user_data)
+hide_header_bar_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
   self->hide_menu_requested = FALSE;
 
   /*
    * Hidding was queried because at some moment the mouse pointer left the window,
-   * however, don't hide the menu if it returned and is still over the window
+   * however, don't hide the HeaderBar if it returned and is still over the window
    */
   if (self->mouse_over_window)
     return;
 
-  gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), FALSE);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
 }
 
 static void
-reveal_menu_cb (gpointer user_data)
+hide_toolbar_cb (gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
-  gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
+
+  /*
+   * Hidding was queried because at some moment the mouse pointer left the window,
+   * however, don't hide the Toolbar if it returned and is still over the window
+   */
+  if (self->mouse_over_window)
+    return;
+
+  kasasa_picture_container_reveal_toolbar (self->picture_container, FALSE);
 }
 
 static void
-hide_menu (KasasaWindow *self)
+reveal_header_bar_cb (gpointer user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
+}
+
+static void
+hide_header_bar (KasasaWindow *self)
 {
   // Hide the vertical menu if this option is enabled
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
@@ -677,7 +444,7 @@ hide_menu (KasasaWindow *self)
     if (self->hide_menu_requested == FALSE)
       {
         self->hide_menu_requested = TRUE;
-        g_timeout_add_seconds_once (2, hide_menu_cb, self);
+        g_timeout_add_seconds_once (2, hide_header_bar_cb, self);
       }
 }
 
@@ -699,28 +466,17 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
   if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (self)) != NULL)
     return;
 
-  change_opacity_animated (self, OPACITY_DECREASE);
+  kasasa_window_change_opacity (self, OPACITY_DECREASE);
 
-  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), TRUE);
-}
-
-static void
-on_page_changed (AdwCarousel *self,
-                 guint        index,
-                 gpointer     user_data)
-{
-  g_debug ("Page changed");
-  // If the carousel is empty, return
-  if ((int) index == -1)
+  // Do not reveal HeaderBar/Toolbar if miniaturization is active; this will done
+  // after clicking the window
+  if (g_settings_get_boolean (self->settings, "miniaturize-window"))
     return;
 
-  // Ensure that the window is visible
-  change_opacity_animated (KASASA_WINDOW (user_data),
-                           OPACITY_INCREASE);
+  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
+    gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
-  g_debug ("Resizing window for image at index %d due to page change", index);
-  resize_window (KASASA_WINDOW (user_data));
+  kasasa_picture_container_reveal_toolbar (self->picture_container, TRUE);
 }
 
 static void
@@ -733,15 +489,16 @@ on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_mot
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
   self->mouse_over_window = FALSE;
-  change_opacity_animated (self, OPACITY_INCREASE);
-  hide_menu (self);
+  kasasa_window_change_opacity (self, OPACITY_INCREASE);
+  hide_header_bar (self);
+  g_timeout_add_seconds_once (2, hide_toolbar_cb, self);
 }
 
 static void
-on_mouse_enter_menu (GtkEventControllerMotion *event_controller_motion,
-                     gdouble                   x,
-                     gdouble                   y,
-                     gpointer                  user_data)
+on_mouse_enter_header_bar (GtkEventControllerMotion *event_controller_motion,
+                           gdouble                   x,
+                           gdouble                   y,
+                           gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -749,13 +506,13 @@ on_mouse_enter_menu (GtkEventControllerMotion *event_controller_motion,
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
   self->mouse_over_window = TRUE;
-  change_opacity_animated (self, OPACITY_INCREASE);
+  kasasa_window_change_opacity (self, OPACITY_INCREASE);
 }
 
 // Increase window opacity when the pointer leaves it
 static void
-on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
-                     gpointer                  user_data)
+on_mouse_leave_header_bar (GtkEventControllerMotion *event_controller_motion,
+                           gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -763,7 +520,39 @@ on_mouse_leave_menu (GtkEventControllerMotion *event_controller_motion,
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
   self->mouse_over_window = FALSE;
-  hide_menu (self);
+  hide_header_bar (self);
+}
+
+static void
+on_mouse_enter_window (GtkEventControllerMotion *event_controller_motion,
+                       gpointer                  user_data)
+{
+  kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), FALSE);
+}
+
+static void
+on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
+                       gpointer                  user_data)
+{
+  kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
+}
+
+static void
+on_window_click_released (GtkGestureClick *gesture_click,
+                          gint             n_press,
+                          gdouble          x,
+                          gdouble          y,
+                          gpointer         user_data)
+{
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+
+  if (!g_settings_get_boolean (self->settings, "miniaturize-window"))
+    return;
+
+  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
+    gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
+
+  kasasa_picture_container_reveal_toolbar (self->picture_container, TRUE);
 }
 
 static gboolean
@@ -772,121 +561,10 @@ on_scroll (GtkEventControllerScroll *self,
            gdouble                   dy,
            gpointer                  user_data)
 {
-  change_opacity_animated (KASASA_WINDOW (user_data),
-                           OPACITY_INCREASE);
+  kasasa_window_change_opacity (KASASA_WINDOW (user_data),
+                                OPACITY_INCREASE);
 
   return TRUE;
-}
-
-// Retake screenshot
-static void
-on_retake_screenshot_button_clicked (GtkButton *button,
-                                     gpointer   user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
-
-  hide_window (self, TRUE);
-
-  g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, retake_screenshot, self);
-}
-
-static void
-on_add_screenshot_button_clicked (GtkButton *button,
-                                  gpointer   user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button), FALSE);
-
-  hide_window (self, TRUE);
-
-  g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, take_screenshot, self);
-}
-
-static void
-on_remove_screenshot_button_clicked (GtkButton *button,
-                                     gpointer   user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-  gdouble curent_position;
-  KasasaScreenshot *curent_screenshot = get_current_screenshot (self);
-  KasasaScreenshot *neighbor_screenshot = NULL;
-
-  adw_carousel_set_interactive (self->carousel, FALSE);
-
-  // First trash the image with KasasaScreenshot instance (it needs a reference
-  // to the parent window), before removing the widget from the carousel
-  kasasa_screenshot_trash_image (curent_screenshot);
-
-  /*
-   * After calling 'adw_carousel_remove ()' a 'page-changed' signal is not emitted,
-   * so the window don't get resized; also, calling 'resize_window ()', it access
-   * a wrong carousel index due to a race condition.
-   *
-   * Workaround: get the neighbor screenshot and forcibly scroll to it - to delete
-   * a screenshot, the window must hold at least 2 screenshots
-   */
-  curent_position = adw_carousel_get_position (self->carousel);
-  if (curent_position == 0)
-    {
-      // If the deleted screenshot is at index 0, get the next one...
-      neighbor_screenshot =
-        KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel,
-                                                      curent_position+1));
-    }
-  else
-    {
-      // ...otherwise, always get the previous one.
-      neighbor_screenshot =
-        KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel,
-                                                      curent_position-1));
-    }
-
-  adw_carousel_remove (self->carousel, GTK_WIDGET (curent_screenshot));
-
-  adw_carousel_scroll_to (self->carousel, GTK_WIDGET (neighbor_screenshot), TRUE);
-
-  update_buttons_sensibility (self);
-
-  adw_carousel_set_interactive (self->carousel, TRUE);
-}
-
-// Copy the image to the clipboard
-static void
-on_copy_button_clicked (GtkButton *button,
-                        gpointer   user_data)
-{
-  KasasaWindow *self = KASASA_WINDOW (user_data);
-  g_autoptr (GError) error = NULL;
-  GdkClipboard *clipboard = NULL;
-  g_autoptr (GdkTexture) texture = NULL;
-  AdwToast *toast = NULL;
-
-  clipboard = gdk_display_get_clipboard (gdk_display_get_default ());
-
-  texture = gdk_texture_new_from_file (kasasa_screenshot_get_file (get_current_screenshot (self)),
-                                       &error);
-
-  if (error != NULL)
-    {
-      toast = adw_toast_new_format (_("Error: %s"), error->message);
-      adw_toast_set_action_target_value (toast, g_variant_new_string (error->message));
-      adw_toast_set_button_label (toast, _("Copy"));
-      adw_toast_set_action_name (toast, "toast.copy_error");
-      adw_toast_overlay_add_toast (self->toast_overlay, toast);
-      g_warning ("%s", error->message);
-
-      // Make the copy button insensitive on failure
-      gtk_widget_set_sensitive (GTK_WIDGET (self->copy_button), FALSE);
-
-      return;
-    }
-
-  gdk_clipboard_set_texture (clipboard, texture);
-  toast = adw_toast_new (_("Copied to the clipboard"));
-  adw_toast_overlay_add_toast (self->toast_overlay, toast);
 }
 
 static void
@@ -896,7 +574,7 @@ on_auto_discard_button_toggled (GtkToggleButton   *button,
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   if (gtk_toggle_button_get_active (button))
-    auto_discard_window (self);
+    kasasa_window_auto_discard_window (self);
   else
     g_cancellable_cancel (self->auto_discard_canceller);
 }
@@ -913,17 +591,17 @@ on_settings_updated (GSettings *settings,
       gboolean auto_hide = g_settings_get_boolean (self->settings, "auto-hide-menu");
 
       if (auto_hide)
-        gtk_widget_add_css_class (GTK_WIDGET (self->menu), "auto-hide");
+        gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
       else
-        gtk_widget_remove_css_class (GTK_WIDGET (self->menu), "auto-hide");
+        gtk_widget_remove_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
 
       if (auto_hide)
-        hide_menu (self);
+        hide_header_bar (self);
       else
-        g_timeout_add_seconds_once (2, reveal_menu_cb, self);
+        g_timeout_add_seconds_once (2, reveal_header_bar_cb, self);
 
       // Resize the window to free/occupy the vertical menu space
-      resize_window (self);
+      kasasa_picture_container_request_window_resize (self->picture_container);
     }
 
   else if (g_strcmp0 (key, "auto-discard-window") == 0)
@@ -942,6 +620,14 @@ on_settings_updated (GSettings *settings,
       else
         gtk_toggle_button_set_active (self->auto_trash_button, FALSE);
     }
+
+  else if (g_strcmp0 (key, "miniaturize-window") == 0)
+    {
+      if (g_settings_get_boolean (self->settings, "miniaturize-window"))
+        kasasa_window_miniaturize_window (self, TRUE);
+      else
+        kasasa_window_miniaturize_window (self, FALSE);
+    }
 }
 
 static gboolean
@@ -949,34 +635,10 @@ on_close_request (GtkWindow *window,
                   gpointer   user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
-  guint n_pages = adw_carousel_get_n_pages (self->carousel);
 
-  // Request deleting screenshots from the last to the first page of the carousel;
-  // the image is only deleted by KasasaScreenshot if the trash_button is toggled
-  for (gint i = n_pages-1; i >= 0; i--)
-    {
-      KasasaScreenshot *screenshot =
-        KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel, i));
-
-      // First trash the image (it needs a reference to the parent window)...
-      kasasa_screenshot_trash_image (screenshot);
-      // ...then remove it from the carousel
-      adw_carousel_remove (self->carousel, GTK_WIDGET (screenshot));
-    }
+  kasasa_picture_container_wipe_screenshots (self->picture_container);
 
   return FALSE;
-}
-
-static void
-copy_error_cb (GtkWidget  *sender,
-               const char *action,
-               GVariant   *param)
-{
-  GdkClipboard *clipboard = NULL;
-  clipboard = gdk_display_get_clipboard (gdk_display_get_default ());
-
-  // Copy the error message to the clipboard
-  gdk_clipboard_set_text (clipboard, g_variant_get_string (param, NULL));
 }
 
 static void
@@ -985,7 +647,6 @@ kasasa_window_dispose (GObject *kasasa_window)
   KasasaWindow *self = KASASA_WINDOW (kasasa_window);
 
   g_clear_object (&self->settings);
-  g_clear_object (&self->portal);
 
   gtk_widget_dispose_template (GTK_WIDGET (kasasa_window), KASASA_TYPE_WINDOW);
 
@@ -1007,33 +668,34 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   object_class->dispose = kasasa_window_dispose;
   object_class->finalize = kasasa_window_finalize;
 
-  gtk_widget_class_install_action (widget_class, "toast.copy_error", "s", copy_error_cb);
-
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Kasasa/kasasa-window.ui");
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, picture_container);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, retake_screenshot_button);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, add_screenshot_button);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, remove_screenshot_button);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, copy_button);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, toast_overlay);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_revealer);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar_revealer);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_trash_button);
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, carousel);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, progress_bar);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, stack);
 }
 
 static void
 kasasa_window_init (KasasaWindow *self)
 {
+  GtkEventController *pc_motion_event_controller = NULL;
+  GtkEventController *hb_motion_event_controller = NULL;
+  GtkEventController *win_motion_event_controller = NULL;
+  GtkEventController *win_scroll_event_controller = NULL;
+  GtkGesture *win_gesture_click = NULL;
+
+  g_type_ensure (KASASA_TYPE_PICTURE_CONTAINER);
+
   gtk_widget_init_template (GTK_WIDGET (self));
 
-  // Initialize variables
-  self->portal = xdp_portal_new ();
+  // Initialize self variables
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
   self->auto_discard_canceller = NULL;
+  self->miniaturization_canceller = NULL;
   self->hiding_window = FALSE;
 
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
@@ -1048,69 +710,74 @@ kasasa_window_init (KasasaWindow *self)
   if (g_settings_get_boolean (self->settings, "auto-trash-image"))
     gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
 
-  // Set the focus to the retake_screenshot_button
-  gtk_window_set_focus (GTK_WINDOW (self), GTK_WIDGET (self->retake_screenshot_button));
-
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_widget_add_css_class (GTK_WIDGET (self->menu), "auto-hide");
+    gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
 
-  // Hide the vertical menu if this option is enabled
+  // Hide the HeaderBar if this option is enabled
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->menu_revealer), FALSE);
+    gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
 
-  // MOTION EVENT CONTORLLERS: Create motion event controllers to monitor when
+  // MOTION EVENT CONTROLLERS: Create motion event controllers to monitor when
   // the mouse cursor is over the picture container or the menu
   // (I) Picture container
-  self->win_motion_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->win_motion_event_controller,
+  pc_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (pc_motion_event_controller,
                     "enter",
                     G_CALLBACK (on_mouse_enter_picture_container),
                     self);
-  g_signal_connect (self->win_motion_event_controller,
+  g_signal_connect (pc_motion_event_controller,
                     "leave",
                     G_CALLBACK (on_mouse_leave_picture_container),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), self->win_motion_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), pc_motion_event_controller);
 
-  // (II) Menu
-  self->menu_motion_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (self->menu_motion_event_controller,
+  // (II) HeaderBar
+  hb_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (hb_motion_event_controller,
                     "enter",
-                    G_CALLBACK (on_mouse_enter_menu),
+                    G_CALLBACK (on_mouse_enter_header_bar),
                     self);
-  g_signal_connect (self->menu_motion_event_controller,
+  g_signal_connect (hb_motion_event_controller,
                     "leave",
-                    G_CALLBACK (on_mouse_leave_menu),
+                    G_CALLBACK (on_mouse_leave_header_bar),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->menu), self->menu_motion_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->header_bar),
+                             hb_motion_event_controller);
 
-  // Increase opacity when the user scrolls the screenshot
-  self->win_scroll_event_controller =
+  // (III) Window
+  win_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (win_motion_event_controller,
+                    "enter",
+                    G_CALLBACK (on_mouse_enter_window),
+                    self);
+  g_signal_connect (win_motion_event_controller,
+                    "leave",
+                    G_CALLBACK (on_mouse_leave_window),
+                    self);
+  gtk_widget_add_controller (GTK_WIDGET (self),
+                             win_motion_event_controller);
+
+  win_gesture_click = gtk_gesture_click_new ();
+  g_signal_connect (win_gesture_click,
+                    "released",
+                    G_CALLBACK (on_window_click_released),
+                    self);
+  gtk_widget_add_controller (GTK_WIDGET (self),
+                             GTK_EVENT_CONTROLLER (win_gesture_click));
+
+
+  // Increase opacity when the user scrolls the screenshot; this is combined with
+  // "page-changed" signal from the caroussel @PictureContainer
+  win_scroll_event_controller =
     gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES);
-  g_signal_connect (self->win_scroll_event_controller,
+  g_signal_connect (win_scroll_event_controller,
                     "scroll",
                     G_CALLBACK (on_scroll),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self), self->win_scroll_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self), win_scroll_event_controller);
 
   // SIGNALS
   // Connect buttons to the callbacks
-  g_signal_connect (self->retake_screenshot_button,
-                    "clicked",
-                    G_CALLBACK (on_retake_screenshot_button_clicked),
-                    self);
-  g_signal_connect (self->add_screenshot_button,
-                    "clicked",
-                    G_CALLBACK (on_add_screenshot_button_clicked),
-                    self);
-  g_signal_connect (self->remove_screenshot_button,
-                    "clicked",
-                    G_CALLBACK (on_remove_screenshot_button_clicked),
-                    self);
-  g_signal_connect (self->copy_button,
-                    "clicked",
-                    G_CALLBACK (on_copy_button_clicked),
-                    self);
   g_signal_connect (self->auto_discard_button,
                     "toggled",
                     G_CALLBACK (on_auto_discard_button_toggled),
@@ -1121,20 +788,9 @@ kasasa_window_init (KasasaWindow *self)
                     "close-request",
                     G_CALLBACK (on_close_request),
                     self);
-  g_signal_connect (self->carousel,
-                    "page-changed",
-                    G_CALLBACK (on_page_changed),
-                    self);
 
-  // Request a screenshot
-  xdp_portal_take_screenshot (
-    self->portal,
-    NULL,
-    XDP_SCREENSHOT_FLAG_INTERACTIVE,
-    NULL,
-    on_first_screenshot_taken,
-    self
-  );
+  // Request the first screenshot
+  kasasa_picture_container_request_first_screenshot (self->picture_container);
 }
 
 

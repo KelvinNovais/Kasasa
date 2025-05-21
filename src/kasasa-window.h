@@ -24,8 +24,41 @@
 
 G_BEGIN_DECLS
 
+typedef enum
+{
+  OPACITY_INCREASE,
+  OPACITY_DECREASE
+} Opacity;
+
+#define HIDE_WINDOW_TIME 110
+#define WAITING_HIDE_WINDOW_TIME (2 * HIDE_WINDOW_TIME)
+
+// Due to miniaturization, the real min dimensions are set here (width-request
+// and height-request)
+#define WINDOW_MIN_HEIGHT 110
+#define WINDOW_MIN_WIDTH  180
+
 #define KASASA_TYPE_WINDOW (kasasa_window_get_type ())
 
 G_DECLARE_FINAL_TYPE (KasasaWindow, kasasa_window, KASASA, WINDOW, AdwApplicationWindow)
 
+KasasaWindow * kasasa_window_get_window_reference (GtkWidget *widget);
+gboolean kasasa_window_get_trash_button_active (KasasaWindow *window);
+void kasasa_window_hide_window (KasasaWindow *window, gboolean hide);
+void kasasa_window_change_opacity (KasasaWindow *window,
+                                   Opacity       opacity_direction);
+void kasasa_window_resize_window (KasasaWindow *window,
+                                  gdouble       new_height,
+                                  gdouble       new_width);
+void kasasa_window_auto_discard_window (KasasaWindow *window);
+void kasasa_window_miniaturize_window (KasasaWindow *window, gboolean miniaturize);
+void kasasa_window_block_miniaturization (KasasaWindow *window, gboolean block);
+
 G_END_DECLS
+
+/*
+ * Descanxe em paz, tia Eldenir
+ * nós te amamos muito.
+ *
+ * 10/05/25
+ */

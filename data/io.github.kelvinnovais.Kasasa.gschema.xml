@@ -16,6 +16,11 @@
       <default>0.35</default>
     </key>
 
+  	  <!-- MINIATURIZE -->
+	  <key name="miniaturize-window" type="b">
+      <default>false</default>
+    </key>
+
 	  <!-- OCCUPY SCREEN -->
 	  <key name="occupy-screen" type="d">
       <range min="0.10" max="0.75"/>
