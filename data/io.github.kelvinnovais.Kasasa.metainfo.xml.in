@@ -25,7 +25,7 @@
   <description>
     <p>
       Clip what's important to a small floating window, so you don't have to switch between windows or workspaces repeatedly.
-      The application allows you to see what's behind the window by hovering over it.
+      The window can become miniaturized or have its opacity reduced, in order to do not block what's behind it.
     </p>
     <p>Best used with:</p>
     <ul>
@@ -38,7 +38,7 @@
       On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts.
       There you can set a shortcut to run <code>flatpak run io.github.kelvinnovais.Kasasa</code>
     </p>
-    <!-- translators: if needed, replace "&lt;" with < and "&apos;" with ' -->
+    <!-- translators: replace "&lt;" with < and "&apos;" with ' -->
     <p>
       Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the screenshot,
       instead of directly using the GNOME&apos;s screenshoter; this may be inconvenient.
@@ -49,19 +49,16 @@
 
   <screenshots>
     <screenshot type="default">
-      <caption>A small window, in dark mode</caption>
+      <caption>Main window</caption>
       <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/01.png</image>
     </screenshot>
     <screenshot>
-      <caption>A small window, in light mode</caption>
-      <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/02.png</image>
+      <caption>Kasasa can become a window miniature</caption>
+      <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/05.png</image>
     </screenshot>
     <screenshot>
-      <caption>Kasasa over another application</caption>
-      <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/03.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>Kasasa over another application, with opacity decreased</caption>
+      <!-- translators: "its" refer to Kasasa window -->
+      <caption>Or decrease its opacity</caption>
       <image>https://raw.githubusercontent.com/KelvinNovais/Kasasa/main/screenshots/04.png</image>
     </screenshot>
   </screenshots>
@@ -72,6 +69,22 @@
   </branding>
 
   <releases>
+    <release date="2025-05-22" version="1.1.0">
+      <description translate="no">
+        <p>Features:</p>
+        <ul>
+          <li>Added window miniature mode</li>
+          <li>New UI to fit GNOME HIG</li>
+          <li>Bump to GNOME 48</li>
+          <li>Bump to libportal 0.9.1</li>
+        </ul>
+        <p>Fix:</p>
+        <ul>
+          <li>HeaderBar dimming (Vladimir Kosolapov @vmkspv)</li>
+          <li>HeaderBar buttons position</li>
+        </ul>
+      </description>
+    </release>
     <release date="2025-03-15" version="1.0.1">
       <description translate="no">
         <ul>
