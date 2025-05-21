@@ -6,18 +6,18 @@
  <!--
   <a href="https://github.com/KelvinNovais/Kasasa/actions/workflows/flatpak.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/KelvinNovais/Kasasa/flatpak.yml?logo=flatpak&logoColor=fff&labelColor=22d841&color=f9f28f"/>
-  </a>
- -->
+ </a>
   <a href="https://github.com/KelvinNovais/Kasasa/releases/latest">
     <img src="https://img.shields.io/github/v/release/KelvinNovais/Kasasa?logo=github&logoColor=fff&labelColor=22d841&color=f9f28f"/>
   </a>
+ -->
   <a href="https://flathub.org/apps/io.github.kelvinnovais.Kasasa">
-    <img src="https://img.shields.io/flathub/downloads/io.github.kelvinnovais.Kasasa?logo=flathub&logoColor=fff&labelColor=22d841&color=f9f28f"/>
+    <img src="https://img.shields.io/flathub/downloads/io.github.kelvinnovais.Kasasa?logo=flathub&logoColor=fff&labelColor=22d841&color=white"/>
   </a>
 </p>
 
 Clip and pin what's important to a small floating window, so you don't have to switch between windows or workspaces repeatedly. 
-The application allows you to see what's behind the window by hovering over it.
+The window can become miniaturized or have its opacity reduced, in order to do not block what's behind it.
 
 Best used with:
  - "Always on Top" and/or "Always on Visible Workspace"
@@ -41,14 +41,12 @@ Best used with:
 
 <div align="center">
   <img src="https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/01.png" />
-  <img src="https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/02.png" />
+  <img src="https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/05.png" />
 </div>
 <div align="center">
-  <img src="https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/03.png" />
   <img src="https://github.com/KelvinNovais/Kasasa/blob/main/screenshots/04.png" />
 </div>
 
 ---
 
 _¹ "Kasasa" is an approximation to "قصاصة", an Arabic term meaning a scrap of paper torn from a book, a magazine or a newspaper._
-
