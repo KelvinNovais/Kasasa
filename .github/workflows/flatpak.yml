@@ -1,10 +1,8 @@
-name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
-
+name: CI
 jobs:
   flatpak:
     name: "Flatpak"
@@ -22,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate AppStream file
-      run: |
+        run: |
           appstreamcli validate --no-net data/io.github.kelvinnovais.Kasasa.metainfo.xml.in
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
