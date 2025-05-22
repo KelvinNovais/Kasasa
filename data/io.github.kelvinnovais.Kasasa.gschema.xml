@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="kasasa">
 	<schema id="io.github.kelvinnovais.Kasasa" path="/io/github/kelvinnovais/Kasasa/">
-	  <!-- AUTO HIDE -->
+	  <!-- AUTO HIDE HEADER BAR -->
 	  <key name="auto-hide-menu" type="b">
-      <default>false</default>
+      <default>true</default>
     </key>
 
 	  <!-- OPACITY -->
 	  <key name="change-opacity" type="b">
-      <default>true</default>
+      <default>false</default>
     </key>
 
 	  <key name="opacity" type="d">
