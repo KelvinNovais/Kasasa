@@ -1,0 +1,187 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the kasasa package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: kasasa\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-20 21:43-0300\n"
+"PO-Revision-Date: 2025-05-25 17:31+0200\n"
+"Last-Translator: Uwe Senkler\n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:2
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:16
+#: src/kasasa-application.c:102
+msgid "Kasasa"
+msgstr "Kasasa"
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
+msgid "Snip and pin useful information"
+msgstr "Nützliche Informationen ausschneiden und anheften"
+
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:9
+msgid "screenshot;clipping;snip;image;"
+msgstr "screenshot;clipping;snip;image;bildschirmfoto;ausschneiden;bild;"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
+msgid ""
+"Clip what's important to a small floating window, so you don't have to "
+"switch between windows or workspaces repeatedly. The window can become "
+"miniaturized or have its opacity reduced, in order to do not block what's "
+"behind it."
+msgstr ""
+"Wichtiges ausschneiden und in einem kleinen schwebenden Fenster darstellen, "
+"sodass Sie nicht laufend zwischen Fenstern oder Arbeitsflächen wechseln "
+"müssen. Das Fenster kann verkleinert oder durchsichtig dargestellt werden, "
+"sodass der Bildschirminhalt dahinter nicht verdeckt wird."
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
+msgid "Best used with:"
+msgstr "Am besten nutzen Sie Kasasa mit:"
+
+#. translators: replace &quot; with "
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:33
+msgid "\"Always on Top\" and/or \"Always on Visible Workspace\""
+msgstr ""
+"»Immer im Vordergrund« und/oder »Immer auf der sichtbaren Arbeitsfläche«"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:34
+msgid "A keyboard shortcut"
+msgstr "Einem Tastenkürzel"
+
+#. translators: do not include the tags <code></code>
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
+msgid ""
+"On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
+"Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
+"kelvinnovais.Kasasa</code> "
+msgstr ""
+"In GNOME gehen Sie zu Einstellungen → Tastatur → Tastenkürzel anzeigen und "
+"anpassen → Eigene Tastenkürzel. Dort können Sie ein Tastenkürzel zum "
+"Ausführen von <code>flatpak run io.github.kelvinnovais.Kasasa</code> "
+"festlegen "
+
+#. translators: replace "&lt;" with < and "&apos;" with '
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
+msgid ""
+"Note: On GNOME versions < 46, a dialog will appear to set up and take the "
+"screenshot, instead of directly using the GNOME's screenshoter; this may be "
+"inconvenient."
+msgstr ""
+"Hinweis: Bei GNOME-Versionen < 46 erscheint ein Dialogfenster zum Einrichten "
+"und Erstellen des Bildschirmfotos, anstatt dass GNOMEs "
+"Bildschirmfotoanwendung direkt genutzt wird; dies ist möglicherweise etwas "
+"unkomfortabel."
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:52
+msgid "Main window"
+msgstr "Hauptfenster"
+
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:56
+msgid "Kasasa can become a window miniature"
+msgstr "Kasasa kann eine Fensterminiatur anzeigen"
+
+#. translators: "its" refer to Kasasa window
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
+msgid "Or decrease its opacity"
+msgstr "Oder durchsichtig dargestellt werden"
+
+#: src/gtk/help-overlay.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Allgemein"
+
+#: src/gtk/help-overlay.ui:14
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr "Tastenkürzel anzeigen"
+
+#: src/gtk/help-overlay.ui:20
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Beenden"
+
+#: src/kasasa-window.ui:54
+msgid "Trigger auto discard timer"
+msgstr "Timer zum automatischen Verwerfen starten"
+
+#: src/kasasa-window.ui:63
+msgid "Auto delete image when closing window"
+msgstr "Bild bei Schließen des Fensters automatisch löschen"
+
+#: src/kasasa-window.ui:74
+msgid "Menu"
+msgstr "Menü"
+
+#: src/kasasa-window.ui:151
+msgid "_Preferences"
+msgstr "_Einstellungen"
+
+#: src/kasasa-window.ui:155
+msgid "_About Kasasa"
+msgstr "_Info zu Kasasa"
+
+#: src/kasasa-application.c:106
+msgid ""
+"Snip and pin useful information\n"
+"\n"
+"If you liked the app ❤️, consider giving it a star ⭐:"
+msgstr ""
+"Nützliche Informationen ausschneiden und anheften\n"
+"\n"
+"Falls Sie diese Anwendung schätzen ❤️, mögen Sie ihr vielleicht einen Stern "
+"⭐ verleihen:"
+
+#. Translators: Replace "translator-credits" with your names, one name per line
+#: src/kasasa-application.c:114
+msgid "translator-credits"
+msgstr "translator-credits"
+
+#: src/kasasa-preferences.ui:29
+msgid "Opacity level"
+msgstr "Deckkraft"
+
+#: src/kasasa-preferences.ui:47
+msgid "Auto hide the header bar"
+msgstr "Titelleiste automatisch ausblenden"
+
+#: src/kasasa-preferences.ui:58
+msgid "Occupying screen percentage"
+msgstr "Belegter Anteil der Bildschirmfläche"
+
+#: src/kasasa-preferences.ui:59
+msgid "Max percentage of the screen that Kasasa can use"
+msgstr "Maximal von Kasasa verwendeter Anteil der Bildschirmfläche"
+
+#: src/kasasa-preferences.ui:79
+msgid "Auto close window"
+msgstr "Fenster automatisch schließen"
+
+#: src/kasasa-preferences.ui:80
+msgid "Auto close the window after a certain time"
+msgstr "Fenster nach Ablauf einer bestimmten Zeit automatisch schließen"
+
+#. translators: this refers to the time to auto discard the window
+#: src/kasasa-preferences.ui:86
+msgid "Time (in minutes)"
+msgstr "Zeit (in Minuten)"
+
+#: src/kasasa-preferences.ui:106
+msgid "Auto delete image"
+msgstr "Bild automatisch löschen"
+
+#: src/kasasa-preferences.ui:107
+msgid "Auto delete the image when closing the window or retaking a screenshot"
+msgstr ""
+"Bild automatisch löschen, sobald das Fenster geschlossen oder erneut ein "
+"Bildschirmfoto erstellt wird"
