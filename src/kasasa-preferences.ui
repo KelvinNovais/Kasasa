@@ -9,12 +9,12 @@
         <!-- HINDING WINDOW MODE -->
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title">Hinding window mode</property>
+            <property name="title" translatable="yes">Window hide mode</property>
             <child>
               <object class="AdwExpanderRow" id="opacity_expander_row">
                 <property name="enable-expansion">false</property>
                 <property name="show-enable-switch">true</property>
-                <property name="title">Decrease opacity</property>
+                <property name="title" translatable="yes">Decrease opacity</property>
                 <child>
                   <object class="AdwSpinRow">
                     <property name="adjustment">
@@ -33,7 +33,7 @@
             </child>
             <child>
               <object class="AdwSwitchRow" id="miniaturize_switch">
-                <property name="title">Miniaturize</property>
+                <property name="title" translatable="yes">Miniaturize</property>
               </object>
             </child>
           </object>

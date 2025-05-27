@@ -3,8 +3,10 @@ data/io.github.kelvinnovais.Kasasa.metainfo.xml.in
 data/io.github.kelvinnovais.Kasasa.gschema.xml
 src/gtk/help-overlay.ui
 src/main.c
+src/kasasa-application.c
 src/kasasa-window.c
 src/kasasa-window.ui
-src/kasasa-application.c
+src/kasasa-picture-container.c
+src/kasasa-picture-container.ui
 src/kasasa-preferences.c
 src/kasasa-preferences.ui

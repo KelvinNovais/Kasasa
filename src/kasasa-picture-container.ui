@@ -111,7 +111,6 @@
                 <child type="overlay">
                   <object class="GtkRevealer" id="revealer_end_buttons">
                     <property name="transition-type">crossfade</property>
-                    <!-- <property name="transition-duration">1250</property> -->
                     <property name="overflow">visible</property>
                     <property name="overflow">visible</property>
                     <property name="halign">end</property>
