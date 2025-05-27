@@ -10,6 +10,7 @@ kasasa_sources = [
 
 kasasa_deps = [
   dependency('gtk4'),
+  # TODO require >= 1.7.4, when available
   dependency('libadwaita-1', version: '>= 1.4'),
   dependency('libportal')
 ]

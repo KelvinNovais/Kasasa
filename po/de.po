@@ -2,25 +2,25 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the kasasa package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Uwe Senkler <>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-20 21:43-0300\n"
-"PO-Revision-Date: 2025-05-25 17:31+0200\n"
+"POT-Creation-Date: 2025-05-27 12:35-0300\n"
+"PO-Revision-Date: 2025-05-27 12:14-0300\n"
 "Last-Translator: Uwe Senkler\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Gtranslator 48.0\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:2
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:16
-#: src/kasasa-application.c:102
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
+#: src/kasasa-application.c:102 src/kasasa-window.ui:16
 msgid "Kasasa"
 msgstr "Kasasa"
 
@@ -63,8 +63,8 @@ msgstr "Einem Tastenkürzel"
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
 msgid ""
 "On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
-"Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
-"kelvinnovais.Kasasa</code> "
+"Shortcuts. There you can set a shortcut to run <code>flatpak run "
+"io.github.kelvinnovais.Kasasa</code> "
 msgstr ""
 "In GNOME gehen Sie zu Einstellungen → Tastatur → Tastenkürzel anzeigen und "
 "anpassen → Eigene Tastenkürzel. Dort können Sie ein Tastenkürzel zum "
@@ -111,26 +111,6 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Beenden"
 
-#: src/kasasa-window.ui:54
-msgid "Trigger auto discard timer"
-msgstr "Timer zum automatischen Verwerfen starten"
-
-#: src/kasasa-window.ui:63
-msgid "Auto delete image when closing window"
-msgstr "Bild bei Schließen des Fensters automatisch löschen"
-
-#: src/kasasa-window.ui:74
-msgid "Menu"
-msgstr "Menü"
-
-#: src/kasasa-window.ui:151
-msgid "_Preferences"
-msgstr "_Einstellungen"
-
-#: src/kasasa-window.ui:155
-msgid "_About Kasasa"
-msgstr "_Info zu Kasasa"
-
 #: src/kasasa-application.c:106
 msgid ""
 "Snip and pin useful information\n"
@@ -145,11 +125,77 @@ msgstr ""
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:114
 msgid "translator-credits"
-msgstr "translator-credits"
+msgstr "Uwe Senkler"
+
+#: src/kasasa-window.ui:61
+msgid "Trigger auto discard timer"
+msgstr "Timer zum automatischen Verwerfen starten"
+
+#: src/kasasa-window.ui:70
+msgid "Auto delete image when closing window"
+msgstr "Bild bei Schließen des Fensters automatisch löschen"
+
+#: src/kasasa-window.ui:81
+msgid "Menu"
+msgstr "Menü"
+
+#: src/kasasa-window.ui:158
+msgid "_Preferences"
+msgstr "_Einstellungen"
+
+#: src/kasasa-window.ui:162
+msgid "_About Kasasa"
+msgstr "_Info zu Kasasa"
+
+#: src/kasasa-picture-container.c:181 src/kasasa-picture-container.c:332
+#, c-format
+msgid "Error: %s"
+msgstr "Fehler: %s"
+
+#: src/kasasa-picture-container.c:183 src/kasasa-picture-container.c:195
+#: src/kasasa-picture-container.c:334
+msgid "Copy"
+msgstr "Kopie"
+
+#: src/kasasa-picture-container.c:192
+msgid "Couldn't load the screenshot"
+msgstr "Der Screenshot konnte nicht geladen werden"
+
+#: src/kasasa-picture-container.c:346
+msgid "Copied to the clipboard"
+msgstr "In die Zwischenablage kopiert"
+
+#: src/kasasa-picture-container.ui:93
+msgid "Add screenshot"
+msgstr "Screenshot hinzufügen"
+
+#: src/kasasa-picture-container.ui:102
+msgid "Remove screenshot"
+msgstr "Screenshot entfernen"
+
+#: src/kasasa-picture-container.ui:130
+msgid "Retake screenshot"
+msgstr "Screenshot erneut aufnehmen"
+
+#: src/kasasa-picture-container.ui:138
+msgid "Copy screenshot"
+msgstr "Screenshot kopieren"
+
+#: src/kasasa-preferences.ui:12
+msgid "Window hide mode"
+msgstr "Fenster-Ausblendmodus"
+
+#: src/kasasa-preferences.ui:17
+msgid "Decrease opacity"
+msgstr "Opazität verringern"
 
 #: src/kasasa-preferences.ui:29
 msgid "Opacity level"
 msgstr "Deckkraft"
+
+#: src/kasasa-preferences.ui:36
+msgid "Miniaturize"
+msgstr "Miniaturisieren"
 
 #: src/kasasa-preferences.ui:47
 msgid "Auto hide the header bar"
@@ -185,3 +231,6 @@ msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
 "Bild automatisch löschen, sobald das Fenster geschlossen oder erneut ein "
 "Bildschirmfoto erstellt wird"
+
+#~ msgid "New Window"
+#~ msgstr "Neues Fenster"

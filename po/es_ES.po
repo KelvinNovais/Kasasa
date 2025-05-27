@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-20 21:43-0300\n"
-"PO-Revision-Date: 2025-05-20 21:51-0300\n"
+"POT-Creation-Date: 2025-05-27 12:35-0300\n"
+"PO-Revision-Date: 2025-05-27 12:07-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -20,8 +20,8 @@ msgstr ""
 "X-Generator: Gtranslator 48.0\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:2
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:16
-#: src/kasasa-application.c:102
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
+#: src/kasasa-application.c:102 src/kasasa-window.ui:16
 msgid "Kasasa"
 msgstr "Kasasa"
 
@@ -62,8 +62,8 @@ msgstr "Un atajo de teclado"
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
 msgid ""
 "On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
-"Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
-"kelvinnovais.Kasasa</code> "
+"Shortcuts. There you can set a shortcut to run <code>flatpak run "
+"io.github.kelvinnovais.Kasasa</code> "
 msgstr ""
 "En GNOME, vaya a Configuración → Teclado → Ver y personalizar atajos → Atajo "
 "personalizado. Allí puedes configurar un acceso directo para ejecutar "
@@ -109,26 +109,6 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Cerrar"
 
-#: src/kasasa-window.ui:54
-msgid "Trigger auto discard timer"
-msgstr "Activar temporizador de descarte automático"
-
-#: src/kasasa-window.ui:63
-msgid "Auto delete image when closing window"
-msgstr "Eliminar imagen automáticamente al cerrar la ventana"
-
-#: src/kasasa-window.ui:74
-msgid "Menu"
-msgstr "Menú"
-
-#: src/kasasa-window.ui:151
-msgid "_Preferences"
-msgstr "_Preferencias"
-
-#: src/kasasa-window.ui:155
-msgid "_About Kasasa"
-msgstr "_Acerca de Kasasa"
-
 #: src/kasasa-application.c:106
 msgid ""
 "Snip and pin useful information\n"
@@ -144,9 +124,75 @@ msgstr ""
 msgid "translator-credits"
 msgstr "Kelvin Ribeiro Novais"
 
+#: src/kasasa-window.ui:61
+msgid "Trigger auto discard timer"
+msgstr "Activar temporizador de descarte automático"
+
+#: src/kasasa-window.ui:70
+msgid "Auto delete image when closing window"
+msgstr "Eliminar imagen automáticamente al cerrar la ventana"
+
+#: src/kasasa-window.ui:81
+msgid "Menu"
+msgstr "Menú"
+
+#: src/kasasa-window.ui:158
+msgid "_Preferences"
+msgstr "_Preferencias"
+
+#: src/kasasa-window.ui:162
+msgid "_About Kasasa"
+msgstr "_Acerca de Kasasa"
+
+#: src/kasasa-picture-container.c:181 src/kasasa-picture-container.c:332
+#, c-format
+msgid "Error: %s"
+msgstr "Error: %s"
+
+#: src/kasasa-picture-container.c:183 src/kasasa-picture-container.c:195
+#: src/kasasa-picture-container.c:334
+msgid "Copy"
+msgstr "Copiar"
+
+#: src/kasasa-picture-container.c:192
+msgid "Couldn't load the screenshot"
+msgstr "No se pudo cargar la captura de pantalla"
+
+#: src/kasasa-picture-container.c:346
+msgid "Copied to the clipboard"
+msgstr "Copiado al portapapeles"
+
+#: src/kasasa-picture-container.ui:93
+msgid "Add screenshot"
+msgstr "Agregar captura de pantalla"
+
+#: src/kasasa-picture-container.ui:102
+msgid "Remove screenshot"
+msgstr "Eliminar captura de pantalla"
+
+#: src/kasasa-picture-container.ui:130
+msgid "Retake screenshot"
+msgstr "Volver a tomar captura de pantalla"
+
+#: src/kasasa-picture-container.ui:138
+msgid "Copy screenshot"
+msgstr "Copiar captura de pantalla"
+
+#: src/kasasa-preferences.ui:12
+msgid "Window hide mode"
+msgstr "Modo ocultar ventana"
+
+#: src/kasasa-preferences.ui:17
+msgid "Decrease opacity"
+msgstr "Disminuir la opacidad"
+
 #: src/kasasa-preferences.ui:29
 msgid "Opacity level"
 msgstr "Nivel de opacidad"
+
+#: src/kasasa-preferences.ui:36
+msgid "Miniaturize"
+msgstr "Miniaturizar"
 
 #: src/kasasa-preferences.ui:47
 msgid "Auto hide the header bar"
@@ -183,6 +229,9 @@ msgstr ""
 "Eliminar automáticamente la imagen al cerrar la ventana o volver a tomar una "
 "captura de pantalla"
 
+#~ msgid "New Window"
+#~ msgstr "Nueva ventana"
+
 #~ msgid "A small window, in dark mode"
 #~ msgstr "Una pequeña ventana, en modo oscuro."
 
@@ -195,36 +244,11 @@ msgstr ""
 #~ msgid "Kasasa over another application, with opacity decreased"
 #~ msgstr "Kasasa sobre otra aplicación, con opacidad disminuida"
 
-#, c-format
-#~ msgid "Error: %s"
-#~ msgstr "Error: %s"
-
-#~ msgid "Copy"
-#~ msgstr "Copiar"
-
-#~ msgid "Couldn't load the screenshot"
-#~ msgstr "No se pudo cargar la captura de pantalla"
-
 #~ msgid "Reason: "
 #~ msgstr "Razón: "
 
 #~ msgid "Screenshot failed"
 #~ msgstr "Error en la captura de pantalla"
-
-#~ msgid "Copied to the clipboard"
-#~ msgstr "Copiado al portapapeles"
-
-#~ msgid "Retake screenshot"
-#~ msgstr "Volver a tomar captura de pantalla"
-
-#~ msgid "Copy screenshot"
-#~ msgstr "Copiar captura de pantalla"
-
-#~ msgid "Add screenshot"
-#~ msgstr "Agregar captura de pantalla"
-
-#~ msgid "Remove screenshot"
-#~ msgstr "Eliminar captura de pantalla"
 
 #~ msgid "Change opacity"
 #~ msgstr "Cambiar opacidad"

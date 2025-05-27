@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-20 21:43-0300\n"
+"POT-Creation-Date: 2025-05-27 12:35-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:2
-#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5 src/kasasa-window.ui:16
-#: src/kasasa-application.c:102
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
+#: src/kasasa-application.c:102 src/kasasa-window.ui:16
 msgid "Kasasa"
 msgstr ""
 
@@ -97,26 +97,6 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr ""
 
-#: src/kasasa-window.ui:54
-msgid "Trigger auto discard timer"
-msgstr ""
-
-#: src/kasasa-window.ui:63
-msgid "Auto delete image when closing window"
-msgstr ""
-
-#: src/kasasa-window.ui:74
-msgid "Menu"
-msgstr ""
-
-#: src/kasasa-window.ui:151
-msgid "_Preferences"
-msgstr ""
-
-#: src/kasasa-window.ui:155
-msgid "_About Kasasa"
-msgstr ""
-
 #: src/kasasa-application.c:106
 msgid ""
 "Snip and pin useful information\n"
@@ -129,8 +109,74 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
+#: src/kasasa-window.ui:61
+msgid "Trigger auto discard timer"
+msgstr ""
+
+#: src/kasasa-window.ui:70
+msgid "Auto delete image when closing window"
+msgstr ""
+
+#: src/kasasa-window.ui:81
+msgid "Menu"
+msgstr ""
+
+#: src/kasasa-window.ui:158
+msgid "_Preferences"
+msgstr ""
+
+#: src/kasasa-window.ui:162
+msgid "_About Kasasa"
+msgstr ""
+
+#: src/kasasa-picture-container.c:181 src/kasasa-picture-container.c:332
+#, c-format
+msgid "Error: %s"
+msgstr ""
+
+#: src/kasasa-picture-container.c:183 src/kasasa-picture-container.c:195
+#: src/kasasa-picture-container.c:334
+msgid "Copy"
+msgstr ""
+
+#: src/kasasa-picture-container.c:192
+msgid "Couldn't load the screenshot"
+msgstr ""
+
+#: src/kasasa-picture-container.c:346
+msgid "Copied to the clipboard"
+msgstr ""
+
+#: src/kasasa-picture-container.ui:93
+msgid "Add screenshot"
+msgstr ""
+
+#: src/kasasa-picture-container.ui:102
+msgid "Remove screenshot"
+msgstr ""
+
+#: src/kasasa-picture-container.ui:130
+msgid "Retake screenshot"
+msgstr ""
+
+#: src/kasasa-picture-container.ui:138
+msgid "Copy screenshot"
+msgstr ""
+
+#: src/kasasa-preferences.ui:12
+msgid "Window hide mode"
+msgstr ""
+
+#: src/kasasa-preferences.ui:17
+msgid "Decrease opacity"
+msgstr ""
+
 #: src/kasasa-preferences.ui:29
 msgid "Opacity level"
+msgstr ""
+
+#: src/kasasa-preferences.ui:36
+msgid "Miniaturize"
 msgstr ""
 
 #: src/kasasa-preferences.ui:47
