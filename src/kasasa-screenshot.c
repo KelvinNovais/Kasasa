@@ -222,7 +222,7 @@ search_and_trash_image (const gchar *directory_name,
             g_warning ("Error while deleting screenshot: %s", error->message);
 
           // Finilize
-          g_debug ("Trasehd %s", parent_path);
+          g_debug ("Trashed %s", parent_path);
           g_clear_object (&info);
           g_object_unref (file);
           return TRUE;
