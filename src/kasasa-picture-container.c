@@ -75,6 +75,8 @@ kasasa_picture_container_wipe_screenshots (KasasaPictureContainer *self)
 
   n_pages = adw_carousel_get_n_pages (self->carousel);
 
+  adw_carousel_set_interactive (self->carousel, FALSE);
+
   // Request deleting screenshots from the last to the first page of the carousel;
   // the image is only deleted by KasasaScreenshot if the trash_button is toggled
   for (gint i = n_pages-1; i >= 0; i--)
@@ -364,10 +366,16 @@ kasasa_picture_container_dispose (GObject *object)
 
   g_clear_object (&self->portal);
 
+  // FIXME: internal AdwCarousel error on g_source_remove while disposing
+  // Workaround:
+  // ref -> uparent -> clear
+  g_object_ref (self->carousel);
   gtk_widget_unparent (GTK_WIDGET (self->carousel));
-  g_clear_object (&self->carousel);
 
   gtk_widget_dispose_template (GTK_WIDGET (object), KASASA_TYPE_PICTURE_CONTAINER);
+
+  // May cause memory leak, but better than a crash - moreover, the system cleans it
+  /* g_clear_object (&self->carousel); */
 
   G_OBJECT_CLASS (kasasa_picture_container_parent_class)->dispose (object);
 }
