@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+// TODO add lock unminiaturized window feature
+
 #include "config.h"
 
 #include <glib/gi18n.h>
@@ -305,6 +307,42 @@ kasasa_window_auto_discard_window (KasasaWindow *self)
   g_object_unref (task);
 }
 
+/**
+ * This function recognizes if there's a Preferences/About dialog (modals);
+ * Since the window is not resizeble, a dialog can presented as a transient
+ * window, and this function seems to be the only way to get if there's a modal
+ * or not
+ */
+// TODO try to use GType
+static gboolean
+has_modal (KasasaWindow *self)
+{
+  GListModel *windows = gtk_window_get_toplevels ();
+  guint n_items = g_list_model_get_n_items (windows);
+
+  g_debug ("Number of toplevel windows: %d", n_items);
+
+  for (guint i = 0; i < n_items; i++)
+    {
+      gpointer item = g_list_model_get_item (windows, i);
+
+      if (GTK_IS_WIDGET (item))
+        g_debug ("Type: %s", gtk_widget_get_name (GTK_WIDGET (item)));
+
+      if (GTK_IS_WINDOW (item)
+          && !GTK_IS_SHORTCUTS_WINDOW (item)
+          && gtk_window_get_modal (GTK_WINDOW (item))
+          )
+        {
+          g_object_unref (item);
+          return TRUE;
+        }
+      g_object_unref (item);
+    }
+
+  return FALSE;
+}
+
 static void
 window_miniaturization_thread (GTask        *task,
                                gpointer      source_object,
@@ -317,6 +355,10 @@ window_miniaturization_thread (GTask        *task,
   sleep (3);
 
   cancelled = g_cancellable_is_cancelled (cancellable);
+
+  // TODO
+  /* if (has_modal (self)) */
+  /*   g_debug ("Has modal"); */
 
   if (!cancelled
       && !self->block_miniaturization)
@@ -461,11 +503,6 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
 
   self->mouse_over_window = TRUE;
 
-  // If the mouse is over the window, do not decrease opacity or do other action
-  // if a dialog (preferences/about) is visible
-  if (adw_application_window_get_visible_dialog (ADW_APPLICATION_WINDOW (self)) != NULL)
-    return;
-
   kasasa_window_change_opacity (self, OPACITY_DECREASE);
 
   // Do not reveal HeaderBar/Toolbar if miniaturization is active; this will done
@@ -487,6 +524,9 @@ on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_mot
 
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
+
+  // TODO
+  /* has_modal (self); */
 
   self->mouse_over_window = FALSE;
   kasasa_window_change_opacity (self, OPACITY_INCREASE);
@@ -534,6 +574,8 @@ static void
 on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
                        gpointer                  user_data)
 {
+  // TODO
+  /* has_modal (KASASA_WINDOW (user_data)); */
   kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
 }
 
