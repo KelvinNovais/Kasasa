@@ -63,11 +63,12 @@ on_first_screenshot_taken (GObject      *object,
 
   kasasa_picture_container_append_screenshot (pc, uri);
 
+  gtk_widget_set_visible (GTK_WIDGET (window), TRUE);
+
   // Enable auto discard window timer
   if (g_settings_get_boolean (settings, "auto-discard-window"))
     kasasa_window_auto_discard_window (window);
 
-  gtk_widget_set_visible (GTK_WIDGET (window), TRUE);
   kasasa_window_miniaturize_window (window, TRUE);
   return;
 
@@ -154,7 +155,7 @@ routines_add_screenshot (GtkButton *button,
 
   kasasa_window_hide_window (window, TRUE);
 
-  g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, take_screenshot, pc);
+  g_timeout_add_once (WINDOW_WAITING_HIDING_DURATION, take_screenshot, pc);
 }
 
 
@@ -215,5 +216,5 @@ routines_retake_screenshot (GtkButton *button, gpointer user_data)
 
   kasasa_window_hide_window (window, TRUE);
 
-  g_timeout_add_once (WAITING_HIDE_WINDOW_TIME, retake_screenshot_cb, pc);
+  g_timeout_add_once (WINDOW_WAITING_HIDING_DURATION, retake_screenshot_cb, pc);
 }

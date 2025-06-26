@@ -111,7 +111,7 @@ kasasa_window_resize_window (KasasaWindow *window,
     GTK_WIDGET (window),                                    // widget
     (gdouble) default_height,                               // from
     new_height,                                             // to
-    500,                                                    // duration
+    WINDOW_RESIZING_DURATION,                               // duration
     target_h                                                // target
   );
   adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (window->animation_height),
@@ -122,7 +122,7 @@ kasasa_window_resize_window (KasasaWindow *window,
     GTK_WIDGET (window),                                      // widget
     (gdouble) default_width,                                  // from
     new_width,                                                // to
-    500,                                                      // duration
+    WINDOW_RESIZING_DURATION,                                 // duration
     target_w                                                  // target
   );
   adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (window->animation_width),
@@ -232,10 +232,10 @@ kasasa_window_hide_window (KasasaWindow *window,
                                        NULL);
 
   window->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (window),                // widget
-    from, to,                           // opacity from to
-    (hide) ? HIDE_WINDOW_TIME : 200,    // duration
-    target                              // target
+    GTK_WIDGET (window),                    // widget
+    from, to,                               // opacity from to
+    (hide) ? WINDOW_HIDING_DURATION : 200,  // duration
+    target                                  // target
   );
 
   adw_animation_play (window->window_opacity_animation);
@@ -313,7 +313,6 @@ kasasa_window_auto_discard_window (KasasaWindow *self)
  * window, and this function seems to be the only way to get if there's a modal
  * or not
  */
-// TODO try to use GType
 static gboolean
 has_modal (KasasaWindow *self)
 {
@@ -343,33 +342,48 @@ has_modal (KasasaWindow *self)
   return FALSE;
 }
 
+static gboolean
+window_miniaturization_finish (GObject       *source_object,
+                               GAsyncResult  *result,
+                               GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, source_object), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
+static void
+window_miniaturization_cb (GObject      *source_object,
+                           GAsyncResult *res,
+                           gpointer      data)
+{
+  KasasaWindow *self = KASASA_WINDOW (source_object);
+  gboolean miniaturize = window_miniaturization_finish (source_object, res, NULL);
+
+  // TODO
+  /* if (has_modal (self)) */
+  /*   g_debug ("Has modal"); */
+
+  if (miniaturize)
+    {
+      self->window_is_miniaturized = TRUE;
+      gtk_stack_set_visible_child_name (self->stack, "miniature_page");
+      gtk_widget_add_css_class (GTK_WIDGET (self), "circular-window");
+      kasasa_window_resize_window (self, 75, 75);
+    }
+}
+
 static void
 window_miniaturization_thread (GTask        *task,
                                gpointer      source_object,
                                gpointer      task_data,
                                GCancellable *cancellable)
 {
-  KasasaWindow *self = KASASA_WINDOW (source_object);
-  gboolean cancelled;
+  sleep (WINDOW_MINIATURIZATION_DELAY);
 
-  sleep (3);
-
-  cancelled = g_cancellable_is_cancelled (cancellable);
-
-  // TODO
-  /* if (has_modal (self)) */
-  /*   g_debug ("Has modal"); */
-
-  if (!cancelled
-      && !self->block_miniaturization)
-    {
-      self->window_is_miniaturized = TRUE;
-      gtk_widget_add_css_class (GTK_WIDGET (self), "circular-window");
-      kasasa_window_resize_window (self, 75, 75);
-      gtk_stack_set_visible_child_name (self->stack, "miniature_page");
-    }
-
-  g_task_return_pointer (task, NULL, NULL);
+  // If got here, the task was not cancelled, set TRUE to miniaturize
+  // If cancelled, FALSE is silently returned
+  g_task_return_boolean (task, TRUE);
 }
 
 /*
@@ -392,15 +406,16 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
 
   if (miniaturize)
     {
-      if (self->window_is_miniaturized)
-        return;
-
-      if (!g_settings_get_boolean (self->settings, "miniaturize-window"))
+      if (self->window_is_miniaturized
+          || !g_settings_get_boolean (self->settings, "miniaturize-window")
+          || self->block_miniaturization)
         return;
 
       self->miniaturization_canceller = g_cancellable_new ();
-      task = g_task_new (G_OBJECT (self), self->miniaturization_canceller, NULL, NULL);
-      g_task_set_return_on_cancel (task, FALSE);
+      task = g_task_new (G_OBJECT (self),
+                         self->miniaturization_canceller,
+                         window_miniaturization_cb, NULL);
+      g_task_set_return_on_cancel (task, TRUE);
       g_task_run_in_thread (task, window_miniaturization_thread);
       g_object_unref (task);
     }
@@ -410,8 +425,8 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
         return;
 
       self->window_is_miniaturized = FALSE;
-      gtk_widget_remove_css_class (GTK_WIDGET (self), "circular-window");
       kasasa_picture_container_request_window_resize (self->picture_container);
+      gtk_widget_remove_css_class (GTK_WIDGET (self), "circular-window");
       gtk_stack_set_visible_child_name (self->stack, "main_page");
     }
 }
@@ -525,9 +540,6 @@ on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_mot
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
 
-  // TODO
-  /* has_modal (self); */
-
   self->mouse_over_window = FALSE;
   kasasa_window_change_opacity (self, OPACITY_INCREASE);
   hide_header_bar (self);
@@ -574,8 +586,6 @@ static void
 on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
                        gpointer                  user_data)
 {
-  // TODO
-  /* has_modal (KASASA_WINDOW (user_data)); */
   kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
 }
 
