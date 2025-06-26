@@ -307,6 +307,14 @@ kasasa_window_auto_discard_window (KasasaWindow *self)
   g_object_unref (task);
 }
 
+static gboolean
+on_modal_close_request (GtkWindow *self,
+                        gpointer   user_data)
+{
+  kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
+  return FALSE;
+}
+
 /**
  * This function recognizes if there's a Preferences/About dialog (modals);
  * Since the window is not resizeble, a dialog can presented as a transient
@@ -319,20 +327,18 @@ has_modal (KasasaWindow *self)
   GListModel *windows = gtk_window_get_toplevels ();
   guint n_items = g_list_model_get_n_items (windows);
 
-  g_debug ("Number of toplevel windows: %d", n_items);
-
   for (guint i = 0; i < n_items; i++)
     {
       gpointer item = g_list_model_get_item (windows, i);
-
-      if (GTK_IS_WIDGET (item))
-        g_debug ("Type: %s", gtk_widget_get_name (GTK_WIDGET (item)));
 
       if (GTK_IS_WINDOW (item)
           && !GTK_IS_SHORTCUTS_WINDOW (item)
           && gtk_window_get_modal (GTK_WINDOW (item))
           )
         {
+          g_info ("Window has a modal");
+          g_signal_connect (item, "close-request",
+                            G_CALLBACK (on_modal_close_request), self);
           g_object_unref (item);
           return TRUE;
         }
@@ -360,11 +366,8 @@ window_miniaturization_cb (GObject      *source_object,
   KasasaWindow *self = KASASA_WINDOW (source_object);
   gboolean miniaturize = window_miniaturization_finish (source_object, res, NULL);
 
-  // TODO
-  /* if (has_modal (self)) */
-  /*   g_debug ("Has modal"); */
-
-  if (miniaturize)
+  if (miniaturize
+      && !has_modal (self))
     {
       self->window_is_miniaturized = TRUE;
       gtk_stack_set_visible_child_name (self->stack, "miniature_page");
