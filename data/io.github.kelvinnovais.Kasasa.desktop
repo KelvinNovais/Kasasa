@@ -6,6 +6,6 @@ Icon=io.github.kelvinnovais.Kasasa
 Terminal=false
 Type=Application
 Categories=Utility;Graphics;GTK;GNOME;
-Keywords=screenshot;clipping;snip;image;
+Keywords=screenshot;clipping;snip;image;pin;reference;
 StartupNotify=false
 X-GNOME-UsesNotifications=true
