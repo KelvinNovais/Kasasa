@@ -72,9 +72,9 @@ has_different_scalings (gdouble *max_scale)
       return FALSE;
     }
 
-  // free (?)
   monitor = g_list_model_get_object (monitors, 0);
   min_s = max_s = gdk_monitor_get_scale (GDK_MONITOR (monitor));
+  g_object_unref (monitor);
 
   for (guint i = 1; i < n_items; i++)
     {
@@ -83,6 +83,8 @@ has_different_scalings (gdouble *max_scale)
 
       min_s = MIN (current_scale, min_s);
       max_s = MAX (current_scale, max_s);
+
+      g_object_unref (monitor);
     }
 
   if (min_s != max_s)
@@ -187,8 +189,6 @@ monitor_size (KasasaScreenshot *self,
   return FALSE;
 }
 
-// FIXME on first_run, display has 930 x 540 size?
-// FIXME wrong scale for big images (a little bit smaller)
 // Compute the window size
 // Based on:
 // https://gitlab.gnome.org/GNOME/Incubator/showtime/-/blob/main/showtime/window.py?ref_type=heads#L836
@@ -198,7 +198,7 @@ compute_size (KasasaScreenshot *self)
 {
   g_autoptr (GError) error = NULL;
   // gints
-  gint image_area, max_width, max_height;
+  gint image_width, image_height, image_area, max_width, max_height;
   // gdoubles
   gdouble monitor_width, monitor_height, monitor_area,
           occupy_area_factor, size_scale, target_scale, hidpi_scale, max_scale;
@@ -222,15 +222,24 @@ compute_size (KasasaScreenshot *self)
       g_warning ("Couldn't get HiDPI scale");
       return TRUE;
     }
-  g_info ("HiDPI scale: %.2f", hidpi_scale);
+
+  // If the user has different scales for the monitors and the current scale is
+  // less than the max scale, divide the image dimentions by the max scale. This
+  // is needed because the screenshot size follows the max scale
+  if (has_different_scalings (&max_scale))
+    {
+      image_width = self->image_width / max_scale;
+      image_height = self->image_height / max_scale;
+    }
+  else
+    {
+      image_width = self->image_width;
+      image_height = self->image_height;
+    }
 
   // AREAS
   monitor_area = monitor_width * monitor_height;
-  g_info ("Physical monitor dimensions: %.2f x %.2f",
-          monitor_width, monitor_height);
-
-  image_area = self->image_height * self->image_width;
-  g_info ("Image dimensions: %d x %d", self->image_width, self->image_height);
+  image_area = image_height * image_width;
 
   occupy_area_factor = g_settings_get_double (settings, "occupy-screen");
 
@@ -239,12 +248,17 @@ compute_size (KasasaScreenshot *self)
   // monitor_area * occupy_area_factor ==
   //   (image_width * size_scale) * (image_height * size_scale)
   size_scale = sqrt (monitor_area / image_area * occupy_area_factor);
+  g_debug ("size_scale @ %d: %f", __LINE__, size_scale);
   // ensure that size_scale is not ~ 0 (if image is too big, size_scale can reach 0)
   size_scale = (size_scale < MIN_OCCUPY_SCREEN) ? 0.1 : size_scale;
+  g_debug ("size_scale @ %d: %f", __LINE__, size_scale);
   // ensure that we never increase image size
   target_scale = MIN (1, size_scale);
-  self->nat_width = self->image_width * target_scale;
-  self->nat_height = self->image_height * target_scale;
+  g_debug ("target_scale @ %d: %f", __LINE__, target_scale);
+  self->nat_width = image_width * target_scale;
+  self->nat_height = image_height * target_scale;
+  g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+           __LINE__, self->nat_width, self->nat_height);
 
   // Scale down if targeted occupation does not fit horizontally
   // Add some margin to not touch corners
@@ -252,7 +266,9 @@ compute_size (KasasaScreenshot *self)
   if (self->nat_width > max_width)
     {
       self->nat_width = max_width;
-      self->nat_height = self->image_height * self->nat_width / self->image_width;
+      self->nat_height = image_height * self->nat_width / image_width;
+      g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+               __LINE__, self->nat_width, self->nat_height);
     }
 
   // Same for vertical size
@@ -261,24 +277,15 @@ compute_size (KasasaScreenshot *self)
   if (self->nat_height > max_height)
     {
       self->nat_height = max_height;
-      self->nat_width = self->image_width * self->nat_height / self->image_height;
-    }
-
-  self->nat_width = self->nat_width / hidpi_scale;
-  self->nat_height = self->nat_height / hidpi_scale;
-
-  // If the user has different scales for the monitors and the currrent scale is
-  // less than the max scale, divide the image dimentions by the max scale. This
-  // is needed because the screenshot size follows the max scale
-  if (has_different_scalings (&max_scale)
-      && hidpi_scale < max_scale)
-    {
-      self->nat_width = self->nat_width / max_scale;
-      self->nat_height = self->nat_height / max_scale;
+      self->nat_width = image_width * self->nat_height / image_height;
+      g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+               __LINE__, self->nat_width, self->nat_height);
     }
 
   self->nat_width = round (self->nat_width);
   self->nat_height = round (self->nat_height);
+  g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+           __LINE__, self->nat_width, self->nat_height);
 
   // Ensure that the scaled image isn't smaller than the min window size
   self->nat_width = MAX (WINDOW_MIN_WIDTH, self->nat_width);
@@ -288,6 +295,10 @@ compute_size (KasasaScreenshot *self)
   if (!g_settings_get_boolean (settings, "auto-hide-menu"))
     self->nat_height += 47;
 
+  g_info ("Physical monitor dimensions: %.2f x %.2f",
+          monitor_width, monitor_height);
+  g_info ("HiDPI scale: %.2f", hidpi_scale);
+  g_info ("Image dimensions: %d x %d", image_width, image_height);
   g_info ("Scaled image dimensions: %.2f x %.2f", self->nat_width, self->nat_height);
 
   return FALSE;
