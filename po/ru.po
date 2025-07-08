@@ -8,23 +8,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-27 12:35-0300\n"
+"POT-Creation-Date: 2025-07-08 18:26-0300\n"
 "PO-Revision-Date: 2025-07-04 13:30+0300\n"
-"Last-Translator: freeducks-debug <209897795+freeducks-debug@users.noreply.github.com>\n"
+"Last-Translator: freeducks-debug <209897795+freeducks-"
+"debug@users.noreply.github.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 3.6\n"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:2 data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:2
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
 #: src/kasasa-application.c:102 src/kasasa-window.ui:16
 msgid "Kasasa"
 msgstr "Kasasa"
 
-#: data/io.github.kelvinnovais.Kasasa.desktop.in:3 data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
+#: data/io.github.kelvinnovais.Kasasa.desktop.in:3
+#: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:6
 msgid "Snip and pin useful information"
 msgstr "Выделяйте и закрепляйте полезную информацию"
 
@@ -34,11 +38,14 @@ msgstr "screenshot;clipping;snip;image;pin;reference;скриншот;снимо
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
 msgid ""
-"Clip what's important to a small floating window, so you don't have to switch between windows or workspaces repeatedly. The "
-"window can become miniaturized or have its opacity reduced, in order to do not block what's behind it."
+"Clip what's important to a small floating window, so you don't have to "
+"switch between windows or workspaces repeatedly. The window can become "
+"miniaturized or have its opacity reduced, in order to do not block what's "
+"behind it."
 msgstr ""
-"Закрепите всё важное в небольшом плавающем окне, чтобы не переключаться между окнами или рабочими пространствами. Окно может "
-"быть минимизировано или уменьшено его прозрачность, чтобы не блокировать то, что позади него."
+"Закрепите всё важное в небольшом плавающем окне, чтобы не переключаться "
+"между окнами или рабочими пространствами. Окно может быть минимизировано или "
+"уменьшено его прозрачность, чтобы не блокировать то, что позади него."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
 msgid "Best used with:"
@@ -56,20 +63,24 @@ msgstr "Клавиатурное сокращение"
 #. translators: do not include the tags <code></code>
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
 msgid ""
-"On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts. There you can set a shortcut to run "
-"<code>flatpak run io.github.kelvinnovais.Kasasa</code> "
+"On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
+"Shortcuts. There you can set a shortcut to run <code>flatpak run "
+"io.github.kelvinnovais.Kasasa</code> "
 msgstr ""
-"В GNOME перейдите в Настройки → Клавиатура → Просмотр и изменение комбинаций клавиш → Дополнительные комбинации клавиш. Там вы "
-"сможете настроить сочетание для запуска <code>flatpak run io.github.kelvinnovais.Kasasa</code> "
+"В GNOME перейдите в Настройки → Клавиатура → Просмотр и изменение комбинаций "
+"клавиш → Дополнительные комбинации клавиш. Там вы сможете настроить "
+"сочетание для запуска <code>flatpak run io.github.kelvinnovais.Kasasa</code> "
 
 #. translators: replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
 msgid ""
-"Note: On GNOME versions < 46, a dialog will appear to set up and take the screenshot, instead of directly using the GNOME's "
-"screenshoter; this may be inconvenient."
+"Note: On GNOME versions < 46, a dialog will appear to set up and take the "
+"screenshot, instead of directly using the GNOME's screenshoter; this may be "
+"inconvenient."
 msgstr ""
-"Примечание: В GNOME <46 появится диалоговое окно для настройки и создания снимка экрана, вместо встроенного инструмента в "
-"GNOME; это может быть неудобно."
+"Примечание: В GNOME <46 появится диалоговое окно для настройки и создания "
+"снимка экрана, вместо встроенного инструмента в GNOME; это может быть "
+"неудобно."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:52
 msgid "Main window"
@@ -116,40 +127,41 @@ msgstr ""
 "Vladimir Kosolapov https://github.com/vmkspv\n"
 "freeducks-debug"
 
-#: src/kasasa-window.ui:61
+#: src/kasasa-window.ui:60
 msgid "Trigger auto discard timer"
 msgstr "Таймер автоматического сбрасывания"
 
-#: src/kasasa-window.ui:70
+#: src/kasasa-window.ui:69
 msgid "Auto delete image when closing window"
 msgstr "Автоматическое удаление изображения при закрытии окна"
 
-#: src/kasasa-window.ui:81
+#: src/kasasa-window.ui:80
 msgid "Menu"
 msgstr "Меню"
 
-#: src/kasasa-window.ui:158
+#: src/kasasa-window.ui:157
 msgid "_Preferences"
 msgstr "_Параметры"
 
-#: src/kasasa-window.ui:162
+#: src/kasasa-window.ui:161
 msgid "_About Kasasa"
 msgstr "_О приложении"
 
-#: src/kasasa-picture-container.c:181 src/kasasa-picture-container.c:332
+#: src/kasasa-picture-container.c:180 src/kasasa-picture-container.c:331
 #, c-format
 msgid "Error: %s"
 msgstr "Ошибка: %s"
 
-#: src/kasasa-picture-container.c:183 src/kasasa-picture-container.c:195 src/kasasa-picture-container.c:334
+#: src/kasasa-picture-container.c:182 src/kasasa-picture-container.c:194
+#: src/kasasa-picture-container.c:333
 msgid "Copy"
 msgstr "Копировать"
 
-#: src/kasasa-picture-container.c:192
+#: src/kasasa-picture-container.c:191 src/routines.c:60
 msgid "Couldn't load the screenshot"
 msgstr "Не удалось загрузить снимок экрана"
 
-#: src/kasasa-picture-container.c:346
+#: src/kasasa-picture-container.c:345
 msgid "Copied to the clipboard"
 msgstr "Скопировано в буфер обмена"
 
@@ -216,7 +228,18 @@ msgstr "Автоматическое удаление изображения"
 
 #: src/kasasa-preferences.ui:107
 msgid "Auto delete the image when closing the window or retaking a screenshot"
-msgstr "Автоматическое удаление изображения при закрытии окна или повторном снимке экрана"
+msgstr ""
+"Автоматическое удаление изображения при закрытии окна или повторном снимке "
+"экрана"
+
+#. translators: reason which the screenshot failed
+#: src/routines.c:60
+msgid "Reason: "
+msgstr "Причина: "
+
+#: src/routines.c:77
+msgid "Screenshot failed"
+msgstr "Не удалось сделать снимок экрана"
 
 #~ msgid "A small window, in dark mode"
 #~ msgstr "Небольшое окно в тёмном режиме"
@@ -229,9 +252,3 @@ msgstr "Автоматическое удаление изображения п�
 
 #~ msgid "Kasasa over another application, with opacity decreased"
 #~ msgstr "Kasasa поверх другого приложения с уменьшенной непрозрачностью"
-
-#~ msgid "Reason: "
-#~ msgstr "Причина: "
-
-#~ msgid "Screenshot failed"
-#~ msgstr "Не удалось сделать снимок экрана"

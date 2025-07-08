@@ -10,3 +10,4 @@ src/kasasa-picture-container.c
 src/kasasa-picture-container.ui
 src/kasasa-preferences.c
 src/kasasa-preferences.ui
+src/routines.c
