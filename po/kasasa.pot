@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-08 18:26-0300\n"
+"POT-Creation-Date: 2025-07-09 07:51-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgid "Snip and pin useful information"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:9
-msgid "screenshot;clipping;snip;image;"
+msgid "screenshot;clipping;snip;image;pin;reference;"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26

@@ -69,6 +69,16 @@
   </branding>
 
   <releases>
+    <release date="2025-06-XX" version="1.1.2">
+      <description translate="no">
+        <p>A patch release for bug fixes and stability.</p>
+        <ul>
+          <li>Updated Russian translation (@freeducks-debug)</li>
+          <li>Updated Ukrainian translation (@freeducks-debug)</li>
+          <li>Updated German translation (@uwe-ss)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2025-05-27" version="1.1.1">
       <description translate="no">
         <ul>

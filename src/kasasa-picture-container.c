@@ -126,8 +126,7 @@ get_current_screenshot (KasasaPictureContainer *self)
 
   g_return_val_if_fail ((position < MAX_SCREENSHOTS), NULL);
 
-  g_debug ("Carousel current position: %f; cast: %d",
-           adw_carousel_get_position (self->carousel), position);
+  g_debug ("Carousel current position: %d", position);
 
   return KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel,
                                                        position));
