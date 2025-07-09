@@ -59,6 +59,13 @@ struct _KasasaWindow
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
 
+void
+kasasa_window_take_first_screenshot (KasasaWindow *self)
+{
+  g_return_if_fail (KASASA_IS_WINDOW (self));
+  kasasa_picture_container_request_first_screenshot (self->picture_container);
+}
+
 KasasaWindow *
 kasasa_window_get_window_reference (GtkWidget *widget)
 {
@@ -820,9 +827,6 @@ kasasa_window_init (KasasaWindow *self)
                     "close-request",
                     G_CALLBACK (on_close_request),
                     self);
-
-  // Request the first screenshot
-  kasasa_picture_container_request_first_screenshot (self->picture_container);
 }
 
 

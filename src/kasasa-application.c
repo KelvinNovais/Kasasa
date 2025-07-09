@@ -60,8 +60,10 @@ kasasa_application_activate (GApplication *app)
                            NULL);
 
   gtk_window_present (GTK_WINDOW (window));
+
   // The window will be set to 'visible = TRUE' after the screenshot is taken
   gtk_widget_set_visible (GTK_WIDGET (window), FALSE);
+  kasasa_window_take_first_screenshot (KASASA_WINDOW (window));
 }
 
 static void
