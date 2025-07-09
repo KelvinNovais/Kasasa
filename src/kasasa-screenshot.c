@@ -233,8 +233,8 @@ compute_size (KasasaScreenshot *self)
     }
   else
     {
-      image_width = self->image_width;
-      image_height = self->image_height;
+      image_width = self->image_width / hidpi_scale;
+      image_height = self->image_height / hidpi_scale;
     }
 
   // AREAS
