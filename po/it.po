@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-27 12:35-0300\n"
+"POT-Creation-Date: 2025-07-09 07:51-0300\n"
 "PO-Revision-Date: 2025-02-01 07:31+0100\n"
 "Last-Translator: Albano Battistella <albanobattistella@gmail.com>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -28,7 +28,8 @@ msgid "Snip and pin useful information"
 msgstr "Cattura e appuntati informazioni utili"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:9
-msgid "screenshot;clipping;snip;image;"
+#, fuzzy
+msgid "screenshot;clipping;snip;image;pin;reference;"
 msgstr "schermata;ritaglio;cattura;immagine;"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
@@ -123,41 +124,41 @@ msgstr ""
 msgid "translator-credits"
 msgstr "Albano Battistella <albanobattistella@gmail.com>"
 
-#: src/kasasa-window.ui:61
+#: src/kasasa-window.ui:60
 msgid "Trigger auto discard timer"
 msgstr "Attiva il timer di scarto automatico"
 
-#: src/kasasa-window.ui:70
+#: src/kasasa-window.ui:69
 msgid "Auto delete image when closing window"
 msgstr "Elimina automaticamente l'immagine quando si chiude la finestra"
 
-#: src/kasasa-window.ui:81
+#: src/kasasa-window.ui:80
 msgid "Menu"
 msgstr "Menu"
 
-#: src/kasasa-window.ui:158
+#: src/kasasa-window.ui:157
 msgid "_Preferences"
 msgstr "_Preferenze"
 
-#: src/kasasa-window.ui:162
+#: src/kasasa-window.ui:161
 msgid "_About Kasasa"
 msgstr "_Informazioni su Kasasa"
 
-#: src/kasasa-picture-container.c:181 src/kasasa-picture-container.c:332
+#: src/kasasa-picture-container.c:180 src/kasasa-picture-container.c:331
 #, c-format
 msgid "Error: %s"
 msgstr "Errore: %s"
 
-#: src/kasasa-picture-container.c:183 src/kasasa-picture-container.c:195
-#: src/kasasa-picture-container.c:334
+#: src/kasasa-picture-container.c:182 src/kasasa-picture-container.c:194
+#: src/kasasa-picture-container.c:333
 msgid "Copy"
 msgstr "Copia"
 
-#: src/kasasa-picture-container.c:192
+#: src/kasasa-picture-container.c:191 src/routines.c:60
 msgid "Couldn't load the screenshot"
 msgstr "Impossibile caricare lo screenshot"
 
-#: src/kasasa-picture-container.c:346
+#: src/kasasa-picture-container.c:345
 msgid "Copied to the clipboard"
 msgstr "Copiato negli appunti"
 
@@ -229,6 +230,15 @@ msgstr ""
 "Elimina automaticamente l'immagine quando si chiude la finestra o si esegue "
 "nuovamente uno screenshot"
 
+#. translators: reason which the screenshot failed
+#: src/routines.c:60
+msgid "Reason: "
+msgstr "Motivo: "
+
+#: src/routines.c:77
+msgid "Screenshot failed"
+msgstr "Screenshot non riuscito"
+
 #~ msgid "A small window, in dark mode"
 #~ msgstr "Una piccola finestra, in modalità scura"
 
@@ -240,12 +250,6 @@ msgstr ""
 
 #~ msgid "Kasasa over another application, with opacity decreased"
 #~ msgstr "Kasasa su un'altra applicazione, con opacità ridotta"
-
-#~ msgid "Reason: "
-#~ msgstr "Motivo: "
-
-#~ msgid "Screenshot failed"
-#~ msgstr "Screenshot non riuscito"
 
 #~ msgid "Error"
 #~ msgstr "Errore"

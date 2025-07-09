@@ -30,8 +30,12 @@ typedef enum
   OPACITY_DECREASE
 } Opacity;
 
-#define HIDE_WINDOW_TIME 110
-#define WAITING_HIDE_WINDOW_TIME (2 * HIDE_WINDOW_TIME)
+#define WINDOW_HIDING_DURATION 110
+#define WINDOW_WAITING_HIDING_DURATION (2 * WINDOW_HIDING_DURATION)
+
+#define WINDOW_MINIATURIZATION_DELAY 3
+
+#define WINDOW_RESIZING_DURATION 500
 
 // Due to miniaturization, the real min dimensions are set here (width-request
 // and height-request)

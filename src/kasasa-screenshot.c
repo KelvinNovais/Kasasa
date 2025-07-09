@@ -46,6 +46,149 @@ kasasa_screenshot_get_file (KasasaScreenshot *self)
   return self->file;
 }
 
+static gboolean
+has_different_scalings (gdouble *max_scale)
+{
+  GdkDisplay *display = NULL;
+  GListModel *monitors = NULL;
+  GObject *monitor = NULL;
+  gdouble min_s, max_s, current_scale;
+  guint n_items;
+
+  display = gdk_display_get_default ();
+  if (display == NULL)
+    {
+      g_warning ("Can't check for different scalings");
+      return FALSE;
+    }
+
+  monitors = gdk_display_get_monitors (display);
+  n_items = g_list_model_get_n_items (monitors);
+  g_info ("Number of monitors: %d", n_items);
+
+  if (n_items == 0)
+    {
+      g_info ("Detected only 1 monitor, there's no different scales");
+      return FALSE;
+    }
+
+  monitor = g_list_model_get_object (monitors, 0);
+  min_s = max_s = gdk_monitor_get_scale (GDK_MONITOR (monitor));
+  g_object_unref (monitor);
+
+  for (guint i = 1; i < n_items; i++)
+    {
+      monitor = g_list_model_get_object (monitors, i);
+      current_scale = gdk_monitor_get_scale (GDK_MONITOR (monitor));
+
+      min_s = MIN (current_scale, min_s);
+      max_s = MAX (current_scale, max_s);
+
+      g_object_unref (monitor);
+    }
+
+  if (min_s != max_s)
+    {
+      g_info ("Monitors have different scales: %.2f and %.2f [min, max]",
+               min_s, max_s);
+      *max_scale = max_s;
+      return TRUE;
+    }
+  else
+    {
+      g_info ("Monitors have same scales");
+      return FALSE;
+    }
+}
+
+static gboolean
+scaling (KasasaScreenshot *self,
+         gdouble          *scale)
+{
+  GdkDisplay *display = NULL;
+  GtkNative *native = NULL;
+  GdkSurface *surface = NULL;
+
+  display = gdk_display_get_default ();
+  if (display == NULL)
+    {
+      g_warning ("Couldn't get GdkDisplay");
+      return TRUE;
+    }
+
+  native = gtk_widget_get_native (GTK_WIDGET (self));
+  if (native == NULL)
+    {
+      g_warning ("Couldn't get GtkNative");
+      return TRUE;
+    }
+
+  surface = gtk_native_get_surface (native);
+  if (surface == NULL)
+    {
+      g_warning ("Couldn't get GdkSurface");
+      return TRUE;
+    }
+
+  *scale = gdk_surface_get_scale (surface);
+
+  return FALSE;
+}
+
+static gboolean
+monitor_size (KasasaScreenshot *self,
+              gdouble          *monitor_width,
+              gdouble          *monitor_height)
+{
+  GdkDisplay *display = NULL;
+  GtkNative *native = NULL;
+  GdkSurface *surface = NULL;
+  GdkMonitor *monitor = NULL;
+  GdkRectangle monitor_geometry;
+  gdouble hidpi_scale;
+
+  if (scaling (self, &hidpi_scale))
+    {
+      g_warning ("Couldn't get scaling");
+      return TRUE;
+    }
+
+  display = gdk_display_get_default ();
+  if (display == NULL)
+    {
+      g_warning ("Couldn't get GdkDisplay");
+      return TRUE;
+    }
+
+  native = gtk_widget_get_native (GTK_WIDGET (self));
+  if (native == NULL)
+    {
+      g_warning ("Couldn't get GtkNative");
+      return TRUE;
+    }
+
+  surface = gtk_native_get_surface (native);
+  if (surface == NULL)
+    {
+      g_warning ("Couldn't get GdkSurface");
+      return TRUE;
+    }
+
+  monitor = gdk_display_get_monitor_at_surface (display, surface);
+  if (monitor == NULL)
+    {
+      g_warning ("Couldn't get GdkMonitor");
+      return TRUE;
+    }
+
+  gdk_monitor_get_geometry (monitor, &monitor_geometry);
+
+  *monitor_width = monitor_geometry.width * hidpi_scale;
+  *monitor_height = monitor_geometry.height * hidpi_scale;
+
+  return FALSE;
+}
+
 // Compute the window size
 // Based on:
 // https://gitlab.gnome.org/GNOME/Incubator/showtime/-/blob/main/showtime/window.py?ref_type=heads#L836
@@ -54,55 +197,49 @@ static gboolean
 compute_size (KasasaScreenshot *self)
 {
   g_autoptr (GError) error = NULL;
-  GtkNative *native = NULL;
-  GdkDisplay *display = NULL;
-  GdkSurface *surface = NULL;
-  GdkMonitor *monitor = NULL;
-  GdkRectangle monitor_geometry;
   // gints
-  gint monitor_area, hidpi_scale, image_area, max_width, max_height;
+  gint image_width, image_height, image_area, max_width, max_height;
   // gdoubles
-  gdouble occupy_area_factor, size_scale, target_scale;
+  gdouble monitor_width, monitor_height, monitor_area,
+          occupy_area_factor, size_scale, target_scale, hidpi_scale, max_scale;
 
   g_autoptr (GSettings) settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
 
-  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
-
-  display = gdk_display_get_default ();
-  if (display == NULL)
+  if (!(self->image_height > 0 && self->image_width))
     {
-      g_warning ("Couldn't get GdkDisplay, can't find the best window size");
+      g_warning ("Image width or height must be > 0");
       return TRUE;
     }
 
-  native = gtk_widget_get_native (GTK_WIDGET (window));
-  if (native == NULL)
+  if (monitor_size (self, &monitor_width, &monitor_height))
     {
-      g_warning ("Couldn't get GtkNative, can't find the best window size");
+      g_warning ("Couldn't get monitor size");
       return TRUE;
     }
 
-  surface = gtk_native_get_surface (native);
-  if (surface == NULL)
+  if (scaling (self, &hidpi_scale))
     {
-      g_warning ("Couldn't get GdkSurface, can't find the best window size");
+      g_warning ("Couldn't get HiDPI scale");
       return TRUE;
     }
 
-  monitor = gdk_display_get_monitor_at_surface (display, surface);
-  if (monitor == NULL)
+  // If the user has different scales for the monitors and the current scale is
+  // less than the max scale, divide the image dimentions by the max scale. This
+  // is needed because the screenshot size follows the max scale
+  if (has_different_scalings (&max_scale))
     {
-      g_warning ("Couldn't get GdkMonitor, can't find the best window size");
-      return TRUE;
+      image_width = self->image_width / max_scale;
+      image_height = self->image_height / max_scale;
+    }
+  else
+    {
+      image_width = self->image_width;
+      image_height = self->image_height;
     }
 
   // AREAS
-  image_area = self->image_height * self->image_width;
-
-  hidpi_scale = gdk_surface_get_scale_factor (surface);
-
-  gdk_monitor_get_geometry (monitor, &monitor_geometry);
-  monitor_area = monitor_geometry.width * monitor_geometry.height;
+  monitor_area = monitor_width * monitor_height;
+  image_area = image_height * image_width;
 
   occupy_area_factor = g_settings_get_double (settings, "occupy-screen");
 
@@ -111,45 +248,58 @@ compute_size (KasasaScreenshot *self)
   // monitor_area * occupy_area_factor ==
   //   (image_width * size_scale) * (image_height * size_scale)
   size_scale = sqrt (monitor_area / image_area * occupy_area_factor);
+  g_debug ("size_scale @ %d: %f", __LINE__, size_scale);
   // ensure that size_scale is not ~ 0 (if image is too big, size_scale can reach 0)
-  size_scale = (size_scale < MIN_OCCUPY_SCREEN) ? 0.3 : size_scale;
+  size_scale = (size_scale < MIN_OCCUPY_SCREEN) ? 0.1 : size_scale;
+  g_debug ("size_scale @ %d: %f", __LINE__, size_scale);
   // ensure that we never increase image size
   target_scale = MIN (1, size_scale);
-  self->nat_width = self->image_width * target_scale;
-  self->nat_height = self->image_height * target_scale;
+  g_debug ("target_scale @ %d: %f", __LINE__, target_scale);
+  self->nat_width = image_width * target_scale;
+  self->nat_height = image_height * target_scale;
+  g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+           __LINE__, self->nat_width, self->nat_height);
 
   // Scale down if targeted occupation does not fit horizontally
   // Add some margin to not touch corners
-  max_width = monitor_geometry.width - 20;
+  max_width = monitor_width - 20;
   if (self->nat_width > max_width)
     {
-      guint previous_nat_width = self->nat_width;
-      guint new_nat_width = max_width;
-      guint new_nat_height = self->image_height * previous_nat_width / self->image_width;
-
-      self->nat_width = new_nat_width;
-      self->nat_height = new_nat_height;
+      self->nat_width = max_width;
+      self->nat_height = image_height * self->nat_width / image_width;
+      g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+               __LINE__, self->nat_width, self->nat_height);
     }
 
   // Same for vertical size
   // Additionally substract some space for HeaderBar and Shell bar
-  max_height = monitor_geometry.height - (50 + 35 + 20) * hidpi_scale;
+  max_height = monitor_height - (50 + 35 + 20) * hidpi_scale;
   if (self->nat_height > max_height)
     {
-      guint previous_nat_height = self->nat_height;
-      guint new_nat_height = max_height;
-      guint new_nat_width = self->image_width * previous_nat_height / self->image_height;
-
-      self->nat_width = new_nat_width;
-      self->nat_height = new_nat_height;
+      self->nat_height = max_height;
+      self->nat_width = image_width * self->nat_height / image_height;
+      g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+               __LINE__, self->nat_width, self->nat_height);
     }
 
+  self->nat_width = round (self->nat_width);
+  self->nat_height = round (self->nat_height);
+  g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+           __LINE__, self->nat_width, self->nat_height);
+
+  // Ensure that the scaled image isn't smaller than the min window size
   self->nat_width = MAX (WINDOW_MIN_WIDTH, self->nat_width);
   self->nat_height = MAX (WINDOW_MIN_HEIGHT, self->nat_height);
 
   // If the header bar is NOT hiding, then the window height must have more 47 px
   if (!g_settings_get_boolean (settings, "auto-hide-menu"))
     self->nat_height += 47;
+
+  g_info ("Physical monitor dimensions: %.2f x %.2f",
+          monitor_width, monitor_height);
+  g_info ("HiDPI scale: %.2f", hidpi_scale);
+  g_info ("Image dimensions: %d x %d", image_width, image_height);
+  g_info ("Scaled image dimensions: %.2f x %.2f", self->nat_width, self->nat_height);
 
   return FALSE;
 }

@@ -126,8 +126,7 @@ get_current_screenshot (KasasaPictureContainer *self)
 
   g_return_val_if_fail ((position < MAX_SCREENSHOTS), NULL);
 
-  g_debug ("Carousel current position: %f; cast: %d",
-           adw_carousel_get_position (self->carousel), position);
+  g_debug ("Carousel current position: %d", position);
 
   return KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel,
                                                        position));
@@ -366,16 +365,7 @@ kasasa_picture_container_dispose (GObject *object)
 
   g_clear_object (&self->portal);
 
-  // FIXME: internal AdwCarousel error on g_source_remove while disposing
-  // Workaround:
-  // ref -> uparent -> clear
-  g_object_ref (self->carousel);
-  gtk_widget_unparent (GTK_WIDGET (self->carousel));
-
   gtk_widget_dispose_template (GTK_WIDGET (object), KASASA_TYPE_PICTURE_CONTAINER);
-
-  // May cause memory leak, but better than a crash - moreover, the system cleans it
-  /* g_clear_object (&self->carousel); */
 
   G_OBJECT_CLASS (kasasa_picture_container_parent_class)->dispose (object);
 }

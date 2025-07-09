@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-27 12:35-0300\n"
+"POT-Creation-Date: 2025-07-09 07:51-0300\n"
 "PO-Revision-Date: 2024-09-27 18:29+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -30,7 +30,7 @@ msgid "Snip and pin useful information"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:9
-msgid "screenshot;clipping;snip;image;"
+msgid "screenshot;clipping;snip;image;pin;reference;"
 msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
@@ -118,42 +118,42 @@ msgstr ""
 msgid "translator-credits"
 msgstr "Ronnie Nissan <ronnie.nissan@proton.me>"
 
-#: src/kasasa-window.ui:61
+#: src/kasasa-window.ui:60
 msgid "Trigger auto discard timer"
 msgstr ""
 
-#: src/kasasa-window.ui:70
+#: src/kasasa-window.ui:69
 msgid "Auto delete image when closing window"
 msgstr ""
 
-#: src/kasasa-window.ui:81
+#: src/kasasa-window.ui:80
 msgid "Menu"
 msgstr "القائمة"
 
-#: src/kasasa-window.ui:158
+#: src/kasasa-window.ui:157
 msgid "_Preferences"
 msgstr "الا_عدادات"
 
-#: src/kasasa-window.ui:162
+#: src/kasasa-window.ui:161
 msgid "_About Kasasa"
 msgstr "حول _Kasasa"
 
-#: src/kasasa-picture-container.c:181 src/kasasa-picture-container.c:332
+#: src/kasasa-picture-container.c:180 src/kasasa-picture-container.c:331
 #, fuzzy, c-format
 msgid "Error: %s"
 msgstr "خطء:"
 
-#: src/kasasa-picture-container.c:183 src/kasasa-picture-container.c:195
-#: src/kasasa-picture-container.c:334
+#: src/kasasa-picture-container.c:182 src/kasasa-picture-container.c:194
+#: src/kasasa-picture-container.c:333
 msgid "Copy"
 msgstr "أنسخ"
 
-#: src/kasasa-picture-container.c:192
+#: src/kasasa-picture-container.c:191 src/routines.c:60
 #, fuzzy
 msgid "Couldn't load the screenshot"
 msgstr "تعذر تحميل لقطة الشاشة"
 
-#: src/kasasa-picture-container.c:346
+#: src/kasasa-picture-container.c:345
 msgid "Copied to the clipboard"
 msgstr ""
 
@@ -224,6 +224,15 @@ msgstr ""
 
 #: src/kasasa-preferences.ui:107
 msgid "Auto delete the image when closing the window or retaking a screenshot"
+msgstr ""
+
+#. translators: reason which the screenshot failed
+#: src/routines.c:60
+msgid "Reason: "
+msgstr ""
+
+#: src/routines.c:77
+msgid "Screenshot failed"
 msgstr ""
 
 #~ msgid "A small window, in dark mode"
