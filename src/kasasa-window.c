@@ -51,10 +51,7 @@ struct _KasasaWindow
   /* Instance variables */
   GSettings                 *settings;
   AdwAnimation              *window_opacity_animation;
-  GCancellable              *auto_discard_canceller;
   GCancellable              *miniaturization_canceller;
-  AdwAnimation              *animation_height;
-  AdwAnimation              *animation_width;
 };
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -91,64 +88,66 @@ kasasa_window_get_trash_button_active (KasasaWindow *window)
 
 // Resize the window with an animation
 void
-kasasa_window_resize_window (KasasaWindow *window,
+kasasa_window_resize_window (KasasaWindow *self,
                              gdouble       new_height,
                              gdouble       new_width)
 {
   AdwAnimationTarget *target_h = NULL;
   AdwAnimationTarget *target_w = NULL;
+  g_autoptr (AdwAnimation) animation_height = NULL;
+  g_autoptr (AdwAnimation) animation_width = NULL;
   gint default_width, default_height;
   static gboolean first_run = TRUE;
 
-  gtk_window_get_default_size (GTK_WINDOW (window),
+  gtk_window_get_default_size (GTK_WINDOW (self),
                                &default_width, &default_height);
 
   // Disable the carousel navigation while the window is being resized
-  kasasa_picture_container_carousel_set_interactive (window->picture_container,
+  kasasa_picture_container_carousel_set_interactive (self->picture_container,
                                                      FALSE);
 
   // Set targets
   target_h =
-    adw_property_animation_target_new (G_OBJECT (window), "default-height");
+    adw_property_animation_target_new (G_OBJECT (self), "default-height");
   target_w =
-    adw_property_animation_target_new (G_OBJECT (window), "default-width");
+    adw_property_animation_target_new (G_OBJECT (self), "default-width");
 
   // Animation for resizing height
-  window->animation_height = adw_timed_animation_new (
-    GTK_WIDGET (window),                                    // widget
+  animation_height = adw_timed_animation_new (
+    GTK_WIDGET (self),                                    // widget
     (gdouble) default_height,                               // from
     new_height,                                             // to
     WINDOW_RESIZING_DURATION,                               // duration
     target_h                                                // target
   );
-  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (window->animation_height),
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_height),
                                   ADW_EASE_OUT_EXPO);
 
   // Animation for resizing width
-  window->animation_width = adw_timed_animation_new (
-    GTK_WIDGET (window),                                      // widget
+  animation_width = adw_timed_animation_new (
+    GTK_WIDGET (self),                                      // widget
     (gdouble) default_width,                                  // from
     new_width,                                                // to
     WINDOW_RESIZING_DURATION,                                 // duration
     target_w                                                  // target
   );
-  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (window->animation_width),
+  adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_width),
                                   ADW_EASE_OUT_EXPO);
 
   if (first_run)
     {
-      adw_animation_skip (window->animation_width);
-      adw_animation_skip (window->animation_height);
+      adw_animation_skip (animation_width);
+      adw_animation_skip (animation_height);
       first_run = FALSE;
     }
   else
     {
-      adw_animation_play (window->animation_width);
-      adw_animation_play (window->animation_height);
+      adw_animation_play (animation_width);
+      adw_animation_play (animation_height);
     }
 
   // Enable carousel again
-  kasasa_picture_container_carousel_set_interactive (window->picture_container,
+  kasasa_picture_container_carousel_set_interactive (self->picture_container,
                                                      TRUE);
 }
 
@@ -160,48 +159,50 @@ change_opacity_cb (double         value,
 }
 
 void
-kasasa_window_change_opacity (KasasaWindow *window,
+kasasa_window_change_opacity (KasasaWindow *self,
                               Opacity       opacity_direction)
 {
   AdwAnimationTarget *target = NULL;
-  gdouble opacity = g_settings_get_double (window->settings, "opacity");
+  gdouble opacity = g_settings_get_double (self->settings, "opacity");
 
   // Set from and to target values, according to the mode (increase or decrease opacity)
-  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (window));
+  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
   gdouble to    = (opacity_direction == OPACITY_INCREASE) ? 1.00    : opacity;
 
   // Return if this option is disabled
-  if (!g_settings_get_boolean (window->settings, "change-opacity"))
+  if (!g_settings_get_boolean (self->settings, "change-opacity"))
     return;
 
   // Return if the window is hiding/hidden when retaking the screenshot
   // it prevents the opacity increase again if the mouse leave the window
-  if (window->hiding_window)
+  if (self->hiding_window)
     return;
 
   // Return if the opacity is already 100%
   if (opacity == OPACITY_INCREASE
-      && gtk_widget_get_opacity (GTK_WIDGET (window)) == 1.00)
+      && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
     return;
 
   // Pause an animation
   // The "if" verifies if the animation was called at least once
-  if (ADW_IS_ANIMATION (window->window_opacity_animation))
-    adw_animation_pause (window->window_opacity_animation);
+  if (ADW_IS_ANIMATION (self->window_opacity_animation))
+    adw_animation_pause (self->window_opacity_animation);
+
+  g_clear_object (&self->window_opacity_animation);
 
   target =
     adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
-                                       window,
+                                       self,
                                        NULL);
 
-  window->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (window),  // widget
+  self->window_opacity_animation = adw_timed_animation_new (
+    GTK_WIDGET (self),  // widget
     from, to,             // opacity from to
     270,                  // duration
     target                // target
   );
 
-  adw_animation_play (window->window_opacity_animation);
+  adw_animation_play (self->window_opacity_animation);
 }
 
 /*
@@ -213,39 +214,39 @@ kasasa_window_change_opacity (KasasaWindow *window,
  * cause the window to be unpinned.
  */
 void
-kasasa_window_hide_window (KasasaWindow *window,
+kasasa_window_hide_window (KasasaWindow *self,
                            gboolean      hide)
 {
   AdwAnimationTarget *target = NULL;
   gdouble from, to;
 
-  g_return_if_fail (KASASA_IS_WINDOW (window));
-
-  // Set from and to target values
-  from  = gtk_widget_get_opacity (GTK_WIDGET (window));
-  to    = (hide) ? 0.00    : 1.00;
-
-  // Set if the window is hiding or being revealed
-  window->hiding_window = (hide) ? TRUE : FALSE;
+  g_return_if_fail (KASASA_IS_WINDOW (self));
 
   // Pause an animation
   // The "if" verifies if the animation was called at least once
-  if (ADW_IS_ANIMATION (window->window_opacity_animation))
-    adw_animation_pause (window->window_opacity_animation);
+  if (ADW_IS_ANIMATION (self->window_opacity_animation))
+    adw_animation_pause (self->window_opacity_animation);
+
+  // Set from and to target values
+  from  = gtk_widget_get_opacity (GTK_WIDGET (self));
+  to    = (hide) ? 0.00    : 1.00;
+
+  // Set if the window is hiding or being revealed
+  self->hiding_window = hide;
 
   target =
     adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
-                                       window,
+                                       self,
                                        NULL);
 
-  window->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (window),                    // widget
+  self->window_opacity_animation = adw_timed_animation_new (
+    GTK_WIDGET (self),                    // widget
     from, to,                               // opacity from to
     (hide) ? WINDOW_HIDING_DURATION : 200,  // duration
     target                                  // target
   );
 
-  adw_animation_play (window->window_opacity_animation);
+  adw_animation_play (self->window_opacity_animation);
 }
 
 static gboolean
@@ -292,7 +293,7 @@ kasasa_window_auto_discard_window (KasasaWindow *self)
 }
 
 static gboolean
-on_modal_close_request (GtkWindow *self,
+on_modal_close_request (GtkWindow *window,
                         gpointer   user_data)
 {
   kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
@@ -389,7 +390,6 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
 
   // Cancel a (possible) previous request
   g_cancellable_cancel (self->miniaturization_canceller);
-  self->miniaturization_canceller = NULL;
 
   if (miniaturize)
     {
@@ -398,6 +398,8 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
           || self->block_miniaturization)
         return;
 
+      // TODO
+      g_object_unref (self->miniaturization_canceller);
       self->miniaturization_canceller = g_cancellable_new ();
       task = g_task_new (G_OBJECT (self),
                          self->miniaturization_canceller,
@@ -614,8 +616,6 @@ on_auto_discard_button_toggled (GtkToggleButton   *button,
 
   if (gtk_toggle_button_get_active (button))
     kasasa_window_auto_discard_window (self);
-  else
-    g_cancellable_cancel (self->auto_discard_canceller);
 }
 
 static void
@@ -686,6 +686,8 @@ kasasa_window_dispose (GObject *kasasa_window)
   KasasaWindow *self = KASASA_WINDOW (kasasa_window);
 
   g_clear_object (&self->settings);
+  g_clear_object (&self->window_opacity_animation);
+  g_clear_object (&self->miniaturization_canceller);
 
   gtk_widget_dispose_template (GTK_WIDGET (kasasa_window), KASASA_TYPE_WINDOW);
 
@@ -733,8 +735,7 @@ kasasa_window_init (KasasaWindow *self)
 
   // Initialize self variables
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
-  self->auto_discard_canceller = NULL;
-  self->miniaturization_canceller = NULL;
+  self->miniaturization_canceller = g_cancellable_new ();
   self->hiding_window = FALSE;
 
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
