@@ -54,6 +54,12 @@ struct _KasasaWindow
   GCancellable              *miniaturization_canceller;
 };
 
+typedef struct
+{
+  HideWindowCallback    function;
+  gpointer              data;
+} HideWindowCallbackInfo;
+
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
 
 void
@@ -205,17 +211,32 @@ kasasa_window_change_opacity (KasasaWindow *self,
   adw_animation_play (self->window_opacity_animation);
 }
 
+static void
+on_window_hidden (AdwAnimation *animation,
+                  gpointer      user_data)
+{
+  HideWindowCallbackInfo *cb = user_data;
+
+  cb->function (cb->data);
+  g_free (cb);
+}
+
 /*
  * Hide/reveal the window by changing its opacity
- * Hide if "hide" is TRUE
- * Reveal if "hide" is FALSE
+ * Hide if 'hide' is TRUE
+ * Reveal if 'hide' is FALSE
  *
  * This trick is required because by using gtk_widget_set_visible (window, FALSE),
  * cause the window to be unpinned.
+ *
+ * Optionally, this functon can receive a 'callback', that is called when hiding
+ * window is finished. This argument can be NULL, as well 'callback_data'.
  */
 void
-kasasa_window_hide_window (KasasaWindow *self,
-                           gboolean      hide)
+kasasa_window_hide_window (KasasaWindow           *self,
+                           gboolean                hide,
+                           HideWindowCallback      callback,
+                           gpointer                callback_data)
 {
   AdwAnimationTarget *target = NULL;
   gdouble from, to;
@@ -225,9 +246,12 @@ kasasa_window_hide_window (KasasaWindow *self,
   // Pause an animation
   // The "if" verifies if the animation was called at least once
   if (ADW_IS_ANIMATION (self->window_opacity_animation))
-    adw_animation_pause (self->window_opacity_animation);
+    {
+      adw_animation_pause (self->window_opacity_animation);
+      g_object_unref (self->window_opacity_animation);
+    }
 
-  // Set from and to target values
+  // Set 'from' and 'to' target values
   from  = gtk_widget_get_opacity (GTK_WIDGET (self));
   to    = (hide) ? 0.00    : 1.00;
 
@@ -240,11 +264,20 @@ kasasa_window_hide_window (KasasaWindow *self,
                                        NULL);
 
   self->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (self),                    // widget
+    GTK_WIDGET (self),                      // widget
     from, to,                               // opacity from to
     (hide) ? WINDOW_HIDING_DURATION : 200,  // duration
     target                                  // target
   );
+
+  if (callback != NULL)
+    {
+      HideWindowCallbackInfo *cb_info = g_new0 (HideWindowCallbackInfo, 1);
+      cb_info->function = callback;
+      cb_info->data = callback_data;
+      g_signal_connect (self->window_opacity_animation, "done",
+                        G_CALLBACK (on_window_hidden), cb_info);
+    }
 
   adw_animation_play (self->window_opacity_animation);
 }
@@ -398,7 +431,6 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
           || self->block_miniaturization)
         return;
 
-      // TODO
       g_object_unref (self->miniaturization_canceller);
       self->miniaturization_canceller = g_cancellable_new ();
       task = g_task_new (G_OBJECT (self),

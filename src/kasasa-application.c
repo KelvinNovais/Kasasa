@@ -104,7 +104,7 @@ kasasa_application_about_action (GSimpleAction *action,
                          "application-name", _("Kasasa"),
                          "application-icon", "io.github.kelvinnovais.Kasasa",
                          "developer-name", "Kelvin Ribeiro Novais",
-                         "version", "1.1.3",
+                         "version", "1.1.4",
                          "comments", _("Snip and pin useful information"
                                        "\n\nIf you liked the app ❤️, consider giving it a star ⭐:"),
                          "issue-url", "https://github.com/KelvinNovais/Kasasa/issues",
