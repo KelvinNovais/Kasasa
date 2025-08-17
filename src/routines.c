@@ -153,9 +153,8 @@ routines_add_screenshot (GtkButton *button,
 
   kasasa_window_block_miniaturization (window, TRUE);
 
-  kasasa_window_hide_window (window, TRUE);
-
-  g_timeout_add_once (WINDOW_WAITING_HIDING_DURATION, take_screenshot, pc);
+  kasasa_window_hide_window (window, TRUE,
+                             take_screenshot, pc);
 }
 
 
@@ -214,7 +213,6 @@ routines_retake_screenshot (GtkButton *button, gpointer user_data)
 
   kasasa_window_block_miniaturization (window, TRUE);
 
-  kasasa_window_hide_window (window, TRUE);
-
-  g_timeout_add_once (WINDOW_WAITING_HIDING_DURATION, retake_screenshot_cb, pc);
+  kasasa_window_hide_window (window, TRUE,
+                             retake_screenshot_cb, pc);
 }

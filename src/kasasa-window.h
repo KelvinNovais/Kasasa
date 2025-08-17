@@ -46,17 +46,25 @@ typedef enum
 
 G_DECLARE_FINAL_TYPE (KasasaWindow, kasasa_window, KASASA, WINDOW, AdwApplicationWindow)
 
+typedef void (* HideWindowCallback)(gpointer);
+
 KasasaWindow * kasasa_window_get_window_reference (GtkWidget *widget);
 gboolean kasasa_window_get_trash_button_active (KasasaWindow *window);
-void kasasa_window_hide_window (KasasaWindow *window, gboolean hide);
+void kasasa_window_hide_window (KasasaWindow           *window,
+                                gboolean                hide,
+                                HideWindowCallback      callback,
+                                gpointer                callback_data);
 void kasasa_window_change_opacity (KasasaWindow *window,
                                    Opacity       opacity_direction);
 void kasasa_window_resize_window (KasasaWindow *window,
                                   gdouble       new_height,
                                   gdouble       new_width);
 void kasasa_window_auto_discard_window (KasasaWindow *window);
-void kasasa_window_miniaturize_window (KasasaWindow *window, gboolean miniaturize);
-void kasasa_window_block_miniaturization (KasasaWindow *window, gboolean block);
+void kasasa_window_miniaturize_window (KasasaWindow *window,
+                                       gboolean      miniaturize);
+void kasasa_window_block_miniaturization (KasasaWindow *window,
+                                          gboolean      block);
+void kasasa_window_take_first_screenshot (KasasaWindow *window);
 
 G_END_DECLS
 

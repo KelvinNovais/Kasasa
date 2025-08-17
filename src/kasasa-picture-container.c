@@ -167,7 +167,8 @@ kasasa_picture_container_handle_taken_screenshot (GObject      *object,
   g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (self));
 
   window = kasasa_window_get_window_reference (GTK_WIDGET (self));
-  kasasa_window_hide_window (window, FALSE);
+  kasasa_window_hide_window (window, FALSE,
+                             NULL, NULL);
 
   uri =  xdp_portal_take_screenshot_finish (
     self->portal,

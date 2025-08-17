@@ -60,8 +60,10 @@ kasasa_application_activate (GApplication *app)
                            NULL);
 
   gtk_window_present (GTK_WINDOW (window));
+
   // The window will be set to 'visible = TRUE' after the screenshot is taken
   gtk_widget_set_visible (GTK_WIDGET (window), FALSE);
+  kasasa_window_take_first_screenshot (KASASA_WINDOW (window));
 }
 
 static void
@@ -102,7 +104,7 @@ kasasa_application_about_action (GSimpleAction *action,
                          "application-name", _("Kasasa"),
                          "application-icon", "io.github.kelvinnovais.Kasasa",
                          "developer-name", "Kelvin Ribeiro Novais",
-                         "version", "1.1.3",
+                         "version", "1.1.4",
                          "comments", _("Snip and pin useful information"
                                        "\n\nIf you liked the app ❤️, consider giving it a star ⭐:"),
                          "issue-url", "https://github.com/KelvinNovais/Kasasa/issues",
