@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-09 07:51-0300\n"
-"PO-Revision-Date: 2025-02-01 07:31+0100\n"
+"PO-Revision-Date: 2025-08-17 09:31+0200\n"
 "Last-Translator: Albano Battistella <albanobattistella@gmail.com>\n"
 "Language-Team: Italian <LL@li.org>\n"
 "Language: it\n"
@@ -28,22 +28,20 @@ msgid "Snip and pin useful information"
 msgstr "Cattura e appuntati informazioni utili"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:9
-#, fuzzy
 msgid "screenshot;clipping;snip;image;pin;reference;"
-msgstr "schermata;ritaglio;cattura;immagine;"
+msgstr "screenshot;ritaglio;cattura;immagine;pin;riferimento;"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
-#, fuzzy
 msgid ""
 "Clip what's important to a small floating window, so you don't have to "
 "switch between windows or workspaces repeatedly. The window can become "
 "miniaturized or have its opacity reduced, in order to do not block what's "
 "behind it."
 msgstr ""
-"Ritaglia ciò che è importante in una piccola finestra mobile, così non "
-"dovrai passare ripetutamente da una finestra all'altra o da un'area di "
-"lavoro all'altra. L'applicazione ti consente di vedere cosa c'è dietro la "
-"finestra passandoci sopra con il mouse."
+"Ritaglia ciò che è importante in una piccola finestra mobile, così non dovrai "
+"passare ripetutamente da una finestra o da un'area di lavoro all'altra. La finestra può essere "
+"miniaturizzata o avere un'opacità ridotta, per non oscurare ciò che si trova "
+"dietro."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
 msgid "Best used with:"
@@ -71,28 +69,27 @@ msgstr ""
 
 #. translators: replace "&lt;" with < and "&apos;" with '
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:42
-#, fuzzy
 msgid ""
 "Note: On GNOME versions < 46, a dialog will appear to set up and take the "
 "screenshot, instead of directly using the GNOME's screenshoter; this may be "
 "inconvenient."
 msgstr ""
-"Nota: nelle versioni di GNOME < 46, apparirà una finestra di dialogo per "
-"impostare e acquisire lo screenshot, anziché usare direttamente lo "
-"screenshoter di GNOME; questo potrebbe essere non conveniente."
+"Nota: nelle versioni di GNOME < 46, verrà visualizzata una finestra di dialogo per impostare e acquisire lo "
+"screenshot, anziché utilizzare direttamente lo screenshoter di GNOME; questo potrebbe essere "
+"scomodo."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:52
 msgid "Main window"
-msgstr ""
+msgstr "Finestra principale"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:56
 msgid "Kasasa can become a window miniature"
-msgstr ""
+msgstr "Kasasa può diventare una finestra in miniatura"
 
 #. translators: "its" refer to Kasasa window
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
 msgid "Or decrease its opacity"
-msgstr ""
+msgstr "Oppure diminuirne l'opacità"
 
 #: src/gtk/help-overlay.ui:11
 msgctxt "shortcut window"
@@ -183,9 +180,8 @@ msgid "Window hide mode"
 msgstr ""
 
 #: src/kasasa-preferences.ui:17
-#, fuzzy
 msgid "Decrease opacity"
-msgstr "Cambia opacità"
+msgstr "Diminuire l'opacità"
 
 #: src/kasasa-preferences.ui:29
 msgid "Opacity level"
@@ -193,7 +189,7 @@ msgstr "Livello di opacità"
 
 #: src/kasasa-preferences.ui:36
 msgid "Miniaturize"
-msgstr ""
+msgstr "Miniaturizzare"
 
 #: src/kasasa-preferences.ui:47
 msgid "Auto hide the header bar"
