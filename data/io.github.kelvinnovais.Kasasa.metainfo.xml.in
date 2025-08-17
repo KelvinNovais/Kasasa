@@ -69,8 +69,7 @@
   </branding>
 
   <releases>
-    <!-- TODO set date -->
-    <release date="2025-07-XX" version="1.1.4">
+    <release date="2025-08-16" version="1.1.4">
       <description translate="no">
         <p>Performance improvements.</p>
       </description>
