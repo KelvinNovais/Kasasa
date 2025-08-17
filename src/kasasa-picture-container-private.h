@@ -33,12 +33,15 @@ struct _KasasaPictureContainer
   GtkButton               *add_screenshot_button;
   GtkButton               *remove_screenshot_button;
   GtkButton               *copy_screenshot_button;
+  GtkToggleButton         *lock_button;
   GtkRevealer             *revealer_end_buttons;
   GtkRevealer             *revealer_start_buttons;
+  GtkRevealer             *revealer_lock_button;
   GtkOverlay              *toolbar_overlay;
 
   /* Instance variables */
   XdpPortal               *portal;
+  GSettings               *settings;
 };
 
 void kasasa_picture_container_append_screenshot (KasasaPictureContainer *pc,

@@ -63,6 +63,25 @@
               </object>
             </child>
 
+            <child type="overlay">
+              <object class="GtkRevealer" id="revealer_lock_button">
+                <property name="transition-type">crossfade</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkToggleButton" id="lock_button">
+                    <property name="icon-name">padlock2-open-symbolic</property>
+                    <property name="height-request">55</property>
+                    <property name="width-request">55</property>
+                    <style>
+                      <class name="circular" />
+                      <class name="osd" />
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+
             <!-- TOOBAR -->
             <child type="overlay">
               <object class="GtkOverlay" id="toolbar_overlay">
@@ -71,8 +90,6 @@
                 <child type="overlay">
                   <object class="GtkRevealer" id="revealer_start_buttons">
                     <property name="transition-type">crossfade</property>
-                    <!-- <property name="transition-duration">1250</property> -->
-                    <property name="overflow">visible</property>
                     <property name="halign">start</property>
                     <property name="valign">end</property>
                     <property name="margin-start">18</property>
@@ -111,8 +128,6 @@
                 <child type="overlay">
                   <object class="GtkRevealer" id="revealer_end_buttons">
                     <property name="transition-type">crossfade</property>
-                    <property name="overflow">visible</property>
-                    <property name="overflow">visible</property>
                     <property name="halign">end</property>
                     <property name="valign">end</property>
                     <property name="margin-start">18</property>
@@ -151,3 +166,4 @@
     </child>
   </template>
 </interface>
+

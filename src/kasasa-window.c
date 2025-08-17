@@ -18,8 +18,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-// TODO add lock unminiaturized window feature
-
 #include "config.h"
 
 #include <glib/gi18n.h>
@@ -502,7 +500,7 @@ hide_toolbar_cb (gpointer user_data)
   if (self->mouse_over_window)
     return;
 
-  kasasa_picture_container_reveal_toolbar (self->picture_container, FALSE);
+  kasasa_picture_container_reveal_controls (self->picture_container, FALSE);
 }
 
 static void
@@ -549,7 +547,7 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
-  kasasa_picture_container_reveal_toolbar (self->picture_container, TRUE);
+  kasasa_picture_container_reveal_controls (self->picture_container, TRUE);
 }
 
 static void
@@ -607,7 +605,12 @@ static void
 on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
                        gpointer                  user_data)
 {
-  kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+
+  if (kasasa_picture_container_get_lock (self->picture_container))
+    return;
+
+  kasasa_window_miniaturize_window (self, TRUE);
 }
 
 static void
@@ -625,7 +628,7 @@ on_window_click_released (GtkGestureClick *gesture_click,
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
-  kasasa_picture_container_reveal_toolbar (self->picture_container, TRUE);
+  kasasa_picture_container_reveal_controls (self->picture_container, TRUE);
 }
 
 static gboolean

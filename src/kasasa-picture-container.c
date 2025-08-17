@@ -32,14 +32,27 @@ G_DEFINE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, ADW_TYPE_
 
 static KasasaScreenshot * get_current_screenshot (KasasaPictureContainer *self);
 
-void
-kasasa_picture_container_reveal_toolbar (KasasaPictureContainer *self,
-                                         gboolean                reveal_child)
+gboolean
+kasasa_picture_container_get_lock (KasasaPictureContainer *self)
 {
+  g_return_val_if_fail (KASASA_IS_PICTURE_CONTAINER (self), FALSE);
+
+  return gtk_toggle_button_get_active (self->lock_button);
+}
+
+void
+kasasa_picture_container_reveal_controls (KasasaPictureContainer *self,
+                                          gboolean                reveal_child)
+{
+  gboolean reveal_lock_button;
   g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (self));
+
+  reveal_lock_button =
+    g_settings_get_boolean (self->settings, "miniaturize-window") ? reveal_child : FALSE;
 
   gtk_revealer_set_reveal_child (self->revealer_start_buttons, reveal_child);
   gtk_revealer_set_reveal_child (self->revealer_end_buttons, reveal_child);
+  gtk_revealer_set_reveal_child (self->revealer_lock_button, reveal_lock_button);
 }
 
 void
@@ -215,7 +228,7 @@ kasasa_picture_container_handle_taken_screenshot (GObject      *object,
 }
 
 static void
-on_mouse_enter_toolbar (GtkEventControllerMotion *event_controller_motion,
+on_mouse_enter_controls (GtkEventControllerMotion *event_controller_motion,
                         gdouble                   x,
                         gdouble                   y,
                         gpointer                  user_data)
@@ -227,7 +240,7 @@ on_mouse_enter_toolbar (GtkEventControllerMotion *event_controller_motion,
 }
 
 static void
-on_mouse_leave_toolbar (GtkEventControllerMotion *event_controller_motion,
+on_mouse_leave_controls (GtkEventControllerMotion *event_controller_motion,
                         gdouble                   x,
                         gdouble                   y,
                         gpointer                  user_data)
@@ -348,6 +361,24 @@ on_copy_screenshot_button_clicked (GtkButton *button,
 }
 
 static void
+on_lock_button_toggled (GtkToggleButton *button,
+                        gpointer         user_data)
+{
+  if (gtk_toggle_button_get_active (button))
+    {
+      gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-symbolic");
+      gtk_widget_remove_css_class (GTK_WIDGET (button), "osd");
+      gtk_widget_add_css_class (GTK_WIDGET (button), "warning");
+    }
+  else
+    {
+      gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-open-symbolic");
+      gtk_widget_remove_css_class (GTK_WIDGET (button), "warning");
+      gtk_widget_add_css_class (GTK_WIDGET (button), "osd");
+    }
+}
+
+static void
 copy_error_cb (GtkWidget  *sender,
                const char *action,
                GVariant   *param)
@@ -365,6 +396,7 @@ kasasa_picture_container_dispose (GObject *object)
   KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (object);
 
   g_clear_object (&self->portal);
+  g_clear_object (&self->settings);
 
   gtk_widget_dispose_template (GTK_WIDGET (object), KASASA_TYPE_PICTURE_CONTAINER);
 
@@ -390,8 +422,10 @@ kasasa_picture_container_class_init (KasasaPictureContainerClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, add_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, remove_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, copy_screenshot_button);
+  gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, lock_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, revealer_start_buttons);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, revealer_end_buttons);
+  gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, revealer_lock_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, toolbar_overlay);
 }
 
@@ -403,6 +437,7 @@ kasasa_picture_container_init (KasasaPictureContainer *self)
   gtk_widget_init_template (GTK_WIDGET (self));
 
   self->portal = xdp_portal_new ();
+  self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
 
   // Signals
   g_signal_connect (self->carousel,
@@ -425,16 +460,20 @@ kasasa_picture_container_init (KasasaPictureContainer *self)
                     "clicked",
                     G_CALLBACK (on_copy_screenshot_button_clicked),
                     self);
+  g_signal_connect (self->lock_button,
+                    "toggled",
+                    G_CALLBACK (on_lock_button_toggled),
+                    self);
 
   // Event controllers
   toolbar_motion_event_controller = gtk_event_controller_motion_new ();
   g_signal_connect (toolbar_motion_event_controller,
                     "enter",
-                    G_CALLBACK (on_mouse_enter_toolbar),
+                    G_CALLBACK (on_mouse_enter_controls),
                     self);
   g_signal_connect (toolbar_motion_event_controller,
                     "leave",
-                    G_CALLBACK (on_mouse_leave_toolbar),
+                    G_CALLBACK (on_mouse_leave_controls),
                     self);
   gtk_widget_add_controller (GTK_WIDGET (self->toolbar_overlay), toolbar_motion_event_controller);
 }

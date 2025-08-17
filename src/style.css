@@ -15,7 +15,6 @@
 .circular-window {
   border-radius: 10px 37px 37px 37px;
   opacity: 0.75;
-  /* filter: blur(1px); */
 }
 
 
@@ -29,7 +28,6 @@
 .osd-box {
   border-radius: 12px;
   background-color: var(--osd-background-color);
-  box-shadow: 0px 0px 2px 0px var(--box-shadow-color);
   padding: 6px;
 }
 
@@ -41,7 +39,6 @@
 .osd-box-no-padding {
   border-radius: 12px;
   background-color: var(--osd-background-color);
-  box-shadow: 0px 0px 6px 0px var(--box-shadow-color);
   padding: 3px;
 }
 

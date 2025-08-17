@@ -39,7 +39,8 @@ void kasasa_picture_container_wipe_screenshots (KasasaPictureContainer *pc);
 void kasasa_picture_container_request_first_screenshot (KasasaPictureContainer *pc);
 void kasasa_picture_container_request_window_resize (KasasaPictureContainer *pc);
 void kasasa_picture_container_update_buttons_sensibility (KasasaPictureContainer *pc);
-void kasasa_picture_container_reveal_toolbar (KasasaPictureContainer *pc,
-                                              gboolean                reveal_child);
+void kasasa_picture_container_reveal_controls (KasasaPictureContainer *pc,
+                                               gboolean                reveal_child);
+gboolean kasasa_picture_container_get_lock (KasasaPictureContainer *pc);
 
 G_END_DECLS
