@@ -26,6 +26,7 @@
 
 #include "kasasa-window.h"
 #include "kasasa-screenshot.h"
+#include "kasasa-screencast.h"
 #include "routines.h"
 
 G_DEFINE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, ADW_TYPE_BREAKPOINT_BIN)
@@ -48,7 +49,8 @@ kasasa_picture_container_reveal_controls (KasasaPictureContainer *self,
   g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (self));
 
   reveal_lock_button =
-    g_settings_get_boolean (self->settings, "miniaturize-window") ? reveal_child : FALSE;
+    g_settings_get_boolean (self->settings,
+                            "miniaturize-window") ? reveal_child : FALSE;
 
   gtk_revealer_set_reveal_child (self->revealer_start_buttons, reveal_child);
   gtk_revealer_set_reveal_child (self->revealer_end_buttons, reveal_child);
@@ -390,6 +392,19 @@ copy_error_cb (GtkWidget  *sender,
   gdk_clipboard_set_text (clipboard, g_variant_get_string (param, NULL));
 }
 
+// TODO
+static void
+add_screencast (GtkButton *button,
+                gpointer user_data)
+{
+  KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (user_data);
+
+  KasasaScreencast *screencast = kasasa_screencast_new ();
+  g_message ("Clicked");
+  kasasa_screencast_set_window (screencast);
+  adw_carousel_append (self->carousel, GTK_WIDGET (screencast));
+}
+
 static void
 kasasa_picture_container_dispose (GObject *object)
 {
@@ -450,7 +465,7 @@ kasasa_picture_container_init (KasasaPictureContainer *self)
                     self);
   g_signal_connect (self->add_screenshot_button,
                     "clicked",
-                    G_CALLBACK (routines_add_screenshot),
+                    G_CALLBACK (add_screencast),
                     self);
   g_signal_connect (self->remove_screenshot_button,
                     "clicked",

@@ -9,7 +9,8 @@
         "--socket=fallback-x11",
         "--device=dri",
         "--socket=wayland",
-        "--filesystem=xdg-pictures"
+        "--filesystem=xdg-pictures",
+        "--share=network"
     ],
     "cleanup" : [
         "/include",
@@ -43,6 +44,20 @@
                     "type" : "git",
                     "url" : "https://github.com/flatpak/libportal.git",
                     "tag" : "0.9.1"
+                }
+            ]
+        },
+        {
+            "name" : "gst",
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "config-opts" : [
+            ],
+            "sources" : [
+                {
+                    "type" : "archive",
+                    "url" : "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.27.1.tar.xz",
+                    "sha256" : "ac89913f5c39c4b216515814e63b54e865953a37dacfe149afaacdfbeb39a9f1"
                 }
             ]
         },
