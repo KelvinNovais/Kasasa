@@ -258,24 +258,25 @@ on_page_changed (AdwCarousel *carousel,
                  guint        index,
                  gpointer     user_data)
 {
-  KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (user_data);
-  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
-  gint new_height, new_width;
+  // TODO remove comments
+  /* KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (user_data); */
+  /* KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self)); */
+  /* gint new_height, new_width; */
 
-  g_debug ("Page changed");
-  // If the carousel is empty, return
-  if ((int) index == -1)
-    return;
+  /* g_debug ("Page changed"); */
+  /* // If the carousel is empty, return */
+  /* if ((int) index == -1) */
+  /*   return; */
 
-  // Ensure that the window is visible
-  kasasa_window_change_opacity (window, OPACITY_INCREASE);
+  /* // Ensure that the window is visible */
+  /* kasasa_window_change_opacity (window, OPACITY_INCREASE); */
 
-  g_debug ("Resizing window for image at index %d due to page change", index);
-  kasasa_secreenshot_get_dimensions (get_current_screenshot (self),
-                                     &new_height,
-                                     &new_width);
+  /* g_debug ("Resizing window for image at index %d due to page change", index); */
+  /* kasasa_secreenshot_get_dimensions (get_current_screenshot (self), */
+  /*                                    &new_height, */
+  /*                                    &new_width); */
 
-  kasasa_window_resize_window (window, new_height, new_width);
+  /* kasasa_window_resize_window (window, new_height, new_width); */
 }
 
 static void
@@ -392,7 +393,7 @@ copy_error_cb (GtkWidget  *sender,
   gdk_clipboard_set_text (clipboard, g_variant_get_string (param, NULL));
 }
 
-// TODO
+// TODO this function is only for tests
 static void
 add_screencast (GtkButton *button,
                 gpointer user_data)
