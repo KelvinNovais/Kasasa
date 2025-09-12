@@ -1,6 +1,6 @@
 /* kasasa-window.h
  *
- * Copyright 2024 Kelvin
+ * Copyright 2024-2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,9 +56,12 @@ void kasasa_window_hide_window (KasasaWindow           *window,
                                 gpointer                callback_data);
 void kasasa_window_change_opacity (KasasaWindow *window,
                                    Opacity       opacity_direction);
-void kasasa_window_resize_window (KasasaWindow *window,
-                                  gdouble       new_height,
-                                  gdouble       new_width);
+// void kasasa_window_resize_window (KasasaWindow *window,
+//                                   gdouble       new_height,
+//                                   gdouble       new_width);
+void kasasa_window_resize_window_scaling (KasasaWindow *window,
+                                          gdouble       new_height,
+                                          gdouble       new_width);
 void kasasa_window_auto_discard_window (KasasaWindow *window);
 void kasasa_window_miniaturize_window (KasasaWindow *window,
                                        gboolean      miniaturize);

@@ -80,7 +80,7 @@ kasasa_picture_container_request_window_resize (KasasaPictureContainer *self)
                                  &new_height,
                                  &new_width);
 
-  kasasa_window_resize_window (window, new_height, new_width);
+  kasasa_window_resize_window_scaling (window, new_height, new_width);
 }
 
 void
@@ -299,7 +299,7 @@ on_page_changed (AdwCarousel *carousel,
                                  &new_height,
                                  &new_width);
 
-  kasasa_window_resize_window (window, new_height, new_width);
+  kasasa_window_resize_window_scaling (window, new_height, new_width);
 }
 
 static void
