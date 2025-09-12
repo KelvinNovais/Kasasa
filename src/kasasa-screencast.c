@@ -1,4 +1,4 @@
-/* kasasa-screencast.h
+/* kasasa-screencast.c
  *
  * Copyright 2025 Kelvin
  *
@@ -26,6 +26,9 @@
 
 #include "kasasa-screencast.h"
 
+#define CROP_CHEK_INTERVAL 5              // seconds
+#define FIRST_CROP_CHECK_INTERVAL 200     // miliseconds
+
 enum
 {
   C_TOP,
@@ -42,7 +45,6 @@ struct _KasasaScreencast
   GtkPicture              *picture;
   GstElement              *pipeline;
   XdpSession              *session;
-  gboolean                 check_sample;
   guint                    crop[4];
 
   // TODO just for tests
@@ -114,50 +116,50 @@ set_crop (KasasaScreencast *self)
 }
 
 static gboolean
-reset_sample_check (gpointer user_data)
+compute_crop_values (gpointer user_data)
 {
-  KASASA_SCREENCAST (user_data)->check_sample = TRUE;
-  return G_SOURCE_CONTINUE;
-}
-
-static GstFlowReturn
-new_sample (GstAppSink       *appsink,
-            KasasaScreencast *self)
-{
-  GstSample *sample = NULL;
+  KasasaScreencast *self = NULL;
+  g_autoptr (GstSample) sample = NULL;
+  g_autoptr (GstElement) fakesink = NULL;
   GstBuffer *buffer = NULL;
-  GstCaps *caps = NULL;
+  const GstCaps *caps = NULL;
   GstMapInfo map;
 
   gint width = 0;
   gint height = 0;
 
-  sample = gst_app_sink_try_pull_sample (appsink, 1000);
+  self = KASASA_SCREENCAST (user_data);
+
+  // Get fakesink
+  fakesink = gst_bin_get_by_name (GST_BIN (self->pipeline), "fakesink");
+  if (fakesink == NULL)
+    {
+      g_warning ("Got fakesink == NULL while processing crop dimensions. "\
+                 "Unable to crop to window size.");
+      return G_SOURCE_REMOVE;
+    }
+
+  // Get sample
+  g_object_get (fakesink,
+                "last-sample", &sample,
+                NULL);
   if (sample == NULL)
     {
       g_debug ("sample == NULL while processing crop dimensions");
-      return GST_FLOW_OK;
+      return G_SOURCE_CONTINUE;
     }
 
-  // TODO optmize sample checking
-  if (self->check_sample == FALSE)
-    {
-      g_debug ("skipping sample");
-      gst_sample_unref (sample);
-      return GST_FLOW_OK;
-    }
-  else
-    {
-      self->check_sample = FALSE;
-    }
-
+  // Get sample info
   caps = gst_sample_get_caps (sample);
   if (caps)
     {
-      GstStructure *structure = gst_caps_get_structure (caps, 0);
-      const gchar *format = gst_structure_get_string (structure, "format");
+      const GstStructure *structure;
+      const gchar *format;
 
-      // Check if the format is RGB
+      structure = gst_caps_get_structure (caps, 0);
+      format = gst_structure_get_string (structure, "format");
+
+      // Check if the format is BGRx
       if (g_strcmp0 (format, "BGRx") == 0)
         {
           gst_structure_get_int (structure, "width", &width);
@@ -168,20 +170,28 @@ new_sample (GstAppSink       *appsink,
           g_warning ("Expected format BGRx, but received: %s. "\
                      "Unable to crop to window size.", format);
           gst_buffer_unmap (buffer, &map);
-          gst_sample_unref (sample);
-          return GST_FLOW_OK;
+          return G_SOURCE_REMOVE;
         }
     }
 
+  // Ensure the width and height of the sample is ok
+  if (width < 100 || height < 100)
+    {
+      g_warning ("Sample is too small, crop skipped");
+      return G_SOURCE_REMOVE;
+    }
+
+  // Get crop dimensions
   buffer = gst_sample_get_buffer (sample);
   if (gst_buffer_map (buffer, &map, GST_MAP_READ))
     {
       gint top = height, bottom = 0, left = width, right = 0;
 
       // Analyze the pixel data
+      // (I) Columns
       for (gint y = 0; y < height; y++)
         {
-          for (gint x = 0; x < width; x++)
+          for (gint x = 0; x < width; x = (x+1)*4)
             {
               // 4 bytes per pixel (B, G, R, X)
               gint index = (y * width + x) * 4;
@@ -195,6 +205,22 @@ new_sample (GstAppSink       *appsink,
                 {
                   if (y < top) top = y;
                   if (y > bottom) bottom = y;
+                }
+            }
+        }
+
+      for (gint y = 0; y < height; y = (y+1)*4)
+        {
+          for (gint x = 0; x < width; x++)
+            {
+              gint index = (y * width + x) * 4;
+
+              guchar b = map.data[index];
+              guchar g = map.data[index + 1];
+              guchar r = map.data[index + 2];
+
+              if (b != 0 || g != 0 || r != 0)
+                {
                   if (x < left) left = x;
                   if (x > right) right = x;
                 }
@@ -216,8 +242,13 @@ new_sample (GstAppSink       *appsink,
 
   set_crop (self);
 
-  gst_sample_unref (sample);
-  return GST_FLOW_OK;
+  return G_SOURCE_CONTINUE;
+}
+
+static void
+compute_first_crop_values (gpointer user_data)
+{
+  compute_crop_values (user_data);
 }
 
 static void
@@ -228,9 +259,9 @@ show_screencast (KasasaScreencast *self,
   g_autofree gchar *node_id_str = NULL;
   GstElement *pipewire_element = NULL;
   GstElement *filter = NULL, *videocrop = NULL, *gtksink = NULL, *sink = NULL;
-  GstCaps *caps = NULL;
+  g_autoptr (GstCaps) caps = NULL;
 
-  GstElement *tee, *queue1, *queue2, *appsink;
+  GstElement *tee, *queue1, *queue2, *fakesink;
 
   GdkGLContext *gl_context = NULL;
   GdkPaintable *paintable = NULL;
@@ -247,31 +278,22 @@ show_screencast (KasasaScreencast *self,
 
   videocrop = gst_element_factory_make ("videocrop", "videocrop");
 
-  caps = gst_caps_from_string ("video/x-raw");
+  caps = gst_caps_from_string ("video/x-raw,format=RGB");
   filter = gst_element_factory_make ("capsfilter", "filter");
   g_object_set (filter,
                 "caps", caps,
                 NULL);
-  gst_caps_unref (caps);
 
   tee = gst_element_factory_make ("tee", "tee");
   queue1 = gst_element_factory_make ("queue", "queue1");
   queue2 = gst_element_factory_make ("queue", "queue2");
 
-  // Create an appsink to pull frames
-  appsink = gst_element_factory_make ("appsink", "appsink");
-  g_object_set (appsink,
-                "max-buffers", 100,
-                "drop", TRUE,
-                "emit-signals", TRUE,
-                /* "sync", TRUE, // TODO */
-                NULL);
-  g_signal_connect (appsink, "new-sample", G_CALLBACK (new_sample), self);
-
+  // Create a fakesink to retrieve original frames
+  fakesink = gst_element_factory_make ("fakesink", "fakesink");
 
   if (!self->pipeline || !pipewire_element || !tee
       || !queue1 || !filter || !videocrop || !gtksink
-      || !queue2 || !appsink)
+      || !queue2 || !fakesink)
     {
       g_warning ("Not all elements could be created.");
       return;
@@ -317,10 +339,10 @@ show_screencast (KasasaScreencast *self,
   // Build the pipeline
   gst_bin_add_many (GST_BIN (self->pipeline),
                     pipewire_element, tee, queue1, filter, videocrop, sink,
-                    queue2, appsink, NULL);
+                    queue2, fakesink, NULL);
   if (!gst_element_link_many (pipewire_element,
                               tee, queue1, filter, videocrop, sink, NULL)
-       || !gst_element_link_many (tee, queue2, appsink, NULL)
+       || !gst_element_link_many (tee, queue2, fakesink, NULL)
       )
     {
       g_warning ("Elements could not be linked.");
@@ -345,8 +367,8 @@ show_screencast (KasasaScreencast *self,
       return;
     }
 
-  // TODO
-  g_timeout_add_seconds (2, reset_sample_check, self);
+  g_timeout_add_once (FIRST_CROP_CHECK_INTERVAL, compute_first_crop_values, self);
+  g_timeout_add_seconds (CROP_CHEK_INTERVAL, compute_crop_values, self);
 }
 
 static void
@@ -374,7 +396,6 @@ on_session_start (GObject      *source_object,
 
   fd = xdp_session_open_pipewire_remote (self->session);
 
-  // TODO get stream width and height
   streams = xdp_session_get_streams (self->session);
   stream = g_variant_get_child_value (streams, 0);
   g_variant_get (stream,
@@ -457,7 +478,6 @@ static void
 kasasa_screencast_init (KasasaScreencast *self)
 {
   self->pipeline = NULL;
-  self->check_sample = TRUE;
   // TODO use a single portal object?
   self->portal = xdp_portal_new ();
 
