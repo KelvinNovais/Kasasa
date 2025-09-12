@@ -112,11 +112,11 @@
                         </child>
                         <!-- Remove button -->
                         <child>
-                          <object class="GtkButton" id="remove_screenshot_button">
+                          <object class="GtkButton" id="remove_content_button">
                             <property name="css-classes">flat</property>
                             <property name="sensitive">false</property>
                             <property name="icon-name">minus-large-symbolic</property>
-                            <property name="tooltip-text" translatable="yes">Remove screenshot</property>
+                            <property name="tooltip-text" translatable="yes">Remove this item</property>
                           </object>
                         </child>
                       </object>

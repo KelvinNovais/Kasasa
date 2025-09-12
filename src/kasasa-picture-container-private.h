@@ -31,7 +31,7 @@ struct _KasasaPictureContainer
   AdwCarousel             *carousel;
   GtkButton               *retake_screenshot_button;
   GtkButton               *add_screenshot_button;
-  GtkButton               *remove_screenshot_button;
+  GtkButton               *remove_content_button;
   GtkButton               *copy_screenshot_button;
   GtkToggleButton         *lock_button;
   GtkRevealer             *revealer_end_buttons;

@@ -1,6 +1,6 @@
 /* kasasa-screenshot.c
  *
- * Copyright 2024 Kelvin
+ * Copyright 2024-2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,11 @@ struct _KasasaScreenshot
   gint                    image_width;
 };
 
-G_DEFINE_FINAL_TYPE (KasasaScreenshot, kasasa_screenshot, ADW_TYPE_BIN)
+static void kasasa_screenshot_content_interface_init (KasasaContentInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (KasasaScreenshot, kasasa_screenshot, ADW_TYPE_BIN,
+                         G_IMPLEMENT_INTERFACE (KASASA_TYPE_CONTENT,
+                                                kasasa_screenshot_content_interface_init))
 
 GFile *
 kasasa_screenshot_get_file (KasasaScreenshot *self)
@@ -304,15 +308,18 @@ compute_size (KasasaScreenshot *self)
   return FALSE;
 }
 
-void
-kasasa_secreenshot_get_dimensions (KasasaScreenshot *self,
-                                   gint             *height,
-                                   gint             *width)
+static void
+kasasa_screenshot_get_dimensions (KasasaContent *content,
+                                  gint          *height,
+                                  gint          *width)
 {
+  KasasaScreenshot *self = NULL;
+
+  g_return_if_fail (KASASA_IS_SCREENSHOT (content));
+
+  self = KASASA_SCREENSHOT (content);
   *height = -1;
   *width = -1;
-
-  g_return_if_fail (KASASA_IS_SCREENSHOT (self));
 
   compute_size (self);
 
@@ -386,13 +393,16 @@ search_and_trash_image (const gchar *directory_name,
   return FALSE;
 }
 
-void
-kasasa_screenshot_trash_image (KasasaScreenshot *self)
+static void
+kasasa_screenshot_finish (KasasaContent *content)
 {
   KasasaWindow *window = NULL;
   g_autofree gchar *base_name = NULL;
+  KasasaScreenshot *self = NULL;
 
-  g_return_if_fail (KASASA_IS_SCREENSHOT (self));
+  g_return_if_fail (KASASA_IS_SCREENSHOT (content));
+
+  self = KASASA_SCREENSHOT (content);
 
   window = kasasa_window_get_window_reference (GTK_WIDGET (self));
 
@@ -430,7 +440,7 @@ kasasa_screenshot_load_screenshot (KasasaScreenshot *self,
   g_return_if_fail (KASASA_IS_SCREENSHOT (self) || uri == NULL);
 
   if (self->file != NULL)
-    kasasa_screenshot_trash_image (self);
+    kasasa_screenshot_finish (KASASA_CONTENT (self));
 
   self->file = g_file_new_for_uri (uri);
 
@@ -445,7 +455,7 @@ kasasa_screenshot_load_screenshot (KasasaScreenshot *self,
   gtk_picture_set_file (self->picture, self->file);
 
   // Compute new dimensions and resize the window
-  kasasa_secreenshot_get_dimensions (self, &height, &width);
+  kasasa_content_get_dimensions (KASASA_CONTENT (self), &height, &width);
   window = kasasa_window_get_window_reference (GTK_WIDGET (self));
   kasasa_window_resize_window (window, height, width);
 }
@@ -459,6 +469,13 @@ kasasa_screenshot_dispose (GObject *object)
     g_object_unref (self->file);
 
   G_OBJECT_CLASS (kasasa_screenshot_parent_class)->dispose (object);
+}
+
+static void
+kasasa_screenshot_content_interface_init (KasasaContentInterface *iface)
+{
+  iface->get_dimensions = kasasa_screenshot_get_dimensions;
+  iface->finish = kasasa_screenshot_finish;
 }
 
 static void

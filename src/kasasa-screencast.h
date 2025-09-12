@@ -22,6 +22,8 @@
 
 #include <adwaita.h>
 
+#include "kasasa-content.h"
+
 G_BEGIN_DECLS
 
 #define KASASA_TYPE_SCREENCAST (kasasa_screencast_get_type ())

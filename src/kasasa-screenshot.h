@@ -1,6 +1,6 @@
 /* kasasa-screenshot.h
  *
- * Copyright 2024 Kelvin
+ * Copyright 2024-2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 
 #include <adwaita.h>
 
+#include "kasasa-content.h"
+
 G_BEGIN_DECLS
 
 #define KASASA_TYPE_SCREENSHOT (kasasa_screenshot_get_type ())
@@ -30,11 +32,7 @@ G_DECLARE_FINAL_TYPE (KasasaScreenshot, kasasa_screenshot, KASASA, SCREENSHOT, A
 
 KasasaScreenshot *kasasa_screenshot_new (void);
 GFile *kasasa_screenshot_get_file (KasasaScreenshot *screenshot);
-void kasasa_secreenshot_get_dimensions (KasasaScreenshot *screenshot,
-                                        gint             *height,
-                                        gint             *width);
 void kasasa_screenshot_load_screenshot (KasasaScreenshot *screenshot,
                                         const gchar      *uri);
-void kasasa_screenshot_trash_image (KasasaScreenshot *screenshot);
 
 G_END_DECLS

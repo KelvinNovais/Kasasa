@@ -1,6 +1,6 @@
 /* kasasa-picture-container.c
  *
- * Copyright 2024 Kelvin
+ * Copyright 2024-2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 
 G_DEFINE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, ADW_TYPE_BREAKPOINT_BIN)
 
-static KasasaScreenshot * get_current_screenshot (KasasaPictureContainer *self);
+static GtkWidget * get_current_content (KasasaPictureContainer *self);
 
 gboolean
 kasasa_picture_container_get_lock (KasasaPictureContainer *self)
@@ -68,15 +68,17 @@ void
 kasasa_picture_container_request_window_resize (KasasaPictureContainer *self)
 {
   KasasaWindow *window = NULL;
+  GtkWidget *content = NULL;
   gint new_height, new_width;
 
   g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (self));
 
   window = kasasa_window_get_window_reference (GTK_WIDGET (self));
+  content = get_current_content (self);
 
-  kasasa_secreenshot_get_dimensions (get_current_screenshot (self),
-                                     &new_height,
-                                     &new_width);
+  kasasa_content_get_dimensions (KASASA_CONTENT (content),
+                                 &new_height,
+                                 &new_width);
 
   kasasa_window_resize_window (window, new_height, new_width);
 }
@@ -100,7 +102,7 @@ kasasa_picture_container_wipe_screenshots (KasasaPictureContainer *self)
         KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel, i));
 
       // First trash the image (it needs a reference to the parent window)...
-      kasasa_screenshot_trash_image (screenshot);
+      kasasa_content_finish (KASASA_CONTENT (screenshot));
       // ...then remove it from the carousel
       adw_carousel_remove (self->carousel, GTK_WIDGET (screenshot));
     }
@@ -126,16 +128,33 @@ kasasa_picture_container_update_buttons_sensibility (KasasaPictureContainer *pc)
     gtk_widget_set_sensitive (GTK_WIDGET (pc->add_screenshot_button),
                               FALSE);
 
+
   if (adw_carousel_get_n_pages (pc->carousel) > 1)
-    gtk_widget_set_sensitive (GTK_WIDGET (pc->remove_screenshot_button),
+    gtk_widget_set_sensitive (GTK_WIDGET (pc->remove_content_button),
                               TRUE);
   else
-    gtk_widget_set_sensitive (GTK_WIDGET (pc->remove_screenshot_button),
+    gtk_widget_set_sensitive (GTK_WIDGET (pc->remove_content_button),
                               FALSE);
+
+
+  if (KASASA_IS_SCREENCAST (get_current_content (pc)))
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (pc->copy_screenshot_button),
+                                FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pc->retake_screenshot_button),
+                                FALSE);
+    }
+  else
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (pc->copy_screenshot_button),
+                                TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pc->retake_screenshot_button),
+                                TRUE);
+    }
 }
 
-static KasasaScreenshot *
-get_current_screenshot (KasasaPictureContainer *self)
+static GtkWidget *
+get_current_content (KasasaPictureContainer *self)
 {
   guint position = (guint) adw_carousel_get_position (self->carousel);
 
@@ -143,8 +162,7 @@ get_current_screenshot (KasasaPictureContainer *self)
 
   g_debug ("Carousel current position: %d", position);
 
-  return KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel,
-                                                       position));
+  return adw_carousel_get_nth_page (self->carousel, position);
 }
 
 // Load the screenshot to the GtkPicture widget
@@ -217,7 +235,10 @@ kasasa_picture_container_handle_taken_screenshot (GObject      *object,
   if (retaking_screenshot)
     {
       // Replace with new screenshot
-      kasasa_screenshot_load_screenshot (get_current_screenshot (self), uri);
+      KasasaScreenshot *screenshot =
+        KASASA_SCREENSHOT (get_current_content (self));
+
+      kasasa_screenshot_load_screenshot (screenshot, uri);
     }
   else
     {
@@ -258,69 +279,68 @@ on_page_changed (AdwCarousel *carousel,
                  guint        index,
                  gpointer     user_data)
 {
-  // TODO remove comments
-  /* KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (user_data); */
-  /* KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self)); */
-  /* gint new_height, new_width; */
+  KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
+  GtkWidget *content = NULL;
+  gint new_height, new_width;
 
-  /* g_debug ("Page changed"); */
-  /* // If the carousel is empty, return */
-  /* if ((int) index == -1) */
-  /*   return; */
+  g_debug ("Page changed");
+  // If the carousel is empty, return
+  if ((gint) index == -1)
+    return;
 
-  /* // Ensure that the window is visible */
-  /* kasasa_window_change_opacity (window, OPACITY_INCREASE); */
+  // Ensure that the window is visible
+  kasasa_window_change_opacity (window, OPACITY_INCREASE);
 
-  /* g_debug ("Resizing window for image at index %d due to page change", index); */
-  /* kasasa_secreenshot_get_dimensions (get_current_screenshot (self), */
-  /*                                    &new_height, */
-  /*                                    &new_width); */
+  g_debug ("Resizing window for image at index %d due to page change", index);
+  content = get_current_content (self);
 
-  /* kasasa_window_resize_window (window, new_height, new_width); */
+  kasasa_content_get_dimensions (KASASA_CONTENT (content),
+                                 &new_height,
+                                 &new_width);
+
+  kasasa_window_resize_window (window, new_height, new_width);
 }
 
 static void
-on_remove_screenshot_button_clicked (GtkButton *button,
-                                     gpointer   user_data)
+on_remove_content_clicked (GtkButton *button,
+                           gpointer   user_data)
 {
   KasasaPictureContainer *self = KASASA_PICTURE_CONTAINER (user_data);
-  gdouble curent_position;
-  KasasaScreenshot *curent_screenshot = get_current_screenshot (self);
-  KasasaScreenshot *neighbor_screenshot = NULL;
+  gdouble current_position;
+  GtkWidget *current_content = get_current_content (self);
+  GtkWidget *neighbor_content = NULL;
 
   adw_carousel_set_interactive (self->carousel, FALSE);
 
-  // First trash the image with KasasaScreenshot instance (it needs a reference
-  // to the parent window), before removing the widget from the carousel
-  kasasa_screenshot_trash_image (curent_screenshot);
+  // Use the finish implementation for each class
+  kasasa_content_finish (KASASA_CONTENT (current_content));
 
   /*
    * After calling 'adw_carousel_remove ()' a 'page-changed' signal is not emitted,
    * so the window don't get resized; also, calling 'resize_window ()', it access
    * a wrong carousel index due to a race condition.
    *
-   * Workaround: get the neighbor screenshot and forcibly scroll to it - to delete
-   * a screenshot, the window must hold at least 2 screenshots
+   * Workaround: get the neighbor content and forcibly scroll to it; to delete
+   * a content, the window must hold at least 2 contents
    */
-  curent_position = adw_carousel_get_position (self->carousel);
-  if (curent_position == 0)
+  current_position = adw_carousel_get_position (self->carousel);
+  if (current_position == 0)
     {
-      // If the deleted screenshot is at index 0, get the next one...
-      neighbor_screenshot =
-        KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel,
-                                                      curent_position+1));
+      // If the deleted content is at index 0, get the next one...
+      neighbor_content = adw_carousel_get_nth_page (self->carousel,
+                                                    current_position+1);
     }
   else
     {
       // ...otherwise, always get the previous one.
-      neighbor_screenshot =
-        KASASA_SCREENSHOT (adw_carousel_get_nth_page (self->carousel,
-                                                      curent_position-1));
+      neighbor_content = adw_carousel_get_nth_page (self->carousel,
+                                                    current_position-1);
     }
 
-  adw_carousel_remove (self->carousel, GTK_WIDGET (curent_screenshot));
+  adw_carousel_remove (self->carousel, current_content);
 
-  adw_carousel_scroll_to (self->carousel, GTK_WIDGET (neighbor_screenshot), TRUE);
+  adw_carousel_scroll_to (self->carousel, neighbor_content, TRUE);
 
   kasasa_picture_container_update_buttons_sensibility (self);
 
@@ -337,11 +357,17 @@ on_copy_screenshot_button_clicked (GtkButton *button,
   GdkClipboard *clipboard = NULL;
   g_autoptr (GdkTexture) texture = NULL;
   AdwToast *toast = NULL;
+  GtkWidget *content = NULL;
+
+  content = get_current_content (self);
+
+  g_return_if_fail (KASASA_IS_SCREENSHOT (content));
 
   clipboard = gdk_display_get_clipboard (gdk_display_get_default ());
 
-  texture = gdk_texture_new_from_file (kasasa_screenshot_get_file (get_current_screenshot (self)),
-                                       &error);
+  texture =
+    gdk_texture_new_from_file (kasasa_screenshot_get_file (KASASA_SCREENSHOT (content)),
+                               &error);
 
   if (error != NULL)
     {
@@ -436,7 +462,7 @@ kasasa_picture_container_class_init (KasasaPictureContainerClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, carousel);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, retake_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, add_screenshot_button);
-  gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, remove_screenshot_button);
+  gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, remove_content_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, copy_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, lock_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaPictureContainer, revealer_start_buttons);
@@ -466,11 +492,11 @@ kasasa_picture_container_init (KasasaPictureContainer *self)
                     self);
   g_signal_connect (self->add_screenshot_button,
                     "clicked",
-                    G_CALLBACK (add_screencast),
+                    G_CALLBACK (routines_add_screenshot),
                     self);
-  g_signal_connect (self->remove_screenshot_button,
+  g_signal_connect (self->remove_content_button,
                     "clicked",
-                    G_CALLBACK (on_remove_screenshot_button_clicked),
+                    G_CALLBACK (on_remove_content_clicked),
                     self);
   g_signal_connect (self->copy_screenshot_button,
                     "clicked",

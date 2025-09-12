@@ -29,12 +29,26 @@
 #define CROP_CHEK_INTERVAL 5              // seconds
 #define FIRST_CROP_CHECK_INTERVAL 200     // miliseconds
 
+// Default dimensions
+#define DEFAULT_WIDTH  360
+#define DEFAULT_HEIGHT 200
+
 enum
 {
   C_TOP,
   C_RIGHT,
   C_BOTTOM,
-  C_LEFT
+  C_LEFT,
+
+  C_N_ELEMENTS
+};
+
+enum
+{
+  D_WIDTH,
+  D_HEIGHT,
+
+  D_N_ELEMENTS
 };
 
 struct _KasasaScreencast
@@ -45,17 +59,42 @@ struct _KasasaScreencast
   GtkPicture              *picture;
   GstElement              *pipeline;
   XdpSession              *session;
-  guint                    crop[4];
+  guint                    crop[C_N_ELEMENTS];
+  guint                    dimension[D_N_ELEMENTS];
 
   // TODO just for tests
   XdpPortal               *portal;
 };
 
-G_DEFINE_FINAL_TYPE (KasasaScreencast, kasasa_screencast, ADW_TYPE_BIN)
+static void kasasa_screencast_content_interface_init (KasasaContentInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (KasasaScreencast, kasasa_screencast, ADW_TYPE_BIN,
+                         G_IMPLEMENT_INTERFACE (KASASA_TYPE_CONTENT,
+                                                kasasa_screencast_content_interface_init))
 
 static void
-finish (KasasaScreencast *self)
+kasasa_screencast_get_dimensions (KasasaContent *content,
+                                  gint          *height,
+                                  gint          *width)
 {
+  KasasaScreencast *self = NULL;
+
+  g_return_if_fail (KASASA_IS_SCREENCAST (content));
+
+  self = KASASA_SCREENCAST (content);
+  *width = self->dimension[D_WIDTH];
+  *height = self->dimension[D_HEIGHT];
+}
+
+static void
+kasasa_screencast_finish (KasasaContent *content)
+{
+  KasasaScreencast *self = NULL;
+
+  g_return_if_fail (KASASA_IS_SCREENCAST (content));
+
+  self = KASASA_SCREENCAST (content);
+
   gst_element_set_state (self->pipeline, GST_STATE_READY);
   // TODO close self
 }
@@ -65,7 +104,7 @@ on_session_closed (XdpSession *self,
                    gpointer    user_data)
 {
   g_info ("Session closed.");
-  finish (KASASA_SCREENCAST (user_data));
+  kasasa_screencast_finish (KASASA_CONTENT (user_data));
 }
 
 static void
@@ -74,7 +113,7 @@ eos_cb (GstBus           *bus,
         KasasaScreencast *self)
 {
   g_info ("End-Of-Stream reached.");
-  finish (self);
+  kasasa_screencast_finish (KASASA_CONTENT (self));
 }
 
 static void
@@ -232,6 +271,9 @@ compute_crop_values (gpointer user_data)
       self->crop[C_BOTTOM] = height - bottom;
       self->crop[C_LEFT] = left;
 
+      self->dimension[D_WIDTH] = right - left;
+      self->dimension[D_HEIGHT] = bottom - top;
+
       gst_buffer_unmap (buffer, &map);
     }
 
@@ -239,6 +281,9 @@ compute_crop_values (gpointer user_data)
   g_debug ("Crop values: top: %d, bottom: %d, left: %d, right: %d",
            self->crop[C_TOP], self->crop[C_BOTTOM],
            self->crop[C_LEFT], self->crop[C_RIGHT]);
+
+  g_debug ("Dimensions: width %d, height: %d",
+           self->dimension[D_WIDTH], self->dimension[D_HEIGHT]);
 
   set_crop (self);
 
@@ -465,6 +510,13 @@ kasasa_screencast_dispose (GObject *object)
 }
 
 static void
+kasasa_screencast_content_interface_init (KasasaContentInterface *iface)
+{
+  iface->get_dimensions = kasasa_screencast_get_dimensions;
+  iface->finish = kasasa_screencast_finish;
+}
+
+static void
 kasasa_screencast_class_init (KasasaScreencastClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -478,6 +530,11 @@ static void
 kasasa_screencast_init (KasasaScreencast *self)
 {
   self->pipeline = NULL;
+
+  // Initial dimension to avoid 0 value
+  self->dimension[D_WIDTH] = DEFAULT_WIDTH;
+  self->dimension[D_HEIGHT] = DEFAULT_HEIGHT;
+
   // TODO use a single portal object?
   self->portal = xdp_portal_new ();
 
