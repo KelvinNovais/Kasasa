@@ -99,7 +99,7 @@
 
                     <!-- PICTURE CONTAINER -->
                     <child>
-                      <object class="KasasaPictureContainer" id="picture_container" />
+                      <object class="KasasaContentContainer" id="content_container" />
                     </child>
                   </object>
                 </child>

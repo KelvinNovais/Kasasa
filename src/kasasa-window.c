@@ -23,7 +23,7 @@
 #include <glib/gi18n.h>
 
 #include "kasasa-window.h"
-#include "kasasa-picture-container.h"
+#include "kasasa-content-container.h"
 
 // Defined on GSchema and preferences
 #define MIN_OCCUPY_SCREEN 0.1
@@ -33,7 +33,7 @@ struct _KasasaWindow
   AdwApplicationWindow       parent_instance;
 
   /* Template widgets */
-  KasasaPictureContainer    *picture_container;
+  KasasaContentContainer    *content_container;
   AdwHeaderBar              *header_bar;
   GtkRevealer               *header_bar_revealer;
   GtkMenuButton             *menu_button;
@@ -67,7 +67,7 @@ void
 kasasa_window_take_first_screenshot (KasasaWindow *self)
 {
   g_return_if_fail (KASASA_IS_WINDOW (self));
-  kasasa_picture_container_request_first_screenshot (self->picture_container);
+  kasasa_content_container_request_first_screenshot (self->content_container);
 }
 
 KasasaWindow *
@@ -376,7 +376,7 @@ kasasa_window_resize_window (KasasaWindow *self,
                                &default_width, &default_height);
 
   // Disable the carousel navigation while the window is being resized
-  kasasa_picture_container_carousel_set_interactive (self->picture_container,
+  kasasa_content_container_carousel_set_interactive (self->content_container,
                                                      FALSE);
 
   // Set targets
@@ -420,7 +420,7 @@ kasasa_window_resize_window (KasasaWindow *self,
     }
 
   // Enable carousel again
-  kasasa_picture_container_carousel_set_interactive (self->picture_container,
+  kasasa_content_container_carousel_set_interactive (self->content_container,
                                                      TRUE);
 }
 
@@ -730,7 +730,7 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
         return;
 
       self->window_is_miniaturized = FALSE;
-      kasasa_picture_container_request_window_resize (self->picture_container);
+      kasasa_content_container_request_window_resize (self->content_container);
       gtk_widget_remove_css_class (GTK_WIDGET (self), "circular-window");
       gtk_stack_set_visible_child_name (self->stack, "main_page");
     }
@@ -786,7 +786,7 @@ hide_toolbar_cb (gpointer user_data)
   if (self->mouse_over_window)
     return;
 
-  kasasa_picture_container_reveal_controls (self->picture_container, FALSE);
+  kasasa_content_container_reveal_controls (self->content_container, FALSE);
 }
 
 static void
@@ -811,7 +811,7 @@ hide_header_bar (KasasaWindow *self)
 }
 
 static void
-on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_motion,
+on_mouse_enter_content_container (GtkEventControllerMotion *event_controller_motion,
                                   gdouble                   x,
                                   gdouble                   y,
                                   gpointer                  user_data)
@@ -833,18 +833,18 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
-  kasasa_picture_container_reveal_controls (self->picture_container, TRUE);
+  kasasa_content_container_reveal_controls (self->content_container, TRUE);
 }
 
 static void
-on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_motion,
+on_mouse_leave_content_container (GtkEventControllerMotion *event_controller_motion,
                                   gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
-  if (kasasa_picture_container_controls_active (self->picture_container)) return;
+  if (kasasa_content_container_controls_active (self->content_container)) return;
 
   self->mouse_over_window = FALSE;
   kasasa_window_change_opacity (self, OPACITY_INCREASE);
@@ -894,11 +894,11 @@ on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  if (kasasa_picture_container_get_lock (self->picture_container))
+  if (kasasa_content_container_get_lock (self->content_container))
     return;
 
   // See Note [1]
-  if (kasasa_picture_container_controls_active (self->picture_container)) return;
+  if (kasasa_content_container_controls_active (self->content_container)) return;
 
   kasasa_window_miniaturize_window (self, TRUE);
 }
@@ -918,7 +918,7 @@ on_window_click_released (GtkGestureClick *gesture_click,
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
-  kasasa_picture_container_reveal_controls (self->picture_container, TRUE);
+  kasasa_content_container_reveal_controls (self->content_container, TRUE);
 }
 
 static gboolean
@@ -965,7 +965,7 @@ on_settings_updated (GSettings *settings,
         g_timeout_add_seconds_once (2, reveal_header_bar_cb, self);
 
       // Resize the window to free/occupy the vertical menu space
-      kasasa_picture_container_request_window_resize (self->picture_container);
+      kasasa_content_container_request_window_resize (self->content_container);
     }
 
   else if (g_strcmp0 (key, "auto-discard-window") == 0)
@@ -1000,7 +1000,7 @@ on_close_request (GtkWindow *window,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  kasasa_picture_container_wipe_content (self->picture_container);
+  kasasa_content_container_wipe_content (self->content_container);
 
   return FALSE;
 }
@@ -1035,7 +1035,7 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   object_class->finalize = kasasa_window_finalize;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Kasasa/kasasa-window.ui");
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, picture_container);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, content_container);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar_revealer);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_button);
@@ -1054,7 +1054,7 @@ kasasa_window_init (KasasaWindow *self)
   GtkEventController *win_scroll_event_controller = NULL;
   GtkGesture *win_gesture_click = NULL;
 
-  g_type_ensure (KASASA_TYPE_PICTURE_CONTAINER);
+  g_type_ensure (KASASA_TYPE_CONTENT_CONTAINER);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
@@ -1083,18 +1083,18 @@ kasasa_window_init (KasasaWindow *self)
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
 
   // MOTION EVENT CONTROLLERS: Create motion event controllers to monitor when
-  // the mouse cursor is over the picture container or the menu
+  // the mouse cursor is over the content container or the menu
   // (I) Picture container
   pc_motion_event_controller = gtk_event_controller_motion_new ();
   g_signal_connect (pc_motion_event_controller,
                     "enter",
-                    G_CALLBACK (on_mouse_enter_picture_container),
+                    G_CALLBACK (on_mouse_enter_content_container),
                     self);
   g_signal_connect (pc_motion_event_controller,
                     "leave",
-                    G_CALLBACK (on_mouse_leave_picture_container),
+                    G_CALLBACK (on_mouse_leave_content_container),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), pc_motion_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->content_container), pc_motion_event_controller);
 
   // (II) HeaderBar
   hb_motion_event_controller = gtk_event_controller_motion_new ();
@@ -1132,7 +1132,7 @@ kasasa_window_init (KasasaWindow *self)
 
 
   // Increase opacity when the user scrolls the screenshot; this is combined with
-  // "page-changed" signal from the caroussel @PictureContainer
+  // "page-changed" signal from the caroussel @ContentContainer
   win_scroll_event_controller =
     gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES);
   g_signal_connect (win_scroll_event_controller,

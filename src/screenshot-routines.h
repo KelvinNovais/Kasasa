@@ -20,11 +20,11 @@
 
 #pragma once
 
-#include "kasasa-picture-container.h"
+#include "kasasa-content-container.h"
 
 G_BEGIN_DECLS
 
-void screenshot_routines_take_first (KasasaPictureContainer *pc);
+void screenshot_routines_take_first (KasasaContentContainer *pc);
 void screenshot_routines_add (GtkButton *button, gpointer pc);
 void screenshot_routines_retake (GtkButton *button, gpointer pc);
 

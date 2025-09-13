@@ -5,7 +5,7 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.4"/>
 
-  <template class="KasasaPictureContainer" parent="AdwBreakpointBin">
+  <template class="KasasaContentContainer" parent="AdwBreakpointBin">
     <property name="width-request">75</property>
     <property name="height-request">75</property>
     <child>

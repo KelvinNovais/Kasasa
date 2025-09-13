@@ -24,7 +24,6 @@
 #include <gst/app/gstappsink.h>
 
 #include "kasasa-screencast.h"
-#include "kasasa-picture-container.h"
 
 #define CROP_CHEK_INTERVAL 5              // seconds
 #define FIRST_CROP_CHECK_INTERVAL 200     // miliseconds

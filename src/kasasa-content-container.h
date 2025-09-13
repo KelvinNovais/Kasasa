@@ -1,4 +1,4 @@
-/* kasasa-picture-container.h
+/* kasasa-content-container.h
  *
  * Copyright 2024-2025 Kelvin Novais
  *
@@ -27,23 +27,23 @@ G_BEGIN_DECLS
 
 #define MAX_SCREENSHOTS 5
 
-#define KASASA_TYPE_PICTURE_CONTAINER (kasasa_picture_container_get_type ())
+#define KASASA_TYPE_CONTENT_CONTAINER (kasasa_content_container_get_type ())
 
-G_DECLARE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, KASASA, PICTURE_CONTAINER, AdwBreakpointBin)
+G_DECLARE_FINAL_TYPE (KasasaContentContainer, kasasa_content_container, KASASA, CONTENT_CONTAINER, AdwBreakpointBin)
 
-KasasaPictureContainer *kasasa_picture_container_new (void);
+KasasaContentContainer *kasasa_content_container_new (void);
 
 void
-kasasa_picture_container_carousel_set_interactive (KasasaPictureContainer *pc,
+kasasa_content_container_carousel_set_interactive (KasasaContentContainer *pc,
                                                    gboolean                interactive);
-void kasasa_picture_container_request_first_screenshot (KasasaPictureContainer *pc);
-void kasasa_picture_container_request_window_resize (KasasaPictureContainer *pc);
-void kasasa_picture_container_update_buttons_sensibility (KasasaPictureContainer *pc);
-void kasasa_picture_container_reveal_controls (KasasaPictureContainer *pc,
+void kasasa_content_container_request_first_screenshot (KasasaContentContainer *pc);
+void kasasa_content_container_request_window_resize (KasasaContentContainer *pc);
+void kasasa_content_container_update_buttons_sensibility (KasasaContentContainer *pc);
+void kasasa_content_container_reveal_controls (KasasaContentContainer *pc,
                                                gboolean                reveal_child);
-gboolean kasasa_picture_container_get_lock (KasasaPictureContainer *pc);
-gboolean kasasa_picture_container_controls_active (KasasaPictureContainer *pc);
+gboolean kasasa_content_container_get_lock (KasasaContentContainer *pc);
+gboolean kasasa_content_container_controls_active (KasasaContentContainer *pc);
 
-void kasasa_picture_container_wipe_content (KasasaPictureContainer *pc);
+void kasasa_content_container_wipe_content (KasasaContentContainer *pc);
 
 G_END_DECLS

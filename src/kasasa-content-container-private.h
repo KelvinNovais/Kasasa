@@ -1,4 +1,4 @@
-/* kasasa-picture-container-private.h
+/* kasasa-content-container-private.h
  *
  * Copyright 2024 Kelvin
  *
@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "kasasa-picture-container.h"
+#include "kasasa-content-container.h"
 
 G_BEGIN_DECLS
 
-struct _KasasaPictureContainer
+struct _KasasaContentContainer
 {
   AdwBreakpointBin         parent_instance;
 
@@ -48,9 +48,9 @@ struct _KasasaPictureContainer
   GSettings               *settings;
 };
 
-void kasasa_picture_container_append_screenshot (KasasaPictureContainer *pc,
+void kasasa_content_container_append_screenshot (KasasaContentContainer *pc,
                                                  const gchar            *uri);
-void kasasa_picture_container_handle_taken_screenshot (GObject      *object,
+void kasasa_content_container_handle_taken_screenshot (GObject      *object,
                                                        GAsyncResult *res,
                                                        gpointer      pc,
                                                        gboolean      retaking_screenshot);

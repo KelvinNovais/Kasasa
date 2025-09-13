@@ -22,7 +22,7 @@
 
 #include "screenshot-routines.h"
 
-#include "kasasa-picture-container-private.h"
+#include "kasasa-content-container-private.h"
 #include "kasasa-window.h"
 
 
@@ -34,7 +34,7 @@ on_first_screenshot_taken (GObject      *object,
                            GAsyncResult *res,
                            gpointer      user_data)
 {
-  KasasaPictureContainer *pc = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaContentContainer *pc = KASASA_CONTENT_CONTAINER (user_data);
   KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (pc));
   g_autoptr (GSettings) settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
   g_autoptr (GError) error = NULL;
@@ -61,7 +61,7 @@ on_first_screenshot_taken (GObject      *object,
       goto ERROR_NOTIFICATION;
     }
 
-  kasasa_picture_container_append_screenshot (pc, uri);
+  kasasa_content_container_append_screenshot (pc, uri);
 
   gtk_widget_set_visible (GTK_WIDGET (window), TRUE);
 
@@ -89,9 +89,9 @@ EXIT_APP:
 }
 
 void
-screenshot_routines_take_first (KasasaPictureContainer *pc)
+screenshot_routines_take_first (KasasaContentContainer *pc)
 {
-  g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (pc));
+  g_return_if_fail (KASASA_IS_CONTENT_CONTAINER (pc));
 
   xdp_portal_take_screenshot (
     pc->portal,
@@ -112,12 +112,12 @@ on_screenshot_taken (GObject      *object,
                      GAsyncResult *res,
                      gpointer      user_data)
 {
-  KasasaPictureContainer *pc = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaContentContainer *pc = KASASA_CONTENT_CONTAINER (user_data);
   KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (pc));
 
-  kasasa_picture_container_handle_taken_screenshot (object, res, user_data, FALSE);
+  kasasa_content_container_handle_taken_screenshot (object, res, user_data, FALSE);
 
-  kasasa_picture_container_update_buttons_sensibility (pc);
+  kasasa_content_container_update_buttons_sensibility (pc);
 
   kasasa_window_block_miniaturization (window, FALSE);
 }
@@ -125,7 +125,7 @@ on_screenshot_taken (GObject      *object,
 static void
 take_screenshot (gpointer user_data)
 {
-  KasasaPictureContainer *pc = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaContentContainer *pc = KASASA_CONTENT_CONTAINER (user_data);
 
   xdp_portal_take_screenshot (
     pc->portal,
@@ -141,12 +141,12 @@ void
 screenshot_routines_add (GtkButton *button,
                          gpointer   user_data)
 {
-  KasasaPictureContainer *pc = NULL;
+  KasasaContentContainer *pc = NULL;
   KasasaWindow *window = NULL;
 
-  g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (user_data));
+  g_return_if_fail (KASASA_IS_CONTENT_CONTAINER (user_data));
 
-  pc = KASASA_PICTURE_CONTAINER (user_data);
+  pc = KASASA_CONTENT_CONTAINER (user_data);
 
   gtk_popover_popdown (pc->more_actions_popover);
 
@@ -169,12 +169,12 @@ on_screenshot_retaken (GObject      *object,
                        GAsyncResult *res,
                        gpointer      user_data)
 {
-  KasasaPictureContainer *pc = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaContentContainer *pc = KASASA_CONTENT_CONTAINER (user_data);
   KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (pc));
 
   kasasa_window_block_miniaturization (window, FALSE);
 
-  kasasa_picture_container_handle_taken_screenshot (object, res, user_data, TRUE);
+  kasasa_content_container_handle_taken_screenshot (object, res, user_data, TRUE);
 
   gtk_widget_set_sensitive (GTK_WIDGET (pc->retake_screenshot_button),
                             TRUE);
@@ -186,7 +186,7 @@ on_screenshot_retaken (GObject      *object,
 static void
 retake_screenshot_cb (gpointer user_data)
 {
-  KasasaPictureContainer *pc = KASASA_PICTURE_CONTAINER (user_data);
+  KasasaContentContainer *pc = KASASA_CONTENT_CONTAINER (user_data);
 
   // Avoid changing the carousel page
   adw_carousel_set_interactive (pc->carousel, FALSE);
@@ -204,12 +204,12 @@ retake_screenshot_cb (gpointer user_data)
 void
 screenshot_routines_retake (GtkButton *button, gpointer user_data)
 {
-  KasasaPictureContainer *pc = NULL;
+  KasasaContentContainer *pc = NULL;
   KasasaWindow *window = NULL;
 
-  g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (user_data));
+  g_return_if_fail (KASASA_IS_CONTENT_CONTAINER (user_data));
 
-  pc = KASASA_PICTURE_CONTAINER (user_data);
+  pc = KASASA_CONTENT_CONTAINER (user_data);
   window = kasasa_window_get_window_reference (GTK_WIDGET (pc));
 
   gtk_widget_set_sensitive (GTK_WIDGET (pc->retake_screenshot_button), FALSE);

@@ -6,7 +6,7 @@ kasasa_sources = [
   'kasasa-content.c',
   'kasasa-screenshot.c',
   'kasasa-screencast.c',
-  'kasasa-picture-container.c',
+  'kasasa-content-container.c',
   'screenshot-routines.c',
 ]
 
