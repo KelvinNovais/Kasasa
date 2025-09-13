@@ -21,6 +21,7 @@
 #pragma once
 
 #include <adwaita.h>
+#include <libportal/portal.h>
 
 #include "kasasa-content.h"
 
@@ -31,6 +32,7 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (KasasaScreencast, kasasa_screencast, KASASA, SCREENCAST, AdwBin)
 
 KasasaScreencast *kasasa_screencast_new (void);
-void kasasa_screencast_set_window (KasasaScreencast *screencast);
+void kasasa_screencast_set_window (KasasaScreencast *screencast,
+                                   XdpPortal        *portal);
 
 G_END_DECLS

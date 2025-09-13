@@ -18,13 +18,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-// TODO
-#include <libportal/portal.h>
+// FIXME apply crop even with no frame update
 
 #include <gst/gst.h>
 #include <gst/app/gstappsink.h>
 
 #include "kasasa-screencast.h"
+#include "kasasa-picture-container.h"
 
 #define CROP_CHEK_INTERVAL 5              // seconds
 #define FIRST_CROP_CHECK_INTERVAL 200     // miliseconds
@@ -59,11 +59,9 @@ struct _KasasaScreencast
   GtkPicture              *picture;
   GstElement              *pipeline;
   XdpSession              *session;
+  guint                    crop_check_source;
   guint                    crop[C_N_ELEMENTS];
   guint                    dimension[D_N_ELEMENTS];
-
-  // TODO just for tests
-  XdpPortal               *portal;
 };
 
 static void kasasa_screencast_content_interface_init (KasasaContentInterface *iface);
@@ -96,6 +94,7 @@ kasasa_screencast_finish (KasasaContent *content)
   self = KASASA_SCREENCAST (content);
 
   gst_element_set_state (self->pipeline, GST_STATE_READY);
+  xdp_session_close (self->session);
   // TODO close self
 }
 
@@ -323,7 +322,7 @@ show_screencast (KasasaScreencast *self,
 
   videocrop = gst_element_factory_make ("videocrop", "videocrop");
 
-  caps = gst_caps_from_string ("video/x-raw,format=RGB");
+  caps = gst_caps_from_string ("video/x-raw");
   filter = gst_element_factory_make ("capsfilter", "filter");
   g_object_set (filter,
                 "caps", caps,
@@ -412,8 +411,11 @@ show_screencast (KasasaScreencast *self,
       return;
     }
 
+  // TODO remove first check?
   g_timeout_add_once (FIRST_CROP_CHECK_INTERVAL, compute_first_crop_values, self);
-  g_timeout_add_seconds (CROP_CHEK_INTERVAL, compute_crop_values, self);
+  self->crop_check_source = g_timeout_add_seconds (CROP_CHEK_INTERVAL,
+                                                   compute_crop_values,
+                                                   self);
 }
 
 static void
@@ -459,9 +461,10 @@ on_create_screencast_session (GObject      *source_object,
   g_autoptr (GError) error = NULL;
   KasasaScreencast *self = KASASA_SCREENCAST (data);
 
-  self->session = xdp_portal_create_screencast_session_finish (self->portal,
-                                                               res,
-                                                               &error);
+  self->session =
+    xdp_portal_create_screencast_session_finish (XDP_PORTAL (source_object),
+                                                 res,
+                                                 &error);
 
   if (error != NULL)
     {
@@ -479,9 +482,10 @@ on_create_screencast_session (GObject      *source_object,
 }
 
 void
-kasasa_screencast_set_window (KasasaScreencast *self)
+kasasa_screencast_set_window (KasasaScreencast *self,
+                              XdpPortal        *portal)
 {
-  xdp_portal_create_screencast_session (self->portal,
+  xdp_portal_create_screencast_session (portal,
                                         XDP_OUTPUT_WINDOW,
                                         XDP_SCREENCAST_FLAG_NONE,
                                         XDP_CURSOR_MODE_HIDDEN,
@@ -505,6 +509,8 @@ kasasa_screencast_dispose (GObject *object)
 
   if (self->session != NULL)
     g_clear_object (&self->session);
+
+  g_source_remove (self->crop_check_source);
 
   G_OBJECT_CLASS (kasasa_screencast_parent_class)->dispose (object);
 }
@@ -534,9 +540,6 @@ kasasa_screencast_init (KasasaScreencast *self)
   // Initial dimension to avoid 0 value
   self->dimension[D_WIDTH] = DEFAULT_WIDTH;
   self->dimension[D_HEIGHT] = DEFAULT_HEIGHT;
-
-  // TODO use a single portal object?
-  self->portal = xdp_portal_new ();
 
   self->picture = GTK_PICTURE (gtk_picture_new ());
   adw_bin_set_child (ADW_BIN (self), GTK_WIDGET (self->picture));

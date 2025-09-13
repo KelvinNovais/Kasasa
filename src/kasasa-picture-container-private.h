@@ -31,13 +31,17 @@ struct _KasasaPictureContainer
   AdwCarousel             *carousel;
   GtkButton               *retake_screenshot_button;
   GtkButton               *add_screenshot_button;
+  GtkButton               *add_screenshot_button2;
+  GtkButton               *add_screencast_button;
   GtkButton               *remove_content_button;
   GtkButton               *copy_screenshot_button;
   GtkToggleButton         *lock_button;
+  GtkMenuButton           *more_actions_button;
   GtkRevealer             *revealer_end_buttons;
   GtkRevealer             *revealer_start_buttons;
   GtkRevealer             *revealer_lock_button;
   GtkOverlay              *toolbar_overlay;
+  GtkPopover              *more_actions_popover;
 
   /* Instance variables */
   XdpPortal               *portal;

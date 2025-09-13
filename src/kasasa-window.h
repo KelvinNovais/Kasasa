@@ -39,8 +39,8 @@ typedef enum
 
 // Due to miniaturization, the real min dimensions are set here (width-request
 // and height-request)
-#define WINDOW_MIN_HEIGHT 110
-#define WINDOW_MIN_WIDTH  180
+#define WINDOW_MIN_HEIGHT 160
+#define WINDOW_MIN_WIDTH  200
 
 #define KASASA_TYPE_WINDOW (kasasa_window_get_type ())
 
@@ -56,9 +56,9 @@ void kasasa_window_hide_window (KasasaWindow           *window,
                                 gpointer                callback_data);
 void kasasa_window_change_opacity (KasasaWindow *window,
                                    Opacity       opacity_direction);
-// void kasasa_window_resize_window (KasasaWindow *window,
-//                                   gdouble       new_height,
-//                                   gdouble       new_width);
+void kasasa_window_resize_window (KasasaWindow *window,
+                                  gdouble       new_height,
+                                  gdouble       new_width);
 void kasasa_window_resize_window_scaling (KasasaWindow *window,
                                           gdouble       new_height,
                                           gdouble       new_width);

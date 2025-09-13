@@ -575,7 +575,7 @@ auto_discard_window_cb (gpointer user_data)
   if (!gtk_toggle_button_get_active (self->auto_discard_button))
     {
       gtk_progress_bar_set_fraction (self->progress_bar, 0.0);
-      return FALSE;
+      return G_SOURCE_REMOVE;
     }
 
   new_fraction = gtk_progress_bar_get_fraction (self->progress_bar) - 0.005;
@@ -583,14 +583,14 @@ auto_discard_window_cb (gpointer user_data)
   if (new_fraction <= 0)
     {
       gtk_window_close (GTK_WINDOW (self));
-      return FALSE;
+      return G_SOURCE_REMOVE;
     }
   else
     {
       gtk_progress_bar_set_fraction (self->progress_bar, new_fraction);
     }
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 void
@@ -844,6 +844,7 @@ on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_mot
 
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
+  if (kasasa_picture_container_controls_active (self->picture_container)) return;
 
   self->mouse_over_window = FALSE;
   kasasa_window_change_opacity (self, OPACITY_INCREASE);
@@ -895,6 +896,9 @@ on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
 
   if (kasasa_picture_container_get_lock (self->picture_container))
     return;
+
+  // See Note [1]
+  if (kasasa_picture_container_controls_active (self->picture_container)) return;
 
   kasasa_window_miniaturize_window (self, TRUE);
 }
@@ -996,7 +1000,7 @@ on_close_request (GtkWindow *window,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  kasasa_picture_container_wipe_screenshots (self->picture_container);
+  kasasa_picture_container_wipe_content (self->picture_container);
 
   return FALSE;
 }

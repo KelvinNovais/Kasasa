@@ -1,6 +1,6 @@
 /* kasasa-picture-container.h
  *
- * Copyright 2024 Kelvin
+ * Copyright 2024-2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,15 +32,18 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, KASASA, PICTURE_CONTAINER, AdwBreakpointBin)
 
 KasasaPictureContainer *kasasa_picture_container_new (void);
+
 void
 kasasa_picture_container_carousel_set_interactive (KasasaPictureContainer *pc,
                                                    gboolean                interactive);
-void kasasa_picture_container_wipe_screenshots (KasasaPictureContainer *pc);
 void kasasa_picture_container_request_first_screenshot (KasasaPictureContainer *pc);
 void kasasa_picture_container_request_window_resize (KasasaPictureContainer *pc);
 void kasasa_picture_container_update_buttons_sensibility (KasasaPictureContainer *pc);
 void kasasa_picture_container_reveal_controls (KasasaPictureContainer *pc,
                                                gboolean                reveal_child);
 gboolean kasasa_picture_container_get_lock (KasasaPictureContainer *pc);
+gboolean kasasa_picture_container_controls_active (KasasaPictureContainer *pc);
+
+void kasasa_picture_container_wipe_content (KasasaPictureContainer *pc);
 
 G_END_DECLS

@@ -147,6 +147,9 @@ routines_add_screenshot (GtkButton *button,
   g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (user_data));
 
   pc = KASASA_PICTURE_CONTAINER (user_data);
+
+  gtk_popover_popdown (pc->more_actions_popover);
+
   window = kasasa_window_get_window_reference (GTK_WIDGET (pc));
 
   gtk_widget_set_sensitive (GTK_WIDGET (pc->add_screenshot_button), FALSE);

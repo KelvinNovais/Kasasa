@@ -9,6 +9,7 @@
     <property name="width-request">75</property>
     <property name="height-request">75</property>
     <child>
+      <!-- FIXME -->
       <object class="AdwBreakpoint">
         <condition>max-width: 215px</condition>
         <setter object="box_start" property="spacing">0</setter>
@@ -99,7 +100,6 @@
                       <object class="GtkBox" id="box_start">
                         <property name="orientation">horizontal</property>
                         <property name="css-classes">osd-box</property>
-                        <property name="spacing">6</property>
 
                         <!-- Add button -->
                         <child>
@@ -108,6 +108,77 @@
                             <property name="halign">start</property>
                             <property name="icon-name">plus-large-symbolic</property>
                             <property name="tooltip-text" translatable="yes">Add screenshot</property>
+                          </object>
+                        </child>
+                        <!-- Sub actions -->
+                        <child>
+                          <object class="GtkMenuButton" id="more_actions_button">
+                            <property name="css-classes">flat</property>
+                            <property name="tooltip-text" translatable="yes">More actions</property>
+                            <property name="direction">up</property>
+                            <property name="icon-name">down-symbolic</property>
+                            <property name="margin-end">6</property>
+                            <property name="popover">
+                              <object class="GtkPopover" id="more_actions_popover">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkButton" id="add_screenshot_button2">
+                                        <property name="css-classes">flat</property>
+                                        <property name="halign">start</property>
+                                        <property name="child">
+                                          <object class="GtkBox">
+                                            <property name="margin-start">10</property>
+                                            <property name="margin-end">10</property>
+                                            <property name="margin-top">3</property>
+                                            <property name="margin-bottom">3</property>
+                                            <child>
+                                              <object class="GtkImage">
+                                                <property name="icon-name">screenshooter-symbolic</property>
+                                                <property name="margin-end">12</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Add screenshot</property>
+                                                <property name="css-classes">body</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="add_screencast_button">
+                                        <property name="css-classes">flat</property>
+                                        <property name="halign">start</property>
+                                        <property name="child">
+                                          <object class="GtkBox">
+                                            <property name="margin-start">10</property>
+                                            <property name="margin-end">10</property>
+                                            <property name="margin-top">3</property>
+                                            <property name="margin-bottom">3</property>
+                                            <child>
+                                              <object class="GtkImage">
+                                                <property name="icon-name">screencast-recorded-symbolic</property>
+                                                <property name="margin-end">12</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Add screencast</property>
+                                                <property name="css-classes">body</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                              </object>
+                            </property>
                           </object>
                         </child>
                         <!-- Remove button -->
