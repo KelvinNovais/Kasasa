@@ -1,6 +1,6 @@
-/* routines.c
+/* screenshot-routines.c
  *
- * Copyright 2025 Kelvin
+ * Copyright 2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 #include <glib/gi18n.h>
 
-#include "routines.h"
+#include "screenshot-routines.h"
 
 #include "kasasa-picture-container-private.h"
 #include "kasasa-window.h"
@@ -89,7 +89,7 @@ EXIT_APP:
 }
 
 void
-routines_take_first_screenshot (KasasaPictureContainer *pc)
+screenshot_routines_take_first (KasasaPictureContainer *pc)
 {
   g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (pc));
 
@@ -138,7 +138,7 @@ take_screenshot (gpointer user_data)
 }
 
 void
-routines_add_screenshot (GtkButton *button,
+screenshot_routines_add (GtkButton *button,
                          gpointer   user_data)
 {
   KasasaPictureContainer *pc = NULL;
@@ -202,7 +202,7 @@ retake_screenshot_cb (gpointer user_data)
 }
 
 void
-routines_retake_screenshot (GtkButton *button, gpointer user_data)
+screenshot_routines_retake (GtkButton *button, gpointer user_data)
 {
   KasasaPictureContainer *pc = NULL;
   KasasaWindow *window = NULL;

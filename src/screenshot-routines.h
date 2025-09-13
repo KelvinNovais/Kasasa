@@ -1,6 +1,6 @@
-/* routines.h
+/* screenshot-routines.h
  *
- * Copyright 2025 Kelvin
+ * Copyright 2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
 
 G_BEGIN_DECLS
 
-void routines_take_first_screenshot (KasasaPictureContainer *pc);
-void routines_add_screenshot (GtkButton *button, gpointer pc);
-void routines_retake_screenshot (GtkButton *button, gpointer pc);
+void screenshot_routines_take_first (KasasaPictureContainer *pc);
+void screenshot_routines_add (GtkButton *button, gpointer pc);
+void screenshot_routines_retake (GtkButton *button, gpointer pc);
 
 G_END_DECLS

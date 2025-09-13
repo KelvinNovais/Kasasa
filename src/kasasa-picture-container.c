@@ -27,7 +27,7 @@
 #include "kasasa-window.h"
 #include "kasasa-screenshot.h"
 #include "kasasa-screencast.h"
-#include "routines.h"
+#include "screenshot-routines.h"
 
 G_DEFINE_FINAL_TYPE (KasasaPictureContainer, kasasa_picture_container, ADW_TYPE_BREAKPOINT_BIN)
 
@@ -69,7 +69,7 @@ void
 kasasa_picture_container_request_first_screenshot (KasasaPictureContainer *self)
 {
   g_return_if_fail (KASASA_IS_PICTURE_CONTAINER (self));
-  routines_take_first_screenshot (self);
+  screenshot_routines_take_first (self);
 }
 
 void
@@ -517,15 +517,15 @@ kasasa_picture_container_init (KasasaPictureContainer *self)
                     self);
   g_signal_connect (self->retake_screenshot_button,
                     "clicked",
-                    G_CALLBACK (routines_retake_screenshot),
+                    G_CALLBACK (screenshot_routines_retake),
                     self);
   g_signal_connect (self->add_screenshot_button,
                     "clicked",
-                    G_CALLBACK (routines_add_screenshot),
+                    G_CALLBACK (screenshot_routines_add),
                     self);
   g_signal_connect (self->add_screenshot_button2,
                     "clicked",
-                    G_CALLBACK (routines_add_screenshot),
+                    G_CALLBACK (screenshot_routines_add),
                     self);
   g_signal_connect (self->add_screencast_button,
                     "clicked",

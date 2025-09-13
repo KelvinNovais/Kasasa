@@ -7,7 +7,7 @@ kasasa_sources = [
   'kasasa-screenshot.c',
   'kasasa-screencast.c',
   'kasasa-picture-container.c',
-  'routines.c',
+  'screenshot-routines.c',
 ]
 
 kasasa_deps = [
