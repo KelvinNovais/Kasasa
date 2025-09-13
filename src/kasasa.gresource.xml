@@ -20,5 +20,8 @@
     <file preprocess="xml-stripblanks">icons/scalable/actions/dot-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/padlock2-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/padlock2-open-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/down-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/screencast-recorded-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/screenshooter-symbolic.svg</file>
   </gresource>
 </gresources>
