@@ -9,8 +9,8 @@
     <property name="width-request">75</property>
     <property name="height-request">75</property>
     <child>
-      <!-- FIXME -->
       <object class="AdwBreakpoint">
+        <!-- TODO update -->
         <condition>max-width: 215px</condition>
         <setter object="box_start" property="spacing">0</setter>
         <setter object="box_start" property="css-classes">osd-box-no-padding</setter>
@@ -116,7 +116,7 @@
                             <property name="css-classes">flat</property>
                             <property name="tooltip-text" translatable="yes">More actions</property>
                             <property name="direction">up</property>
-                            <property name="icon-name">down-symbolic</property>
+                            <property name="icon-name">down-small-symbolic</property>
                             <property name="margin-end">6</property>
                             <property name="popover">
                               <object class="GtkPopover" id="more_actions_popover">
