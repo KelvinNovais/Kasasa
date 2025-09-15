@@ -32,7 +32,9 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (KasasaScreencast, kasasa_screencast, KASASA, SCREENCAST, AdwBin)
 
 KasasaScreencast *kasasa_screencast_new (void);
-void kasasa_screencast_set_window (KasasaScreencast *screencast,
-                                   XdpPortal        *portal);
+void kasasa_screencast_show (KasasaScreencast *screencast,
+                             XdpSession       *session,
+                             gint              fd,
+                             guint             node_id);
 
 G_END_DECLS
