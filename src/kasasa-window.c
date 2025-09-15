@@ -321,7 +321,7 @@ compute_size (KasasaWindow *self,
   if (*nat_width > max_width)
     {
       *nat_width = max_width;
-      *nat_height = image_height * *nat_width / image_width;
+      *nat_height = image_height * (*nat_width) / image_width;
       g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
                __LINE__, *nat_width, *nat_height);
     }
@@ -332,7 +332,7 @@ compute_size (KasasaWindow *self,
   if (*nat_height > max_height)
     {
       *nat_height = max_height;
-      *nat_width = image_width * *nat_height / image_height;
+      *nat_width = image_width * (*nat_height) / image_height;
       g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
                __LINE__, *nat_width, *nat_height);
     }
@@ -387,7 +387,7 @@ kasasa_window_resize_window (KasasaWindow *self,
 
   // Animation for resizing height
   animation_height = adw_timed_animation_new (
-    GTK_WIDGET (self),                                    // widget
+    GTK_WIDGET (self),                                      // widget
     (gdouble) default_height,                               // from
     new_height,                                             // to
     WINDOW_RESIZING_DURATION,                               // duration
@@ -398,7 +398,7 @@ kasasa_window_resize_window (KasasaWindow *self,
 
   // Animation for resizing width
   animation_width = adw_timed_animation_new (
-    GTK_WIDGET (self),                                      // widget
+    GTK_WIDGET (self),                                        // widget
     (gdouble) default_width,                                  // from
     new_width,                                                // to
     WINDOW_RESIZING_DURATION,                                 // duration
@@ -712,7 +712,8 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
     {
       if (self->window_is_miniaturized
           || !g_settings_get_boolean (self->settings, "miniaturize-window")
-          || self->block_miniaturization)
+          || self->block_miniaturization
+          /* TODO check for block miniaturization button */)
         return;
 
       g_object_unref (self->miniaturization_canceller);

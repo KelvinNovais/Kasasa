@@ -6,8 +6,9 @@ src/main.c
 src/kasasa-application.c
 src/kasasa-window.c
 src/kasasa-window.ui
-src/kasasa-picture-container.c
-src/kasasa-picture-container.ui
+src/kasasa-content-container.c
+src/kasasa-content-container.ui
+src/kasasa-screencast.c
 src/kasasa-preferences.c
 src/kasasa-preferences.ui
 src/routines.c
