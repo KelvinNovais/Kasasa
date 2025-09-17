@@ -34,16 +34,15 @@ G_DECLARE_FINAL_TYPE (KasasaContentContainer, kasasa_content_container, KASASA, 
 KasasaContentContainer *kasasa_content_container_new (void);
 
 void
-kasasa_content_container_carousel_set_interactive (KasasaContentContainer *pc,
+kasasa_content_container_carousel_set_interactive (KasasaContentContainer *cc,
                                                    gboolean                interactive);
-void kasasa_content_container_request_first_screenshot (KasasaContentContainer *pc);
-void kasasa_content_container_request_window_resize (KasasaContentContainer *pc);
-void kasasa_content_container_update_buttons_sensibility (KasasaContentContainer *pc);
-void kasasa_content_container_reveal_controls (KasasaContentContainer *pc,
+void kasasa_content_container_request_first_screenshot (KasasaContentContainer *cc);
+void kasasa_content_container_request_window_resize (KasasaContentContainer *cc);
+void kasasa_content_container_update_buttons_sensibility (KasasaContentContainer *cc);
+void kasasa_content_container_reveal_controls (KasasaContentContainer *cc,
                                                gboolean                reveal_child);
-gboolean kasasa_content_container_get_lock (KasasaContentContainer *pc);
-gboolean kasasa_content_container_controls_active (KasasaContentContainer *pc);
+gboolean kasasa_content_container_controls_active (KasasaContentContainer *cc);
 
-void kasasa_content_container_wipe_content (KasasaContentContainer *pc);
+void kasasa_content_container_wipe_content (KasasaContentContainer *cc);
 
 G_END_DECLS

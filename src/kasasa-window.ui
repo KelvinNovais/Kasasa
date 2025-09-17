@@ -69,6 +69,13 @@
                                             <property name="tooltip-text" translatable="yes">Auto delete image when closing window</property>
                                           </object>
                                         </child>
+                                        <!-- Auto delete image button -->
+                                        <child>
+                                          <object class="GtkToggleButton" id="lock_button">
+                                            <property name="margin-start">6</property>
+                                            <property name="icon-name">padlock2-open-symbolic</property>
+                                          </object>
+                                        </child>
                                       </object>
                                     </child>
                                     <child type="end">

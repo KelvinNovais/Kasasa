@@ -39,6 +39,7 @@ struct _KasasaWindow
   GtkMenuButton             *menu_button;
   GtkToggleButton           *auto_discard_button;
   GtkToggleButton           *auto_trash_button;
+  GtkToggleButton           *lock_button;
   GtkProgressBar            *progress_bar;
   GtkStack                  *stack;
 
@@ -713,7 +714,7 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
       if (self->window_is_miniaturized
           || !g_settings_get_boolean (self->settings, "miniaturize-window")
           || self->block_miniaturization
-          /* TODO check for block miniaturization button */)
+          || gtk_toggle_button_get_active (self->lock_button))
         return;
 
       g_object_unref (self->miniaturization_canceller);
@@ -850,7 +851,6 @@ on_mouse_leave_content_container (GtkEventControllerMotion *event_controller_mot
   self->mouse_over_window = FALSE;
   kasasa_window_change_opacity (self, OPACITY_INCREASE);
   hide_header_bar (self);
-  g_timeout_add_seconds_once (2, hide_toolbar_cb, self);
 }
 
 static void
@@ -895,11 +895,14 @@ on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  if (kasasa_content_container_get_lock (self->content_container))
+  g_timeout_add_seconds_once (2, hide_toolbar_cb, self);
+
+  if (gtk_toggle_button_get_active (self->lock_button))
     return;
 
   // See Note [1]
-  if (kasasa_content_container_controls_active (self->content_container)) return;
+  if (kasasa_content_container_controls_active (self->content_container))
+    return;
 
   kasasa_window_miniaturize_window (self, TRUE);
 }
@@ -942,6 +945,24 @@ on_auto_discard_button_toggled (GtkToggleButton   *button,
 
   if (gtk_toggle_button_get_active (button))
     kasasa_window_auto_discard_window (self);
+}
+
+static void
+on_lock_button_toggled (GtkToggleButton *button,
+                        gpointer         user_data)
+{
+  if (gtk_toggle_button_get_active (button))
+    {
+      gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-symbolic");
+      gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+                                   _("Unblock miniaturization"));
+    }
+  else
+    {
+      gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-open-symbolic");
+      gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+                                   _("Block miniaturization"));
+    }
 }
 
 static void
@@ -1042,6 +1063,7 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_trash_button);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, lock_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, progress_bar);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, stack);
 }
@@ -1049,7 +1071,7 @@ kasasa_window_class_init (KasasaWindowClass *klass)
 static void
 kasasa_window_init (KasasaWindow *self)
 {
-  GtkEventController *pc_motion_event_controller = NULL;
+  GtkEventController *cc_motion_event_controller = NULL;
   GtkEventController *hb_motion_event_controller = NULL;
   GtkEventController *win_motion_event_controller = NULL;
   GtkEventController *win_scroll_event_controller = NULL;
@@ -1066,8 +1088,7 @@ kasasa_window_init (KasasaWindow *self)
 
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
 
-  // PERFFORM ACTIONS ON WIDGETS (this should be done before connecting signals
-  // to avoid triggering them)
+  // PERFFORM ACTIONS ON WIDGETS
   // Auto discard button
   if (g_settings_get_boolean (self->settings, "auto-discard-window"))
     gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
@@ -1083,19 +1104,26 @@ kasasa_window_init (KasasaWindow *self)
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
 
+  // Lock button
+  g_settings_bind (self->settings,
+                   "miniaturize-window",
+                   self->lock_button,
+                   "visible",
+                   G_SETTINGS_BIND_GET);
+
   // MOTION EVENT CONTROLLERS: Create motion event controllers to monitor when
   // the mouse cursor is over the content container or the menu
-  // (I) Picture container
-  pc_motion_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (pc_motion_event_controller,
+  // (I) Content container
+  cc_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (cc_motion_event_controller,
                     "enter",
                     G_CALLBACK (on_mouse_enter_content_container),
                     self);
-  g_signal_connect (pc_motion_event_controller,
+  g_signal_connect (cc_motion_event_controller,
                     "leave",
                     G_CALLBACK (on_mouse_leave_content_container),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->content_container), pc_motion_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->content_container), cc_motion_event_controller);
 
   // (II) HeaderBar
   hb_motion_event_controller = gtk_event_controller_motion_new ();
@@ -1148,6 +1176,10 @@ kasasa_window_init (KasasaWindow *self)
                     "toggled",
                     G_CALLBACK (on_auto_discard_button_toggled),
                     self);
+  g_signal_connect (self->lock_button,
+                    "toggled",
+                    G_CALLBACK (on_lock_button_toggled),
+                    self);
 
   // Listen to events
   g_signal_connect (GTK_WINDOW (self),
@@ -1158,6 +1190,8 @@ kasasa_window_init (KasasaWindow *self)
 
 
 /* [1] Note:
- * The menu button seems to behave differently from the other widgets, so it can
- * make the mouse "enter/leave" the window when activated; ignore these situations
+ * The PopOver of a menu button steals the focus of a motion event controller
+ * (when it's under the pointer)
+ *
+ * This situation in unwanted
  */

@@ -11,7 +11,7 @@
     <child>
       <object class="AdwBreakpoint">
         <!-- TODO update -->
-        <condition>max-width: 215px</condition>
+        <condition>max-width: 230px</condition>
         <setter object="box_start" property="spacing">0</setter>
         <setter object="box_start" property="css-classes">osd-box-no-padding</setter>
         <setter object="box_end" property="spacing">0</setter>
@@ -59,25 +59,6 @@
                         </child>
                       </object>
                     </property>
-                  </object>
-                </child>
-              </object>
-            </child>
-
-            <child type="overlay">
-              <object class="GtkRevealer" id="revealer_lock_button">
-                <property name="transition-type">crossfade</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <child>
-                  <object class="GtkToggleButton" id="lock_button">
-                    <property name="icon-name">padlock2-open-symbolic</property>
-                    <property name="height-request">55</property>
-                    <property name="width-request">55</property>
-                    <style>
-                      <class name="circular" />
-                      <class name="osd" />
-                    </style>
                   </object>
                 </child>
               </object>

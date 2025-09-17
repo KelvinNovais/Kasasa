@@ -42,11 +42,9 @@ struct _KasasaContentContainer
   GtkButton               *add_screencast_button;
   GtkButton               *remove_content_button;
   GtkButton               *copy_screenshot_button;
-  GtkToggleButton         *lock_button;
   GtkMenuButton           *more_actions_button;
   GtkRevealer             *revealer_end_buttons;
   GtkRevealer             *revealer_start_buttons;
-  GtkRevealer             *revealer_lock_button;
   GtkOverlay              *toolbar_overlay;
   GtkPopover              *more_actions_popover;
 
@@ -67,28 +65,15 @@ kasasa_content_container_controls_active (KasasaContentContainer *self)
   return gtk_menu_button_get_active (self->more_actions_button);
 }
 
-gboolean
-kasasa_content_container_get_lock (KasasaContentContainer *self)
-{
-  g_return_val_if_fail (KASASA_IS_CONTENT_CONTAINER (self), FALSE);
-
-  return gtk_toggle_button_get_active (self->lock_button);
-}
 
 void
 kasasa_content_container_reveal_controls (KasasaContentContainer *self,
                                           gboolean                reveal_child)
 {
-  gboolean reveal_lock_button;
   g_return_if_fail (KASASA_IS_CONTENT_CONTAINER (self));
-
-  reveal_lock_button =
-    g_settings_get_boolean (self->settings,
-                            "miniaturize-window") ? reveal_child : FALSE;
 
   gtk_revealer_set_reveal_child (self->revealer_start_buttons, reveal_child);
   gtk_revealer_set_reveal_child (self->revealer_end_buttons, reveal_child);
-  gtk_revealer_set_reveal_child (self->revealer_lock_button, reveal_lock_button);
 }
 
 void
@@ -766,24 +751,6 @@ on_copy_screenshot_button_clicked (GtkButton *button,
 }
 
 static void
-on_lock_button_toggled (GtkToggleButton *button,
-                        gpointer         user_data)
-{
-  if (gtk_toggle_button_get_active (button))
-    {
-      gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-symbolic");
-      gtk_widget_remove_css_class (GTK_WIDGET (button), "osd");
-      gtk_widget_add_css_class (GTK_WIDGET (button), "warning");
-    }
-  else
-    {
-      gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-open-symbolic");
-      gtk_widget_remove_css_class (GTK_WIDGET (button), "warning");
-      gtk_widget_add_css_class (GTK_WIDGET (button), "osd");
-    }
-}
-
-static void
 on_menu_button_active (GObject    *object,
                        GParamSpec *pspec,
                        gpointer    user_data)
@@ -844,13 +811,11 @@ kasasa_content_container_class_init (KasasaContentContainerClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, add_screencast_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, remove_content_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, copy_screenshot_button);
-  gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, lock_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, more_actions_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, revealer_start_buttons);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, revealer_end_buttons);
-  gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, revealer_lock_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, toolbar_overlay);
-  gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer,  more_actions_popover);
+  gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, more_actions_popover);
 }
 
 static void
@@ -891,10 +856,6 @@ kasasa_content_container_init (KasasaContentContainer *self)
   g_signal_connect (self->copy_screenshot_button,
                     "clicked",
                     G_CALLBACK (on_copy_screenshot_button_clicked),
-                    self);
-  g_signal_connect (self->lock_button,
-                    "toggled",
-                    G_CALLBACK (on_lock_button_toggled),
                     self);
   g_signal_connect (self->more_actions_button,
                     "notify::active",
