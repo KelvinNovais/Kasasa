@@ -39,8 +39,8 @@ typedef enum
 
 // Due to miniaturization, the real min dimensions are set here (width-request
 // and height-request)
-#define WINDOW_MIN_HEIGHT 160
-#define WINDOW_MIN_WIDTH  200
+#define WINDOW_MIN_HEIGHT 110
+#define WINDOW_MIN_WIDTH  212
 
 #define KASASA_TYPE_WINDOW (kasasa_window_get_type ())
 

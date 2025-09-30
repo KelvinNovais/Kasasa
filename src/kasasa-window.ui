@@ -17,7 +17,7 @@
     <!-- BREAKPOINT -->
     <child>
       <object class="AdwBreakpoint">
-        <condition>max-width: 210px</condition>
+        <condition>max-width: 200px</condition>
         <setter object="header_bar" property="decoration-layout">:close</setter>
       </object>
     </child>

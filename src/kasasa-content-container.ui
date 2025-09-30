@@ -9,9 +9,9 @@
     <property name="width-request">75</property>
     <property name="height-request">75</property>
     <child>
+      <!-- (I) Important: this condition avoids the toolbar buttons complaining about size allocation -->
       <object class="AdwBreakpoint">
-        <!-- TODO update -->
-        <condition>max-width: 230px</condition>
+        <condition>max-width: 245px</condition>
         <setter object="box_start" property="spacing">0</setter>
         <setter object="box_start" property="css-classes">osd-box-no-padding</setter>
         <setter object="box_end" property="spacing">0</setter>
@@ -22,6 +22,20 @@
         <setter object="revealer_end_buttons" property="margin-start">9</setter>
         <setter object="revealer_end_buttons" property="margin-end">9</setter>
         <setter object="revealer_end_buttons" property="margin-bottom">9</setter>
+      </object>
+    </child>
+    <!-- TODO need more testing -->
+    <child>
+      <!--
+      (II) this is the second part; it has no visual effects, since it acts
+      during miniaturization phase.
+
+      Keep this value smaller than the WINDOW_MIN_WIDTH defined at kasasa-window.h
+      -->
+      <object class="AdwBreakpoint">
+        <condition>max-width: 210px</condition>
+        <setter object="revealer_start_buttons" property="height-request">75</setter>
+        <setter object="revealer_end_buttons" property="height-request">75</setter>
       </object>
     </child>
 
