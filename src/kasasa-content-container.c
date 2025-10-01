@@ -18,8 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-// TODO add XdpParent
-
+#include <libportal-gtk4/portal-gtk4.h>
 #include <glib/gi18n.h>
 #include <math.h>
 
@@ -50,6 +49,7 @@ struct _KasasaContentContainer
 
   /* Instance variables */
   XdpPortal               *portal;
+  XdpParent               *parent;
   GSettings               *settings;
 };
 
@@ -64,7 +64,6 @@ kasasa_content_container_controls_active (KasasaContentContainer *self)
 
   return gtk_menu_button_get_active (self->more_actions_button);
 }
-
 
 void
 kasasa_content_container_reveal_controls (KasasaContentContainer *self,
@@ -151,11 +150,20 @@ kasasa_content_container_update_buttons_sensibility (KasasaContentContainer *sel
                               FALSE);
 }
 
+static void
+get_parent (KasasaContentContainer *self)
+{
+  GtkWindow *window = NULL;
+
+  window = GTK_WINDOW (kasasa_window_get_window_reference (GTK_WIDGET (self)));
+
+  self->parent = xdp_parent_new_gtk (window);
+}
 
 // Load the screenshot to the GtkPicture widget
 static void
 append_screenshot (KasasaContentContainer *self,
-                                            const gchar  *uri)
+                   const gchar            *uri)
 {
   KasasaScreenshot *new_screenshot = NULL;
   guint n_pages = adw_carousel_get_n_pages (self->carousel);
@@ -543,8 +551,11 @@ create_screencast_session_cb (GObject      *source_object,
       return;
     }
 
+  if (!self->parent)
+    get_parent (self);
+
   xdp_session_start (session,
-                     NULL,
+                     self->parent,
                      NULL,
                      on_screencast_session_started,
                      self);
@@ -784,6 +795,7 @@ kasasa_content_container_dispose (GObject *object)
 
   g_clear_object (&self->portal);
   g_clear_object (&self->settings);
+  xdp_parent_free (self->parent);
 
   gtk_widget_dispose_template (GTK_WIDGET (object), KASASA_TYPE_CONTENT_CONTAINER);
 

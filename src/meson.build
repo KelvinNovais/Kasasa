@@ -13,6 +13,7 @@ kasasa_deps = [
   dependency('gtk4'),
   dependency('libadwaita-1', version: '>= 1.7.4'),
   dependency('libportal'),
+  dependency('libportal-gtk4'),
   dependency('gstreamer-1.0'),
   dependency('gstreamer-app-1.0')
 ]
