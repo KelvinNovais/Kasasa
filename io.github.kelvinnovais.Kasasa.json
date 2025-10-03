@@ -51,26 +51,33 @@
             "buildsystem" : "meson",
             "builddir" : true,
             "config-opts" : [
+            	"-Dbase=enabled",
+            	"-Dgood=disabled",
+            	"-Dugly=disabled",
+            	"-Dbad=disabled",
+		"-Dlibav=disabled",
+		"-Ddevtools=disabled",
+		"-Dges=disabled",
+		"-Drtsp_server=disabled",
+		"-Drs=disabled",
+		"-Dgst-examples=disabled",
+		"-Dpython=disabled",
+		"-Dtls=disabled",
+		"-Dlibnice=disabled",
+		"-Dgpl=disabled",
+		"-Dqt5=disabled",
+		"-Dqt6=disabled",
+		"-Dwebrtc=disabled",
+		"-Dtests=disabled",
+            	"-Dexamples=disabled",
+                "-Ddoc=disabled"
             ],
             "sources" : [
                 {
-                    "type" : "archive",
-                    "url" : "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.27.2.tar.xz",
-                    "sha256" : "ce129c7ea92dce3063b029171d1324d203927132fc3e0cf92b784ddd055c241d"
-                }
-            ]
-        },
-        {
-            "name" : "gst-plugins-base",
-            "buildsystem" : "meson",
-            "builddir" : true,
-            "config-opts" : [
-            ],
-            "sources" : [
-                {
-                    "type" : "archive",
-                    "url" : "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.27.2.tar.xz",
-                    "sha256" : "6f530a0eac4fe3a8e5487c3eea7b1fac307e2a21f056d9b41747818a88be4bf6"
+                    "type" : "git",
+                    "url" : "https://gitlab.freedesktop.org/gstreamer/gstreamer.git",
+                    "tag" : "1.27.2",
+                    "disable-submodules" : true
                 }
             ]
         },
