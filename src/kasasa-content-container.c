@@ -795,7 +795,8 @@ kasasa_content_container_dispose (GObject *object)
 
   g_clear_object (&self->portal);
   g_clear_object (&self->settings);
-  xdp_parent_free (self->parent);
+  if (self->parent)
+    xdp_parent_free (self->parent);
 
   gtk_widget_dispose_template (GTK_WIDGET (object), KASASA_TYPE_CONTENT_CONTAINER);
 
@@ -838,6 +839,7 @@ kasasa_content_container_init (KasasaContentContainer *self)
   gtk_widget_init_template (GTK_WIDGET (self));
 
   self->portal = xdp_portal_new ();
+  self->parent = NULL;
   self->settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
 
   // Signals
