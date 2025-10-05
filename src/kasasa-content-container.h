@@ -25,7 +25,7 @@
 
 G_BEGIN_DECLS
 
-#define MAX_SCREENSHOTS 5
+#define MAX_N_CONTENTS 5
 
 #define KASASA_TYPE_CONTENT_CONTAINER (kasasa_content_container_get_type ())
 
@@ -38,7 +38,6 @@ kasasa_content_container_carousel_set_interactive (KasasaContentContainer *cc,
                                                    gboolean                interactive);
 void kasasa_content_container_request_first_screenshot (KasasaContentContainer *cc);
 void kasasa_content_container_request_window_resize (KasasaContentContainer *cc);
-void kasasa_content_container_update_buttons_sensibility (KasasaContentContainer *cc);
 void kasasa_content_container_reveal_controls (KasasaContentContainer *cc,
                                                gboolean                reveal_child);
 gboolean kasasa_content_container_controls_active (KasasaContentContainer *cc);

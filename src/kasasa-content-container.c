@@ -37,7 +37,7 @@ struct _KasasaContentContainer
   AdwCarousel             *carousel;
   GtkButton               *retake_screenshot_button;
   GtkButton               *add_screenshot_button;
-  GtkButton               *add_screenshot_button2;
+  GtkButton               *add_delayed_screenshot_button;
   GtkButton               *add_screencast_button;
   GtkButton               *remove_content_button;
   GtkButton               *copy_screenshot_button;
@@ -129,18 +129,29 @@ kasasa_content_container_carousel_set_interactive (KasasaContentContainer *self,
   adw_carousel_set_interactive (self->carousel, interactive);
 }
 
-void
-kasasa_content_container_update_buttons_sensibility (KasasaContentContainer *self)
+static void
+kasasa_content_container_update_toolbar_sensibility (KasasaContentContainer *self)
 {
   g_return_if_fail (KASASA_IS_CONTENT_CONTAINER (self));
 
-  if (adw_carousel_get_n_pages (self->carousel) < MAX_SCREENSHOTS)
-    gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button),
-                              TRUE);
-  else
-    gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button),
-                              FALSE);
+  // Restore the whole overlay sesibility...
+  gtk_widget_set_sensitive (GTK_WIDGET (self->toolbar_overlay), TRUE);
 
+  // ...and treat the cases indiviually
+  if (adw_carousel_get_n_pages (self->carousel) < MAX_N_CONTENTS)
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button),
+                                TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (self->more_actions_button),
+                                TRUE);
+    }
+  else
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button),
+                                FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (self->more_actions_button),
+                                FALSE);
+    }
 
   if (adw_carousel_get_n_pages (self->carousel) > 1)
     gtk_widget_set_sensitive (GTK_WIDGET (self->remove_content_button),
@@ -148,6 +159,8 @@ kasasa_content_container_update_buttons_sensibility (KasasaContentContainer *sel
   else
     gtk_widget_set_sensitive (GTK_WIDGET (self->remove_content_button),
                               FALSE);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), TRUE);
 }
 
 static void
@@ -169,9 +182,9 @@ append_screenshot (KasasaContentContainer *self,
   guint n_pages = adw_carousel_get_n_pages (self->carousel);
   g_debug ("Carousel number of pages: %d", n_pages);
 
-  if (n_pages >= MAX_SCREENSHOTS)
+  if (n_pages >= MAX_N_CONTENTS)
     {
-      g_warning ("Max number of screnshots reached");
+      g_warning ("Max number of contents reached");
       return;
     }
 
@@ -269,7 +282,7 @@ on_screencast_eos (KasasaScreencast *screencast,
   if (adw_carousel_get_n_pages (self->carousel) > 2)
     adw_carousel_remove (self->carousel, GTK_WIDGET (screencast));
 
-  kasasa_content_container_update_buttons_sensibility (self);
+  kasasa_content_container_update_toolbar_sensibility (self);
 }
 
 
@@ -367,7 +380,7 @@ on_screenshot_taken (GObject      *object,
 
   handle_taken_screenshot (object, res, user_data, FALSE);
 
-  kasasa_content_container_update_buttons_sensibility (self);
+  kasasa_content_container_update_toolbar_sensibility (self);
 
   kasasa_window_block_miniaturization (window, FALSE);
 }
@@ -389,25 +402,36 @@ take_screenshot_cb (gpointer user_data)
 
 static void
 take_screenshot (GtkButton *button,
-                gpointer   user_data)
+                 gpointer   user_data)
 {
-  KasasaContentContainer *self = NULL;
-  KasasaWindow *window = NULL;
+  KasasaContentContainer *self = KASASA_CONTENT_CONTAINER (user_data);
+  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
 
-  g_return_if_fail (KASASA_IS_CONTENT_CONTAINER (user_data));
-
-  self = KASASA_CONTENT_CONTAINER (user_data);
-
-  gtk_popover_popdown (self->more_actions_popover);
-
-  window = kasasa_window_get_window_reference (GTK_WIDGET (self));
-
-  gtk_widget_set_sensitive (GTK_WIDGET (self->add_screenshot_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->toolbar_overlay), FALSE);
 
   kasasa_window_block_miniaturization (window, TRUE);
 
   kasasa_window_hide_window (window, TRUE,
                              take_screenshot_cb, self);
+}
+
+static void
+take_delayed_screenshot (GtkButton *button,
+                         gpointer user_data)
+{
+  KasasaContentContainer *self = KASASA_CONTENT_CONTAINER (user_data);
+  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
+  guint interval = (guint) g_settings_get_int (self->settings,
+                                               "screenshot-delay");
+
+  gtk_popover_popdown (self->more_actions_popover);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->toolbar_overlay), FALSE);
+
+  kasasa_window_block_miniaturization (window, TRUE);
+  kasasa_window_hide_window (window, TRUE,
+                             NULL, NULL);
+
+  g_timeout_add_seconds_once (interval, take_screenshot_cb, self);
 }
 /******************************************************************************/
 
@@ -428,8 +452,7 @@ on_screenshot_retaken (GObject      *object,
 
   handle_taken_screenshot (object, res, user_data, TRUE);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button),
-                            TRUE);
+  kasasa_content_container_update_toolbar_sensibility (self);
 
   // Enable carousel again
   adw_carousel_set_interactive (self->carousel, TRUE);
@@ -464,7 +487,7 @@ retake_screenshot (GtkButton *button, gpointer user_data)
   self = KASASA_CONTENT_CONTAINER (user_data);
   window = kasasa_window_get_window_reference (GTK_WIDGET (self));
 
-  gtk_widget_set_sensitive (GTK_WIDGET (self->retake_screenshot_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->toolbar_overlay), FALSE);
 
   kasasa_window_block_miniaturization (window, TRUE);
 
@@ -528,7 +551,7 @@ on_screencast_session_started (GObject      *source_object,
   kasasa_screencast_show (screencast, session, fd, node_id);
   adw_carousel_append (self->carousel, GTK_WIDGET (screencast));
   adw_carousel_scroll_to (self->carousel, GTK_WIDGET (screencast), TRUE);
-  kasasa_content_container_update_buttons_sensibility (self);
+  kasasa_content_container_update_toolbar_sensibility (self);
 }
 
 static void
@@ -598,7 +621,7 @@ get_current_content (KasasaContentContainer *self)
 {
   guint position = (guint) adw_carousel_get_position (self->carousel);
 
-  g_return_val_if_fail ((position < MAX_SCREENSHOTS), NULL);
+  g_return_val_if_fail ((position < MAX_N_CONTENTS), NULL);
 
   g_debug ("Carousel current position: %d", position);
 
@@ -714,7 +737,7 @@ on_remove_content_clicked (GtkButton *button,
 
   adw_carousel_scroll_to (self->carousel, neighbor_content, TRUE);
 
-  kasasa_content_container_update_buttons_sensibility (self);
+  kasasa_content_container_update_toolbar_sensibility (self);
 
   adw_carousel_set_interactive (self->carousel, TRUE);
 }
@@ -820,7 +843,7 @@ kasasa_content_container_class_init (KasasaContentContainerClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, carousel);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, retake_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, add_screenshot_button);
-  gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, add_screenshot_button2);
+  gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, add_delayed_screenshot_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, add_screencast_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, remove_content_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaContentContainer, copy_screenshot_button);
@@ -855,9 +878,9 @@ kasasa_content_container_init (KasasaContentContainer *self)
                     "clicked",
                     G_CALLBACK (take_screenshot),
                     self);
-  g_signal_connect (self->add_screenshot_button2,
+  g_signal_connect (self->add_delayed_screenshot_button,
                     "clicked",
-                    G_CALLBACK (take_screenshot),
+                    G_CALLBACK (take_delayed_screenshot),
                     self);
   g_signal_connect (self->add_screencast_button,
                     "clicked",

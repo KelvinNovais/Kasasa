@@ -119,9 +119,9 @@
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>
                                     <child>
-                                      <object class="GtkButton" id="add_screenshot_button2">
+                                      <object class="GtkButton" id="add_delayed_screenshot_button">
                                         <property name="css-classes">flat</property>
-                                        <property name="halign">start</property>
+                                        <property name="halign">fill</property>
                                         <property name="child">
                                           <object class="GtkBox">
                                             <property name="margin-start">10</property>
@@ -130,13 +130,13 @@
                                             <property name="margin-bottom">3</property>
                                             <child>
                                               <object class="GtkImage">
-                                                <property name="icon-name">screenshooter-symbolic</property>
+                                                <property name="icon-name">timer-symbolic</property>
                                                 <property name="margin-end">12</property>
                                               </object>
                                             </child>
                                             <child>
                                               <object class="GtkLabel">
-                                                <property name="label" translatable="yes">Add screenshot</property>
+                                                <property name="label" translatable="yes">Delayed screenshot</property>
                                                 <property name="css-classes">body</property>
                                               </object>
                                             </child>
@@ -147,7 +147,8 @@
                                     <child>
                                       <object class="GtkButton" id="add_screencast_button">
                                         <property name="css-classes">flat</property>
-                                        <property name="halign">start</property>
+                                        <property name="halign">fill</property>
+                                        <property name="hexpand">true</property>
                                         <property name="child">
                                           <object class="GtkBox">
                                             <property name="margin-start">10</property>
@@ -162,7 +163,7 @@
                                             </child>
                                             <child>
                                               <object class="GtkLabel">
-                                                <property name="label" translatable="yes">Add screencast</property>
+                                                <property name="label" translatable="yes">Screencast</property>
                                                 <property name="css-classes">body</property>
                                               </object>
                                             </child>

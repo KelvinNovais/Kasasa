@@ -41,5 +41,11 @@
 	  <key name="auto-trash-image" type="b">
       <default>false</default>
     </key>
+
+	  <!-- SCREENSHOT DELAY -->
+	  <key name="screenshot-delay" type="i">
+      <range min="1" max="60"/>
+      <default>3</default>
+	  </key>
 	</schema>
 </schemalist>
