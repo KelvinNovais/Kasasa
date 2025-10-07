@@ -1,6 +1,6 @@
 /* kasasa-screencast.c
  *
- * Copyright 2025 Kelvin
+ * Copyright 2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,18 +115,15 @@ kasasa_screencast_finish (KasasaContent *content)
 
   set_no_screencast (self);
 
-  if (self->pipeline != NULL)
+  if (self->pipeline)
     gst_element_set_state (self->pipeline, GST_STATE_READY);
-
-  xdp_session_close (self->session);
 }
 
 static void
 on_session_closed (XdpSession *session,
                    gpointer    user_data)
 {
-  g_info ("Session closed.");
-  kasasa_screencast_finish (KASASA_CONTENT (user_data));
+  g_info ("Session closed");
   g_signal_emit (user_data,
                  obj_signals[SIGNAL_EOS],
                  0);
@@ -137,8 +134,7 @@ eos_cb (GstBus           *bus,
         GstMessage       *msg,
         KasasaScreencast *self)
 {
-  g_info ("End-Of-Stream reached.");
-  kasasa_screencast_finish (KASASA_CONTENT (self));
+  g_info ("End-Of-Stream reached");
   g_signal_emit (self,
                  obj_signals[SIGNAL_EOS],
                  0);
@@ -474,9 +470,9 @@ kasasa_screencast_show (KasasaScreencast *self,
   g_signal_connect (self->session, "closed", G_CALLBACK (on_session_closed), self);
 
   g_timeout_add_once (FIRST_CROP_CHECK_INTERVAL, compute_first_crop_values, self);
-  self->cropping_source = g_timeout_add (FIRST_CROP_CHECK_INTERVAL,
-                                         compute_crop_values,
-                                         self);
+  self->cropping_source = g_timeout_add_seconds (CROP_CHEK_INTERVAL,
+                                                 compute_crop_values,
+                                                 self);
 }
 
 static void
@@ -484,13 +480,14 @@ kasasa_screencast_dispose (GObject *object)
 {
   KasasaScreencast *self = KASASA_SCREENCAST (object);
 
-  if (self->pipeline != NULL)
+  if (self->pipeline)
     {
       gst_element_set_state (self->pipeline, GST_STATE_NULL);
       gst_object_unref (self->pipeline);
+      self->pipeline = NULL;
     }
 
-  if (self->session != NULL)
+  if (self->session)
     g_clear_object (&self->session);
 
   if (self->cropping_source > 0)
