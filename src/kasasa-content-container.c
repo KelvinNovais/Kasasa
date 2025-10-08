@@ -264,8 +264,12 @@ on_screencast_new_dimension (KasasaScreencast *screencast,
 {
   KasasaContentContainer *self = KASASA_CONTENT_CONTAINER (user_data);
   KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
+  GtkWidget *current_content = get_current_content (self);
+  gboolean miniaturized = kasasa_window_is_miniaturized (window);
 
-  if (get_current_content (self) == GTK_WIDGET (screencast))
+
+  if (current_content == GTK_WIDGET (screencast)
+      && !miniaturized)
     kasasa_window_resize_window_scaling (window,
                                          (gdouble) new_height,
                                          (gdouble) new_width);
@@ -276,12 +280,54 @@ on_screencast_eos (KasasaScreencast *screencast,
                    gpointer          user_data)
 {
   KasasaContentContainer *self = KASASA_CONTENT_CONTAINER (user_data);
+  KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
 
+  gboolean miniaturized = kasasa_window_is_miniaturized (window);
+  guint n_pages = adw_carousel_get_n_pages (self->carousel);
+
+  adw_carousel_set_interactive (self->carousel, FALSE);
   kasasa_content_finish (KASASA_CONTENT (screencast));
 
-  if (adw_carousel_get_n_pages (self->carousel) > 2)
-    adw_carousel_remove (self->carousel, GTK_WIDGET (screencast));
+  if (n_pages == 1 && !miniaturized)
+    {
+      // resize the window to a no content view
+      kasasa_content_container_request_window_resize (self);
+    }
+  else if (n_pages == 1 && miniaturized)
+    {
+      // do nothing
+      // the window will present a no content view after unminiaturized
+    }
+  else if (n_pages >= 2
+           && get_current_content (self) == GTK_WIDGET (screencast))
+    {
+      // scroll to the neighbor content
+      GtkWidget *neighbor_content = NULL;
+      guint neighbor_idx;
 
+      kasasa_window_miniaturize_window (window, FALSE);
+
+
+      for (guint i = 0; i < n_pages; i++)
+        if (adw_carousel_get_nth_page (self->carousel, i) == GTK_WIDGET (screencast))
+          neighbor_idx = ((gint) i - 1 < 0) ? i + 1 : i - 1;
+
+      neighbor_content = adw_carousel_get_nth_page (self->carousel,
+                                                    neighbor_idx);
+
+      adw_carousel_remove (self->carousel, GTK_WIDGET (screencast));
+      adw_carousel_scroll_to (self->carousel, neighbor_content, TRUE);
+
+      if (miniaturized)
+        kasasa_window_miniaturize_window (window, TRUE);
+    }
+  else
+    {
+      // silently remove the content
+      adw_carousel_remove (self->carousel, GTK_WIDGET (screencast));
+    }
+
+  adw_carousel_set_interactive (self->carousel, TRUE);
   kasasa_content_container_update_toolbar_sensibility (self);
 }
 
@@ -592,6 +638,7 @@ create_screencast_session (GtkButton *button,
   KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
 
   gtk_popover_popdown (self->more_actions_popover);
+  gtk_widget_set_sensitive (GTK_WIDGET (self->toolbar_overlay), FALSE);
   kasasa_window_block_miniaturization (window, TRUE);
 
   xdp_portal_create_screencast_session (self->portal,

@@ -50,6 +50,7 @@ typedef void (* HideWindowCallback)(gpointer);
 
 KasasaWindow * kasasa_window_get_window_reference (GtkWidget *widget);
 gboolean kasasa_window_get_trash_button_active (KasasaWindow *window);
+gboolean kasasa_window_is_miniaturized (KasasaWindow *window);
 void kasasa_window_hide_window (KasasaWindow           *window,
                                 gboolean                hide,
                                 HideWindowCallback      callback,

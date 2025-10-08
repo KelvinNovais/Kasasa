@@ -94,6 +94,14 @@ kasasa_window_get_trash_button_active (KasasaWindow *window)
   return gtk_toggle_button_get_active (window->auto_trash_button);
 }
 
+gboolean
+kasasa_window_is_miniaturized (KasasaWindow *self)
+{
+  g_return_val_if_fail (KASASA_IS_WINDOW (self), FALSE);
+
+  return self->window_is_miniaturized;
+};
+
 static gboolean
 has_different_scalings (gdouble *max_scale)
 {
