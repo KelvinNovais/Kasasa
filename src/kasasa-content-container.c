@@ -574,6 +574,7 @@ on_screencast_session_started (GObject      *source_object,
 
   if (error != NULL || !success)
     {
+      kasasa_content_container_update_toolbar_sensibility (self);
       g_warning ("Couldn't start the session successfully: %s", error->message);
       return;
     }
@@ -616,6 +617,7 @@ create_screencast_session_cb (GObject      *source_object,
 
   if (error != NULL)
     {
+      kasasa_content_container_update_toolbar_sensibility (self);
       g_warning ("Failed to create screencast session: %s", error->message);
       return;
     }
