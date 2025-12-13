@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: accerciser master\n"
 "POT-Creation-Date: 2025-12-10 11:01+0000\n"
-"PO-Revision-Date: 2025-12-13 11:41+0700\n"
+"PO-Revision-Date: 2025-12-13 11:51+0700\n"
 "Last-Translator: Loc Huynh <https://github.com/hthienloc>\n"
 "Language-Team: Vietnamese <https://github.com/linux-l10n-vi>\n"
 "MIME-Version: 1.0\n"
@@ -96,10 +96,9 @@ msgid ""
 "Plugin shows its implemented AT-SPI interfaces along with its methods and "
 "properties."
 msgstr ""
-"Với một widget tiếp cận được chọn trong <link "
-"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>, Plugin Trình duyệt API "
-"hiển thị các giao diện AT-SPI đã cài đặt của nó cùng với các phương thức và "
-"thuộc tính."
+"Với một widget tiếp cận được chọn trong <link xref=\"desktop_tree_view\">Ô "
+"xem cây ứng dụng</link>, Plugin Trình duyệt API hiển thị các giao diện AT-"
+"SPI đã cài đặt của nó cùng với các phương thức và thuộc tính."
 
 #. (itstool) path: figure/desc
 #. (itstool) path: media/p
@@ -121,6 +120,7 @@ msgctxt "_"
 msgid ""
 "external ref='figures/api_browser.png' md5='4f668e4a15d1c308e984d0801b9ecd95'"
 msgstr ""
+"external ref='figures/api_browser.png' md5='4f668e4a15d1c308e984d0801b9ecd95'"
 
 #. (itstool) path: section/title
 #: C/api_browser_plugin.page:46
@@ -135,9 +135,9 @@ msgid ""
 "application's interface, so you can be sure whether a certain widget were "
 "the one you were looking for."
 msgstr ""
-"Để chạy Plugin Trình duyệt API, chọn một widget tiếp cận trong Ô xem cây "
-"ứng dụng. Nhấn đúp vào một widget sẽ tô sáng nó trong giao diện của ứng dụng, "
-"để bạn có thể chắc chắn liệu widget đó có phải là cái bạn đang tìm hay không."
+"Để chạy Plugin Trình duyệt API, chọn một widget tiếp cận trong Ô xem cây ứng "
+"dụng. Nhấn đúp vào một widget sẽ tô sáng nó trong giao diện của ứng dụng, để "
+"bạn có thể chắc chắn liệu widget đó có phải là cái bạn đang tìm hay không."
 
 #. (itstool) path: section/p
 #: C/api_browser_plugin.page:53
@@ -150,7 +150,8 @@ msgstr ""
 "Sau đó, chọn một trong các giao diện của widget trong hộp chọn. Tất cả các "
 "phương thức công khai của giao diện đã chọn sẽ được liệt kê trong cột ngoài "
 "cùng bên trái của plugin. Tất cả các thuộc tính công khai, với các giá trị "
-"tương ứng của chúng, sẽ được liệt kê trong cột ngoài cùng bên phải của plugin."
+"tương ứng của chúng, sẽ được liệt kê trong cột ngoài cùng bên phải của "
+"plugin."
 
 #. (itstool) path: section/p
 #: C/api_browser_plugin.page:59
@@ -222,6 +223,8 @@ msgid ""
 "external ref='figures/tree_view_accerciser.png' "
 "md5='594e06b7889eff705ac194656939e146'"
 msgstr ""
+"external ref='figures/tree_view_accerciser.png' "
+"md5='594e06b7889eff705ac194656939e146'"
 
 #. (itstool) path: page/p
 #: C/desktop_tree_view.page:49
@@ -232,9 +235,9 @@ msgid ""
 "For each node, <app>Accerciser</app> provides some basic information, such "
 "as its name, role and number of children."
 msgstr ""
-"Nút đầu tiên của mỗi ứng dụng được biểu diễn trong ô xem cây này là chính ứng "
-"dụng đó. Khi bạn mở rộng một nút, bạn có thể thấy tất cả các widget con của "
-"nó, cho phép có cái nhìn phân cấp về giao diện của ứng dụng. Đối với mỗi "
+"Nút đầu tiên của mỗi ứng dụng được biểu diễn trong ô xem cây này là chính "
+"ứng dụng đó. Khi bạn mở rộng một nút, bạn có thể thấy tất cả các widget con "
+"của nó, cho phép có cái nhìn phân cấp về giao diện của ứng dụng. Đối với mỗi "
 "nút, <app>Accerciser</app> cung cấp một số thông tin cơ bản, chẳng hạn như "
 "tên, vai trò và số lượng con."
 
@@ -338,6 +341,8 @@ msgid ""
 "external ref='figures/event_monitor_plugin.png' "
 "md5='d4433124f4833aa7322c7a6ec0b21104'"
 msgstr ""
+"external ref='figures/event_monitor_plugin.png' "
+"md5='d4433124f4833aa7322c7a6ec0b21104'"
 
 #. (itstool) path: section/title
 #: C/event_monitor_plugin.page:49
@@ -411,7 +416,8 @@ msgstr ""
 #: C/event_monitor_plugin.page:102
 msgid ""
 "Selecting only a few event types per monitoring gives you a clearer output."
-msgstr "Chỉ chọn một vài kiểu sự kiện mỗi lần theo dõi sẽ cho kết quả rõ ràng hơn."
+msgstr ""
+"Chỉ chọn một vài kiểu sự kiện mỗi lần theo dõi sẽ cho kết quả rõ ràng hơn."
 
 #. (itstool) path: section/p
 #: C/event_monitor_plugin.page:107
@@ -426,10 +432,10 @@ msgid ""
 "<cmd>Selected accessible</cmd>."
 msgstr ""
 "Một cách khác để tinh chỉnh việc theo dõi sự kiện là theo nguồn sự kiện. "
-"Theo mặc định, tùy chọn Source <cmd>Everything</cmd> được chọn, cho biết rằng "
-"các sự kiện AT-SPI của tất cả các ứng dụng sẽ được theo dõi. Nếu bạn muốn "
-"điều tra một ứng dụng đơn lẻ, chọn nó trong Ô xem cây ứng dụng và nhấp vào "
-"nút radio Source <cmd>Selected application</cmd>. Tương tự, nếu bạn muốn "
+"Theo mặc định, tùy chọn Source <cmd>Everything</cmd> được chọn, cho biết "
+"rằng các sự kiện AT-SPI của tất cả các ứng dụng sẽ được theo dõi. Nếu bạn "
+"muốn điều tra một ứng dụng đơn lẻ, chọn nó trong Ô xem cây ứng dụng và nhấp "
+"vào nút radio Source <cmd>Selected application</cmd>. Tương tự, nếu bạn muốn "
 "theo dõi một widget tiếp cận đơn lẻ và các con cháu tương ứng của nó, chọn "
 "nó trong Ô xem cây ứng dụng và nhấp vào nút radio Source <cmd>Selected "
 "accessible</cmd>."
@@ -521,8 +527,8 @@ msgstr ""
 "Để cài đặt <app>Accerciser</app> thủ công, trước tiên bạn cần tải nó về. Mã "
 "nguồn của <app>Accerciser</app> có thể được tải về từ <link href=\"http://"
 "ftp.gnome.org/pub/GNOME/sources/accerciser/\">trang FTP gnome.org</link> "
-"hoặc nhân bản từ <link href=\"https://gitlab.gnome.org/GNOME/accerciser"
-"\">kho GIT gnome.org</link>."
+"hoặc nhân bản từ <link href=\"https://gitlab.gnome.org/GNOME/"
+"accerciser\">kho GIT gnome.org</link>."
 
 #. (itstool) path: note/p
 #: C/howto_setting_up_accerciser.page:43
@@ -537,8 +543,7 @@ msgstr ""
 #: C/howto_setting_up_accerciser.page:50
 msgid ""
 "After getting <app>Accerciser</app>, install it using the following commands:"
-msgstr ""
-"Sau khi lấy <app>Accerciser</app>, hãy cài đặt nó bằng các lệnh sau:"
+msgstr "Sau khi lấy <app>Accerciser</app>, hãy cài đặt nó bằng các lệnh sau:"
 
 #. (itstool) path: item/p
 #: C/howto_setting_up_accerciser.page:54
@@ -600,9 +605,9 @@ msgid ""
 "app>'s plugins."
 msgstr ""
 "Sau đó, bạn có thể sử dụng <app>Accerciser</app> để kiểm tra bất kỳ mục tiếp "
-"cận nào được hiển thị trong phân cấp của <link "
-"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>. Chọn một mục và điều "
-"tra nó bằng cách sử dụng một trong các plugin của <app>Accerciser</app>."
+"cận nào được hiển thị trong phân cấp của <link xref=\"desktop_tree_view\">Ô "
+"xem cây ứng dụng</link>. Chọn một mục và điều tra nó bằng cách sử dụng một "
+"trong các plugin của <app>Accerciser</app>."
 
 #. (itstool) path: info/title
 #: C/howto_write_a_plugin.page:4
@@ -1084,7 +1089,8 @@ msgid ""
 msgstr ""
 "Lớp plugin cơ sở có một phương thức gọi là onAccChanged được gọi mỗi khi mục "
 "tiếp cận được chọn của ứng dụng đích thay đổi. Chúng ta sẽ ghi đè nó, thiết "
-"lập nút chỉ nhạy (sensitive) khi mục tiếp cận hiện tại có hành động \"click\":"
+"lập nút chỉ nhạy (sensitive) khi mục tiếp cận hiện tại có hành động "
+"\"click\":"
 
 #. (itstool) path: section/code
 #: C/howto_write_a_plugin.page:219
@@ -1264,12 +1270,13 @@ msgid ""
 "item implements them:"
 msgstr ""
 "Bước đầu tiên để chạy Plugin Bộ xem Giao diện là chọn một mục trong <link "
-"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>. Sau đó, tất cả các giao "
-"diện AT-SPI được bao phủ bởi plugin sẽ được liệt kê trong bảng điều khiển "
-"của plugin. Các giao diện được mục đã chọn triển khai sẽ là nhạy (sensitive), "
-"vì vậy bạn có thể nhấp vào từng giao diện để truy xuất thông tin được cung "
-"cấp hoặc tương tác với các phương thức có sẵn. Các giao diện sau có thể được "
-"khám phá trong <app>Accerciser</app>, giả sử mục đã chọn triển khai chúng:"
+"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>. Sau đó, tất cả các "
+"giao diện AT-SPI được bao phủ bởi plugin sẽ được liệt kê trong bảng điều "
+"khiển của plugin. Các giao diện được mục đã chọn triển khai sẽ là nhạy "
+"(sensitive), vì vậy bạn có thể nhấp vào từng giao diện để truy xuất thông "
+"tin được cung cấp hoặc tương tác với các phương thức có sẵn. Các giao diện "
+"sau có thể được khám phá trong <app>Accerciser</app>, giả sử mục đã chọn "
+"triển khai chúng:"
 
 #. (itstool) path: item/p
 #: C/interface_viewer_plugin.page:59
@@ -1292,9 +1299,9 @@ msgstr ""
 "Action (Hành động) - Giao diện này hiển thị tất cả các hành động có thể được "
 "thực hiện bởi mục đã chọn. Đối với mỗi hành động, bạn sẽ thấy tên của nó, "
 "chẳng hạn như \"press\" (nhấn) hoặc \"click\" (nhấp), tiếp theo là mô tả và "
-"một phím tắt (key binding), nếu có. Nếu bạn chọn một hành động, nút \"Perform "
-"action\" (Thực hiện hành động) sẽ trở nên nhạy. Nhấn nút này để xem mục thực "
-"hiện hành động đã chọn."
+"một phím tắt (key binding), nếu có. Nếu bạn chọn một hành động, nút "
+"\"Perform action\" (Thực hiện hành động) sẽ trở nên nhạy. Nhấn nút này để "
+"xem mục thực hiện hành động đã chọn."
 
 #. (itstool) path: item/p
 #: C/interface_viewer_plugin.page:73
@@ -1306,9 +1313,10 @@ msgid ""
 "its toolkit and version."
 msgstr ""
 "Application (Ứng dụng) - Giao diện này có thể được triển khai bởi các mục có "
-"vai trò \"application\". Điều đáng lưu ý là các mục có vai trò \"application\" "
-"không nhất thiết phải triển khai giao diện này. Nếu mục đã chọn triển khai nó, "
-"giao diện sẽ hiển thị ID của nó và, nếu có, bộ công cụ và phiên bản của nó."
+"vai trò \"application\". Điều đáng lưu ý là các mục có vai trò "
+"\"application\" không nhất thiết phải triển khai giao diện này. Nếu mục đã "
+"chọn triển khai nó, giao diện sẽ hiển thị ID của nó và, nếu có, bộ công cụ "
+"và phiên bản của nó."
 
 #. (itstool) path: item/p
 #: C/interface_viewer_plugin.page:80
@@ -1331,8 +1339,8 @@ msgid ""
 "Document - This interface shows the selected item's document attributes and "
 "locale description, if there is one."
 msgstr ""
-"Document (Tài liệu) - Giao diện này hiển thị các thuộc tính tài liệu và mô tả "
-"locale của mục đã chọn, nếu có."
+"Document (Tài liệu) - Giao diện này hiển thị các thuộc tính tài liệu và mô "
+"tả locale của mục đã chọn, nếu có."
 
 #. (itstool) path: item/p
 #: C/interface_viewer_plugin.page:91
@@ -1342,11 +1350,11 @@ msgid ""
 "URI, start (the index in the hypertext at which the hyperlink begins) and "
 "end (the index in the hypertext at which this hyperlink ends)."
 msgstr ""
-"Hypertext (Siêu văn bản) - Giao diện này hiển thị một danh sách với tất cả các "
-"siêu liên kết (hyperlink) của mục siêu văn bản đã chọn. Đối với mỗi siêu liên "
-"kết, giao diện cung cấp tên, URI, start (chỉ mục trong siêu văn bản nơi siêu "
-"liên kết bắt đầu) và end (chỉ mục trong siêu văn bản nơi siêu liên kết kết "
-"thúc)."
+"Hypertext (Siêu văn bản) - Giao diện này hiển thị một danh sách với tất cả "
+"các siêu liên kết (hyperlink) của mục siêu văn bản đã chọn. Đối với mỗi siêu "
+"liên kết, giao diện cung cấp tên, URI, start (chỉ mục trong siêu văn bản nơi "
+"siêu liên kết bắt đầu) và end (chỉ mục trong siêu văn bản nơi siêu liên kết "
+"kết thúc)."
 
 #. (itstool) path: item/p
 #: C/interface_viewer_plugin.page:98
@@ -1370,11 +1378,11 @@ msgid ""
 "list."
 msgstr ""
 "Selection (Lựa chọn) - Giao diện này hiển thị tất cả các mục con có thể chọn "
-"của mục đã chọn. Nếu mục đã chọn là một thanh menu với các tùy chọn \"File\", "
-"\"Edit\", \"View\" và \"Help\", và tất cả chúng đều có thể chọn được, thì "
-"chúng sẽ được liệt kê trong giao diện này. Nếu bạn nhấp vào một tùy chọn được "
-"liệt kê - ví dụ: \"File\" - và muốn xóa nó, chỉ cần nhấn nút \"Clear\" (Xóa) "
-"bên dưới danh sách."
+"của mục đã chọn. Nếu mục đã chọn là một thanh menu với các tùy chọn "
+"\"File\", \"Edit\", \"View\" và \"Help\", và tất cả chúng đều có thể chọn "
+"được, thì chúng sẽ được liệt kê trong giao diện này. Nếu bạn nhấp vào một "
+"tùy chọn được liệt kê - ví dụ: \"File\" - và muốn xóa nó, chỉ cần nhấn nút "
+"\"Clear\" (Xóa) bên dưới danh sách."
 
 #. (itstool) path: item/p
 #: C/interface_viewer_plugin.page:112
@@ -1394,9 +1402,9 @@ msgid ""
 "selected cell, the interface shows its row's and column's header and extents."
 msgstr ""
 "Table (Bảng) - Giao diện này hiển thị chú thích và tóm tắt, hàng (số hàng), "
-"cột (số cột), các hàng được chọn (số hàng được chọn) và các cột được chọn (số "
-"cột được chọn) của mục đã chọn. Đối với một ô đã chọn, giao diện hiển thị "
-"tiêu đề và phạm vi (extents) hàng và cột của nó."
+"cột (số cột), các hàng được chọn (số hàng được chọn) và các cột được chọn "
+"(số cột được chọn) của mục đã chọn. Đối với một ô đã chọn, giao diện hiển "
+"thị tiêu đề và phạm vi (extents) hàng và cột của nó."
 
 #. (itstool) path: item/p
 #: C/interface_viewer_plugin.page:124
@@ -1408,11 +1416,12 @@ msgid ""
 "header cell object in Accerciser instead. Pressing the table button causes "
 "the table object to be selected."
 msgstr ""
-"TableCell (Ô bảng) - Giao diện này hiển thị chỉ mục hàng và cột, phạm vi hàng "
-"và cột (row and column span), danh sách các ô tiêu đề hàng và cột và bảng của "
-"ô đó của mục đã chọn. Bằng cách chọn một ô tiêu đề trong danh sách tiêu đề "
-"hàng hoặc cột và nhấn nút \"Show\" (Hiển thị), có thể chọn đối tượng ô tiêu đề "
-"đó trong Accerciser thay thế. Nhấn nút bảng khiến đối tượng bảng được chọn."
+"TableCell (Ô bảng) - Giao diện này hiển thị chỉ mục hàng và cột, phạm vi "
+"hàng và cột (row and column span), danh sách các ô tiêu đề hàng và cột và "
+"bảng của ô đó của mục đã chọn. Bằng cách chọn một ô tiêu đề trong danh sách "
+"tiêu đề hàng hoặc cột và nhấn nút \"Show\" (Hiển thị), có thể chọn đối tượng "
+"ô tiêu đề đó trong Accerciser thay thế. Nhấn nút bảng khiến đối tượng bảng "
+"được chọn."
 
 #. (itstool) path: item/p
 #: C/interface_viewer_plugin.page:132
@@ -1489,10 +1498,10 @@ msgstr ""
 "Theo mặc định, giao diện chính của <app>Accerciser</app> bao gồm ba phần: "
 "một chế độ xem cây của toàn bộ hệ thống phân cấp tiếp cận được của máy tính, "
 "cụ thể là <link xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>, và hai "
-"khu vực plugin. Nếu bạn muốn xem tất cả các plugin trong một khu vực duy nhất, "
-"chia giao diện của <app>Accerciser</app> thành hai phần thay vì ba, hãy nhấn "
-"<keyseq><key>ctrl </key><key>t</key></keyseq>. Để chia lại thành ba phần, hãy "
-"nhấn <keyseq><key>ctrl</key><key>t</key></keyseq> lần nữa."
+"khu vực plugin. Nếu bạn muốn xem tất cả các plugin trong một khu vực duy "
+"nhất, chia giao diện của <app>Accerciser</app> thành hai phần thay vì ba, "
+"hãy nhấn <keyseq><key>ctrl </key><key>t</key></keyseq>. Để chia lại thành ba "
+"phần, hãy nhấn <keyseq><key>ctrl</key><key>t</key></keyseq> lần nữa."
 
 #. (itstool) path: note/p
 #: C/introduction.page:44
@@ -1524,8 +1533,9 @@ msgctxt "_"
 msgid ""
 "external ref='figures/accerciser-view.png' "
 "md5='87ef1d7587097a04dd784e14840f3115'"
-msgstr "tham chiếu ngoài='figures/accerciser-view.png'"
-"md5='87ef1d7587097a04dd784e14840f3115'"
+msgstr ""
+"tham chiếu ngoài='figures/accerciser-"
+"view.png'md5='87ef1d7587097a04dd784e14840f3115'"
 
 #. (itstool) path: section/title
 #: C/introduction.page:63
@@ -1544,11 +1554,11 @@ msgid ""
 msgstr ""
 "<app>Accerciser</app> phù hợp với nhu cầu của nhiều đối tượng khác nhau. Các "
 "nhà phát triển giao diện người dùng sử dụng nó để đảm bảo rằng các ứng dụng "
-"của họ đang cung cấp tất cả các tính năng thông qua AT-SPI. Các nhà phát triển "
-"công nghệ hỗ trợ có thể xem những gì AT-SPI đang cung cấp cho các ứng dụng của "
-"họ. Các nhà phát triển kiểm thử UI tự động thấy <app>Accerciser</app> hữu "
-"ích vì nó phơi bày các sự kiện khác nhau có thể được mong đợi từ ứng dụng mục "
-"tiêu của họ."
+"của họ đang cung cấp tất cả các tính năng thông qua AT-SPI. Các nhà phát "
+"triển công nghệ hỗ trợ có thể xem những gì AT-SPI đang cung cấp cho các ứng "
+"dụng của họ. Các nhà phát triển kiểm thử UI tự động thấy <app>Accerciser</"
+"app> hữu ích vì nó phơi bày các sự kiện khác nhau có thể được mong đợi từ "
+"ứng dụng mục tiêu của họ."
 
 #. (itstool) path: section/title
 #: C/introduction.page:74
@@ -1562,8 +1572,8 @@ msgid ""
 "code is fairly small and most of its features are part of default plugins:"
 msgstr ""
 "<app>Accerciser</app> có kiến trúc dựa trên plugin, có thể mở rộng. Mã cốt "
-"lõi của nó khá nhỏ và hầu hết các tính năng của nó là một phần của các plugin "
-"mặc định: "
+"lõi của nó khá nhỏ và hầu hết các tính năng của nó là một phần của các "
+"plugin mặc định: "
 
 #. (itstool) path: item/p
 #: C/introduction.page:82
@@ -1613,9 +1623,9 @@ msgid ""
 "the interfaces, methods, and attributes available on each accessible widget "
 "of a target application."
 msgstr ""
-"<link xref=\"api_browser_plugin\">Trình duyệt API</link> - Một plugin hiển thị "
-"các giao diện, phương thức và thuộc tính có sẵn trên mỗi widget có thể tiếp "
-"cận được của một ứng dụng mục tiêu."
+"<link xref=\"api_browser_plugin\">Trình duyệt API</link> - Một plugin hiển "
+"thị các giao diện, phương thức và thuộc tính có sẵn trên mỗi widget có thể "
+"tiếp cận được của một ứng dụng mục tiêu."
 
 #. (itstool) path: item/p
 #: C/introduction.page:112
@@ -1625,8 +1635,8 @@ msgid ""
 "widgets of a target application."
 msgstr ""
 "<link xref=\"ipython_plugin\">Bảng điều khiển IPython</link> - Một plugin "
-"cung cấp một shell Python tương tác, đầy đủ với quyền truy cập vào các widget "
-"có thể tiếp cận được đã chọn của một ứng dụng mục tiêu."
+"cung cấp một shell Python tương tác, đầy đủ với quyền truy cập vào các "
+"widget có thể tiếp cận được đã chọn của một ứng dụng mục tiêu."
 
 #. (itstool) path: section/title
 #: C/introduction.page:122
@@ -1643,11 +1653,11 @@ msgid ""
 "Libraries for GNU/UNIX systems, you can consult:"
 msgstr ""
 "Khả năng tiếp cận là một giá trị cốt lõi nên chạm đến mọi khía cạnh của Môi "
-"trường Desktop. Để giúp đạt được điều đó trong GNOME, một số thư viện đã được "
-"phát triển, chẳng hạn như ATK và AT-SPI. Mặc dù có nguồn gốc từ GNOME, các thư "
-"viện này hiện cũng được sử dụng trong các Môi trường Desktop khác. Để tìm hiểu "
-"thêm về Thư viện Khả năng tiếp cận cho các hệ thống GNU/UNIX, bạn có thể tham "
-"khảo:"
+"trường Desktop. Để giúp đạt được điều đó trong GNOME, một số thư viện đã "
+"được phát triển, chẳng hạn như ATK và AT-SPI. Mặc dù có nguồn gốc từ GNOME, "
+"các thư viện này hiện cũng được sử dụng trong các Môi trường Desktop khác. "
+"Để tìm hiểu thêm về Thư viện Khả năng tiếp cận cho các hệ thống GNU/UNIX, "
+"bạn có thể tham khảo:"
 
 #. (itstool) path: item/p
 #: C/introduction.page:132
@@ -1660,9 +1670,9 @@ msgid ""
 msgstr ""
 "<link href=\"http://developer.gnome.org/atk/\">Bộ công cụ Khả năng tiếp cận "
 "ATK</link> - ATK cung cấp tập hợp các giao diện khả năng tiếp cận được triển "
-"khai bởi các bộ công cụ và ứng dụng khác. Sử dụng các giao diện ATK, các công "
-"cụ hỗ trợ khả năng tiếp cận có toàn quyền truy cập để xem và điều khiển các "
-"ứng dụng đang chạy."
+"khai bởi các bộ công cụ và ứng dụng khác. Sử dụng các giao diện ATK, các "
+"công cụ hỗ trợ khả năng tiếp cận có toàn quyền truy cập để xem và điều khiển "
+"các ứng dụng đang chạy."
 
 #. (itstool) path: item/p
 #: C/introduction.page:139
@@ -1676,9 +1686,9 @@ msgid ""
 msgstr ""
 "<link href=\"http://developer.gnome.org/at-spi-cspi/stable/\">AT-SPI</link> "
 "- AT-SPI là giao diện dịch vụ chính mà qua đó các công nghệ hỗ trợ truy vấn "
-"và nhận thông báo từ các ứng dụng đang chạy. Tài liệu bổ sung có sẵn từ <link "
-"href=\"http://accessibility.kde.org/developer/atk.php#coreclasses\">Cộng đồng "
-"Phát triển Khả năng tiếp cận KDE</link>."
+"và nhận thông báo từ các ứng dụng đang chạy. Tài liệu bổ sung có sẵn từ "
+"<link href=\"http://accessibility.kde.org/developer/"
+"atk.php#coreclasses\">Cộng đồng Phát triển Khả năng tiếp cận KDE</link>."
 
 #. (itstool) path: item/p
 #: C/introduction.page:147
@@ -1703,8 +1713,8 @@ msgid ""
 msgstr ""
 "<link href=\"http://developer.gnome.org/accessibility-devel-guide/stable/"
 "\">Hướng dẫn dành cho Nhà phát triển Khả năng tiếp cận GNOME</link> - Một "
-"hướng dẫn cho các nhà phát triển muốn đảm bảo các ứng dụng của họ có thể tiếp "
-"cận được với lượng người dùng rộng nhất."
+"hướng dẫn cho các nhà phát triển muốn đảm bảo các ứng dụng của họ có thể "
+"tiếp cận được với lượng người dùng rộng nhất."
 
 #. (itstool) path: item/p
 #: C/introduction.page:159
@@ -1716,8 +1726,8 @@ msgid ""
 msgstr ""
 "<link href=\"https://wiki.gnome.org/Accessibility\">Dự án Khả năng tiếp cận "
 "GNOME</link> - Dự án Khả năng tiếp cận GNOME bao gồm các hướng dẫn được liệt "
-"kê ở trên cùng với nhiều liên kết hữu ích khác cho người dùng, nhà phát triển "
-"và quản trị viên hệ thống."
+"kê ở trên cùng với nhiều liên kết hữu ích khác cho người dùng, nhà phát "
+"triển và quản trị viên hệ thống."
 
 #. (itstool) path: info/title
 #: C/ipython_plugin.page:4
@@ -1745,8 +1755,8 @@ msgid ""
 msgstr ""
 "Plugin Bảng điều khiển IPython cho phép tương tác thời gian thực với một mục "
 "đã chọn trong <link xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>. Vì "
-"Plugin Bảng điều khiển IPython là một shell Python tương tác, bạn có thể nhập "
-"bất kỳ mô-đun Python nào bạn muốn."
+"Plugin Bảng điều khiển IPython là một shell Python tương tác, bạn có thể "
+"nhập bất kỳ mô-đun Python nào bạn muốn."
 
 #. (itstool) path: note/p
 #: C/ipython_plugin.page:33
@@ -1797,7 +1807,6 @@ msgid ""
 msgstr ""
 "Plugin Bảng điều khiển IPython cho phép bạn điều tra các phương thức, hằng "
 "số và thuộc tính liên quan đến một mục đã chọn trong Ô xem cây ứng dụng. "
-""
 
 #. (itstool) path: figure/media
 #. This is a reference to an external file such as an image or video. When
@@ -1860,10 +1869,11 @@ msgid ""
 "or disable a plugin, toggle its checkbox. Only active plugins can be "
 "accessed via <app>Accerciser</app>'s interface."
 msgstr ""
-"Sau khi mở Hộp thoại Tùy chọn, bạn sẽ tìm thấy một danh sách tất cả các plugin "
-"có sẵn, với các hộp kiểm tương ứng, trong tab \"Plugins\". Để bật hoặc tắt "
-"một plugin, hãy chuyển đổi hộp kiểm của nó. Chỉ các plugin đang hoạt động mới "
-"có thể được truy cập thông qua giao diện của <app>Accerciser</app>."
+"Sau khi mở Hộp thoại Tùy chọn, bạn sẽ tìm thấy một danh sách tất cả các "
+"plugin có sẵn, với các hộp kiểm tương ứng, trong tab \"Plugins\". Để bật "
+"hoặc tắt một plugin, hãy chuyển đổi hộp kiểm của nó. Chỉ các plugin đang "
+"hoạt động mới có thể được truy cập thông qua giao diện của <app>Accerciser</"
+"app>."
 
 #. (itstool) path: section/p
 #: C/preferences.page:38
@@ -1872,9 +1882,9 @@ msgid ""
 "Panel\", \"Bottom Panel\", and \"New View\". Selecting \"New View\" creates "
 "a new window for the plugin."
 msgstr ""
-"Nhấp chuột phải vào bất kỳ plugin nào cho phép bạn chọn vị trí của nó: "
-"\"Top Panel\" (Bảng điều khiển trên), \"Bottom Panel\" (Bảng điều khiển dưới) "
-"và \"New View\" (Chế độ xem mới). Chọn \"New View\" sẽ tạo một cửa sổ mới cho "
+"Nhấp chuột phải vào bất kỳ plugin nào cho phép bạn chọn vị trí của nó: \"Top "
+"Panel\" (Bảng điều khiển trên), \"Bottom Panel\" (Bảng điều khiển dưới) và "
+"\"New View\" (Chế độ xem mới). Chọn \"New View\" sẽ tạo một cửa sổ mới cho "
 "plugin."
 
 #. (itstool) path: note/p
@@ -1907,9 +1917,9 @@ msgstr ""
 "xref=\"quick_select_plugin\">Plugin Chọn nhanh</link>. Tổ hợp phím nóng cho "
 "mỗi chức năng có thể được thay đổi thông qua hộp thoại Tùy chọn, trong tab "
 "\"Global Hotkeys\" (Phím nóng Toàn cục). Dưới tab này, bạn sẽ tìm thấy một "
-"danh sách tất cả các tính năng mà phím nóng có thể được cấu hình. Sử dụng các "
-"hộp kiểm <cmd>ctrl</cmd>, <cmd>alt</cmd> và <cmd>shift</cmd> để bật hoặc tắt "
-"các bộ điều chỉnh này."
+"danh sách tất cả các tính năng mà phím nóng có thể được cấu hình. Sử dụng "
+"các hộp kiểm <cmd>ctrl</cmd>, <cmd>alt</cmd> và <cmd>shift</cmd> để bật hoặc "
+"tắt các bộ điều chỉnh này."
 
 #. (itstool) path: section/title
 #: C/preferences.page:63
@@ -1925,10 +1935,10 @@ msgid ""
 "color, and fill color can be customized via the Preferences dialog, under "
 "the \"Highlighting\" tab."
 msgstr ""
-"Một số thành phần của <app>Accerciser</app>, chẳng hạn như phím nóng toàn cục "
-"<keyseq><key>ctrl</key><key>alt</key><key>/</key></keyseq>, làm nổi bật một "
-"widget cụ thể trong một ứng dụng mục tiêu. Thời gian tô sáng, màu đường viền "
-"và màu tô có thể được tùy chỉnh thông qua hộp thoại Tùy chọn, trong tab "
+"Một số thành phần của <app>Accerciser</app>, chẳng hạn như phím nóng toàn "
+"cục <keyseq><key>ctrl</key><key>alt</key><key>/</key></keyseq>, làm nổi bật "
+"một widget cụ thể trong một ứng dụng mục tiêu. Thời gian tô sáng, màu đường "
+"viền và màu tô có thể được tùy chỉnh thông qua hộp thoại Tùy chọn, trong tab "
 "\"Highlighting\" (Tô sáng)."
 
 #. (itstool) path: info/title
@@ -1958,10 +1968,11 @@ msgid ""
 "later."
 msgstr ""
 "Plugin Chọn nhanh không cung cấp giao diện trực quan như các plugin mặc định "
-"khác của <app>Accerciser</app> - thay vào đó, nó bổ sung các tiện ích để chọn "
-"nhanh các mục trong <link xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link> "
-"thông qua các phím nóng toàn cục. Ban đầu, các phím nóng này là một phần của "
-"mã cốt lõi của <app>Accerciser</app>, sau này trở thành Plugin Chọn nhanh."
+"khác của <app>Accerciser</app> - thay vào đó, nó bổ sung các tiện ích để "
+"chọn nhanh các mục trong <link xref=\"desktop_tree_view\">Ô xem cây ứng "
+"dụng</link> thông qua các phím nóng toàn cục. Ban đầu, các phím nóng này là "
+"một phần của mã cốt lõi của <app>Accerciser</app>, sau này trở thành Plugin "
+"Chọn nhanh."
 
 #. (itstool) path: page/p
 #: C/quick_select_plugin.page:32
@@ -1973,12 +1984,12 @@ msgid ""
 "accessible widget under the pointer in the Application Tree View and "
 "highlights it in the target application."
 msgstr ""
-"Plugin Chọn nhanh cung cấp hai phím nóng toàn cục. Nhấn "
-"<keyseq><key>ctrl</key><key>alt</key><key>a</key></keyseq> chọn widget có thể "
-"tiếp cận được được lấy nét (focus) gần nhất trong Ô xem cây ứng dụng. Nhấn "
-"<keyseq><key>ctrl</key><key>alt</key><key>/</key></keyseq> chọn widget có thể "
-"tiếp cận được dưới con trỏ trong Ô xem cây ứng dụng và tô sáng nó trong ứng "
-"dụng mục tiêu."
+"Plugin Chọn nhanh cung cấp hai phím nóng toàn cục. Nhấn <keyseq><key>ctrl</"
+"key><key>alt</key><key>a</key></keyseq> chọn widget có thể tiếp cận được "
+"được lấy nét (focus) gần nhất trong Ô xem cây ứng dụng. Nhấn "
+"<keyseq><key>ctrl</key><key>alt</key><key>/</key></keyseq> chọn widget có "
+"thể tiếp cận được dưới con trỏ trong Ô xem cây ứng dụng và tô sáng nó trong "
+"ứng dụng mục tiêu."
 
 #. (itstool) path: info/title
 #: C/validator_plugin.page:4
@@ -2004,9 +2015,9 @@ msgid ""
 "related to a target application. For each error, the report includes the "
 "severity level and a brief description."
 msgstr ""
-"Plugin Bộ xác thực AT-SPI tạo một báo cáo với các vấn đề về khả năng tiếp cận "
-"liên quan đến một ứng dụng mục tiêu. Đối với mỗi lỗi, báo cáo bao gồm mức độ "
-"nghiêm trọng và mô tả ngắn gọn."
+"Plugin Bộ xác thực AT-SPI tạo một báo cáo với các vấn đề về khả năng tiếp "
+"cận liên quan đến một ứng dụng mục tiêu. Đối với mỗi lỗi, báo cáo bao gồm "
+"mức độ nghiêm trọng và mô tả ngắn gọn."
 
 #. (itstool) path: figure/desc
 #. (itstool) path: media/p
@@ -2042,9 +2053,9 @@ msgid ""
 "View. The validator will generate the report with respect to the selected "
 "item and all of its descendant widgets in the tree hierarchy."
 msgstr ""
-"Để chạy Plugin Bộ xác thực AT-SPI, hãy chọn một mục trong Ô xem cây ứng dụng. "
-"Bộ xác thực sẽ tạo báo cáo đối với mục đã chọn và tất cả các widget con cháu "
-"của nó trong hệ thống phân cấp cây."
+"Để chạy Plugin Bộ xác thực AT-SPI, hãy chọn một mục trong Ô xem cây ứng "
+"dụng. Bộ xác thực sẽ tạo báo cáo đối với mục đã chọn và tất cả các widget "
+"con cháu của nó trong hệ thống phân cấp cây."
 
 #. (itstool) path: section/p
 #: C/validator_plugin.page:53
@@ -2070,8 +2081,8 @@ msgstr ""
 "Báo cáo được tạo ra là tương tác. Do đó, bạn có thể nhấp đúp vào bất kỳ lỗi "
 "nào được tìm thấy để kiểm tra widget nào của ứng dụng mục tiêu đang gây ra "
 "lỗi đó. Widget tương ứng sau đó sẽ xuất hiện được chọn trong <link "
-"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link> và được tô sáng trong ứng "
-"dụng mục tiêu."
+"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link> và được tô sáng trong "
+"ứng dụng mục tiêu."
 
 #. (itstool) path: section/p
 #: C/validator_plugin.page:64
