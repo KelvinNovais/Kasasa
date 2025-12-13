@@ -1,0 +1,2096 @@
+# Vietnamese translation for accerciser.
+# Copyright (C) 2025 accerciser's COPYRIGHT HOLDER
+# This file is distributed under the same license as the accerciser package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Loc Huynh <https://github.com/hthienloc>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: accerciser master\n"
+"POT-Creation-Date: 2025-12-10 11:01+0000\n"
+"PO-Revision-Date: 2025-12-13 11:41+0700\n"
+"Last-Translator: Loc Huynh <https://github.com/hthienloc>\n"
+"Language-Team: Vietnamese <https://github.com/linux-l10n-vi>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-DL-VCS-Web: https://gitlab.gnome.org/GNOME/accerciser/\n"
+"X-DL-Lang: vi\n"
+"X-DL-Module: accerciser\n"
+"X-DL-Branch: master\n"
+"X-DL-Domain: help\n"
+"X-DL-State: None\n"
+"X-Generator: Gtranslator 49.0\n"
+
+#. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
+msgctxt "_"
+msgid "translator-credits"
+msgstr ""
+"Vietnam Linux L10n <https://github.com/linux-l10n-vi>\n"
+"Loc Huynh <https://github.com/hthienloc>"
+
+#. (itstool) path: info/title
+#: C/api_browser_plugin.page:4
+msgctxt "sort"
+msgid "1. API Browser Plugin"
+msgstr "1. Plugin Trình duyệt API"
+
+#. (itstool) path: info/desc
+#: C/api_browser_plugin.page:6
+msgid "Verifying interfaces, methods, and properties"
+msgstr "Xác minh các giao diện, phương thức và thuộc tính"
+
+#. (itstool) path: credit/name
+#: C/api_browser_plugin.page:10 C/desktop_tree_view.page:10
+#: C/event_monitor_plugin.page:10 C/howto_setting_up_accerciser.page:11
+#: C/howto_write_a_plugin.page:10 C/index.page:9
+#: C/interface_viewer_plugin.page:10 C/introduction.page:10
+#: C/ipython_plugin.page:10 C/preferences.page:10 C/quick_select_plugin.page:10
+#: C/validator_plugin.page:10
+msgid "Eitan Isaacson"
+msgstr "Eitan Isaacson"
+
+#. (itstool) path: credit/name
+#: C/api_browser_plugin.page:14 C/desktop_tree_view.page:14
+#: C/event_monitor_plugin.page:14 C/howto_setting_up_accerciser.page:15
+#: C/howto_write_a_plugin.page:14 C/index.page:13
+#: C/interface_viewer_plugin.page:14 C/introduction.page:14
+#: C/ipython_plugin.page:14 C/preferences.page:14 C/quick_select_plugin.page:14
+#: C/validator_plugin.page:14
+msgid "Peter Parente"
+msgstr "Peter Parente"
+
+#. (itstool) path: credit/name
+#: C/api_browser_plugin.page:18 C/desktop_tree_view.page:18
+#: C/event_monitor_plugin.page:18 C/howto_setting_up_accerciser.page:19
+#: C/howto_write_a_plugin.page:18 C/index.page:17
+#: C/interface_viewer_plugin.page:18 C/introduction.page:18
+#: C/ipython_plugin.page:18 C/preferences.page:18 C/quick_select_plugin.page:18
+#: C/validator_plugin.page:18
+msgid "Aline Bessa"
+msgstr "Aline Bessa"
+
+#. (itstool) path: license/p
+#: C/api_browser_plugin.page:22 C/desktop_tree_view.page:22
+#: C/event_monitor_plugin.page:22 C/howto_setting_up_accerciser.page:23
+#: C/howto_write_a_plugin.page:22 C/index.page:21
+#: C/interface_viewer_plugin.page:22 C/introduction.page:22
+#: C/ipython_plugin.page:22 C/preferences.page:22 C/quick_select_plugin.page:22
+#: C/validator_plugin.page:22
+msgid "Creative Commons Share Alike 3.0"
+msgstr "Creative Commons Share Alike 3.0"
+
+#. (itstool) path: page/title
+#. (itstool) path: figure/title
+#: C/api_browser_plugin.page:25 C/api_browser_plugin.page:32
+msgid "API Browser Plugin"
+msgstr "Plugin Trình duyệt API"
+
+#. (itstool) path: page/p
+#: C/api_browser_plugin.page:26
+msgid ""
+"Given an accessible widget selected in the <link "
+"xref=\"desktop_tree_view\">Application Tree View</link>, the API Browser "
+"Plugin shows its implemented AT-SPI interfaces along with its methods and "
+"properties."
+msgstr ""
+"Với một widget tiếp cận được chọn trong <link "
+"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>, Plugin Trình duyệt API "
+"hiển thị các giao diện AT-SPI đã cài đặt của nó cùng với các phương thức và "
+"thuộc tính."
+
+#. (itstool) path: figure/desc
+#. (itstool) path: media/p
+#: C/api_browser_plugin.page:33 C/api_browser_plugin.page:38
+msgid ""
+"The API Browser Plugin allows you to verify interfaces, methods, and "
+"properties of a target accessible widget in an application."
+msgstr ""
+"Plugin Trình duyệt API cho phép bạn xác minh các giao diện, phương thức và "
+"thuộc tính của một widget tiếp cận đích trong một ứng dụng."
+
+#. (itstool) path: figure/media
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/api_browser_plugin.page:37
+msgctxt "_"
+msgid ""
+"external ref='figures/api_browser.png' md5='4f668e4a15d1c308e984d0801b9ecd95'"
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/api_browser_plugin.page:46
+msgid "Running the API Browser Plugin"
+msgstr "Chạy Plugin Trình duyệt API"
+
+#. (itstool) path: section/p
+#: C/api_browser_plugin.page:47
+msgid ""
+"To run the API Browser Plugin, select an accessible widget in the "
+"Application Tree View. Double-clicking a widget highlights it in the "
+"application's interface, so you can be sure whether a certain widget were "
+"the one you were looking for."
+msgstr ""
+"Để chạy Plugin Trình duyệt API, chọn một widget tiếp cận trong Ô xem cây "
+"ứng dụng. Nhấn đúp vào một widget sẽ tô sáng nó trong giao diện của ứng dụng, "
+"để bạn có thể chắc chắn liệu widget đó có phải là cái bạn đang tìm hay không."
+
+#. (itstool) path: section/p
+#: C/api_browser_plugin.page:53
+msgid ""
+"After that, select one of the widget's interfaces in the combobox. All "
+"public methods of the selected interface will be listed in the plugin's "
+"leftmost column. All public properties, with their corresponding values, "
+"will be listed in the plugin's rightmost column."
+msgstr ""
+"Sau đó, chọn một trong các giao diện của widget trong hộp chọn. Tất cả các "
+"phương thức công khai của giao diện đã chọn sẽ được liệt kê trong cột ngoài "
+"cùng bên trái của plugin. Tất cả các thuộc tính công khai, với các giá trị "
+"tương ứng của chúng, sẽ được liệt kê trong cột ngoài cùng bên phải của plugin."
+
+#. (itstool) path: section/p
+#: C/api_browser_plugin.page:59
+msgid ""
+"By default, the API Browser Plugin hides private methods and properties. To "
+"see them listed, unselect the checkbox <cmd>Hide Private Attributes</cmd>. "
+"To hide them again, re-select this checkbox."
+msgstr ""
+"Theo mặc định, Plugin Trình duyệt API ẩn các phương thức và thuộc tính riêng "
+"tư. Để xem chúng được liệt kê, bỏ chọn hộp kiểm <cmd>Hide Private "
+"Attributes</cmd>. Để ẩn lại chúng, chọn lại hộp kiểm này."
+
+#. (itstool) path: info/title
+#: C/desktop_tree_view.page:4
+msgctxt "sort"
+msgid "1. Application Tree View"
+msgstr "1. Ô xem cây ứng dụng"
+
+#. (itstool) path: info/desc
+#: C/desktop_tree_view.page:6
+msgid "Exploring the accessible hierarchy of the desktop"
+msgstr "Khám phá phân cấp tiếp cận của màn hình làm việc"
+
+#. (itstool) path: page/title
+#. (itstool) path: figure/title
+#: C/desktop_tree_view.page:25 C/desktop_tree_view.page:37
+msgid "Application Tree View"
+msgstr "Ô xem cây ứng dụng"
+
+#. (itstool) path: page/p
+#: C/desktop_tree_view.page:27
+msgid ""
+"<app>Accerciser</app>'s interface contains a tree view, namely Application "
+"Tree View, that covers all accessible applications currently running on the "
+"desktop. To create this tree view, <app>Accerciser</app> uses the AT-SPI's "
+"registry daemon. This daemon is responsible for keeping track of all the "
+"accessible applications on the desktop and forwarding X events over the AT-"
+"SPI D-Bus. After getting all accessible applications, <app>Accerciser</app> "
+"represents each one of them as a hierarchical structure with expanding nodes."
+msgstr ""
+"Giao diện của <app>Accerciser</app> chứa một ô xem cây, cụ thể là Ô xem cây "
+"ứng dụng, bao gồm tất cả các ứng dụng tiếp cận hiện đang chạy trên màn hình "
+"làm việc. Để tạo ô xem cây này, <app>Accerciser</app> sử dụng trình nền đăng "
+"ký của AT-SPI. Trình nền này chịu trách nhiệm theo dõi tất cả các ứng dụng "
+"tiếp cận trên màn hình làm việc và chuyển tiếp các sự kiện X qua D-Bus AT-"
+"SPI. Sau khi nhận được tất cả các ứng dụng tiếp cận, <app>Accerciser</app> "
+"biểu diễn từng ứng dụng dưới dạng cấu trúc phân cấp với các nút mở rộng."
+
+#. (itstool) path: figure/desc
+#. (itstool) path: media/p
+#: C/desktop_tree_view.page:38 C/desktop_tree_view.page:43
+msgid ""
+"<app>Accerciser</app>'s Application Tree View represents the interface of "
+"each accessible application running on the desktop as a widget hierarchical "
+"structure."
+msgstr ""
+"Ô xem cây ứng dụng của <app>Accerciser</app> biểu diễn giao diện của mỗi ứng "
+"dụng tiếp cận đang chạy trên màn hình làm việc dưới dạng cấu trúc phân cấp "
+"widget."
+
+#. (itstool) path: figure/media
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/desktop_tree_view.page:42
+msgctxt "_"
+msgid ""
+"external ref='figures/tree_view_accerciser.png' "
+"md5='594e06b7889eff705ac194656939e146'"
+msgstr ""
+
+#. (itstool) path: page/p
+#: C/desktop_tree_view.page:49
+msgid ""
+"The first node of each application represented in this tree view is the "
+"application itself. When you expand a node, you can see all of its child "
+"widgets, which allows a hierarchical view of the application's interface. "
+"For each node, <app>Accerciser</app> provides some basic information, such "
+"as its name, role and number of children."
+msgstr ""
+"Nút đầu tiên của mỗi ứng dụng được biểu diễn trong ô xem cây này là chính ứng "
+"dụng đó. Khi bạn mở rộng một nút, bạn có thể thấy tất cả các widget con của "
+"nó, cho phép có cái nhìn phân cấp về giao diện của ứng dụng. Đối với mỗi "
+"nút, <app>Accerciser</app> cung cấp một số thông tin cơ bản, chẳng hạn như "
+"tên, vai trò và số lượng con."
+
+#. (itstool) path: note/p
+#: C/desktop_tree_view.page:56
+msgid "Be aware that nodes with many children take a long time to expand."
+msgstr "Lưu ý rằng các nút có nhiều con sẽ mất nhiều thời gian để mở rộng."
+
+#. (itstool) path: section/title
+#: C/desktop_tree_view.page:62
+msgid "Bookmarking items in the Application Tree View"
+msgstr "Đánh dấu các mục trong Ô xem cây ứng dụng"
+
+#. (itstool) path: section/p
+#: C/desktop_tree_view.page:63
+msgid ""
+"<app>Accerciser</app> allows bookmarking items in the Application Tree View "
+"for later examining. This is helpful when the target application must be "
+"restarted - after rebuilding it, for example. To bookmark an item, select it "
+"and do <guiseq><gui>Bookmarks</gui><gui>Add Bookmark</gui></guiseq> or press "
+"<keyseq><key>Ctrl</key><key>d</key></keyseq>."
+msgstr ""
+"<app>Accerciser</app> cho phép đánh dấu các mục trong Ô xem cây ứng dụng để "
+"kiểm tra sau. Điều này hữu ích khi ứng dụng đích phải được khởi động lại - "
+"ví dụ sau khi xây dựng lại nó. Để đánh dấu một mục, chọn nó và thực hiện "
+"<guiseq><gui>Bookmarks</gui><gui>Add Bookmark</gui></guiseq> hoặc nhấn "
+"<keyseq><key>Ctrl</key><key>d</key></keyseq>."
+
+#. (itstool) path: section/p
+#: C/desktop_tree_view.page:68
+msgid ""
+"Bookmarks to accessible items in <app>Accerciser</app> are defined by an "
+"application name and a \"path\" in the application's internal accessible "
+"hierarchy to the bookmarked accessible. When the target application is in a "
+"different state - i.e. multiple top level frames -, the path might not be "
+"correct. Bookmarks could be managed by accessing the bookmark editing dialog "
+"through <guiseq><gui>Bookmarks</gui><gui>Edit Bookmarks</gui></guiseq>."
+msgstr ""
+"Các đánh dấu đến mục tiếp cận trong <app>Accerciser</app> được định nghĩa "
+"bởi tên ứng dụng và một \"path\" (đường dẫn) trong phân cấp tiếp cận nội bộ "
+"của ứng dụng đến đối tượng tiếp cận được đánh dấu. Khi ứng dụng đích ở một "
+"trạng thái khác - tức là nhiều khung cấp cao nhất -, đường dẫn có thể không "
+"chính xác. Các đánh dấu có thể được quản lý bằng cách truy cập hộp thoại "
+"chỉnh sửa đánh dấu thông qua <guiseq><gui>Bookmarks</gui><gui>Edit "
+"Bookmarks</gui></guiseq>."
+
+#. (itstool) path: info/title
+#: C/event_monitor_plugin.page:4
+msgctxt "sort"
+msgid "4. Event Monitor Plugin"
+msgstr "4. Plugin Theo dõi sự kiện"
+
+#. (itstool) path: info/desc
+#: C/event_monitor_plugin.page:6
+msgid "Monitoring accessible events as they occur"
+msgstr "Theo dõi các sự kiện tiếp cận khi chúng xảy ra"
+
+#. (itstool) path: page/title
+#. (itstool) path: figure/title
+#: C/event_monitor_plugin.page:25 C/event_monitor_plugin.page:35
+msgid "Event Monitor Plugin"
+msgstr "Plugin Theo dõi sự kiện"
+
+#. (itstool) path: page/p
+#: C/event_monitor_plugin.page:26
+msgid ""
+"The Event Monitor Plugin allows you to view <link href=\"http://"
+"accessibility.linuxfoundation.org/a11yspecs/atspi/adoc/atspi-"
+"events.html\">AT-SPI events</link> as they occur on the applications exposed "
+"in <app>Accerciser</app>'s <link xref=\"desktop_tree_view\">Application Tree "
+"View</link>. The plugin is useful to explore the dynamics of an "
+"application's interface and verify which accessible widgets are related to "
+"which AT-SPI events."
+msgstr ""
+"Plugin Theo dõi sự kiện cho phép bạn xem <link href=\"http://"
+"accessibility.linuxfoundation.org/a11yspecs/atspi/adoc/atspi-"
+"events.html\">các sự kiện AT-SPI</link> khi chúng xảy ra trên các ứng dụng "
+"hiển thị trong <link xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link> "
+"của <app>Accerciser</app>. Plugin này hữu ích để khám phá sự năng động của "
+"giao diện ứng dụng và xác minh widget tiếp cận nào liên quan đến sự kiện AT-"
+"SPI nào."
+
+#. (itstool) path: figure/desc
+#. (itstool) path: media/p
+#: C/event_monitor_plugin.page:36 C/event_monitor_plugin.page:41
+msgid ""
+"The Event Monitor Plugin allows you to view AT-SPI events and match them "
+"with accessible widgets."
+msgstr ""
+"Plugin Theo dõi sự kiện cho phép bạn xem các sự kiện AT-SPI và khớp chúng "
+"với các widget tiếp cận."
+
+#. (itstool) path: figure/media
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/event_monitor_plugin.page:40
+msgctxt "_"
+msgid ""
+"external ref='figures/event_monitor_plugin.png' "
+"md5='d4433124f4833aa7322c7a6ec0b21104'"
+msgstr ""
+
+#. (itstool) path: section/title
+#: C/event_monitor_plugin.page:49
+msgid "Running the Event Monitor Plugin"
+msgstr "Chạy Plugin Theo dõi sự kiện"
+
+#. (itstool) path: section/p
+#: C/event_monitor_plugin.page:50
+msgid ""
+"When you open the Event Monitor Plugin, you see a list of checkboxes "
+"representing all the different AT-SPI event classes covered by the plugin:"
+msgstr ""
+"Khi bạn mở Plugin Theo dõi sự kiện, bạn sẽ thấy danh sách các hộp kiểm đại "
+"diện cho tất cả các lớp sự kiện AT-SPI khác nhau được plugin bao phủ:"
+
+#. (itstool) path: item/p
+#: C/event_monitor_plugin.page:58
+msgid "document"
+msgstr "tài liệu"
+
+#. (itstool) path: item/p
+#: C/event_monitor_plugin.page:63
+msgid "focus"
+msgstr "tiêu điểm"
+
+#. (itstool) path: item/p
+#: C/event_monitor_plugin.page:68
+msgid "mouse"
+msgstr "chuột"
+
+#. (itstool) path: item/p
+#: C/event_monitor_plugin.page:73
+msgid "object"
+msgstr "đối tượng"
+
+#. (itstool) path: item/p
+#: C/event_monitor_plugin.page:78
+msgid "terminal"
+msgstr "terminal"
+
+#. (itstool) path: item/p
+#: C/event_monitor_plugin.page:83
+msgid "window"
+msgstr "cửa sổ"
+
+#. (itstool) path: section/p
+#: C/event_monitor_plugin.page:89
+msgid ""
+"If you check a class, all of its event types will be monitored by the "
+"plugin. The classes are exposed as tree structures; therefore, you can "
+"refine your selection by expanding them and checking only the event types "
+"you really care about."
+msgstr ""
+"Nếu bạn chọn một lớp, tất cả các kiểu sự kiện của nó sẽ được plugin theo "
+"dõi. Các lớp được hiển thị dưới dạng cấu trúc cây; do đó, bạn có thể tinh "
+"chỉnh lựa chọn của mình bằng cách mở rộng chúng và chỉ chọn các kiểu sự kiện "
+"bạn thực sự quan tâm."
+
+#. (itstool) path: section/p
+#: C/event_monitor_plugin.page:95
+msgid ""
+"If you want to monitor all possible types of AT-SPI events, press the "
+"<cmd>Select All</cmd> button. Similarly, if you want to clear all currently "
+"selected event types, press the <cmd>Clear Selection</cmd> button."
+msgstr ""
+"Nếu bạn muốn theo dõi tất cả các kiểu sự kiện AT-SPI có thể, nhấn nút "
+"<cmd>Select All</cmd>. Tương tự, nếu bạn muốn xóa tất cả các kiểu sự kiện "
+"đang được chọn, nhấn nút <cmd>Clear Selection</cmd>."
+
+#. (itstool) path: note/p
+#: C/event_monitor_plugin.page:102
+msgid ""
+"Selecting only a few event types per monitoring gives you a clearer output."
+msgstr "Chỉ chọn một vài kiểu sự kiện mỗi lần theo dõi sẽ cho kết quả rõ ràng hơn."
+
+#. (itstool) path: section/p
+#: C/event_monitor_plugin.page:107
+msgid ""
+"Another way to refine event monitoring is by the event source. By default, "
+"the Source option <cmd>Everything</cmd> is selected, indicating that AT-SPI "
+"events of all applications will be monitored. If you want to investigate a "
+"single application, select it in the Application Tree View and click the "
+"Source radio button <cmd>Selected application</cmd>. Likewise, if you want "
+"to monitor a single accessible widget and its corresponding descendants, "
+"select it in the Application Tree View and click the Source radio button "
+"<cmd>Selected accessible</cmd>."
+msgstr ""
+"Một cách khác để tinh chỉnh việc theo dõi sự kiện là theo nguồn sự kiện. "
+"Theo mặc định, tùy chọn Source <cmd>Everything</cmd> được chọn, cho biết rằng "
+"các sự kiện AT-SPI của tất cả các ứng dụng sẽ được theo dõi. Nếu bạn muốn "
+"điều tra một ứng dụng đơn lẻ, chọn nó trong Ô xem cây ứng dụng và nhấp vào "
+"nút radio Source <cmd>Selected application</cmd>. Tương tự, nếu bạn muốn "
+"theo dõi một widget tiếp cận đơn lẻ và các con cháu tương ứng của nó, chọn "
+"nó trong Ô xem cây ứng dụng và nhấp vào nút radio Source <cmd>Selected "
+"accessible</cmd>."
+
+#. (itstool) path: section/p
+#: C/event_monitor_plugin.page:116
+msgid ""
+"After selecting event types and specifying a Source option, the Event "
+"Monitor Plugin starts monitoring AT-SPI events automatically, because the "
+"<cmd>Monitor Events</cmd> button is pressed by default. Whenever you want to "
+"stop monitoring, click the <cmd>Monitor Events</cmd> button. To restart "
+"monitoring, press this button again."
+msgstr ""
+"Sau khi chọn các kiểu sự kiện và chỉ định tùy chọn Source, Plugin Theo dõi "
+"sự kiện bắt đầu theo dõi các sự kiện AT-SPI một cách tự động, vì nút "
+"<cmd>Monitor Events</cmd> được nhấn theo mặc định. Bất cứ khi nào bạn muốn "
+"dừng theo dõi, nhấp nút <cmd>Monitor Events</cmd>. Để khởi động lại việc "
+"theo dõi, nhấn nút này lần nữa."
+
+#. (itstool) path: section/p
+#: C/event_monitor_plugin.page:123
+msgid ""
+"For each incoming event, the Event Monitor Plugin indicates the source and "
+"the application. Activating the link for either of these items will cause it "
+"to become selected in the Application Tree View."
+msgstr ""
+"Đối với mỗi sự kiện đến, Plugin Theo dõi sự kiện cho biết nguồn và ứng dụng. "
+"Kích hoạt liên kết cho bất kỳ mục nào trong số này sẽ khiến nó được chọn "
+"trong Ô xem cây ứng dụng."
+
+#. (itstool) path: section/p
+#: C/event_monitor_plugin.page:128
+msgid ""
+"If you want to save the output generated by the Event Monitor Plugin, just "
+"press the <cmd>Save</cmd> button. To clear the output screen, you just need "
+"to click the <cmd>Clear</cmd> button."
+msgstr ""
+"Nếu bạn muốn lưu kết quả được tạo bởi Plugin Theo dõi sự kiện, chỉ cần nhấn "
+"nút <cmd>Save</cmd>. Để xóa màn hình kết quả, bạn chỉ cần nhấp nút "
+"<cmd>Clear</cmd>."
+
+#. (itstool) path: info/title
+#: C/howto_setting_up_accerciser.page:5
+msgctxt "sort"
+msgid "2. How to install and run <app>Accerciser</app>"
+msgstr "2. Cách cài đặt và chạy <app>Accerciser</app>"
+
+#. (itstool) path: info/title
+#: C/howto_setting_up_accerciser.page:6
+msgctxt "link"
+msgid "Setting up <app>Accerciser</app>"
+msgstr "Thiết lập <app>Accerciser</app>"
+
+#. (itstool) path: info/desc
+#: C/howto_setting_up_accerciser.page:7
+msgid "Installing and running <app>Accerciser</app> on your system"
+msgstr "Cài đặt và chạy <app>Accerciser</app> trên hệ thống của bạn"
+
+#. (itstool) path: page/title
+#: C/howto_setting_up_accerciser.page:26
+msgid "Setting up <app>Accerciser</app>"
+msgstr "Thiết lập <app>Accerciser</app>"
+
+#. (itstool) path: page/p
+#: C/howto_setting_up_accerciser.page:28
+msgid ""
+"Check if your distribution has <app>Accerciser</app> already packaged. If "
+"this is the case, you can install it via its package manager. Otherwise, you "
+"can follow the section below to install <app>Accerciser</app> manually."
+msgstr ""
+"Kiểm tra xem bản phân phối của bạn đã đóng gói <app>Accerciser</app> chưa. "
+"Nếu có, bạn có thể cài đặt nó qua trình quản lý gói. Nếu không, bạn có thể "
+"làm theo phần bên dưới để cài đặt <app>Accerciser</app> thủ công."
+
+#. (itstool) path: section/title
+#: C/howto_setting_up_accerciser.page:35
+msgid "Installing <app>Accerciser</app> manually"
+msgstr "Cài đặt <app>Accerciser</app> thủ công"
+
+#. (itstool) path: section/p
+#: C/howto_setting_up_accerciser.page:36
+msgid ""
+"To install <app>Accerciser</app> manually, you will need to download it "
+"first. <app>Accerciser</app>'s source code can either be downloaded from "
+"<link href=\"http://ftp.gnome.org/pub/GNOME/sources/accerciser/\">the "
+"gnome.org FTP site</link> or cloned from <link href=\"https://"
+"gitlab.gnome.org/GNOME/accerciser\">the gnome.org GIT repository</link>."
+msgstr ""
+"Để cài đặt <app>Accerciser</app> thủ công, trước tiên bạn cần tải nó về. Mã "
+"nguồn của <app>Accerciser</app> có thể được tải về từ <link href=\"http://"
+"ftp.gnome.org/pub/GNOME/sources/accerciser/\">trang FTP gnome.org</link> "
+"hoặc nhân bản từ <link href=\"https://gitlab.gnome.org/GNOME/accerciser"
+"\">kho GIT gnome.org</link>."
+
+#. (itstool) path: note/p
+#: C/howto_setting_up_accerciser.page:43
+msgid ""
+"If you are not using GNOME 3, you may find that <app>Accerciser</app> "
+"version 3 or later is not compatible with your environment."
+msgstr ""
+"Nếu bạn không sử dụng GNOME 3, bạn có thể thấy rằng <app>Accerciser</app> "
+"phiên bản 3 hoặc mới hơn không tương thích với môi trường của bạn."
+
+#. (itstool) path: section/p
+#: C/howto_setting_up_accerciser.page:50
+msgid ""
+"After getting <app>Accerciser</app>, install it using the following commands:"
+msgstr ""
+"Sau khi lấy <app>Accerciser</app>, hãy cài đặt nó bằng các lệnh sau:"
+
+#. (itstool) path: item/p
+#: C/howto_setting_up_accerciser.page:54
+msgid "<cmd>cd accerciser</cmd>"
+msgstr "<cmd>cd accerciser</cmd>"
+
+#. (itstool) path: item/p
+#: C/howto_setting_up_accerciser.page:55
+msgid "<cmd>meson setup _build .</cmd>"
+msgstr "<cmd>meson setup _build .</cmd>"
+
+#. (itstool) path: item/p
+#: C/howto_setting_up_accerciser.page:56
+msgid "<cmd>meson compile -C _build</cmd>"
+msgstr "<cmd>meson compile -C _build</cmd>"
+
+#. (itstool) path: item/p
+#: C/howto_setting_up_accerciser.page:57
+msgid ""
+"<cmd>sudo meson install -C _build # or meson install -C _build as root</cmd>"
+msgstr ""
+"<cmd>sudo meson install -C _build # hoặc meson install -C _build với tư cách "
+"root</cmd>"
+
+#. (itstool) path: section/p
+#: C/howto_setting_up_accerciser.page:59
+msgid ""
+"If you find any problems installing <app>Accerciser</app> on your system, it "
+"is likely that some of its dependencies are missing. Check <link "
+"href=\"https://live.gnome.org/Accerciser/#Requirements\"> <app>Accerciser</"
+"app>'s wiki</link> to make sure you have all dependencies properly installed."
+msgstr ""
+"Nếu bạn gặp bất kỳ vấn đề nào khi cài đặt <app>Accerciser</app> trên hệ "
+"thống của mình, rất có thể là do thiếu một số phần phụ thuộc. Hãy kiểm tra "
+"<link href=\"https://live.gnome.org/Accerciser/#Requirements\"> wiki của "
+"<app>Accerciser</app></link> để đảm bảo bạn đã cài đặt đúng tất cả các phần "
+"phụ thuộc."
+
+#. (itstool) path: section/title
+#: C/howto_setting_up_accerciser.page:67
+msgid "Running <app>Accerciser</app>"
+msgstr "Chạy <app>Accerciser</app>"
+
+#. (itstool) path: section/p
+#: C/howto_setting_up_accerciser.page:68
+msgid ""
+"To start <app>Accerciser</app>, type <cmd>accerciser</cmd> in a terminal "
+"window or within the Run dialog and then press <key>Return</key>."
+msgstr ""
+"Để bắt đầu <app>Accerciser</app>, gõ <cmd>accerciser</cmd> trong cửa sổ "
+"terminal hoặc trong hộp thoại Chạy và sau đó nhấn <key>Return</key>."
+
+#. (itstool) path: section/p
+#: C/howto_setting_up_accerciser.page:72
+msgid ""
+"After that, you can use <app>Accerciser</app> to inspect any accessible item "
+"shown in the <link xref=\"desktop_tree_view\">Application Tree View</link>'s "
+"hierarchy. Select an item and investigate it using one of <app>Accerciser</"
+"app>'s plugins."
+msgstr ""
+"Sau đó, bạn có thể sử dụng <app>Accerciser</app> để kiểm tra bất kỳ mục tiếp "
+"cận nào được hiển thị trong phân cấp của <link "
+"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>. Chọn một mục và điều "
+"tra nó bằng cách sử dụng một trong các plugin của <app>Accerciser</app>."
+
+#. (itstool) path: info/title
+#: C/howto_write_a_plugin.page:4
+msgctxt "sort"
+msgid "3. Writing New Plugins"
+msgstr "3. Viết các plugin mới"
+
+#. (itstool) path: info/desc
+#: C/howto_write_a_plugin.page:6
+msgid "Extending <app>Accerciser</app> with your desired functionalities"
+msgstr "Mở rộng <app>Accerciser</app> với các chức năng mong muốn của bạn"
+
+#. (itstool) path: page/title
+#: C/howto_write_a_plugin.page:25
+msgid "Writing Plugins for <app>Accerciser</app>"
+msgstr "Viết các plugin cho <app>Accerciser</app>"
+
+#. (itstool) path: page/p
+#: C/howto_write_a_plugin.page:26
+msgid ""
+"Extending <app>Accerciser</app> with new plugins became much simpler since "
+"<link href=\"https://wiki.gnome.org/Apps/Accerciser/PluginTutorial\">this "
+"tutorial</link> was written. Given that it provides a very detailed "
+"explanation about the topic, this section consists basically of its original "
+"content - only simple editions and updates were done."
+msgstr ""
+"Việc mở rộng <app>Accerciser</app> bằng các plugin mới đã trở nên đơn giản "
+"hơn nhiều kể từ khi <link href=\"https://wiki.gnome.org/Apps/Accerciser/"
+"PluginTutorial\">hướng dẫn này</link> được viết. Do nó cung cấp lời giải "
+"thích rất chi tiết về chủ đề này, phần này về cơ bản bao gồm nội dung gốc "
+"của nó - chỉ có các chỉnh sửa và cập nhật đơn giản được thực hiện."
+
+#. (itstool) path: page/p
+#: C/howto_write_a_plugin.page:33
+msgid "<app>Accerciser</app> supports three basic types of plugins:"
+msgstr "<app>Accerciser</app> hỗ trợ ba loại plugin cơ bản:"
+
+#. (itstool) path: item/p
+#: C/howto_write_a_plugin.page:38
+msgid ""
+"Base plugins - These plugins are derived from the Plugin base class. They do "
+"not provide a visible interface, but could provide additional functionality "
+"to <app>Accerciser</app>."
+msgstr ""
+"Plugin cơ sở - Những plugin này được dẫn xuất từ lớp cơ sở Plugin. Chúng "
+"không cung cấp giao diện hiển thị, nhưng có thể cung cấp chức năng bổ sung "
+"cho <app>Accerciser</app>."
+
+#. (itstool) path: item/p
+#: C/howto_write_a_plugin.page:44
+msgid ""
+"Console plugins - These plugins provide simple console output into a text "
+"area in a plugin tab. Not to be confused with the packaged <link "
+"xref=\"ipython_plugin\">IPython Console Plugin</link>."
+msgstr ""
+"Plugin console - Những plugin này cung cấp đầu ra console đơn giản vào vùng "
+"văn bản trong thẻ plugin. Đừng nhầm lẫn với <link "
+"xref=\"ipython_plugin\">Plugin Console IPython</link> đã đóng gói."
+
+#. (itstool) path: item/p
+#: C/howto_write_a_plugin.page:50
+msgid ""
+"Viewport plugins - The majority of <app>Accerciser</app> default plugins. "
+"They provide a custom graphical interface in a tab."
+msgstr ""
+"Plugin khung xem - Đa số các plugin mặc định của <app>Accerciser</app>. "
+"Chúng cung cấp giao diện đồ họa tùy chỉnh trong một thẻ."
+
+#. (itstool) path: section/title
+#: C/howto_write_a_plugin.page:58
+msgid "Creating a Base Plugin"
+msgstr "Tạo một Plugin cơ sở"
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:59
+msgid ""
+"We will create a simplified version of the <link "
+"xref=\"quick_select_plugin\">Quick Select Plugin</link>. This plugin will "
+"select the last focused accessible when pressing <keyseq><key>ctrl</"
+"key><key>alt</key><key>e</key></keyseq>."
+msgstr ""
+"Chúng ta sẽ tạo một phiên bản đơn giản hóa của <link "
+"xref=\"quick_select_plugin\">Plugin Chọn nhanh</link>. Plugin này sẽ chọn "
+"đối tượng tiếp cận được focus cuối cùng khi nhấn <keyseq><key>ctrl</"
+"key><key>alt</key><key>e</key></keyseq>."
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:63
+msgid "First off, the import lines we will use are:"
+msgstr "Đầu tiên, các dòng import mà chúng ta sẽ sử dụng là:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:66
+#, no-wrap
+msgid ""
+"\n"
+"      from accerciser.plugin import Plugin\n"
+"      import gtk\n"
+"      import pyatspi\n"
+"    "
+msgstr ""
+"\n"
+"      from accerciser.plugin import Plugin\n"
+"      import gtk\n"
+"      import pyatspi\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:71
+msgid ""
+"Next we will derive a new class from the Plugin base class, and assign some "
+"mandatory class attributes:"
+msgstr ""
+"Tiếp theo, chúng ta sẽ dẫn xuất một lớp mới từ lớp cơ sở Plugin, và gán một "
+"số thuộc tính lớp bắt buộc:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:75
+#, no-wrap
+msgid ""
+"\n"
+"      class FocusSelect(Plugin):\n"
+"        plugin_name = 'Focus Select'\n"
+"        plugin_description = 'Allows selecting last focused accessible.'\n"
+"    "
+msgstr ""
+"\n"
+"      class FocusSelect(Plugin):\n"
+"        plugin_name = 'Chọn tiêu điểm'\n"
+"        plugin_description = 'Cho phép chọn đối tượng tiếp cận được focus cuối cùng.'\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:80
+msgid ""
+"We will now override the init method, in which we will set a global key "
+"action for selecting the last focused accessible item, register an event "
+"listener for the \"focus\" event, and set the <cmd>last_focused</cmd> "
+"instance variable to <cmd>None</cmd>."
+msgstr ""
+"Bây giờ chúng ta sẽ ghi đè phương thức init, trong đó chúng ta sẽ đặt một "
+"hành động phím tắt toàn cục để chọn mục tiếp cận được focus cuối cùng, đăng "
+"ký trình lắng nghe sự kiện cho sự kiện \"focus\", và đặt biến instance "
+"<cmd>last_focused</cmd> thành <cmd>None</cmd>."
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:86
+#, no-wrap
+msgid ""
+"\n"
+"      def init(self):\n"
+"        pyatspi.Registry.registerEventListener(self.accEventFocusChanged, 'focus')\n"
+"        self.global_hotkeys = [('Inspect last focused accessible',\n"
+"                                self.inspectLastFocused,\n"
+"                                gtk.keysyms.e,\n"
+"                                gtk.gdk.CONTROL_MASK | gtk.gdk.MOD1_MASK)]\n"
+"        self.last_focused = None\n"
+"    "
+msgstr ""
+"\n"
+"      def init(self):\n"
+"        pyatspi.Registry.registerEventListener(self.accEventFocusChanged, 'focus')\n"
+"        self.global_hotkeys = [('Kiểm tra đối tượng tiếp cận được focus cuối cùng',\n"
+"                                self.inspectLastFocused,\n"
+"                                gtk.keysyms.e,\n"
+"                                gtk.gdk.CONTROL_MASK | gtk.gdk.MOD1_MASK)]\n"
+"        self.last_focused = None\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:95
+msgid ""
+"Notice that the <cmd>global_hotkeys</cmd> instance variable is a list of "
+"tuples. Each tuple is a global hotkey action, composed by an action "
+"description, a desired method to call, a key symbol of keypress, and a key "
+"modifier mask."
+msgstr ""
+"Lưu ý rằng biến instance <cmd>global_hotkeys</cmd> là một danh sách các "
+"tuple. Mỗi tuple là một hành động phím tắt toàn cục, bao gồm mô tả hành "
+"động, phương thức mong muốn để gọi, ký hiệu phím của lần nhấn phím, và mặt "
+"nạ bổ trợ phím."
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:100
+msgid ""
+"In the \"focus\" event callback, we assign the <cmd>last_focused</cmd> "
+"instance variable with the accessible item that has just emitted the "
+"\"focus\" event."
+msgstr ""
+"Trong callback sự kiện \"focus\", chúng ta gán biến instance "
+"<cmd>last_focused</cmd> với mục tiếp cận vừa phát ra sự kiện \"focus\"."
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:104
+#, no-wrap
+msgid ""
+"\n"
+"      def accEventFocusChanged(self, event):\n"
+"        if not self.isMyApp(event.source):\n"
+"          self.last_focused = event.source\n"
+"    "
+msgstr ""
+"\n"
+"      def accEventFocusChanged(self, event):\n"
+"        if not self.isMyApp(event.source):\n"
+"          self.last_focused = event.source\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:109
+msgid ""
+"In the hotkey action callback, we update the application wide node with the "
+"last focused accessible item, if we have recorded it:"
+msgstr ""
+"Trong callback hành động phím tắt, chúng ta cập nhật nút trên toàn ứng dụng "
+"với mục tiếp cận được focus cuối cùng, nếu chúng ta đã ghi lại nó:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:113
+#, no-wrap
+msgid ""
+"\n"
+"      def inspectLastFocused(self):\n"
+"        if self.last_focused:\n"
+"          self.node.update(self.last_focused)\n"
+"    "
+msgstr ""
+"\n"
+"      def inspectLastFocused(self):\n"
+"        if self.last_focused:\n"
+"          self.node.update(self.last_focused)\n"
+"    "
+
+#. (itstool) path: section/title
+#: C/howto_write_a_plugin.page:120
+msgid "Creating a Console Plugin"
+msgstr "Tạo một Plugin console"
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:121
+msgid ""
+"We will create a console plugin to display focus changes emitted by an "
+"accessible item with a \"push button\" role - remember that it is easy to "
+"check what is the role of any item with <app>Accerciser</app>; you can "
+"verify it in the <link xref=\"desktop_tree_view\">Application Tree View</"
+"link>, for example."
+msgstr ""
+"Chúng ta sẽ tạo một plugin console để hiển thị các thay đổi tiêu điểm được "
+"phát ra bởi một mục tiếp cận có vai trò \"push button\" - hãy nhớ rằng rất "
+"dễ kiểm tra vai trò của bất kỳ mục nào với <app>Accerciser</app>; ví dụ, bạn "
+"có thể xác minh nó trong <link xref=\"desktop_tree_view\">Ô xem cây ứng "
+"dụng</link>."
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:127
+msgid "The needed import lines are:"
+msgstr "Các dòng import cần thiết là:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:130
+#, no-wrap
+msgid ""
+"\n"
+"      from accerciser.plugin import ConsolePlugin\n"
+"      import pyatspi\n"
+"    "
+msgstr ""
+"\n"
+"      from accerciser.plugin import ConsolePlugin\n"
+"      import pyatspi\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:134
+msgid "Then we add a class definition, with a plugin name and description:"
+msgstr "Sau đó, chúng ta thêm định nghĩa lớp, với tên và mô tả plugin:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:137
+#, no-wrap
+msgid ""
+"\n"
+"      class PushButtonFocus(ConsolePlugin):\n"
+"        plugin_name = 'Push Button Focus'\n"
+"        plugin_description = 'Print event when pushbutton get\\'s focus.'\n"
+"    "
+msgstr ""
+"\n"
+"      class PushButtonFocus(ConsolePlugin):\n"
+"        plugin_name = 'Tiêu điểm nút nhấn'\n"
+"        plugin_description = 'In sự kiện khi nút nhấn nhận được tiêu điểm.'\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:142
+msgid "We override the init method adding a register listener:"
+msgstr "Chúng ta ghi đè phương thức init thêm một trình lắng nghe đăng ký:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:145
+#, no-wrap
+msgid ""
+"\n"
+"       def init(self):\n"
+"         pyatspi.Registry.registerEventListener(self.accEventFocusChanged, 'focus')\n"
+"    "
+msgstr ""
+"\n"
+"       def init(self):\n"
+"         pyatspi.Registry.registerEventListener(self.accEventFocusChanged, 'focus')\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:149
+msgid "In the callback method, all push button events are printed."
+msgstr "Trong phương thức callback, tất cả các sự kiện nút nhấn được in ra."
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:152
+#, no-wrap
+msgid ""
+"\n"
+"      def accEventFocusChanged(self, event):\n"
+"        if event.source.getRole() == pyatspi.ROLE_PUSH_BUTTON:\n"
+"          self.appendText(str(event)+'\\n')\n"
+"    "
+msgstr ""
+"\n"
+"      def accEventFocusChanged(self, event):\n"
+"        if event.source.getRole() == pyatspi.ROLE_PUSH_BUTTON:\n"
+"          self.appendText(str(event)+'\\n')\n"
+"    "
+
+#. (itstool) path: section/title
+#: C/howto_write_a_plugin.page:159
+msgid "Creating a Viewport Plugin"
+msgstr "Tạo một Plugin khung xem"
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:160
+msgid ""
+"We will create a viewport plugin that allows quick testing of the \"click\" "
+"action in accessible items that support the AT-SPI Action interface and have "
+"an action named \"click\". It will be a simple button that, once clicked, "
+"does the \"click\" action in the accessible."
+msgstr ""
+"Chúng ta sẽ tạo một plugin khung xem cho phép kiểm tra nhanh hành động "
+"\"click\" (nhấp) trong các mục tiếp cận hỗ trợ giao diện Action (Hành động) "
+"của AT-SPI và có một hành động tên là \"click\". Nó sẽ là một nút đơn giản "
+"mà khi được nhấp, sẽ thực hiện hành động \"click\" trong đối tượng tiếp cận."
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:166
+msgid "First off, some mandatory import lines:"
+msgstr "Đầu tiên, một số dòng import bắt buộc:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:169
+#, no-wrap
+msgid ""
+"\n"
+"      import gtk\n"
+"      from accerciser.plugin import ViewportPlugin\n"
+"    "
+msgstr ""
+"\n"
+"      import gtk\n"
+"      from accerciser.plugin import ViewportPlugin\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:173
+msgid "Next, a class definition, with a name and description:"
+msgstr "Tiếp theo, một định nghĩa lớp, với tên và mô tả:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:176
+#, no-wrap
+msgid ""
+"\n"
+"      class Clicker(ViewportPlugin):\n"
+"        plugin_name = 'Clicker'\n"
+"        plugin_description = 'Test the \"click\" action in relevant accessibles.'\n"
+"    "
+msgstr ""
+"\n"
+"      class Clicker(ViewportPlugin):\n"
+"        plugin_name = 'Clicker'\n"
+"        plugin_description = 'Kiểm tra hành động \"nhấp\" trong các đối tượng tiếp cận thích hợp.'\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:181
+msgid ""
+"We override the init method with some UI building, and connecting a callback "
+"to a signal for the button. We set the alignment to allow the button to be "
+"centered in the plugin tab, and not monstrously take up the entire plugin "
+"space. Notice that the <cmd>plugin_area</cmd> instance variable contains a "
+"gtk.Frame that could be populated with all the plugin's widgets."
+msgstr ""
+"Chúng ta ghi đè phương thức init với một số công việc xây dựng UI, và kết "
+"nối một callback tới một tín hiệu cho nút. Chúng ta thiết lập căn chỉnh để "
+"cho phép nút được căn giữa trong thẻ plugin, và không chiếm toàn bộ không "
+"gian plugin một cách kỳ cục. Lưu ý rằng biến instance <cmd>plugin_area</cmd> "
+"chứa một gtk.Frame có thể được điền với tất cả các widget của plugin."
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:188
+#, no-wrap
+msgid ""
+"\n"
+"       def init(self):\n"
+"         self.click_button = gtk.Button('Click me!')\n"
+"         self.click_button.set_halign(gtk.Align.CENTER)\n"
+"         self.click_button.set_valign(gtk.Align.CENTER)\n"
+"         self.plugin_area.add(self.click_button)\n"
+"\n"
+"         self.click_button.connect('clicked', self.onClick)\n"
+"\n"
+"         self.show_all()\n"
+"    "
+msgstr ""
+"\n"
+"       def init(self):\n"
+"         self.click_button = gtk.Button('Nhấp tôi đi!')\n"
+"         self.click_button.set_halign(gtk.Align.CENTER)\n"
+"         self.click_button.set_valign(gtk.Align.CENTER)\n"
+"         self.plugin_area.add(self.click_button)\n"
+"\n"
+"         self.click_button.connect('clicked', self.onClick)\n"
+"\n"
+"         self.show_all()\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:199
+msgid ""
+"We also created a convenience method that returns a list of supported "
+"actions of the currently selected accessible item - if it does not support "
+"the Action interface, it returns an empty list:"
+msgstr ""
+"Chúng ta cũng đã tạo một phương thức tiện lợi trả về danh sách các hành động "
+"được hỗ trợ của mục tiếp cận đang được chọn - nếu nó không hỗ trợ giao diện "
+"Action, nó trả về một danh sách rỗng:"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:204
+#, no-wrap
+msgid ""
+"\n"
+"       def accSupportedActions(self):\n"
+"       try:\n"
+"         ai = self.node.acc.queryAction()\n"
+"       except NotImplementedError:\n"
+"         action_names = []\n"
+"       else:\n"
+"         action_names = [ai.getName(i) for i in xrange(ai.nActions)]\n"
+"       return action_names\n"
+"    "
+msgstr ""
+"\n"
+"       def accSupportedActions(self):\n"
+"       try:\n"
+"         ai = self.node.acc.queryAction()\n"
+"       except NotImplementedError:\n"
+"         action_names = []\n"
+"       else:\n"
+"         action_names = [ai.getName(i) for i in xrange(ai.nActions)]\n"
+"       return action_names\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:214
+msgid ""
+"The base plugin class has a method call onAccChanged that is called "
+"everytime the target application's selected accessible item changes. We will "
+"override it setting the button to be sensitive only when the current "
+"accessible item has the \"click\" action:"
+msgstr ""
+"Lớp plugin cơ sở có một phương thức gọi là onAccChanged được gọi mỗi khi mục "
+"tiếp cận được chọn của ứng dụng đích thay đổi. Chúng ta sẽ ghi đè nó, thiết "
+"lập nút chỉ nhạy (sensitive) khi mục tiếp cận hiện tại có hành động \"click\":"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:219
+#, no-wrap
+msgid ""
+"\n"
+"       def onAccChanged(self, acc):\n"
+"         has_click = 'click' in self.accSupportedActions()\n"
+"         self.click_button.set_sensitive(has_click)\n"
+"    "
+msgstr ""
+"\n"
+"       def onAccChanged(self, acc):\n"
+"         has_click = 'click' in self.accSupportedActions()\n"
+"         self.click_button.set_sensitive(has_click)\n"
+"    "
+
+#. (itstool) path: section/p
+#: C/howto_write_a_plugin.page:224
+msgid ""
+"The callback method for button \"clicked\" performs the \"click\" action on "
+"the accessible item. Since this callback could only be called when the "
+"button is sensitive, we don't need to worry about checking if the current "
+"accessible has the \"click\" action?"
+msgstr ""
+"Phương thức callback cho sự kiện \"clicked\" của nút thực hiện hành động "
+"\"click\" trên mục tiếp cận. Vì callback này chỉ có thể được gọi khi nút "
+"đang nhạy, chúng ta không cần lo lắng về việc kiểm tra xem đối tượng tiếp "
+"cận hiện tại có hành động \"click\" hay không?"
+
+#. (itstool) path: section/code
+#: C/howto_write_a_plugin.page:229
+#, no-wrap
+msgid ""
+"\n"
+"      def onClick(self, button):\n"
+"        ai = self.node.acc.queryAction()\n"
+"        action_names = [ai.getName(i) for i in xrange(ai.nActions)]\n"
+"        ai.doAction(action_names.index('click'))\n"
+"    "
+msgstr ""
+"\n"
+"      def onClick(self, button):\n"
+"        ai = self.node.acc.queryAction()\n"
+"        action_names = [ai.getName(i) for i in xrange(ai.nActions)]\n"
+"        ai.doAction(action_names.index('click'))\n"
+"    "
+
+#. (itstool) path: info/title
+#: C/index.page:6
+msgctxt "text"
+msgid "Accerciser"
+msgstr "Accerciser"
+
+#. (itstool) path: info/title
+#: C/index.page:7
+msgctxt "link"
+msgid "Introduction to <app>Accerciser</app>"
+msgstr "Giới thiệu về <app>Accerciser</app>"
+
+#. (itstool) path: media/span
+#: C/index.page:26
+msgid "<app>Accerciser</app>'s logo"
+msgstr "Logo của <app>Accerciser</app>"
+
+#. (itstool) path: page/title
+#: C/index.page:24
+msgid "<_:media-1/> <app>Accerciser</app>"
+msgstr "<_:media-1/> <app>Accerciser</app>"
+
+#. (itstool) path: note/title
+#: C/index.page:31
+msgid "Before You Begin"
+msgstr "Trước khi bạn bắt đầu"
+
+#. (itstool) path: note/p
+#: C/index.page:32
+msgid ""
+"Read the <link xref=\"help:gnome-help/a11y\">Universal Access Help</link>"
+msgstr ""
+"Đọc <link xref=\"help:gnome-help/a11y\">Trợ giúp Hỗ trợ truy cập</link>"
+
+#. (itstool) path: section/title
+#: C/index.page:37
+msgid "Getting Started"
+msgstr "Bắt đầu"
+
+#. (itstool) path: section/title
+#: C/index.page:40
+msgid "Examining the Accessibility of an Application"
+msgstr "Kiểm tra khả năng tiếp cận của một ứng dụng"
+
+#. (itstool) path: section/title
+#: C/index.page:43
+msgid "Advanced Topics"
+msgstr "Các chủ đề nâng cao"
+
+#. (itstool) path: info/title
+#: C/interface_viewer_plugin.page:4
+msgctxt "sort"
+msgid "2. Interface Viewer Plugin"
+msgstr "2. Plugin Bộ xem Giao diện"
+
+#. (itstool) path: info/desc
+#: C/interface_viewer_plugin.page:6
+msgid "Examining your accessibility implementation"
+msgstr "Kiểm tra việc triển khai khả năng tiếp cận của bạn"
+
+#. (itstool) path: page/title
+#: C/interface_viewer_plugin.page:25
+msgid "Interface Viewer Plugin"
+msgstr "Plugin Bộ xem Giao diện"
+
+#. (itstool) path: page/p
+#: C/interface_viewer_plugin.page:27
+msgid ""
+"The Interface Viewer Plugin shows the information and controls provided by "
+"the AT-SPI interfaces present in each accessible item from the <link "
+"xref=\"desktop_tree_view\">Application Tree View</link>. After selecting an "
+"item, you can use this plugin to quickly review its supported interfaces, to "
+"retrieve each interface's information, and to manipulate the item through "
+"all the interface’s methods."
+msgstr ""
+"Plugin Bộ xem Giao diện hiển thị thông tin và điều khiển được cung cấp bởi "
+"các giao diện AT-SPI có trong mỗi mục tiếp cận từ <link "
+"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>. Sau khi chọn một mục, "
+"bạn có thể sử dụng plugin này để nhanh chóng xem xét các giao diện được hỗ "
+"trợ của nó, để truy xuất thông tin của từng giao diện và thao tác với mục "
+"thông qua tất cả các phương thức của giao diện. "
+
+#. (itstool) path: figure/title
+#: C/interface_viewer_plugin.page:35
+msgid "Examining a Menu with the Interface Viewer Plugin"
+msgstr "Kiểm tra Menu bằng Plugin Bộ xem Giao diện"
+
+#. (itstool) path: figure/desc
+#. (itstool) path: media/p
+#: C/interface_viewer_plugin.page:36 C/interface_viewer_plugin.page:42
+msgid ""
+"Given a selected item in the Application Tree View, all of its AT-SPI "
+"interfaces will be shown as sensitive in the Interface Viewer Plugin. Those "
+"unsupported will appear grayed out, such as the Application and Collection "
+"interfaces in the figure above."
+msgstr ""
+"Với một mục được chọn trong Ô xem cây ứng dụng, tất cả các giao diện AT-SPI "
+"của nó sẽ được hiển thị là nhạy (sensitive) trong Plugin Bộ xem Giao diện. "
+"Những giao diện không được hỗ trợ sẽ xuất hiện màu xám, chẳng hạn như các "
+"giao diện Ứng dụng và Bộ sưu tập trong hình trên."
+
+#. (itstool) path: figure/media
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/interface_viewer_plugin.page:41
+msgctxt "_"
+msgid ""
+"external ref='figures/interface_viewer_plugin.png' "
+"md5='aed7e1cd60d381f408e087ab0ba28b4f'"
+msgstr "tham chiếu ngoài='figures/interface_viewer_plugin.png'"
+
+#. (itstool) path: section/title
+#: C/interface_viewer_plugin.page:49
+msgid "Running the Interface Viewer Plugin"
+msgstr "Chạy Plugin Bộ xem Giao diện"
+
+#. (itstool) path: section/p
+#: C/interface_viewer_plugin.page:50
+msgid ""
+"The first step to run the Interface Viewer Plugin is to select an item in "
+"the <link xref=\"desktop_tree_view\"> Application Tree View</link>. After "
+"that, all AT-SPI interfaces covered by the plugin will be listed in the "
+"plugin's panel. The interfaces implemented by the selected item will be "
+"sensitive, so you can click each one of them to either retrieve their "
+"provided information or to interact with available methods. The following "
+"interfaces can be explored in <app>Accerciser</app>, assuming the selected "
+"item implements them:"
+msgstr ""
+"Bước đầu tiên để chạy Plugin Bộ xem Giao diện là chọn một mục trong <link "
+"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>. Sau đó, tất cả các giao "
+"diện AT-SPI được bao phủ bởi plugin sẽ được liệt kê trong bảng điều khiển "
+"của plugin. Các giao diện được mục đã chọn triển khai sẽ là nhạy (sensitive), "
+"vì vậy bạn có thể nhấp vào từng giao diện để truy xuất thông tin được cung "
+"cấp hoặc tương tác với các phương thức có sẵn. Các giao diện sau có thể được "
+"khám phá trong <app>Accerciser</app>, giả sử mục đã chọn triển khai chúng:"
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:59
+msgid ""
+"Accessible - This interface shows the selected item's child count (number of "
+"child widgets), description, states, relations, and attributes."
+msgstr ""
+"Accessible (Tiếp cận được) - Giao diện này hiển thị số lượng con (số lượng "
+"widget con), mô tả, trạng thái, mối quan hệ và thuộc tính của mục đã chọn."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:65
+msgid ""
+"Action - This interface shows all the actions that can be performed by the "
+"selected item. For each interface, you will see its name, such as \"press\" "
+"or \"click\", followed by a description and a key binding, if there are any. "
+"If you select an action, a \"Perform action\" button will become sensitive. "
+"Press this button to see the item performing the selected action."
+msgstr ""
+"Action (Hành động) - Giao diện này hiển thị tất cả các hành động có thể được "
+"thực hiện bởi mục đã chọn. Đối với mỗi hành động, bạn sẽ thấy tên của nó, "
+"chẳng hạn như \"press\" (nhấn) hoặc \"click\" (nhấp), tiếp theo là mô tả và "
+"một phím tắt (key binding), nếu có. Nếu bạn chọn một hành động, nút \"Perform "
+"action\" (Thực hiện hành động) sẽ trở nên nhạy. Nhấn nút này để xem mục thực "
+"hiện hành động đã chọn."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:73
+msgid ""
+"Application - This interface can be implemented by items with role "
+"\"application\". It is worth to point out that items with role "
+"\"application\" not necessarily implement this interface. If the selected "
+"item implements it, the interface will show its ID and, if there are any, "
+"its toolkit and version."
+msgstr ""
+"Application (Ứng dụng) - Giao diện này có thể được triển khai bởi các mục có "
+"vai trò \"application\". Điều đáng lưu ý là các mục có vai trò \"application\" "
+"không nhất thiết phải triển khai giao diện này. Nếu mục đã chọn triển khai nó, "
+"giao diện sẽ hiển thị ID của nó và, nếu có, bộ công cụ và phiên bản của nó."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:80
+msgid ""
+"Component - This interface shows the selected item's absolute position (with "
+"respect to the desktop coordinate system), relative position (with respect "
+"to the window coordinate system), size, layer type, MDI-Z-order (a short "
+"integer indicating the stacking order of the component in the MDI layer), "
+"and alpha (if alpha blending is used)."
+msgstr ""
+"Component (Thành phần) - Giao diện này hiển thị vị trí tuyệt đối (đối với hệ "
+"tọa độ desktop), vị trí tương đối (đối với hệ tọa độ cửa sổ), kích thước, "
+"loại lớp (layer type), MDI-Z-order (một số nguyên ngắn chỉ thứ tự xếp chồng "
+"của thành phần trong lớp MDI) và alpha (nếu sử dụng pha trộn alpha) của mục "
+"đã chọn."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:86
+msgid ""
+"Document - This interface shows the selected item's document attributes and "
+"locale description, if there is one."
+msgstr ""
+"Document (Tài liệu) - Giao diện này hiển thị các thuộc tính tài liệu và mô tả "
+"locale của mục đã chọn, nếu có."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:91
+msgid ""
+"Hypertext - This interface shows a list with all the selected item's "
+"hypertext hyperlinks. For each hyperlink, the interface provides its name, "
+"URI, start (the index in the hypertext at which the hyperlink begins) and "
+"end (the index in the hypertext at which this hyperlink ends)."
+msgstr ""
+"Hypertext (Siêu văn bản) - Giao diện này hiển thị một danh sách với tất cả các "
+"siêu liên kết (hyperlink) của mục siêu văn bản đã chọn. Đối với mỗi siêu liên "
+"kết, giao diện cung cấp tên, URI, start (chỉ mục trong siêu văn bản nơi siêu "
+"liên kết bắt đầu) và end (chỉ mục trong siêu văn bản nơi siêu liên kết kết "
+"thúc)."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:98
+msgid ""
+"Image - This interface shows the selected item's description (or \"no "
+"description\" if unspecified), size, position (with respect to the desktop "
+"coordinate system), and locale, if there is one."
+msgstr ""
+"Image (Hình ảnh) - Giao diện này hiển thị mô tả (hoặc \"không có mô tả\" nếu "
+"không được chỉ định), kích thước, vị trí (đối với hệ tọa độ desktop) và "
+"locale của mục đã chọn, nếu có."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:104
+msgid ""
+"Selection - This interface shows all selectable child items of the selected "
+"item. If the selected item is a menu bar with options \"File\", \"Edit\", "
+"\"View\", and \"Help\", and all of them are selectable, then they will be "
+"listed in this interface. If you click a listed option - \"File\", for "
+"example - and want to clear it, just press the \"Clear\" button below the "
+"list."
+msgstr ""
+"Selection (Lựa chọn) - Giao diện này hiển thị tất cả các mục con có thể chọn "
+"của mục đã chọn. Nếu mục đã chọn là một thanh menu với các tùy chọn \"File\", "
+"\"Edit\", \"View\" và \"Help\", và tất cả chúng đều có thể chọn được, thì "
+"chúng sẽ được liệt kê trong giao diện này. Nếu bạn nhấp vào một tùy chọn được "
+"liệt kê - ví dụ: \"File\" - và muốn xóa nó, chỉ cần nhấn nút \"Clear\" (Xóa) "
+"bên dưới danh sách."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:112
+msgid ""
+"Streamable Content - This interface shows the selected item's content types "
+"and their corresponding URIs."
+msgstr ""
+"Streamable Content (Nội dung có thể phát luồng) - Giao diện này hiển thị các "
+"loại nội dung của mục đã chọn và URI tương ứng của chúng."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:117
+msgid ""
+"Table - This interface shows the selected item's caption and summary, rows "
+"(number of rows), columns (number of columns), selected rows (number of "
+"selected rows), and selected columns (number of selected columns). For a "
+"selected cell, the interface shows its row's and column's header and extents."
+msgstr ""
+"Table (Bảng) - Giao diện này hiển thị chú thích và tóm tắt, hàng (số hàng), "
+"cột (số cột), các hàng được chọn (số hàng được chọn) và các cột được chọn (số "
+"cột được chọn) của mục đã chọn. Đối với một ô đã chọn, giao diện hiển thị "
+"tiêu đề và phạm vi (extents) hàng và cột của nó."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:124
+msgid ""
+"TableCell - This interface shows the selected item's row and column index, "
+"row and column span, a list of the row and column header cells and the "
+"cell's table. By selecting a header cell in the list of row or column "
+"headers and pressing the \"Show\" button, it's possible to select that "
+"header cell object in Accerciser instead. Pressing the table button causes "
+"the table object to be selected."
+msgstr ""
+"TableCell (Ô bảng) - Giao diện này hiển thị chỉ mục hàng và cột, phạm vi hàng "
+"và cột (row and column span), danh sách các ô tiêu đề hàng và cột và bảng của "
+"ô đó của mục đã chọn. Bằng cách chọn một ô tiêu đề trong danh sách tiêu đề "
+"hàng hoặc cột và nhấn nút \"Show\" (Hiển thị), có thể chọn đối tượng ô tiêu đề "
+"đó trong Accerciser thay thế. Nhấn nút bảng khiến đối tượng bảng được chọn."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:132
+msgid ""
+"Text - This interface shows the selected item's text content, that can be "
+"editable, and its attributes. The basic attributes are offset (the number of "
+"characters the text has) and justification. To see possible CSS attributes, "
+"click the \"Include defaults\" check box."
+msgstr ""
+"Text (Văn bản) - Giao diện này hiển thị nội dung văn bản của mục đã chọn, có "
+"thể chỉnh sửa được và các thuộc tính của nó. Các thuộc tính cơ bản là offset "
+"(số lượng ký tự văn bản có) và căn chỉnh (justification). Để xem các thuộc "
+"tính CSS có thể có, hãy nhấp vào hộp kiểm \"Include defaults\" (Bao gồm mặc "
+"định)."
+
+#. (itstool) path: item/p
+#: C/interface_viewer_plugin.page:139
+msgid ""
+"Value - This interface shows the selected item's current value, minimum "
+"allowed value, maximum allowed value, and the minimum increment by which the "
+"value may be changed (or zero if this value cannot be determined). The "
+"current value can be manually changed via a spin button."
+msgstr ""
+"Value (Giá trị) - Giao diện này hiển thị giá trị hiện tại, giá trị tối thiểu "
+"được phép, giá trị tối đa được phép và mức tăng tối thiểu mà giá trị có thể "
+"được thay đổi (hoặc bằng không nếu giá trị này không thể được xác định) của "
+"mục đã chọn. Giá trị hiện tại có thể được thay đổi thủ công thông qua một "
+"nút xoay (spin button)."
+
+#. (itstool) path: info/title
+#: C/introduction.page:5
+msgctxt "sort"
+msgid "1. What is Accerciser?"
+msgstr "1. Accerciser là gì?"
+
+#. (itstool) path: info/desc
+#: C/introduction.page:6
+msgid "An interactive accessibility explorer"
+msgstr "Một công cụ khám phá khả năng tiếp cận tương tác"
+
+#. (itstool) path: page/title
+#: C/introduction.page:25
+msgid "What is <app>Accerciser</app>?"
+msgstr "<app>Accerciser</app> là gì?"
+
+#. (itstool) path: page/p
+#: C/introduction.page:26
+msgid ""
+"<app>Accerciser</app> is an interactive Python accessibility explorer. It "
+"uses the AT-SPI library to inspect, examine, and interact with widgets, "
+"allowing you to check if an application is providing correct information to "
+"assistive technologies and automated testing frameworks. <app>Accerciser</"
+"app> comes with a set of plugins that you can use to create custom views of "
+"accessibility information."
+msgstr ""
+"<app>Accerciser</app> là một công cụ khám phá khả năng tiếp cận Python tương "
+"tác. Nó sử dụng thư viện AT-SPI để kiểm tra, xem xét và tương tác với các "
+"widget, cho phép bạn kiểm tra xem một ứng dụng có đang cung cấp thông tin "
+"chính xác cho các công nghệ hỗ trợ và các khuôn khổ kiểm thử tự động hay "
+"không. <app>Accerciser</app> đi kèm với một bộ plugin mà bạn có thể sử dụng "
+"để tạo các chế độ xem tùy chỉnh về thông tin khả năng tiếp cận."
+
+#. (itstool) path: page/p
+#: C/introduction.page:35
+msgid ""
+"By default, <app>Accerciser</app>'s main interface is comprised of three "
+"sections: a tree view of the entire desktop accessible hierarchy, namely "
+"<link xref=\"desktop_tree_view\"> Application Tree View</link>, and two "
+"plugin areas. If you prefer to see all plugins in a single area, dividing "
+"<app>Accerciser</app>'s interface in two sections instead of three, press "
+"<keyseq><key>ctrl </key><key>t</key></keyseq>. To re-divide it in three "
+"sections, press <keyseq><key>ctrl</key><key>t</key></keyseq> again."
+msgstr ""
+"Theo mặc định, giao diện chính của <app>Accerciser</app> bao gồm ba phần: "
+"một chế độ xem cây của toàn bộ hệ thống phân cấp tiếp cận được của máy tính, "
+"cụ thể là <link xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>, và hai "
+"khu vực plugin. Nếu bạn muốn xem tất cả các plugin trong một khu vực duy nhất, "
+"chia giao diện của <app>Accerciser</app> thành hai phần thay vì ba, hãy nhấn "
+"<keyseq><key>ctrl </key><key>t</key></keyseq>. Để chia lại thành ba phần, hãy "
+"nhấn <keyseq><key>ctrl</key><key>t</key></keyseq> lần nữa."
+
+#. (itstool) path: note/p
+#: C/introduction.page:44
+msgid ""
+"Make sure that accessibility support is enabled in your desktop - otherwise, "
+"<app>Accerciser</app> will not work as expected."
+msgstr ""
+"Đảm bảo rằng hỗ trợ khả năng tiếp cận đã được bật trong desktop của bạn - "
+"nếu không, <app>Accerciser</app> sẽ không hoạt động như mong đợi."
+
+#. (itstool) path: figure/title
+#: C/introduction.page:51
+msgid "<app>Accerciser</app>"
+msgstr "<app>Accerciser</app>"
+
+#. (itstool) path: figure/desc
+#. (itstool) path: media/p
+#: C/introduction.page:52 C/introduction.page:56
+msgid "<app>Accerciser</app>'s default interface."
+msgstr "Giao diện mặc định của <app>Accerciser</app>. "
+
+#. (itstool) path: figure/media
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/introduction.page:55
+msgctxt "_"
+msgid ""
+"external ref='figures/accerciser-view.png' "
+"md5='87ef1d7587097a04dd784e14840f3115'"
+msgstr "tham chiếu ngoài='figures/accerciser-view.png'"
+"md5='87ef1d7587097a04dd784e14840f3115'"
+
+#. (itstool) path: section/title
+#: C/introduction.page:63
+msgid "<app>Accerciser</app>'s intended audience"
+msgstr "Đối tượng mục tiêu của <app>Accerciser</app>"
+
+#. (itstool) path: section/p
+#: C/introduction.page:64
+msgid ""
+"<app>Accerciser</app> fits the needs of many different audiences. User "
+"interface developers use it to ensure that their applications are providing "
+"all of their features through AT-SPI. Assistive technology developers are "
+"able to see what AT-SPI is providing to their applications. Automated UI "
+"test developers find <app>Accerciser</app> beneficial since it exposes "
+"different events that could be expected from their target application."
+msgstr ""
+"<app>Accerciser</app> phù hợp với nhu cầu của nhiều đối tượng khác nhau. Các "
+"nhà phát triển giao diện người dùng sử dụng nó để đảm bảo rằng các ứng dụng "
+"của họ đang cung cấp tất cả các tính năng thông qua AT-SPI. Các nhà phát triển "
+"công nghệ hỗ trợ có thể xem những gì AT-SPI đang cung cấp cho các ứng dụng của "
+"họ. Các nhà phát triển kiểm thử UI tự động thấy <app>Accerciser</app> hữu "
+"ích vì nó phơi bày các sự kiện khác nhau có thể được mong đợi từ ứng dụng mục "
+"tiêu của họ."
+
+#. (itstool) path: section/title
+#: C/introduction.page:74
+msgid "<app>Accerciser</app>'s plugin architecture"
+msgstr "Kiến trúc plugin của <app>Accerciser</app>"
+
+#. (itstool) path: section/p
+#: C/introduction.page:75
+msgid ""
+"<app>Accerciser</app> has an extensible, plugin-based architecture. Its core "
+"code is fairly small and most of its features are part of default plugins:"
+msgstr ""
+"<app>Accerciser</app> có kiến trúc dựa trên plugin, có thể mở rộng. Mã cốt "
+"lõi của nó khá nhỏ và hầu hết các tính năng của nó là một phần của các plugin "
+"mặc định: "
+
+#. (itstool) path: item/p
+#: C/introduction.page:82
+msgid ""
+"<link xref=\"interface_viewer_plugin\">Interface Viewer</link> - A plugin "
+"that lets you explore the AT-SPI interfaces provided by each accessible "
+"widget of a target application."
+msgstr ""
+"<link xref=\"interface_viewer_plugin\">Bộ xem Giao diện</link> - Một plugin "
+"cho phép bạn khám phá các giao diện AT-SPI được cung cấp bởi mỗi widget có "
+"thể tiếp cận được của một ứng dụng mục tiêu."
+
+#. (itstool) path: item/p
+#: C/introduction.page:88
+msgid ""
+"<link xref=\"validator_plugin\">AT-SPI Validator</link> - A plugin that "
+"applies tests to verify the accessibility of a target application."
+msgstr ""
+"<link xref=\"validator_plugin\">Bộ xác thực AT-SPI</link> - Một plugin áp "
+"dụng các kiểm thử để xác minh khả năng tiếp cận của một ứng dụng mục tiêu."
+
+#. (itstool) path: item/p
+#: C/introduction.page:94
+msgid ""
+"<link xref=\"event_monitor_plugin\">Event Monitor</link> - A plugin that "
+"displays AT-SPI events emitted by a target application as they occur."
+msgstr ""
+"<link xref=\"event_monitor_plugin\">Bộ giám sát Sự kiện</link> - Một plugin "
+"hiển thị các sự kiện AT-SPI được phát ra bởi một ứng dụng mục tiêu khi chúng "
+"xảy ra."
+
+#. (itstool) path: item/p
+#: C/introduction.page:100
+msgid ""
+"<link xref=\"quick_select_plugin\">Quick Select</link> - A plugin that "
+"provides global hotkeys for quickly selecting accessible widgets in "
+"<app>Accerciser</app>'s Application Tree View."
+msgstr ""
+"<link xref=\"quick_select_plugin\">Chọn nhanh</link> - Một plugin cung cấp "
+"các phím nóng toàn cục để chọn nhanh các widget có thể tiếp cận được trong Ô "
+"xem cây ứng dụng của <app>Accerciser</app>."
+
+#. (itstool) path: item/p
+#: C/introduction.page:106
+msgid ""
+"<link xref=\"api_browser_plugin\">API Browser</link> - A plugin that shows "
+"the interfaces, methods, and attributes available on each accessible widget "
+"of a target application."
+msgstr ""
+"<link xref=\"api_browser_plugin\">Trình duyệt API</link> - Một plugin hiển thị "
+"các giao diện, phương thức và thuộc tính có sẵn trên mỗi widget có thể tiếp "
+"cận được của một ứng dụng mục tiêu."
+
+#. (itstool) path: item/p
+#: C/introduction.page:112
+msgid ""
+"<link xref=\"ipython_plugin\">IPython Console</link> - A plugin that "
+"provides a full, interactive Python shell with access to selected accessible "
+"widgets of a target application."
+msgstr ""
+"<link xref=\"ipython_plugin\">Bảng điều khiển IPython</link> - Một plugin "
+"cung cấp một shell Python tương tác, đầy đủ với quyền truy cập vào các widget "
+"có thể tiếp cận được đã chọn của một ứng dụng mục tiêu."
+
+#. (itstool) path: section/title
+#: C/introduction.page:122
+msgid "More about Accessibility"
+msgstr "Thêm về Khả năng tiếp cận"
+
+#. (itstool) path: section/p
+#: C/introduction.page:123
+msgid ""
+"Accessibility is a core value that should touch all aspects of a Desktop "
+"Environment. To help achieve it in GNOME, some libraries were developed, "
+"such as ATK and AT-SPI. Though originated in GNOME, these libraries are now "
+"also used in other Desktop Environments. To learn more about Accessibility "
+"Libraries for GNU/UNIX systems, you can consult:"
+msgstr ""
+"Khả năng tiếp cận là một giá trị cốt lõi nên chạm đến mọi khía cạnh của Môi "
+"trường Desktop. Để giúp đạt được điều đó trong GNOME, một số thư viện đã được "
+"phát triển, chẳng hạn như ATK và AT-SPI. Mặc dù có nguồn gốc từ GNOME, các thư "
+"viện này hiện cũng được sử dụng trong các Môi trường Desktop khác. Để tìm hiểu "
+"thêm về Thư viện Khả năng tiếp cận cho các hệ thống GNU/UNIX, bạn có thể tham "
+"khảo:"
+
+#. (itstool) path: item/p
+#: C/introduction.page:132
+msgid ""
+"<link href=\"http://developer.gnome.org/atk/\">ATK Accessibility Toolkit</"
+"link> - ATK provides the set of accessibility interfaces that are "
+"implemented by other toolkits and applications. Using the ATK interfaces, "
+"accessibility tools have full access to view and control running "
+"applications."
+msgstr ""
+"<link href=\"http://developer.gnome.org/atk/\">Bộ công cụ Khả năng tiếp cận "
+"ATK</link> - ATK cung cấp tập hợp các giao diện khả năng tiếp cận được triển "
+"khai bởi các bộ công cụ và ứng dụng khác. Sử dụng các giao diện ATK, các công "
+"cụ hỗ trợ khả năng tiếp cận có toàn quyền truy cập để xem và điều khiển các "
+"ứng dụng đang chạy."
+
+#. (itstool) path: item/p
+#: C/introduction.page:139
+msgid ""
+"<link href=\"http://developer.gnome.org/at-spi-cspi/stable/\">AT-SPI</link> "
+"- AT-SPI is the primary service interface by which assistive technologies "
+"query and receive notifications from running applications. Additional "
+"material is available from the <link href=\"http://accessibility.kde.org/"
+"developer/atk.php#coreclasses\">KDE Accessibility Development Community</"
+"link>."
+msgstr ""
+"<link href=\"http://developer.gnome.org/at-spi-cspi/stable/\">AT-SPI</link> "
+"- AT-SPI là giao diện dịch vụ chính mà qua đó các công nghệ hỗ trợ truy vấn "
+"và nhận thông báo từ các ứng dụng đang chạy. Tài liệu bổ sung có sẵn từ <link "
+"href=\"http://accessibility.kde.org/developer/atk.php#coreclasses\">Cộng đồng "
+"Phát triển Khả năng tiếp cận KDE</link>."
+
+#. (itstool) path: item/p
+#: C/introduction.page:147
+msgid ""
+"<link href=\"https://help.gnome.org/users/gnome-help/stable/"
+"a11y.html\">GNOME Desktop Accessibility Guide</link> - A guide for anyone "
+"interested in how the GNOME Desktop supports the needs of users with "
+"disabilities."
+msgstr ""
+"<link href=\"https://help.gnome.org/users/gnome-help/stable/"
+"a11y.html\">Hướng dẫn Khả năng tiếp cận Desktop GNOME</link> - Một hướng dẫn "
+"cho bất kỳ ai quan tâm đến cách Desktop GNOME hỗ trợ nhu cầu của người dùng "
+"khuyết tật."
+
+#. (itstool) path: item/p
+#: C/introduction.page:153
+msgid ""
+"<link href=\"http://developer.gnome.org/accessibility-devel-guide/stable/"
+"\">GNOME Accessibility Developer's Guide</link> - A guide for developers who "
+"want to ensure their applications are accessible to the widest audience of "
+"users."
+msgstr ""
+"<link href=\"http://developer.gnome.org/accessibility-devel-guide/stable/"
+"\">Hướng dẫn dành cho Nhà phát triển Khả năng tiếp cận GNOME</link> - Một "
+"hướng dẫn cho các nhà phát triển muốn đảm bảo các ứng dụng của họ có thể tiếp "
+"cận được với lượng người dùng rộng nhất."
+
+#. (itstool) path: item/p
+#: C/introduction.page:159
+msgid ""
+"<link href=\"https://wiki.gnome.org/Accessibility\">GNOME Accessibility "
+"Project</link> - The GNOME Accessibility Project includes the guides listed "
+"above along with many other useful links for users, developers and system "
+"administrators."
+msgstr ""
+"<link href=\"https://wiki.gnome.org/Accessibility\">Dự án Khả năng tiếp cận "
+"GNOME</link> - Dự án Khả năng tiếp cận GNOME bao gồm các hướng dẫn được liệt "
+"kê ở trên cùng với nhiều liên kết hữu ích khác cho người dùng, nhà phát triển "
+"và quản trị viên hệ thống."
+
+#. (itstool) path: info/title
+#: C/ipython_plugin.page:4
+msgctxt "sort"
+msgid "2. IPython Plugin"
+msgstr "2. Plugin IPython"
+
+#. (itstool) path: info/desc
+#: C/ipython_plugin.page:6
+msgid "When all else fails"
+msgstr "Khi mọi thứ khác thất bại"
+
+#. (itstool) path: page/title
+#: C/ipython_plugin.page:25
+msgid "IPython Console Plugin"
+msgstr "Plugin Bảng điều khiển IPython"
+
+#. (itstool) path: page/p
+#: C/ipython_plugin.page:26
+msgid ""
+"The IPython Console Plugin allows real-time interaction with a selected item "
+"in the <link xref=\"desktop_tree_view\"> Application Tree View</link>. Since "
+"the IPython Console Plugin is an interactive Python shell, you can import "
+"any Python modules you want."
+msgstr ""
+"Plugin Bảng điều khiển IPython cho phép tương tác thời gian thực với một mục "
+"đã chọn trong <link xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link>. Vì "
+"Plugin Bảng điều khiển IPython là một shell Python tương tác, bạn có thể nhập "
+"bất kỳ mô-đun Python nào bạn muốn."
+
+#. (itstool) path: note/p
+#: C/ipython_plugin.page:33
+msgid ""
+"Make sure you have the standalone package IPython installed in your system. "
+"Otherwise, the IPython Console Plugin will not work properly."
+msgstr ""
+"Đảm bảo rằng bạn đã cài đặt gói IPython độc lập trong hệ thống của mình. Nếu "
+"không, Plugin Bảng điều khiển IPython sẽ không hoạt động đúng."
+
+#. (itstool) path: section/title
+#: C/ipython_plugin.page:40
+msgid "Running the IPython Console Plugin"
+msgstr "Chạy Plugin Bảng điều khiển IPython"
+
+#. (itstool) path: section/p
+#: C/ipython_plugin.page:41
+msgid ""
+"To run the IPython Console Plugin, select one of the accessible items listed "
+"in the Application Tree View - either an application or a widget. In the "
+"plugin, the selected item will correspond to the variable 'acc'."
+msgstr ""
+"Để chạy Plugin Bảng điều khiển IPython, hãy chọn một trong các mục có thể "
+"tiếp cận được được liệt kê trong Ô xem cây ứng dụng - hoặc là một ứng dụng "
+"hoặc là một widget. Trong plugin, mục đã chọn sẽ tương ứng với biến 'acc'."
+
+#. (itstool) path: section/p
+#: C/ipython_plugin.page:46
+msgid ""
+"Pressing <key>Tab</key> shows completions for the current command in the "
+"console, what can be useful for discovering pyatspi methods."
+msgstr ""
+"Nhấn <key>Tab</key> sẽ hiển thị các đề xuất hoàn thành cho lệnh hiện tại "
+"trong bảng điều khiển, điều này có thể hữu ích cho việc khám phá các phương "
+"thức pyatspi."
+
+#. (itstool) path: figure/title
+#: C/ipython_plugin.page:52
+msgid "Investigating selected items with the IPython Console Plugin"
+msgstr "Điều tra các mục đã chọn bằng Plugin Bảng điều khiển IPython"
+
+#. (itstool) path: figure/desc
+#. (itstool) path: media/p
+#: C/ipython_plugin.page:53 C/ipython_plugin.page:58
+msgid ""
+"The IPython Console Plugin lets you investigate methods, constants, and "
+"properties related to a selected item in the Application Tree View."
+msgstr ""
+"Plugin Bảng điều khiển IPython cho phép bạn điều tra các phương thức, hằng "
+"số và thuộc tính liên quan đến một mục đã chọn trong Ô xem cây ứng dụng. "
+""
+
+#. (itstool) path: figure/media
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/ipython_plugin.page:57
+msgctxt "_"
+msgid ""
+"external ref='figures/IPython_plugin.png' "
+"md5='1daff78264babd667a8527b3e2b5cace'"
+msgstr "tham chiếu ngoài='figures/IPython_plugin.png'"
+
+#. (itstool) path: note/p
+#: C/ipython_plugin.page:66
+msgid ""
+"Typing <cmd>help(acc)</cmd> in the IPython Console Plugin shows some useful "
+"documentation about the corresponding selected accessible item."
+msgstr ""
+"Gõ <cmd>help(acc)</cmd> trong Plugin Bảng điều khiển IPython hiển thị một số "
+"tài liệu hữu ích về mục có thể tiếp cận được đã chọn tương ứng."
+
+#. (itstool) path: info/title
+#: C/preferences.page:4
+msgctxt "sort"
+msgid "4. Preferences"
+msgstr "4. Tùy chọn"
+
+#. (itstool) path: info/desc
+#: C/preferences.page:6
+msgid "Customizing <app>Accerciser</app>'s preferences"
+msgstr "Tùy chỉnh các tùy chọn của <app>Accerciser</app>"
+
+#. (itstool) path: page/title
+#: C/preferences.page:25
+msgid "Configuring <app>Accerciser</app>"
+msgstr "Cấu hình <app>Accerciser</app>"
+
+#. (itstool) path: page/p
+#: C/preferences.page:26
+msgid ""
+"To configure plugins, hotkeys, and highlighting, do either "
+"<keyseq><key>ctrl</key><key>p</key></keyseq> or <guiseq><gui>Edit</gui> "
+"<gui>Preferences</gui></guiseq> to open a dialog."
+msgstr ""
+"Để cấu hình các plugin, phím nóng và tô sáng, hãy thực hiện "
+"<keyseq><key>ctrl</key><key>p</key></keyseq> hoặc <guiseq><gui>Sửa</gui> "
+"<gui>Tùy chọn</gui></guiseq> để mở hộp thoại."
+
+#. (itstool) path: section/title
+#: C/preferences.page:32
+msgid "Configuring plugins"
+msgstr "Cấu hình các plugin"
+
+#. (itstool) path: section/p
+#: C/preferences.page:33
+msgid ""
+"After opening the Preferences Dialog, you will find a list of all available "
+"plugins, with corresponding checkboxes, under the \"Plugins\" tab. To enable "
+"or disable a plugin, toggle its checkbox. Only active plugins can be "
+"accessed via <app>Accerciser</app>'s interface."
+msgstr ""
+"Sau khi mở Hộp thoại Tùy chọn, bạn sẽ tìm thấy một danh sách tất cả các plugin "
+"có sẵn, với các hộp kiểm tương ứng, trong tab \"Plugins\". Để bật hoặc tắt "
+"một plugin, hãy chuyển đổi hộp kiểm của nó. Chỉ các plugin đang hoạt động mới "
+"có thể được truy cập thông qua giao diện của <app>Accerciser</app>."
+
+#. (itstool) path: section/p
+#: C/preferences.page:38
+msgid ""
+"Right-clicking on any given plugin allows you to choose its location: \"Top "
+"Panel\", \"Bottom Panel\", and \"New View\". Selecting \"New View\" creates "
+"a new window for the plugin."
+msgstr ""
+"Nhấp chuột phải vào bất kỳ plugin nào cho phép bạn chọn vị trí của nó: "
+"\"Top Panel\" (Bảng điều khiển trên), \"Bottom Panel\" (Bảng điều khiển dưới) "
+"và \"New View\" (Chế độ xem mới). Chọn \"New View\" sẽ tạo một cửa sổ mới cho "
+"plugin."
+
+#. (itstool) path: note/p
+#: C/preferences.page:44
+msgid ""
+"You may bypass the Preferences dialog by using drag and drop to move a "
+"plugin from a location to another."
+msgstr ""
+"Bạn có thể bỏ qua hộp thoại Tùy chọn bằng cách sử dụng kéo và thả để di "
+"chuyển một plugin từ vị trí này sang vị trí khác."
+
+#. (itstool) path: section/title
+#: C/preferences.page:51
+msgid "Configuring global hotkeys"
+msgstr "Cấu hình các phím nóng toàn cục"
+
+#. (itstool) path: section/p
+#: C/preferences.page:52
+msgid ""
+"Some elements in <app>Accerciser</app> may enable certain functionalities "
+"via hotkeys. An example is the <link xref=\"quick_select_plugin\">Quick "
+"Select Plugin</link>. The hotkey combination for each functionality can be "
+"changed via the Preferences dialog, under the \"Global Hotkeys\" tab. Under "
+"this tab, you will find a list of all features for which hotkeys can be "
+"configured. Use the <cmd>ctrl</cmd>, <cmd>alt</cmd>, and <cmd>shift</cmd> "
+"checkboxes to enable or disable these modifiers."
+msgstr ""
+"Một số thành phần trong <app>Accerciser</app> có thể bật một số chức năng "
+"nhất định thông qua các phím nóng. Một ví dụ là <link "
+"xref=\"quick_select_plugin\">Plugin Chọn nhanh</link>. Tổ hợp phím nóng cho "
+"mỗi chức năng có thể được thay đổi thông qua hộp thoại Tùy chọn, trong tab "
+"\"Global Hotkeys\" (Phím nóng Toàn cục). Dưới tab này, bạn sẽ tìm thấy một "
+"danh sách tất cả các tính năng mà phím nóng có thể được cấu hình. Sử dụng các "
+"hộp kiểm <cmd>ctrl</cmd>, <cmd>alt</cmd> và <cmd>shift</cmd> để bật hoặc tắt "
+"các bộ điều chỉnh này."
+
+#. (itstool) path: section/title
+#: C/preferences.page:63
+msgid "Configuring widget's highlighting"
+msgstr "Cấu hình tô sáng widget"
+
+#. (itstool) path: section/p
+#: C/preferences.page:64
+msgid ""
+"Some of <app>Accerciser</app>'s elements, such as the global hotkey "
+"<keyseq><key>ctrl</key><key>alt</key><key>/</key></keyseq>, highlight a "
+"specific widget in a target application. The highlighting duration, border "
+"color, and fill color can be customized via the Preferences dialog, under "
+"the \"Highlighting\" tab."
+msgstr ""
+"Một số thành phần của <app>Accerciser</app>, chẳng hạn như phím nóng toàn cục "
+"<keyseq><key>ctrl</key><key>alt</key><key>/</key></keyseq>, làm nổi bật một "
+"widget cụ thể trong một ứng dụng mục tiêu. Thời gian tô sáng, màu đường viền "
+"và màu tô có thể được tùy chỉnh thông qua hộp thoại Tùy chọn, trong tab "
+"\"Highlighting\" (Tô sáng)."
+
+#. (itstool) path: info/title
+#: C/quick_select_plugin.page:4
+msgctxt "sort"
+msgid "5. Quick Select Plugin"
+msgstr "5. Plugin Chọn nhanh"
+
+#. (itstool) path: info/desc
+#: C/quick_select_plugin.page:6
+msgid "Locating the object you need"
+msgstr "Tìm đối tượng bạn cần"
+
+#. (itstool) path: page/title
+#: C/quick_select_plugin.page:25
+msgid "Quick Select Plugin"
+msgstr "Plugin Chọn nhanh"
+
+#. (itstool) path: page/p
+#: C/quick_select_plugin.page:26
+msgid ""
+"The Quick Select Plugin does not provide a visible interface like the other "
+"default <app>Accerciser</app> plugins - instead, it adds facilities for "
+"quickly selecting items in the <link xref=\"desktop_tree_view\">Application "
+"Tree View</link> via global hotkeys. Originally, these hotkeys were part of "
+"<app>Accerciser</app>'s core code, turning into the Quick Select Plugin "
+"later."
+msgstr ""
+"Plugin Chọn nhanh không cung cấp giao diện trực quan như các plugin mặc định "
+"khác của <app>Accerciser</app> - thay vào đó, nó bổ sung các tiện ích để chọn "
+"nhanh các mục trong <link xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link> "
+"thông qua các phím nóng toàn cục. Ban đầu, các phím nóng này là một phần của "
+"mã cốt lõi của <app>Accerciser</app>, sau này trở thành Plugin Chọn nhanh."
+
+#. (itstool) path: page/p
+#: C/quick_select_plugin.page:32
+msgid ""
+"The Quick Select Plugin provides two global hotkeys. Pressing "
+"<keyseq><key>ctrl</key><key>alt</key><key>a</key></keyseq> selects the last "
+"focused accessible widget in the Application Tree View. Pressing "
+"<keyseq><key>ctrl</key><key>alt</key><key>/</key></keyseq> selects the "
+"accessible widget under the pointer in the Application Tree View and "
+"highlights it in the target application."
+msgstr ""
+"Plugin Chọn nhanh cung cấp hai phím nóng toàn cục. Nhấn "
+"<keyseq><key>ctrl</key><key>alt</key><key>a</key></keyseq> chọn widget có thể "
+"tiếp cận được được lấy nét (focus) gần nhất trong Ô xem cây ứng dụng. Nhấn "
+"<keyseq><key>ctrl</key><key>alt</key><key>/</key></keyseq> chọn widget có thể "
+"tiếp cận được dưới con trỏ trong Ô xem cây ứng dụng và tô sáng nó trong ứng "
+"dụng mục tiêu."
+
+#. (itstool) path: info/title
+#: C/validator_plugin.page:4
+msgctxt "sort"
+msgid "3. Validator Default Plugin"
+msgstr "3. Plugin Mặc định Bộ xác thực"
+
+#. (itstool) path: info/desc
+#: C/validator_plugin.page:6
+msgid "Testing an application for accessibility"
+msgstr "Kiểm thử khả năng tiếp cận của một ứng dụng"
+
+#. (itstool) path: page/title
+#. (itstool) path: figure/title
+#: C/validator_plugin.page:25 C/validator_plugin.page:32
+msgid "AT-SPI Validator Plugin"
+msgstr "Plugin Bộ xác thực AT-SPI"
+
+#. (itstool) path: page/p
+#: C/validator_plugin.page:26
+msgid ""
+"The AT-SPI Validator Plugin generates a report with accessibility issues "
+"related to a target application. For each error, the report includes the "
+"severity level and a brief description."
+msgstr ""
+"Plugin Bộ xác thực AT-SPI tạo một báo cáo với các vấn đề về khả năng tiếp cận "
+"liên quan đến một ứng dụng mục tiêu. Đối với mỗi lỗi, báo cáo bao gồm mức độ "
+"nghiêm trọng và mô tả ngắn gọn."
+
+#. (itstool) path: figure/desc
+#. (itstool) path: media/p
+#: C/validator_plugin.page:33 C/validator_plugin.page:38
+msgid ""
+"The AT-SPI Validator Plugin generates useful reports for verifying the "
+"accessibility of a target application."
+msgstr ""
+"Plugin Bộ xác thực AT-SPI tạo các báo cáo hữu ích để xác minh khả năng tiếp "
+"cận của một ứng dụng mục tiêu. "
+
+#. (itstool) path: figure/media
+#. This is a reference to an external file such as an image or video. When
+#. the file changes, the md5 hash will change to let you know you need to
+#. update your localized copy. The msgstr is not used at all. Set it to
+#. whatever you like once you have updated your copy of the file.
+#: C/validator_plugin.page:37
+msgctxt "_"
+msgid ""
+"external ref='figures/validator_report.png' "
+"md5='0275b1c51e9f01c953cba87aee7b8764'"
+msgstr "tham chiếu ngoài='figures/validator_report.png'"
+
+#. (itstool) path: section/title
+#: C/validator_plugin.page:46
+msgid "Running the AT-SPI Validator Plugin"
+msgstr "Chạy Plugin Bộ xác thực AT-SPI"
+
+#. (itstool) path: section/p
+#: C/validator_plugin.page:47
+msgid ""
+"To run the AT-SPI Validator Plugin, select an item in the Application Tree "
+"View. The validator will generate the report with respect to the selected "
+"item and all of its descendant widgets in the tree hierarchy."
+msgstr ""
+"Để chạy Plugin Bộ xác thực AT-SPI, hãy chọn một mục trong Ô xem cây ứng dụng. "
+"Bộ xác thực sẽ tạo báo cáo đối với mục đã chọn và tất cả các widget con cháu "
+"của nó trong hệ thống phân cấp cây."
+
+#. (itstool) path: section/p
+#: C/validator_plugin.page:53
+msgid ""
+"After selecting an item, choose a validation schema in the combobox and "
+"press the <cmd>Validate</cmd> button to start generating the report. If you "
+"want to cancel the execution, just press the <cmd>Validate</cmd> button "
+"again."
+msgstr ""
+"Sau khi chọn một mục, hãy chọn một lược đồ xác thực trong hộp tổ hợp và nhấn "
+"nút <cmd>Validate</cmd> (Xác thực) để bắt đầu tạo báo cáo. Nếu bạn muốn hủy "
+"thực thi, chỉ cần nhấn lại nút <cmd>Validate</cmd>."
+
+#. (itstool) path: section/p
+#: C/validator_plugin.page:59
+msgid ""
+"The generated report is interactive. Therefore, you can double-click any "
+"error found to check which of the target application widgets is causing it. "
+"The corresponding widget will then appear selected in the <link "
+"xref=\"desktop_tree_view\"> Application Tree View</link> and highlighted in "
+"the target application."
+msgstr ""
+"Báo cáo được tạo ra là tương tác. Do đó, bạn có thể nhấp đúp vào bất kỳ lỗi "
+"nào được tìm thấy để kiểm tra widget nào của ứng dụng mục tiêu đang gây ra "
+"lỗi đó. Widget tương ứng sau đó sẽ xuất hiện được chọn trong <link "
+"xref=\"desktop_tree_view\">Ô xem cây ứng dụng</link> và được tô sáng trong ứng "
+"dụng mục tiêu."
+
+#. (itstool) path: section/p
+#: C/validator_plugin.page:64
+msgid ""
+"If you want to save the generated report in your system, just click the "
+"<cmd>Save</cmd> button. To clear the validation screen, press the "
+"<cmd>Clear</cmd> button."
+msgstr ""
+"Nếu bạn muốn lưu báo cáo đã tạo vào hệ thống của mình, chỉ cần nhấp vào nút "
+"<cmd>Save</cmd> (Lưu). Để xóa màn hình xác thực, nhấn nút <cmd>Clear</cmd> "
+"(Xóa)."
+
+#. (itstool) path: section/p
+#: C/validator_plugin.page:68
+msgid ""
+"To get more information about an error in the generated report, make sure "
+"the corresponding item is selected and press the <cmd>Help</cmd> button. It "
+"will open a Help Page in your default browser."
+msgstr ""
+"Để có thêm thông tin về một lỗi trong báo cáo đã tạo, hãy đảm bảo mục tương "
+"ứng đã được chọn và nhấn nút <cmd>Help</cmd> (Trợ giúp). Nó sẽ mở một Trang "
+"Trợ giúp trong trình duyệt mặc định của bạn."
