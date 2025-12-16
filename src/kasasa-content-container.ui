@@ -24,7 +24,6 @@
         <setter object="revealer_end_buttons" property="margin-bottom">9</setter>
       </object>
     </child>
-    <!-- TODO need more testing -->
     <child>
       <!--
       (II) this is the second part; it has no visual effects, since it acts

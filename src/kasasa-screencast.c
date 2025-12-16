@@ -70,6 +70,7 @@ struct _KasasaScreencast
   /* Instance variables */
   GstElement              *pipeline;
   XdpSession              *session;
+  gulong                   closed_handler_id;
   guint                    cropping_source;
   gint                     crop[CROP_N_ELEMENTS];
   gint                     dimension[DIMENSION_N_ELEMENTS];
@@ -467,7 +468,10 @@ kasasa_screencast_show (KasasaScreencast *self,
     }
   gtk_stack_set_visible_child (self->stack, GTK_WIDGET (self->picture));
 
-  g_signal_connect (self->session, "closed", G_CALLBACK (on_session_closed), self);
+  self->closed_handler_id = g_signal_connect (self->session,
+                                              "closed",
+                                              G_CALLBACK (on_session_closed),
+                                              self);
 
   g_timeout_add_once (FIRST_CROP_CHECK_INTERVAL, compute_first_crop_values, self);
   self->cropping_source = g_timeout_add_seconds (CROP_CHEK_INTERVAL,
@@ -488,7 +492,12 @@ kasasa_screencast_dispose (GObject *object)
     }
 
   if (self->session)
-    g_clear_object (&self->session);
+    {
+      g_signal_handler_disconnect (self->session, self->closed_handler_id);
+      xdp_session_close (self->session);
+
+      g_clear_object (&self->session);
+    }
 
   if (self->cropping_source > 0)
     g_source_remove (self->cropping_source);
@@ -554,6 +563,8 @@ kasasa_screencast_init (KasasaScreencast *self)
   adw_status_page_set_title (self->no_screencast_page, _("No screencast"));
   gtk_widget_add_css_class (GTK_WIDGET (self->no_screencast_page), "compact");
   gtk_stack_add_child (self->stack, GTK_WIDGET (self->no_screencast_page));
+  gtk_widget_set_size_request (GTK_WIDGET (self->no_screencast_page),
+                               DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
   // Page 2 - Screencast
   self->picture = GTK_PICTURE (gtk_picture_new ());
