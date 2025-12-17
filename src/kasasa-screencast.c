@@ -563,8 +563,6 @@ kasasa_screencast_init (KasasaScreencast *self)
   adw_status_page_set_title (self->no_screencast_page, _("No screencast"));
   gtk_widget_add_css_class (GTK_WIDGET (self->no_screencast_page), "compact");
   gtk_stack_add_child (self->stack, GTK_WIDGET (self->no_screencast_page));
-  gtk_widget_set_size_request (GTK_WIDGET (self->no_screencast_page),
-                               DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
   // Page 2 - Screencast
   self->picture = GTK_PICTURE (gtk_picture_new ());
