@@ -98,6 +98,27 @@
           </object>
         </child>
 
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="AdwSpinRow">
+                <!-- translators: this refers to the time to auto discard the window -->
+                <property name="title" translatable="yes">Screenshot delay (in seconds)</property>
+                <property name="subtitle" translatable="yes">Time for delayed screenshots</property>
+                <property name="digits">0</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment" id="screenshot_delay_adjustment">
+                    <property name="lower">1</property>
+                    <property name="upper">60</property>
+                    <property name="step-increment">1</property>
+                    <property name="value">3</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+
         <!-- AUTO TRASH IMAGE -->
         <child>
           <object class="AdwPreferencesGroup">

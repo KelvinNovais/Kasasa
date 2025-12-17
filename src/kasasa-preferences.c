@@ -37,6 +37,8 @@ struct _KasasaPreferences
   GtkWidget             *auto_discard_window_switch;
   GtkWidget             *auto_discard_window_adjustment;
 
+  GtkWidget             *screenshot_delay_adjustment;
+
   GtkWidget             *auto_trash_image_switch;
 
   /* Instance variables */
@@ -109,6 +111,8 @@ kasasa_preferences_class_init (KasasaPreferencesClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_discard_window_switch);
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_discard_window_adjustment);
 
+  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, screenshot_delay_adjustment);
+
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_trash_image_switch);
 }
 
@@ -141,6 +145,11 @@ kasasa_preferences_init (KasasaPreferences *self)
                    G_SETTINGS_BIND_DEFAULT);
   g_settings_bind (self->settings, "auto-discard-window-time",
                    self->auto_discard_window_adjustment, "value",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  // Screenshot delay
+  g_settings_bind (self->settings, "screenshot-delay",
+                   self->screenshot_delay_adjustment, "value",
                    G_SETTINGS_BIND_DEFAULT);
 
   // Auto trash image
