@@ -815,8 +815,11 @@ hide_header_bar (KasasaWindow *self)
     // if already requested, do nothing; else, request hiding
     if (self->hide_menu_requested == FALSE)
       {
+        guint interval = (guint) 1000 * g_settings_get_double (self->settings,
+                                                               "controls-timeout");
         self->hide_menu_requested = TRUE;
-        g_timeout_add_seconds_once (2, hide_header_bar_cb, self);
+
+        g_timeout_add_once (interval, hide_header_bar_cb, self);
       }
 }
 
@@ -902,8 +905,10 @@ on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
                        gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
+  guint interval = (guint) 1000 * g_settings_get_double (self->settings,
+                                                         "controls-timeout");
 
-  g_timeout_add_seconds_once (2, hide_toolbar_cb, self);
+  g_timeout_add_once (interval, hide_toolbar_cb, self);
 
   if (gtk_toggle_button_get_active (self->lock_button))
     return;
@@ -1000,7 +1005,8 @@ on_settings_updated (GSettings *settings,
 
   else if (g_strcmp0 (key, "auto-discard-window") == 0)
     {
-      // Just change the button state; the button callback signal will trigger the auto discarding
+      // Just change the button state;
+      // the button callback signal will trigger the auto discarding
       if (g_settings_get_boolean (self->settings, "auto-discard-window"))
         gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
       else
@@ -1106,11 +1112,10 @@ kasasa_window_init (KasasaWindow *self)
     gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
 
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
-
-  // Hide the HeaderBar if this option is enabled
-  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
+    {
+      gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
+      gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
+    }
 
   // Lock button
   g_settings_bind (self->settings,

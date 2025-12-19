@@ -467,8 +467,8 @@ take_delayed_screenshot (GtkButton *button,
 {
   KasasaContentContainer *self = KASASA_CONTENT_CONTAINER (user_data);
   KasasaWindow *window = kasasa_window_get_window_reference (GTK_WIDGET (self));
-  guint interval = (guint) g_settings_get_int (self->settings,
-                                               "screenshot-delay");
+  guint interval = g_settings_get_uint (self->settings,
+                                        "screenshot-delay");
 
   gtk_popover_popdown (self->more_actions_popover);
   gtk_widget_set_sensitive (GTK_WIDGET (self->toolbar_overlay), FALSE);

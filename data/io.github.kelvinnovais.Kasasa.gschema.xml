@@ -6,6 +6,11 @@
       <default>true</default>
     </key>
 
+	  <key name="controls-timeout" type="d">
+      <range min="0.10" max="2.50"/>
+      <default>2.0</default>
+	  </key>
+
 	  <!-- OPACITY -->
 	  <key name="change-opacity" type="b">
       <default>false</default>
@@ -43,7 +48,7 @@
     </key>
 
 	  <!-- SCREENSHOT DELAY -->
-	  <key name="screenshot-delay" type="i">
+	  <key name="screenshot-delay" type="u">
       <range min="1" max="60"/>
       <default>3</default>
 	  </key>

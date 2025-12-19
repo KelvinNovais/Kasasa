@@ -39,12 +39,26 @@
           </object>
         </child>
 
-        <!-- AUTO HIDE VERTICAL MENU -->
+        <!-- AUTO HIDE HEADER BAR -->
         <child>
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSwitchRow" id="auto_hide_menu_switch">
                 <property name="title" translatable="yes">Auto hide the header bar</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwSpinRow">
+                <property name="title" translatable="yes">Controls timeout (in seconds)</property>
+                <property name="digits">2</property>
+                <property name="adjustment">
+                  <object class="GtkAdjustment" id="controls_timeout_adjustment">
+                    <property name="lower">0.10</property>
+                    <property name="upper">2.50</property>
+                    <property name="step-increment">0.05</property>
+                    <property name="value">2.00</property>
+                  </object>
+                </property>
               </object>
             </child>
           </object>
@@ -98,11 +112,11 @@
           </object>
         </child>
 
+        <!-- SCREENSHOT DELAY -->
         <child>
           <object class="AdwPreferencesGroup">
             <child>
               <object class="AdwSpinRow">
-                <!-- translators: this refers to the time to auto discard the window -->
                 <property name="title" translatable="yes">Screenshot delay (in seconds)</property>
                 <property name="subtitle" translatable="yes">Time for delayed screenshots</property>
                 <property name="digits">0</property>

@@ -31,6 +31,7 @@ struct _KasasaPreferences
   GtkWidget             *miniaturize_switch;
 
   GtkWidget             *auto_hide_menu_switch;
+  GtkWidget             *controls_timeout_adjustment;
 
   GtkWidget             *occupy_screen_adjustment;
 
@@ -105,6 +106,7 @@ kasasa_preferences_class_init (KasasaPreferencesClass *klass)
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, miniaturize_switch);
 
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, auto_hide_menu_switch);
+  gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, controls_timeout_adjustment);
 
   gtk_widget_class_bind_template_child (widget_class, KasasaPreferences, occupy_screen_adjustment);
 
@@ -132,6 +134,10 @@ kasasa_preferences_init (KasasaPreferences *self)
   // Auto hide
   g_settings_bind (self->settings, "auto-hide-menu",
                    self->auto_hide_menu_switch, "active",
+                   G_SETTINGS_BIND_DEFAULT);
+
+  g_settings_bind (self->settings, "controls-timeout",
+                   self->controls_timeout_adjustment, "value",
                    G_SETTINGS_BIND_DEFAULT);
 
   // Ocuppy screen
