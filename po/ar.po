@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-09 07:51-0300\n"
+"POT-Creation-Date: 2026-01-06 10:17-0300\n"
 "PO-Revision-Date: 2024-09-27 18:29+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:2
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
-#: src/kasasa-application.c:102 src/kasasa-window.ui:16
+#: src/kasasa-application.c:104 src/kasasa-window.ui:16
 msgid "Kasasa"
 msgstr "Kasasa"
 
@@ -106,7 +106,7 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "خروج"
 
-#: src/kasasa-application.c:106
+#: src/kasasa-application.c:108
 msgid ""
 "Snip and pin useful information\n"
 "\n"
@@ -114,66 +114,104 @@ msgid ""
 msgstr ""
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/kasasa-application.c:114
+#: src/kasasa-application.c:116
 msgid "translator-credits"
 msgstr "Ronnie Nissan <ronnie.nissan@proton.me>"
 
-#: src/kasasa-window.ui:60
+#: src/kasasa-window.c:971
+msgid "Unblock miniaturization"
+msgstr ""
+
+#: src/kasasa-window.c:977
+msgid "Block miniaturization"
+msgstr ""
+
+#: src/kasasa-window.ui:61
 msgid "Trigger auto discard timer"
 msgstr ""
 
-#: src/kasasa-window.ui:69
+#: src/kasasa-window.ui:70
 msgid "Auto delete image when closing window"
 msgstr ""
 
-#: src/kasasa-window.ui:80
+#: src/kasasa-window.ui:88
 msgid "Menu"
 msgstr "القائمة"
 
-#: src/kasasa-window.ui:157
+#: src/kasasa-window.ui:165
 msgid "_Preferences"
 msgstr "الا_عدادات"
 
-#: src/kasasa-window.ui:161
+#: src/kasasa-window.ui:169
 msgid "_About Kasasa"
 msgstr "حول _Kasasa"
 
-#: src/kasasa-picture-container.c:180 src/kasasa-picture-container.c:331
+#: src/kasasa-content-container.c:220 src/kasasa-content-container.c:818
 #, fuzzy, c-format
 msgid "Error: %s"
 msgstr "خطء:"
 
-#: src/kasasa-picture-container.c:182 src/kasasa-picture-container.c:194
-#: src/kasasa-picture-container.c:333
+#: src/kasasa-content-container.c:222 src/kasasa-content-container.c:234
+#: src/kasasa-content-container.c:820
 msgid "Copy"
 msgstr "أنسخ"
 
-#: src/kasasa-picture-container.c:191 src/routines.c:60
+#: src/kasasa-content-container.c:231 src/kasasa-content-container.c:367
 #, fuzzy
 msgid "Couldn't load the screenshot"
 msgstr "تعذر تحميل لقطة الشاشة"
 
-#: src/kasasa-picture-container.c:345
+#. translators: reason which the screenshot failed
+#: src/kasasa-content-container.c:367
+msgid "Reason: "
+msgstr ""
+
+#: src/kasasa-content-container.c:384
+msgid "Screenshot failed"
+msgstr ""
+
+#: src/kasasa-content-container.c:832
 msgid "Copied to the clipboard"
 msgstr ""
 
-#: src/kasasa-picture-container.ui:93
+#: src/kasasa-content-container.ui:104
 #, fuzzy
 msgid "Add screenshot"
 msgstr "إعادة أخذ لقطة الشاشة"
 
-#: src/kasasa-picture-container.ui:102
+#: src/kasasa-content-container.ui:111
+msgid "More actions"
+msgstr ""
+
+#: src/kasasa-content-container.ui:138
 #, fuzzy
-msgid "Remove screenshot"
+msgid "Delayed screenshot"
 msgstr "إعادة أخذ لقطة الشاشة"
 
-#: src/kasasa-picture-container.ui:130
+#: src/kasasa-content-container.ui:165
+msgid "Screencast"
+msgstr ""
+
+#: src/kasasa-content-container.ui:185
+msgid "Remove this item"
+msgstr ""
+
+#: src/kasasa-content-container.ui:211
 msgid "Retake screenshot"
 msgstr "إعادة أخذ لقطة الشاشة"
 
-#: src/kasasa-picture-container.ui:138
+#: src/kasasa-content-container.ui:219
 #, fuzzy
 msgid "Copy screenshot"
+msgstr "إعادة أخذ لقطة الشاشة"
+
+#: src/kasasa-screencast.c:157
+msgid "Screencast ended with error"
+msgstr ""
+
+#: src/kasasa-screencast.c:562
+#, fuzzy
+msgid "No screencast"
 msgstr "إعادة أخذ لقطة الشاشة"
 
 #: src/kasasa-preferences.ui:12
@@ -197,42 +235,46 @@ msgstr ""
 msgid "Auto hide the header bar"
 msgstr ""
 
-#: src/kasasa-preferences.ui:58
+#: src/kasasa-preferences.ui:52
+msgid "Controls timeout (in seconds)"
+msgstr ""
+
+#: src/kasasa-preferences.ui:72
 msgid "Occupying screen percentage"
 msgstr ""
 
-#: src/kasasa-preferences.ui:59
+#: src/kasasa-preferences.ui:73
 msgid "Max percentage of the screen that Kasasa can use"
 msgstr ""
 
-#: src/kasasa-preferences.ui:79
+#: src/kasasa-preferences.ui:93
 msgid "Auto close window"
 msgstr ""
 
-#: src/kasasa-preferences.ui:80
+#: src/kasasa-preferences.ui:94
 msgid "Auto close the window after a certain time"
 msgstr ""
 
 #. translators: this refers to the time to auto discard the window
-#: src/kasasa-preferences.ui:86
+#: src/kasasa-preferences.ui:100
 msgid "Time (in minutes)"
 msgstr ""
 
-#: src/kasasa-preferences.ui:106
+#: src/kasasa-preferences.ui:120
+msgid "Screenshot delay (in seconds)"
+msgstr ""
+
+#: src/kasasa-preferences.ui:121
+#, fuzzy
+msgid "Time for delayed screenshots"
+msgstr "إعادة أخذ لقطة الشاشة"
+
+#: src/kasasa-preferences.ui:141
 msgid "Auto delete image"
 msgstr ""
 
-#: src/kasasa-preferences.ui:107
+#: src/kasasa-preferences.ui:142
 msgid "Auto delete the image when closing the window or retaking a screenshot"
-msgstr ""
-
-#. translators: reason which the screenshot failed
-#: src/routines.c:60
-msgid "Reason: "
-msgstr ""
-
-#: src/routines.c:77
-msgid "Screenshot failed"
 msgstr ""
 
 #~ msgid "A small window, in dark mode"

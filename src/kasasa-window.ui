@@ -17,7 +17,7 @@
     <!-- BREAKPOINT -->
     <child>
       <object class="AdwBreakpoint">
-        <condition>max-width: 210px</condition>
+        <condition>max-width: 200px</condition>
         <setter object="header_bar" property="decoration-layout">:close</setter>
       </object>
     </child>
@@ -25,6 +25,7 @@
     <child>
       <object class="GtkStack" id="stack">
         <property name="transition-type">crossfade</property>
+        <property name="transition-duration">0</property>
         <child>
           <object class="GtkStackPage">
             <property name="name">main_page</property>
@@ -56,7 +57,7 @@
                                         <child>
                                           <object class="GtkToggleButton" id="auto_discard_button">
                                             <property name="css-classes">warning</property>
-                                            <property name="icon-name">timer-symbolic</property>
+                                            <property name="icon-name">timer-sand-symbolic</property>
                                             <property name="tooltip-text" translatable="yes">Trigger auto discard timer</property>
                                           </object>
                                         </child>
@@ -67,6 +68,13 @@
                                             <property name="margin-start">6</property>
                                             <property name="icon-name">user-trash-symbolic</property>
                                             <property name="tooltip-text" translatable="yes">Auto delete image when closing window</property>
+                                          </object>
+                                        </child>
+                                        <!-- Auto delete image button -->
+                                        <child>
+                                          <object class="GtkToggleButton" id="lock_button">
+                                            <property name="margin-start">6</property>
+                                            <property name="icon-name">padlock2-open-symbolic</property>
                                           </object>
                                         </child>
                                       </object>
@@ -99,7 +107,7 @@
 
                     <!-- PICTURE CONTAINER -->
                     <child>
-                      <object class="KasasaPictureContainer" id="picture_container" />
+                      <object class="KasasaContentContainer" id="content_container" />
                     </child>
                   </object>
                 </child>

@@ -9,7 +9,8 @@
         "--socket=fallback-x11",
         "--device=dri",
         "--socket=wayland",
-        "--filesystem=xdg-pictures"
+        "--filesystem=xdg-pictures",
+        "--env=LC_ALL=pt_BR.UTF-8"
     ],
     "cleanup" : [
         "/include",
@@ -43,6 +44,41 @@
                     "type" : "git",
                     "url" : "https://github.com/flatpak/libportal.git",
                     "tag" : "0.9.1"
+                }
+            ]
+        },
+        {
+            "name" : "gst",
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "config-opts" : [
+            	"-Dbase=enabled",
+            	"-Dgood=disabled",
+            	"-Dugly=disabled",
+            	"-Dbad=disabled",
+		"-Dlibav=disabled",
+		"-Ddevtools=disabled",
+		"-Dges=disabled",
+		"-Drtsp_server=disabled",
+		"-Drs=disabled",
+		"-Dgst-examples=disabled",
+		"-Dpython=disabled",
+		"-Dtls=disabled",
+		"-Dlibnice=disabled",
+		"-Dgpl=disabled",
+		"-Dqt5=disabled",
+		"-Dqt6=disabled",
+		"-Dwebrtc=disabled",
+		"-Dtests=disabled",
+            	"-Dexamples=disabled",
+                "-Ddoc=disabled"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.freedesktop.org/gstreamer/gstreamer.git",
+                    "tag" : "1.27.2",
+                    "disable-submodules" : true
                 }
             ]
         },

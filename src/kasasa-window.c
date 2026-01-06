@@ -1,6 +1,6 @@
 /* kasasa-window.c
  *
- * Copyright 2024 Kelvin
+ * Copyright 2024-2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,28 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-// TODO add lock unminiaturized window feature
-
 #include "config.h"
 
 #include <glib/gi18n.h>
 
 #include "kasasa-window.h"
-#include "kasasa-picture-container.h"
+#include "kasasa-content-container.h"
+
+// Defined on GSchema and preferences
+#define MIN_OCCUPY_SCREEN 0.1
 
 struct _KasasaWindow
 {
   AdwApplicationWindow       parent_instance;
 
   /* Template widgets */
-  KasasaPictureContainer    *picture_container;
+  KasasaContentContainer    *content_container;
   AdwHeaderBar              *header_bar;
   GtkRevealer               *header_bar_revealer;
   GtkMenuButton             *menu_button;
   GtkToggleButton           *auto_discard_button;
   GtkToggleButton           *auto_trash_button;
+  GtkToggleButton           *lock_button;
   GtkProgressBar            *progress_bar;
   GtkStack                  *stack;
 
@@ -66,7 +68,7 @@ void
 kasasa_window_take_first_screenshot (KasasaWindow *self)
 {
   g_return_if_fail (KASASA_IS_WINDOW (self));
-  kasasa_picture_container_request_first_screenshot (self->picture_container);
+  kasasa_content_container_request_first_screenshot (self->content_container);
 }
 
 KasasaWindow *
@@ -92,6 +94,280 @@ kasasa_window_get_trash_button_active (KasasaWindow *window)
   return gtk_toggle_button_get_active (window->auto_trash_button);
 }
 
+gboolean
+kasasa_window_is_miniaturized (KasasaWindow *self)
+{
+  g_return_val_if_fail (KASASA_IS_WINDOW (self), FALSE);
+
+  return self->window_is_miniaturized;
+};
+
+static gboolean
+has_different_scalings (gdouble *max_scale)
+{
+  GdkDisplay *display = NULL;
+  GListModel *monitors = NULL;
+  GObject *monitor = NULL;
+  gdouble min_s, max_s, current_scale;
+  guint n_items;
+
+  display = gdk_display_get_default ();
+  if (display == NULL)
+    {
+      g_warning ("Can't check for different scalings");
+      return FALSE;
+    }
+
+  monitors = gdk_display_get_monitors (display);
+  n_items = g_list_model_get_n_items (monitors);
+  g_info ("Number of monitors: %d", n_items);
+
+  if (n_items == 0)
+    {
+      g_info ("Detected only 1 monitor, there's no different scales");
+      return FALSE;
+    }
+
+  monitor = g_list_model_get_object (monitors, 0);
+  min_s = max_s = gdk_monitor_get_scale (GDK_MONITOR (monitor));
+  g_object_unref (monitor);
+
+  for (guint i = 1; i < n_items; i++)
+    {
+      monitor = g_list_model_get_object (monitors, i);
+      current_scale = gdk_monitor_get_scale (GDK_MONITOR (monitor));
+
+      min_s = MIN (current_scale, min_s);
+      max_s = MAX (current_scale, max_s);
+
+      g_object_unref (monitor);
+    }
+
+  if (min_s != max_s)
+    {
+      g_info ("Monitors have different scales: %.2f and %.2f [min, max]",
+               min_s, max_s);
+      *max_scale = max_s;
+      return TRUE;
+    }
+  else
+    {
+      g_info ("Monitors have same scales");
+      return FALSE;
+    }
+}
+
+static gboolean
+scaling (GtkWidget *widget,
+         gdouble   *scale)
+{
+  GdkDisplay *display = NULL;
+  GtkNative *native = NULL;
+  GdkSurface *surface = NULL;
+
+  g_return_val_if_fail (GTK_IS_WIDGET (widget), TRUE);
+
+  display = gdk_display_get_default ();
+  if (display == NULL)
+    {
+      g_warning ("Couldn't get GdkDisplay");
+      return TRUE;
+    }
+
+  native = gtk_widget_get_native (widget);
+  if (native == NULL)
+    {
+      g_warning ("Couldn't get GtkNative");
+      return TRUE;
+    }
+
+  surface = gtk_native_get_surface (native);
+  if (surface == NULL)
+    {
+      g_warning ("Couldn't get GdkSurface");
+      return TRUE;
+    }
+
+  *scale = gdk_surface_get_scale (surface);
+
+  return FALSE;
+}
+
+static gboolean
+monitor_size (GtkWidget *widget,
+              gdouble   *monitor_width,
+              gdouble   *monitor_height)
+{
+  GdkDisplay *display = NULL;
+  GtkNative *native = NULL;
+  GdkSurface *surface = NULL;
+  GdkMonitor *monitor = NULL;
+  GdkRectangle monitor_geometry;
+  gdouble hidpi_scale;
+
+  g_return_val_if_fail (GTK_IS_WIDGET (widget), TRUE);
+
+  if (scaling (widget, &hidpi_scale))
+    {
+      g_warning ("Couldn't get scaling");
+      return TRUE;
+    }
+
+  display = gdk_display_get_default ();
+  if (display == NULL)
+    {
+      g_warning ("Couldn't get GdkDisplay");
+      return TRUE;
+    }
+
+  native = gtk_widget_get_native (widget);
+  if (native == NULL)
+    {
+      g_warning ("Couldn't get GtkNative");
+      return TRUE;
+    }
+
+  surface = gtk_native_get_surface (native);
+  if (surface == NULL)
+    {
+      g_warning ("Couldn't get GdkSurface");
+      return TRUE;
+    }
+
+  monitor = gdk_display_get_monitor_at_surface (display, surface);
+  if (monitor == NULL)
+    {
+      g_warning ("Couldn't get GdkMonitor");
+      return TRUE;
+    }
+
+  gdk_monitor_get_geometry (monitor, &monitor_geometry);
+
+  *monitor_width = monitor_geometry.width * hidpi_scale;
+  *monitor_height = monitor_geometry.height * hidpi_scale;
+
+  return FALSE;
+}
+
+// Compute the window size
+// Based on:
+// https://gitlab.gnome.org/GNOME/Incubator/showtime/-/blob/main/showtime/window.py?ref_type=heads#L836
+// https://gitlab.gnome.org/GNOME/loupe/-/blob/4ca5f9e03d18667db5d72325597cebc02887777a/src/widgets/image/rendering.rs#L151
+static gboolean
+compute_size (KasasaWindow *self,
+              gdouble      *nat_width,
+              gdouble      *nat_height,
+              const gint    content_height,
+              const gint    content_width)
+{
+  g_autoptr (GError) error = NULL;
+  // gints
+  gint image_width, image_height, image_area, max_width, max_height;
+  // gdoubles
+  gdouble monitor_width, monitor_height, monitor_area,
+          occupy_area_factor, size_scale, target_scale, hidpi_scale, max_scale;
+
+  g_autoptr (GSettings) settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
+
+  if (!(content_height > 0 && content_width))
+    {
+      g_warning ("Content width or height must be > 0");
+      return TRUE;
+    }
+
+  if (monitor_size (GTK_WIDGET (self), &monitor_width, &monitor_height))
+    {
+      g_warning ("Couldn't get monitor size");
+      return TRUE;
+    }
+
+  if (scaling (GTK_WIDGET (self), &hidpi_scale))
+    {
+      g_warning ("Couldn't get HiDPI scale");
+      return TRUE;
+    }
+
+  // If the user has different scales for the monitors and the current scale is
+  // less than the max scale, divide the image dimentions by the max scale. This
+  // is needed because the screenshot size follows the max scale
+  if (has_different_scalings (&max_scale))
+    {
+      image_width = content_width / max_scale;
+      image_height = content_height / max_scale;
+    }
+  else
+    {
+      image_width = content_width / hidpi_scale;
+      image_height = content_height / hidpi_scale;
+    }
+
+  // AREAS
+  monitor_area = monitor_width * monitor_height;
+  image_area = image_height * image_width;
+
+  occupy_area_factor = g_settings_get_double (settings, "occupy-screen");
+
+  // factor for width and height that will achieve the desired area
+  // occupation derived from:
+  // monitor_area * occupy_area_factor ==
+  //   (image_width * size_scale) * (image_height * size_scale)
+  size_scale = sqrt (monitor_area / image_area * occupy_area_factor);
+  g_debug ("size_scale @ %d: %f", __LINE__, size_scale);
+  // ensure that size_scale is not ~ 0 (if image is too big, size_scale can reach 0)
+  size_scale = (size_scale < MIN_OCCUPY_SCREEN) ? 0.1 : size_scale;
+  g_debug ("size_scale @ %d: %f", __LINE__, size_scale);
+  // ensure that we never increase image size
+  target_scale = MIN (1, size_scale);
+  g_debug ("target_scale @ %d: %f", __LINE__, target_scale);
+  *nat_width = image_width * target_scale;
+  *nat_height = image_height * target_scale;
+  g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+           __LINE__, *nat_width, *nat_height);
+
+  // Scale down if targeted occupation does not fit horizontally
+  // Add some margin to not touch corners
+  max_width = monitor_width - 20;
+  if (*nat_width > max_width)
+    {
+      *nat_width = max_width;
+      *nat_height = image_height * (*nat_width) / image_width;
+      g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+               __LINE__, *nat_width, *nat_height);
+    }
+
+  // Same for vertical size
+  // Additionally substract some space for HeaderBar and Shell bar
+  max_height = monitor_height - (50 + 35 + 20) * hidpi_scale;
+  if (*nat_height > max_height)
+    {
+      *nat_height = max_height;
+      *nat_width = image_width * (*nat_height) / image_height;
+      g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+               __LINE__, *nat_width, *nat_height);
+    }
+
+  *nat_width = round (*nat_width);
+  *nat_height = round (*nat_height);
+  g_debug ("[nat_width, nat_height] @ %d: [%f, %f]",
+           __LINE__, *nat_width, *nat_height);
+
+  // Ensure that the scaled image isn't smaller than the min window size
+  *nat_width = MAX (WINDOW_MIN_WIDTH, *nat_width);
+  *nat_height = MAX (WINDOW_MIN_HEIGHT, *nat_height);
+
+  // If the header bar is NOT hiding, then the window height must have more 47 px
+  if (!g_settings_get_boolean (settings, "auto-hide-menu"))
+    *nat_height += 47;
+
+  g_info ("Physical monitor dimensions: %.2f x %.2f",
+          monitor_width, monitor_height);
+  g_info ("HiDPI scale: %.2f", hidpi_scale);
+  g_info ("Image dimensions: %d x %d", image_width, image_height);
+  g_info ("Scaled image dimensions: %.2f x %.2f", *nat_width, *nat_height);
+
+  return FALSE;
+}
+
 // Resize the window with an animation
 void
 kasasa_window_resize_window (KasasaWindow *self,
@@ -109,7 +385,7 @@ kasasa_window_resize_window (KasasaWindow *self,
                                &default_width, &default_height);
 
   // Disable the carousel navigation while the window is being resized
-  kasasa_picture_container_carousel_set_interactive (self->picture_container,
+  kasasa_content_container_carousel_set_interactive (self->content_container,
                                                      FALSE);
 
   // Set targets
@@ -120,7 +396,7 @@ kasasa_window_resize_window (KasasaWindow *self,
 
   // Animation for resizing height
   animation_height = adw_timed_animation_new (
-    GTK_WIDGET (self),                                    // widget
+    GTK_WIDGET (self),                                      // widget
     (gdouble) default_height,                               // from
     new_height,                                             // to
     WINDOW_RESIZING_DURATION,                               // duration
@@ -131,7 +407,7 @@ kasasa_window_resize_window (KasasaWindow *self,
 
   // Animation for resizing width
   animation_width = adw_timed_animation_new (
-    GTK_WIDGET (self),                                      // widget
+    GTK_WIDGET (self),                                        // widget
     (gdouble) default_width,                                  // from
     new_width,                                                // to
     WINDOW_RESIZING_DURATION,                                 // duration
@@ -153,8 +429,25 @@ kasasa_window_resize_window (KasasaWindow *self,
     }
 
   // Enable carousel again
-  kasasa_picture_container_carousel_set_interactive (self->picture_container,
+  kasasa_content_container_carousel_set_interactive (self->content_container,
                                                      TRUE);
+}
+
+void
+kasasa_window_resize_window_scaling (KasasaWindow *self,
+                                     gdouble       new_height,
+                                     gdouble       new_width)
+{
+  gdouble nat_width = -1.0;
+  gdouble nat_height = -1.0;
+
+  g_return_if_fail (KASASA_IS_WINDOW (self));
+
+  compute_size (self,
+                &nat_width, &nat_height,
+                new_height, new_width);
+
+  kasasa_window_resize_window (self, nat_height, nat_width);
 }
 
 static void
@@ -291,7 +584,7 @@ auto_discard_window_cb (gpointer user_data)
   if (!gtk_toggle_button_get_active (self->auto_discard_button))
     {
       gtk_progress_bar_set_fraction (self->progress_bar, 0.0);
-      return FALSE;
+      return G_SOURCE_REMOVE;
     }
 
   new_fraction = gtk_progress_bar_get_fraction (self->progress_bar) - 0.005;
@@ -299,14 +592,14 @@ auto_discard_window_cb (gpointer user_data)
   if (new_fraction <= 0)
     {
       gtk_window_close (GTK_WINDOW (self));
-      return FALSE;
+      return G_SOURCE_REMOVE;
     }
   else
     {
       gtk_progress_bar_set_fraction (self->progress_bar, new_fraction);
     }
 
-  return TRUE;
+  return G_SOURCE_CONTINUE;
 }
 
 void
@@ -428,7 +721,8 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
     {
       if (self->window_is_miniaturized
           || !g_settings_get_boolean (self->settings, "miniaturize-window")
-          || self->block_miniaturization)
+          || self->block_miniaturization
+          || gtk_toggle_button_get_active (self->lock_button))
         return;
 
       g_object_unref (self->miniaturization_canceller);
@@ -446,7 +740,7 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
         return;
 
       self->window_is_miniaturized = FALSE;
-      kasasa_picture_container_request_window_resize (self->picture_container);
+      kasasa_content_container_request_window_resize (self->content_container);
       gtk_widget_remove_css_class (GTK_WIDGET (self), "circular-window");
       gtk_stack_set_visible_child_name (self->stack, "main_page");
     }
@@ -502,7 +796,7 @@ hide_toolbar_cb (gpointer user_data)
   if (self->mouse_over_window)
     return;
 
-  kasasa_picture_container_reveal_toolbar (self->picture_container, FALSE);
+  kasasa_content_container_reveal_controls (self->content_container, FALSE);
 }
 
 static void
@@ -521,13 +815,16 @@ hide_header_bar (KasasaWindow *self)
     // if already requested, do nothing; else, request hiding
     if (self->hide_menu_requested == FALSE)
       {
+        guint interval = (guint) 1000 * g_settings_get_double (self->settings,
+                                                               "controls-timeout");
         self->hide_menu_requested = TRUE;
-        g_timeout_add_seconds_once (2, hide_header_bar_cb, self);
+
+        g_timeout_add_once (interval, hide_header_bar_cb, self);
       }
 }
 
 static void
-on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_motion,
+on_mouse_enter_content_container (GtkEventControllerMotion *event_controller_motion,
                                   gdouble                   x,
                                   gdouble                   y,
                                   gpointer                  user_data)
@@ -549,22 +846,22 @@ on_mouse_enter_picture_container (GtkEventControllerMotion *event_controller_mot
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
-  kasasa_picture_container_reveal_toolbar (self->picture_container, TRUE);
+  kasasa_content_container_reveal_controls (self->content_container, TRUE);
 }
 
 static void
-on_mouse_leave_picture_container (GtkEventControllerMotion *event_controller_motion,
+on_mouse_leave_content_container (GtkEventControllerMotion *event_controller_motion,
                                   gpointer                  user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   // See Note [1]
   if (gtk_menu_button_get_active (self->menu_button)) return;
+  if (kasasa_content_container_controls_active (self->content_container)) return;
 
   self->mouse_over_window = FALSE;
   kasasa_window_change_opacity (self, OPACITY_INCREASE);
   hide_header_bar (self);
-  g_timeout_add_seconds_once (2, hide_toolbar_cb, self);
 }
 
 static void
@@ -607,7 +904,20 @@ static void
 on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
                        gpointer                  user_data)
 {
-  kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
+  KasasaWindow *self = KASASA_WINDOW (user_data);
+  guint interval = (guint) 1000 * g_settings_get_double (self->settings,
+                                                         "controls-timeout");
+
+  g_timeout_add_once (interval, hide_toolbar_cb, self);
+
+  if (gtk_toggle_button_get_active (self->lock_button))
+    return;
+
+  // See Note [1]
+  if (kasasa_content_container_controls_active (self->content_container))
+    return;
+
+  kasasa_window_miniaturize_window (self, TRUE);
 }
 
 static void
@@ -625,7 +935,7 @@ on_window_click_released (GtkGestureClick *gesture_click,
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
     gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), TRUE);
 
-  kasasa_picture_container_reveal_toolbar (self->picture_container, TRUE);
+  kasasa_content_container_reveal_controls (self->content_container, TRUE);
 }
 
 static gboolean
@@ -651,6 +961,24 @@ on_auto_discard_button_toggled (GtkToggleButton   *button,
 }
 
 static void
+on_lock_button_toggled (GtkToggleButton *button,
+                        gpointer         user_data)
+{
+  if (gtk_toggle_button_get_active (button))
+    {
+      gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-symbolic");
+      gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+                                   _("Unblock miniaturization"));
+    }
+  else
+    {
+      gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-open-symbolic");
+      gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+                                   _("Block miniaturization"));
+    }
+}
+
+static void
 on_settings_updated (GSettings *settings,
                      gchar     *key,
                      gpointer   user_data)
@@ -672,12 +1000,13 @@ on_settings_updated (GSettings *settings,
         g_timeout_add_seconds_once (2, reveal_header_bar_cb, self);
 
       // Resize the window to free/occupy the vertical menu space
-      kasasa_picture_container_request_window_resize (self->picture_container);
+      kasasa_content_container_request_window_resize (self->content_container);
     }
 
   else if (g_strcmp0 (key, "auto-discard-window") == 0)
     {
-      // Just change the button state; the button callback signal will trigger the auto discarding
+      // Just change the button state;
+      // the button callback signal will trigger the auto discarding
       if (g_settings_get_boolean (self->settings, "auto-discard-window"))
         gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
       else
@@ -707,7 +1036,7 @@ on_close_request (GtkWindow *window,
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
-  kasasa_picture_container_wipe_screenshots (self->picture_container);
+  kasasa_content_container_wipe_content (self->content_container);
 
   return FALSE;
 }
@@ -742,12 +1071,13 @@ kasasa_window_class_init (KasasaWindowClass *klass)
   object_class->finalize = kasasa_window_finalize;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/io/github/kelvinnovais/Kasasa/kasasa-window.ui");
-  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, picture_container);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, content_container);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar_revealer);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, header_bar);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, menu_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_discard_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, auto_trash_button);
+  gtk_widget_class_bind_template_child (widget_class, KasasaWindow, lock_button);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, progress_bar);
   gtk_widget_class_bind_template_child (widget_class, KasasaWindow, stack);
 }
@@ -755,13 +1085,13 @@ kasasa_window_class_init (KasasaWindowClass *klass)
 static void
 kasasa_window_init (KasasaWindow *self)
 {
-  GtkEventController *pc_motion_event_controller = NULL;
+  GtkEventController *cc_motion_event_controller = NULL;
   GtkEventController *hb_motion_event_controller = NULL;
   GtkEventController *win_motion_event_controller = NULL;
   GtkEventController *win_scroll_event_controller = NULL;
   GtkGesture *win_gesture_click = NULL;
 
-  g_type_ensure (KASASA_TYPE_PICTURE_CONTAINER);
+  g_type_ensure (KASASA_TYPE_CONTENT_CONTAINER);
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
@@ -772,8 +1102,7 @@ kasasa_window_init (KasasaWindow *self)
 
   g_signal_connect (self->settings, "changed", G_CALLBACK (on_settings_updated), self);
 
-  // PERFFORM ACTIONS ON WIDGETS (this should be done before connecting signals
-  // to avoid triggering them)
+  // PERFFORM ACTIONS ON WIDGETS
   // Auto discard button
   if (g_settings_get_boolean (self->settings, "auto-discard-window"))
     gtk_toggle_button_set_active (self->auto_discard_button, TRUE);
@@ -783,25 +1112,31 @@ kasasa_window_init (KasasaWindow *self)
     gtk_toggle_button_set_active (self->auto_trash_button, TRUE);
 
   if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
+    {
+      gtk_widget_add_css_class (GTK_WIDGET (self->header_bar), "headerbar-no-dimming");
+      gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
+    }
 
-  // Hide the HeaderBar if this option is enabled
-  if (g_settings_get_boolean (self->settings, "auto-hide-menu"))
-    gtk_revealer_set_reveal_child (GTK_REVEALER (self->header_bar_revealer), FALSE);
+  // Lock button
+  g_settings_bind (self->settings,
+                   "miniaturize-window",
+                   self->lock_button,
+                   "visible",
+                   G_SETTINGS_BIND_GET);
 
   // MOTION EVENT CONTROLLERS: Create motion event controllers to monitor when
-  // the mouse cursor is over the picture container or the menu
-  // (I) Picture container
-  pc_motion_event_controller = gtk_event_controller_motion_new ();
-  g_signal_connect (pc_motion_event_controller,
+  // the mouse cursor is over the content container or the menu
+  // (I) Content container
+  cc_motion_event_controller = gtk_event_controller_motion_new ();
+  g_signal_connect (cc_motion_event_controller,
                     "enter",
-                    G_CALLBACK (on_mouse_enter_picture_container),
+                    G_CALLBACK (on_mouse_enter_content_container),
                     self);
-  g_signal_connect (pc_motion_event_controller,
+  g_signal_connect (cc_motion_event_controller,
                     "leave",
-                    G_CALLBACK (on_mouse_leave_picture_container),
+                    G_CALLBACK (on_mouse_leave_content_container),
                     self);
-  gtk_widget_add_controller (GTK_WIDGET (self->picture_container), pc_motion_event_controller);
+  gtk_widget_add_controller (GTK_WIDGET (self->content_container), cc_motion_event_controller);
 
   // (II) HeaderBar
   hb_motion_event_controller = gtk_event_controller_motion_new ();
@@ -839,7 +1174,7 @@ kasasa_window_init (KasasaWindow *self)
 
 
   // Increase opacity when the user scrolls the screenshot; this is combined with
-  // "page-changed" signal from the caroussel @PictureContainer
+  // "page-changed" signal from the caroussel @ContentContainer
   win_scroll_event_controller =
     gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES);
   g_signal_connect (win_scroll_event_controller,
@@ -854,6 +1189,10 @@ kasasa_window_init (KasasaWindow *self)
                     "toggled",
                     G_CALLBACK (on_auto_discard_button_toggled),
                     self);
+  g_signal_connect (self->lock_button,
+                    "toggled",
+                    G_CALLBACK (on_lock_button_toggled),
+                    self);
 
   // Listen to events
   g_signal_connect (GTK_WINDOW (self),
@@ -864,6 +1203,8 @@ kasasa_window_init (KasasaWindow *self)
 
 
 /* [1] Note:
- * The menu button seems to behave differently from the other widgets, so it can
- * make the mouse "enter/leave" the window when activated; ignore these situations
+ * The PopOver of a menu button steals the focus of a motion event controller
+ * (when it's under the pointer)
+ *
+ * This situation in unwanted
  */

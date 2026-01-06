@@ -1,6 +1,6 @@
-/* routines.h
+/* kasasa-content.h
  *
- * Copyright 2025 Kelvin
+ * Copyright 2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,29 @@
 
 #pragma once
 
-#include "kasasa-picture-container.h"
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
-void routines_take_first_screenshot (KasasaPictureContainer *pc);
-void routines_add_screenshot (GtkButton *button, gpointer pc);
-void routines_retake_screenshot (GtkButton *button, gpointer pc);
+#define KASASA_TYPE_CONTENT (kasasa_content_get_type ())
+
+G_DECLARE_INTERFACE (KasasaContent, kasasa_content, KASASA, CONTENT, GObject)
+
+struct _KasasaContentInterface
+{
+  GTypeInterface parent_iface;
+
+  void (* get_dimensions) (KasasaContent  *content,
+                           gint           *height,
+                           gint           *width);
+
+  void (* finish) (KasasaContent *content);
+};
+
+void kasasa_content_get_dimensions (KasasaContent *content,
+                                    gint          *height,
+                                    gint          *width);
+
+void kasasa_content_finish (KasasaContent *content);
 
 G_END_DECLS

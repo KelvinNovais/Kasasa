@@ -1,6 +1,6 @@
 /* kasasa-application.h
  *
- * Copyright 2024 Kelvin
+ * Copyright 2024-2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (KasasaApplication, kasasa_application, KASASA, APPLICATION, AdwApplication)
 
 KasasaApplication *kasasa_application_new (const char        *application_id,
-                                             GApplicationFlags  flags);
+                                           GApplicationFlags  flags);
 
 G_END_DECLS

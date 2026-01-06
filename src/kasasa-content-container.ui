@@ -5,12 +5,13 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.4"/>
 
-  <template class="KasasaPictureContainer" parent="AdwBreakpointBin">
+  <template class="KasasaContentContainer" parent="AdwBreakpointBin">
     <property name="width-request">75</property>
     <property name="height-request">75</property>
     <child>
+      <!-- (I) Important: this condition avoids the toolbar buttons complaining about size allocation -->
       <object class="AdwBreakpoint">
-        <condition>max-width: 215px</condition>
+        <condition>max-width: 245px</condition>
         <setter object="box_start" property="spacing">0</setter>
         <setter object="box_start" property="css-classes">osd-box-no-padding</setter>
         <setter object="box_end" property="spacing">0</setter>
@@ -21,6 +22,19 @@
         <setter object="revealer_end_buttons" property="margin-start">9</setter>
         <setter object="revealer_end_buttons" property="margin-end">9</setter>
         <setter object="revealer_end_buttons" property="margin-bottom">9</setter>
+      </object>
+    </child>
+    <child>
+      <!--
+      (II) this is the second part; it has no visual effects, since it acts
+      during miniaturization phase.
+
+      Keep this value smaller than the WINDOW_MIN_WIDTH defined at kasasa-window.h
+      -->
+      <object class="AdwBreakpoint">
+        <condition>max-width: 210px</condition>
+        <setter object="revealer_start_buttons" property="height-request">75</setter>
+        <setter object="revealer_end_buttons" property="height-request">75</setter>
       </object>
     </child>
 
@@ -71,8 +85,6 @@
                 <child type="overlay">
                   <object class="GtkRevealer" id="revealer_start_buttons">
                     <property name="transition-type">crossfade</property>
-                    <!-- <property name="transition-duration">1250</property> -->
-                    <property name="overflow">visible</property>
                     <property name="halign">start</property>
                     <property name="valign">end</property>
                     <property name="margin-start">18</property>
@@ -82,7 +94,6 @@
                       <object class="GtkBox" id="box_start">
                         <property name="orientation">horizontal</property>
                         <property name="css-classes">osd-box</property>
-                        <property name="spacing">6</property>
 
                         <!-- Add button -->
                         <child>
@@ -93,13 +104,85 @@
                             <property name="tooltip-text" translatable="yes">Add screenshot</property>
                           </object>
                         </child>
+                        <!-- Sub actions -->
+                        <child>
+                          <object class="GtkMenuButton" id="more_actions_button">
+                            <property name="css-classes">flat</property>
+                            <property name="tooltip-text" translatable="yes">More actions</property>
+                            <property name="direction">up</property>
+                            <property name="icon-name">down-small-symbolic</property>
+                            <property name="margin-end">6</property>
+                            <property name="popover">
+                              <object class="GtkPopover" id="more_actions_popover">
+                                <property name="child">
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkButton" id="add_delayed_screenshot_button">
+                                        <property name="css-classes">flat</property>
+                                        <property name="halign">fill</property>
+                                        <property name="child">
+                                          <object class="GtkBox">
+                                            <property name="margin-start">10</property>
+                                            <property name="margin-end">10</property>
+                                            <property name="margin-top">3</property>
+                                            <property name="margin-bottom">3</property>
+                                            <child>
+                                              <object class="GtkImage">
+                                                <property name="icon-name">timer-symbolic</property>
+                                                <property name="margin-end">12</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Delayed screenshot</property>
+                                                <property name="css-classes">body</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="add_screencast_button">
+                                        <property name="css-classes">flat</property>
+                                        <property name="halign">fill</property>
+                                        <property name="hexpand">true</property>
+                                        <property name="child">
+                                          <object class="GtkBox">
+                                            <property name="margin-start">10</property>
+                                            <property name="margin-end">10</property>
+                                            <property name="margin-top">3</property>
+                                            <property name="margin-bottom">3</property>
+                                            <child>
+                                              <object class="GtkImage">
+                                                <property name="icon-name">screencast-recorded-symbolic</property>
+                                                <property name="margin-end">12</property>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Screencast</property>
+                                                <property name="css-classes">body</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
                         <!-- Remove button -->
                         <child>
-                          <object class="GtkButton" id="remove_screenshot_button">
+                          <object class="GtkButton" id="remove_content_button">
                             <property name="css-classes">flat</property>
                             <property name="sensitive">false</property>
                             <property name="icon-name">minus-large-symbolic</property>
-                            <property name="tooltip-text" translatable="yes">Remove screenshot</property>
+                            <property name="tooltip-text" translatable="yes">Remove this item</property>
                           </object>
                         </child>
                       </object>
@@ -111,8 +194,6 @@
                 <child type="overlay">
                   <object class="GtkRevealer" id="revealer_end_buttons">
                     <property name="transition-type">crossfade</property>
-                    <property name="overflow">visible</property>
-                    <property name="overflow">visible</property>
                     <property name="halign">end</property>
                     <property name="valign">end</property>
                     <property name="margin-start">18</property>
@@ -151,3 +232,4 @@
     </child>
   </template>
 </interface>
+

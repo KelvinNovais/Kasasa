@@ -3,15 +3,18 @@ kasasa_sources = [
   'kasasa-application.c',
   'kasasa-window.c',
   'kasasa-preferences.c',
+  'kasasa-content.c',
   'kasasa-screenshot.c',
-  'kasasa-picture-container.c',
-  'routines.c',
+  'kasasa-screencast.c',
+  'kasasa-content-container.c',
 ]
 
 kasasa_deps = [
   dependency('gtk4'),
   dependency('libadwaita-1', version: '>= 1.7.4'),
-  dependency('libportal')
+  dependency('libportal'),
+  dependency('libportal-gtk4'),
+  dependency('gstreamer-1.0')
 ]
 
 kasasa_deps += cc.find_library('m', required : true)

@@ -1,6 +1,6 @@
 /* kasasa-window.h
  *
- * Copyright 2024 Kelvin
+ * Copyright 2024-2025 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ typedef enum
 // Due to miniaturization, the real min dimensions are set here (width-request
 // and height-request)
 #define WINDOW_MIN_HEIGHT 110
-#define WINDOW_MIN_WIDTH  180
+#define WINDOW_MIN_WIDTH  212
 
 #define KASASA_TYPE_WINDOW (kasasa_window_get_type ())
 
@@ -50,6 +50,7 @@ typedef void (* HideWindowCallback)(gpointer);
 
 KasasaWindow * kasasa_window_get_window_reference (GtkWidget *widget);
 gboolean kasasa_window_get_trash_button_active (KasasaWindow *window);
+gboolean kasasa_window_is_miniaturized (KasasaWindow *window);
 void kasasa_window_hide_window (KasasaWindow           *window,
                                 gboolean                hide,
                                 HideWindowCallback      callback,
@@ -59,6 +60,9 @@ void kasasa_window_change_opacity (KasasaWindow *window,
 void kasasa_window_resize_window (KasasaWindow *window,
                                   gdouble       new_height,
                                   gdouble       new_width);
+void kasasa_window_resize_window_scaling (KasasaWindow *window,
+                                          gdouble       new_height,
+                                          gdouble       new_width);
 void kasasa_window_auto_discard_window (KasasaWindow *window);
 void kasasa_window_miniaturize_window (KasasaWindow *window,
                                        gboolean      miniaturize);

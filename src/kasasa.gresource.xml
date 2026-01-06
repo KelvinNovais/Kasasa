@@ -3,7 +3,7 @@
   <!-- UI -->
   <gresource prefix="/io/github/kelvinnovais/Kasasa">
     <file preprocess="xml-stripblanks">kasasa-window.ui</file>
-    <file preprocess="xml-stripblanks">kasasa-picture-container.ui</file>
+    <file preprocess="xml-stripblanks">kasasa-content-container.ui</file>
     <file preprocess="xml-stripblanks">kasasa-preferences.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
 
@@ -14,9 +14,15 @@
   <!-- ICONS -->
   <gresource prefix="/io/github/kelvinnovais/Kasasa">
     <file preprocess="xml-stripblanks">icons/scalable/actions/timer-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/timer-sand-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/plus-large-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/minus-large-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/image-round-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/dot-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/padlock2-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/padlock2-open-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/down-small-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/screencast-recorded-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/screenshooter-symbolic.svg</file>
   </gresource>
 </gresources>
