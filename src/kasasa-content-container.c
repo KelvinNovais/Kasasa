@@ -1,6 +1,6 @@
 /* kasasa-content-container.c
  *
- * Copyright 2024-2025 Kelvin Novais
+ * Copyright 2024-2026 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -968,3 +968,4 @@ kasasa_content_container_new (void)
   return KASASA_CONTENT_CONTAINER (g_object_new (KASASA_TYPE_CONTENT_CONTAINER,
                                                  NULL));
 }
+

@@ -10,7 +10,7 @@
 
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  <content_rating type="oars-1.1" />
+  <content_rating type="oars-1.1"/>
   <translation type="gettext">kasasa</translation>
 
   <recommends>
@@ -30,7 +30,7 @@
     <p>Best used with:</p>
     <ul>
       <!-- translators: replace &quot; with " -->
-      <li>&quot;Always on Top&quot; and/or &quot;Always on Visible Workspace&quot;</li>
+      <li>"Always on Top" and/or "Always on Visible Workspace"</li>
       <li>A keyboard shortcut</li>
     </ul>
     <!-- translators: do not include the tags <code></code> -->
@@ -41,7 +41,7 @@
     <!-- translators: replace "&lt;" with < and "&apos;" with ' -->
     <p>
       Note: On GNOME versions &lt; 46, a dialog will appear to set up and take the screenshot,
-      instead of directly using the GNOME&apos;s screenshoter; this may be inconvenient.
+      instead of directly using the GNOME's screenshoter; this may be inconvenient.
     </p>
   </description>
 
@@ -69,6 +69,18 @@
   </branding>
 
   <releases>
+    <release date="2026-01-06" version="1.1.5">
+      <description translate="no">
+        <p>Features:</p>
+        <ul>
+          <li>Added screencast</li>
+          <li>Add window lock</li>
+          <li>Delayed screenshot</li>
+          <li>Adjustable header bar auto hide speed</li>
+          <li>Add Vietnamese translation (Loc Huynh @hthienloc)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2025-08-16" version="1.1.4">
       <description translate="no">
         <p>Performance improvements.</p>
@@ -198,3 +210,4 @@
   <url type="contribute">https://github.com/KelvinNovais/Kasasa/blob/main/CONTRIBUTING.md</url>
   <url type="translate">https://github.com/KelvinNovais/Kasasa/blob/main/CONTRIBUTING.md#translating</url>
 </component>
+

@@ -1,6 +1,6 @@
 /* kasasa-screencast.c
  *
- * Copyright 2025 Kelvin Novais
+ * Copyright 2025-2026 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
  */
 
 #include <gst/gst.h>
-#include <gst/app/gstappsink.h>
 #include <glib/gi18n.h>
 
 #include "kasasa-screencast.h"
@@ -580,3 +579,4 @@ kasasa_screencast_new (void)
 
 // https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/tree/main/video/gtk4/examples?ref_type=heads
 // https://github.com/bilelmoussaoui/ashpd/blob/master/examples/screen_cast_gstreamer.rs
+
