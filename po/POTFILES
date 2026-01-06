@@ -11,4 +11,3 @@ src/kasasa-content-container.ui
 src/kasasa-screencast.c
 src/kasasa-preferences.c
 src/kasasa-preferences.ui
-src/routines.c

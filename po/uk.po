@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-09 07:51-0300\n"
+"POT-Creation-Date: 2026-01-06 08:10-0300\n"
 "PO-Revision-Date: 2025-07-04 13:08+0300\n"
 "Last-Translator: freeducks-debug <209897795+freeducks-"
 "debug@users.noreply.github.com>\n"
@@ -23,7 +23,7 @@ msgstr ""
 # Із гітхаба програми: "Kasasa" (قصاصة) is an Arabic term meaning a scrap of paper torn from a book, a magazine or a newspaper.
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:2
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
-#: src/kasasa-application.c:102 src/kasasa-window.ui:16
+#: src/kasasa-application.c:104 src/kasasa-window.ui:16
 msgid "Kasasa"
 msgstr "Клаптик"
 
@@ -112,7 +112,7 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Вийти"
 
-#: src/kasasa-application.c:106
+#: src/kasasa-application.c:108
 msgid ""
 "Snip and pin useful information\n"
 "\n"
@@ -124,64 +124,103 @@ msgstr ""
 "⭐:"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/kasasa-application.c:114
+#: src/kasasa-application.c:116
 msgid "translator-credits"
 msgstr ""
 "volkov <volkovissocool@gmail.com>\n"
 "freeducks-debug"
 
-#: src/kasasa-window.ui:60
+#: src/kasasa-window.c:971
+msgid "Unblock miniaturization"
+msgstr ""
+
+#: src/kasasa-window.c:977
+msgid "Block miniaturization"
+msgstr ""
+
+#: src/kasasa-window.ui:61
 msgid "Trigger auto discard timer"
 msgstr "Запустити таймер автоматичного видалення"
 
-#: src/kasasa-window.ui:69
+#: src/kasasa-window.ui:70
 msgid "Auto delete image when closing window"
 msgstr "Автоматично видаляти зображення при закритті вікна"
 
-#: src/kasasa-window.ui:80
+#: src/kasasa-window.ui:88
 msgid "Menu"
 msgstr "Меню"
 
-#: src/kasasa-window.ui:157
+#: src/kasasa-window.ui:165
 msgid "_Preferences"
 msgstr "_Налаштування"
 
-#: src/kasasa-window.ui:161
+#: src/kasasa-window.ui:169
 msgid "_About Kasasa"
 msgstr "_Про Клаптик"
 
-#: src/kasasa-picture-container.c:180 src/kasasa-picture-container.c:331
+#: src/kasasa-content-container.c:220 src/kasasa-content-container.c:818
 #, c-format
 msgid "Error: %s"
 msgstr "Помилка: %s"
 
-#: src/kasasa-picture-container.c:182 src/kasasa-picture-container.c:194
-#: src/kasasa-picture-container.c:333
+#: src/kasasa-content-container.c:222 src/kasasa-content-container.c:234
+#: src/kasasa-content-container.c:820
 msgid "Copy"
 msgstr "Скопіювати"
 
-#: src/kasasa-picture-container.c:191 src/routines.c:60
+#: src/kasasa-content-container.c:231 src/kasasa-content-container.c:367
 msgid "Couldn't load the screenshot"
 msgstr "Не вдалося завантажити знімок екрану"
 
-#: src/kasasa-picture-container.c:345
+#. translators: reason which the screenshot failed
+#: src/kasasa-content-container.c:367
+msgid "Reason: "
+msgstr ""
+
+#: src/kasasa-content-container.c:384
+msgid "Screenshot failed"
+msgstr ""
+
+#: src/kasasa-content-container.c:832
 msgid "Copied to the clipboard"
 msgstr "Скопійовано до буферу обміну"
 
-#: src/kasasa-picture-container.ui:93
+#: src/kasasa-content-container.ui:104
 msgid "Add screenshot"
 msgstr "Додати знімок екрану"
 
-#: src/kasasa-picture-container.ui:102
-msgid "Remove screenshot"
-msgstr "Видалити знімок екрану"
+#: src/kasasa-content-container.ui:111
+msgid "More actions"
+msgstr ""
 
-#: src/kasasa-picture-container.ui:130
+#: src/kasasa-content-container.ui:138
+#, fuzzy
+msgid "Delayed screenshot"
+msgstr "Ще раз зробити знімок екрану"
+
+#: src/kasasa-content-container.ui:165
+msgid "Screencast"
+msgstr ""
+
+#: src/kasasa-content-container.ui:185
+msgid "Remove this item"
+msgstr ""
+
+#: src/kasasa-content-container.ui:211
 msgid "Retake screenshot"
 msgstr "Ще раз зробити знімок екрану"
 
-#: src/kasasa-picture-container.ui:138
+#: src/kasasa-content-container.ui:219
 msgid "Copy screenshot"
+msgstr "Скопіювати знімок екрану"
+
+#: src/kasasa-screencast.c:157
+msgid "Screencast ended with error"
+msgstr ""
+
+#: src/kasasa-screencast.c:562
+#, fuzzy
+msgid "No screencast"
 msgstr "Скопіювати знімок екрану"
 
 #: src/kasasa-preferences.ui:12
@@ -204,45 +243,49 @@ msgstr "Мініатюрувати"
 msgid "Auto hide the header bar"
 msgstr "Автоматично ховати заголовок"
 
-#: src/kasasa-preferences.ui:58
+#: src/kasasa-preferences.ui:52
+msgid "Controls timeout (in seconds)"
+msgstr ""
+
+#: src/kasasa-preferences.ui:72
 msgid "Occupying screen percentage"
 msgstr "Процент займання екрану"
 
-#: src/kasasa-preferences.ui:59
+#: src/kasasa-preferences.ui:73
 msgid "Max percentage of the screen that Kasasa can use"
 msgstr "Максимальний процент екрану, який \"Клаптик\" може займати"
 
-#: src/kasasa-preferences.ui:79
+#: src/kasasa-preferences.ui:93
 msgid "Auto close window"
 msgstr "Автоматично закривати вікно"
 
-#: src/kasasa-preferences.ui:80
+#: src/kasasa-preferences.ui:94
 msgid "Auto close the window after a certain time"
 msgstr "Автоматично закривати вікно після певного часу"
 
 #. translators: this refers to the time to auto discard the window
-#: src/kasasa-preferences.ui:86
+#: src/kasasa-preferences.ui:100
 msgid "Time (in minutes)"
 msgstr "Час (у хвилинах)"
 
-#: src/kasasa-preferences.ui:106
+#: src/kasasa-preferences.ui:120
+msgid "Screenshot delay (in seconds)"
+msgstr ""
+
+#: src/kasasa-preferences.ui:121
+#, fuzzy
+msgid "Time for delayed screenshots"
+msgstr "Видалити знімок екрану"
+
+#: src/kasasa-preferences.ui:141
 msgid "Auto delete image"
 msgstr "Автоматично видаляти зображення"
 
-#: src/kasasa-preferences.ui:107
+#: src/kasasa-preferences.ui:142
 msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
 "Автоматично видаляти зображення при закриванні вікна або створенні нового "
 "знімка екрану"
-
-#. translators: reason which the screenshot failed
-#: src/routines.c:60
-msgid "Reason: "
-msgstr ""
-
-#: src/routines.c:77
-msgid "Screenshot failed"
-msgstr ""
 
 #~ msgid "A small window, in dark mode"
 #~ msgstr "Маленьке вікно, темний стиль"

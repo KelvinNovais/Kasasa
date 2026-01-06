@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the kasasa package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Kelvin Ribeiro Novais <>, 2024-2025.
+# Kelvin Ribeiro Novais <>, 2024-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-09 07:51-0300\n"
-"PO-Revision-Date: 2025-07-09 07:58-0300\n"
+"POT-Creation-Date: 2026-01-06 08:10-0300\n"
+"PO-Revision-Date: 2026-01-06 08:29-0300\n"
 "Last-Translator: Kelvin Ribeiro Novais <>\n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Gtranslator 48.0\n"
+"X-Generator: Gtranslator 49.0\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:2
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
-#: src/kasasa-application.c:102 src/kasasa-window.ui:16
+#: src/kasasa-application.c:104 src/kasasa-window.ui:16
 msgid "Kasasa"
 msgstr "Kasasa"
 
@@ -62,8 +62,8 @@ msgstr "Un atajo de teclado"
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
 msgid ""
 "On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom "
-"Shortcuts. There you can set a shortcut to run <code>flatpak run io.github."
-"kelvinnovais.Kasasa</code> "
+"Shortcuts. There you can set a shortcut to run <code>flatpak run "
+"io.github.kelvinnovais.Kasasa</code> "
 msgstr ""
 "En GNOME, vaya a Configuración → Teclado → Ver y personalizar atajos → Atajo "
 "personalizado. Allí puedes configurar un acceso directo para ejecutar "
@@ -109,7 +109,7 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Cerrar"
 
-#: src/kasasa-application.c:106
+#: src/kasasa-application.c:108
 msgid ""
 "Snip and pin useful information\n"
 "\n"
@@ -120,63 +120,100 @@ msgstr ""
 "Si te gustó la aplicación ❤️, considera darle una estrella ⭐:"
 
 #. Translators: Replace "translator-credits" with your names, one name per line
-#: src/kasasa-application.c:114
+#: src/kasasa-application.c:116
 msgid "translator-credits"
 msgstr "Kelvin Ribeiro Novais"
 
-#: src/kasasa-window.ui:60
+#: src/kasasa-window.c:971
+msgid "Unblock miniaturization"
+msgstr "Desbloquear la miniaturización"
+
+#: src/kasasa-window.c:977
+msgid "Block miniaturization"
+msgstr "Bloquear la miniaturización"
+
+#: src/kasasa-window.ui:61
 msgid "Trigger auto discard timer"
 msgstr "Activar temporizador de descarte automático"
 
-#: src/kasasa-window.ui:69
+#: src/kasasa-window.ui:70
 msgid "Auto delete image when closing window"
 msgstr "Eliminar imagen automáticamente al cerrar la ventana"
 
-#: src/kasasa-window.ui:80
+#: src/kasasa-window.ui:88
 msgid "Menu"
 msgstr "Menú"
 
-#: src/kasasa-window.ui:157
+#: src/kasasa-window.ui:165
 msgid "_Preferences"
 msgstr "_Preferencias"
 
-#: src/kasasa-window.ui:161
+#: src/kasasa-window.ui:169
 msgid "_About Kasasa"
 msgstr "_Acerca de Kasasa"
 
-#: src/kasasa-picture-container.c:180 src/kasasa-picture-container.c:331
+#: src/kasasa-content-container.c:220 src/kasasa-content-container.c:818
 #, c-format
 msgid "Error: %s"
 msgstr "Error: %s"
 
-#: src/kasasa-picture-container.c:182 src/kasasa-picture-container.c:194
-#: src/kasasa-picture-container.c:333
+#: src/kasasa-content-container.c:222 src/kasasa-content-container.c:234
+#: src/kasasa-content-container.c:820
 msgid "Copy"
 msgstr "Copiar"
 
-#: src/kasasa-picture-container.c:191 src/routines.c:60
+#: src/kasasa-content-container.c:231 src/kasasa-content-container.c:367
 msgid "Couldn't load the screenshot"
 msgstr "No se pudo cargar la captura de pantalla"
 
-#: src/kasasa-picture-container.c:345
+#. translators: reason which the screenshot failed
+#: src/kasasa-content-container.c:367
+msgid "Reason: "
+msgstr "Razón: "
+
+#: src/kasasa-content-container.c:384
+msgid "Screenshot failed"
+msgstr "Error en la captura de pantalla"
+
+#: src/kasasa-content-container.c:832
 msgid "Copied to the clipboard"
 msgstr "Copiado al portapapeles"
 
-#: src/kasasa-picture-container.ui:93
+#: src/kasasa-content-container.ui:104
 msgid "Add screenshot"
 msgstr "Agregar captura de pantalla"
 
-#: src/kasasa-picture-container.ui:102
-msgid "Remove screenshot"
-msgstr "Eliminar captura de pantalla"
+#: src/kasasa-content-container.ui:111
+msgid "More actions"
+msgstr "Más acciones"
 
-#: src/kasasa-picture-container.ui:130
+#: src/kasasa-content-container.ui:138
+msgid "Delayed screenshot"
+msgstr "Captura de pantalla con retraso"
+
+#: src/kasasa-content-container.ui:165
+msgid "Screencast"
+msgstr "Screencast"
+
+#: src/kasasa-content-container.ui:185
+msgid "Remove this item"
+msgstr "Eliminar este artículo"
+
+#: src/kasasa-content-container.ui:211
 msgid "Retake screenshot"
 msgstr "Volver a tomar captura de pantalla"
 
-#: src/kasasa-picture-container.ui:138
+#: src/kasasa-content-container.ui:219
 msgid "Copy screenshot"
 msgstr "Copiar captura de pantalla"
+
+#: src/kasasa-screencast.c:157
+msgid "Screencast ended with error"
+msgstr "La screencast terminó con un error"
+
+#: src/kasasa-screencast.c:562
+msgid "No screencast"
+msgstr "Sin screencast"
 
 #: src/kasasa-preferences.ui:12
 msgid "Window hide mode"
@@ -198,45 +235,48 @@ msgstr "Miniaturizar"
 msgid "Auto hide the header bar"
 msgstr "Ocultar automáticamente la barra de encabezado"
 
-#: src/kasasa-preferences.ui:58
+#: src/kasasa-preferences.ui:52
+msgid "Controls timeout (in seconds)"
+msgstr "Controla el tiempo de ocultación (en segundos)"
+
+#: src/kasasa-preferences.ui:72
 msgid "Occupying screen percentage"
 msgstr "Porcentaje de pantalla ocupada"
 
-#: src/kasasa-preferences.ui:59
+#: src/kasasa-preferences.ui:73
 msgid "Max percentage of the screen that Kasasa can use"
 msgstr "Porcentaje máximo de la pantalla que Kasasa puede usar"
 
-#: src/kasasa-preferences.ui:79
+#: src/kasasa-preferences.ui:93
 msgid "Auto close window"
 msgstr "Cerrar ventana automáticamente"
 
-#: src/kasasa-preferences.ui:80
+#: src/kasasa-preferences.ui:94
 msgid "Auto close the window after a certain time"
 msgstr "Cerrar automáticamente la ventana después de un tiempo determinado"
 
 #. translators: this refers to the time to auto discard the window
-#: src/kasasa-preferences.ui:86
+#: src/kasasa-preferences.ui:100
 msgid "Time (in minutes)"
 msgstr "Tiempo (en minutos)"
 
-#: src/kasasa-preferences.ui:106
+#: src/kasasa-preferences.ui:120
+msgid "Screenshot delay (in seconds)"
+msgstr "Retraso de captura de pantalla (en segundos)"
+
+#: src/kasasa-preferences.ui:121
+msgid "Time for delayed screenshots"
+msgstr "Tiempo para tomar capturas de pantalla retrasadas"
+
+#: src/kasasa-preferences.ui:141
 msgid "Auto delete image"
 msgstr "Eliminar imagen automáticamente"
 
-#: src/kasasa-preferences.ui:107
+#: src/kasasa-preferences.ui:142
 msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
 "Eliminar automáticamente la imagen al cerrar la ventana o volver a tomar una "
 "captura de pantalla"
-
-#. translators: reason which the screenshot failed
-#: src/routines.c:60
-msgid "Reason: "
-msgstr "Razón: "
-
-#: src/routines.c:77
-msgid "Screenshot failed"
-msgstr "Error en la captura de pantalla"
 
 #~ msgid "New Window"
 #~ msgstr "Nueva ventana"
