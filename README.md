@@ -23,6 +23,8 @@ Best used with:
  - "Always on Top" and/or "Always on Visible Workspace"
  - A keyboard shortcut
 
+https://github.com/user-attachments/assets/eb98f2e0-d3cc-4461-bc84-25f438120b58
+
 > [!NOTE]
 > On GNOME, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts.
 > 
