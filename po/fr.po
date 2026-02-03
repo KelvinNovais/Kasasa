@@ -120,7 +120,7 @@ msgstr ""
 #. Translators: Replace "translator-credits" with your names, one name per line
 #: src/kasasa-application.c:116
 msgid "translator-credits"
-msgstr "crédits-de-traduction"
+msgstr "Yoav Rheims <yoavrheims@gmail.com>"
 
 #: src/kasasa-window.c:971
 msgid "Unblock miniaturization"
