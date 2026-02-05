@@ -1,25 +1,23 @@
 # Russian translations for Kasasa package.
-# Copyright (C) 2024 Kelvin Novais
+# Copyright (C) 2024-2026 Kelvin Ribeiro Novais
 # This file is distributed under the same license as the Kasasa package.
-# Vladimir Kosolapov, 2024.
+# Vladimir Kosolapov, 2024-2026.
 # freeducks-debug, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kasasa\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: https://github.com/KelvinNovais/Kasasa/issues\n"
 "POT-Creation-Date: 2026-01-06 10:17-0300\n"
-"PO-Revision-Date: 2025-07-04 13:30+0300\n"
-"Last-Translator: freeducks-debug <209897795+freeducks-"
-"debug@users.noreply.github.com>\n"
-"Language-Team: Russian\n"
+"PO-Revision-Date: 2026-02-04 12:00+0300\n"
+"Last-Translator: Vladimir Kosolapov\n"
+"Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.6\n"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:2
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:5
@@ -33,9 +31,8 @@ msgid "Snip and pin useful information"
 msgstr "Выделяйте и закрепляйте полезную информацию"
 
 #: data/io.github.kelvinnovais.Kasasa.desktop.in:9
-#, fuzzy
 msgid "screenshot;clipping;snip;image;pin;reference;"
-msgstr "screenshot;clipping;snip;image;pin;reference;скриншот;снимок;екрана;выделение;закрепление;закрепить;изображение;вырезать;"
+msgstr "скриншот;снимок;экрана;фрагмент;изображение;закрепление;образец;"
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:26
 msgid ""
@@ -45,8 +42,8 @@ msgid ""
 "behind it."
 msgstr ""
 "Закрепите всё важное в небольшом плавающем окне, чтобы не переключаться "
-"между окнами или рабочими пространствами. Окно может быть минимизировано или "
-"уменьшено его прозрачность, чтобы не блокировать то, что позади него."
+"между окнами или рабочими пространствами. Окно может быть минимизировано, "
+"а его прозрачность уменьшена для лучшей видимости."
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:30
 msgid "Best used with:"
@@ -59,7 +56,7 @@ msgstr "\"Всегда сверху\" и/или \"Всегда на видимо
 
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:34
 msgid "A keyboard shortcut"
-msgstr "Клавиатурное сокращение"
+msgstr "Комбинация клавиш"
 
 #. translators: do not include the tags <code></code>
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:37
@@ -94,7 +91,7 @@ msgstr "Окно Kasasa может быть минимизировано"
 #. translators: "its" refer to Kasasa window
 #: data/io.github.kelvinnovais.Kasasa.metainfo.xml.in:61
 msgid "Or decrease its opacity"
-msgstr "Или его прозрачность уменьшена"
+msgstr "Прозрачность окна регулируется"
 
 #: src/gtk/help-overlay.ui:11
 msgctxt "shortcut window"
@@ -130,11 +127,11 @@ msgstr ""
 
 #: src/kasasa-window.c:971
 msgid "Unblock miniaturization"
-msgstr ""
+msgstr "Разрешить минимизацию"
 
 #: src/kasasa-window.c:977
 msgid "Block miniaturization"
-msgstr ""
+msgstr "Запретить минимизацию"
 
 #: src/kasasa-window.ui:61
 msgid "Trigger auto discard timer"
@@ -189,20 +186,19 @@ msgstr "Добавить снимок экрана"
 
 #: src/kasasa-content-container.ui:111
 msgid "More actions"
-msgstr ""
+msgstr "Дополнительные действия"
 
 #: src/kasasa-content-container.ui:138
-#, fuzzy
 msgid "Delayed screenshot"
-msgstr "Повторить снимок экрана"
+msgstr "Отложенный снимок экрана"
 
 #: src/kasasa-content-container.ui:165
 msgid "Screencast"
-msgstr ""
+msgstr "Запись экрана"
 
 #: src/kasasa-content-container.ui:185
 msgid "Remove this item"
-msgstr ""
+msgstr "Удалить этот элемент"
 
 #: src/kasasa-content-container.ui:211
 msgid "Retake screenshot"
@@ -214,12 +210,11 @@ msgstr "Скопировать снимок экрана"
 
 #: src/kasasa-screencast.c:157
 msgid "Screencast ended with error"
-msgstr ""
+msgstr "Запись экрана завершилась с ошибкой"
 
 #: src/kasasa-screencast.c:562
-#, fuzzy
 msgid "No screencast"
-msgstr "Скопировать снимок экрана"
+msgstr "Нет записи экрана"
 
 #: src/kasasa-preferences.ui:12
 msgid "Window hide mode"
@@ -243,7 +238,7 @@ msgstr "Автоматическое скрытие панели заголов�
 
 #: src/kasasa-preferences.ui:52
 msgid "Controls timeout (in seconds)"
-msgstr ""
+msgstr "Таймаут элементов управления (в секундах)"
 
 #: src/kasasa-preferences.ui:72
 msgid "Occupying screen percentage"
@@ -267,14 +262,12 @@ msgid "Time (in minutes)"
 msgstr "Время (в минутах)"
 
 #: src/kasasa-preferences.ui:120
-#, fuzzy
 msgid "Screenshot delay (in seconds)"
-msgstr "Не удалось сделать снимок экрана"
+msgstr "Задержка снимка экрана (в секундах)"
 
 #: src/kasasa-preferences.ui:121
-#, fuzzy
 msgid "Time for delayed screenshots"
-msgstr "Удалить снимок экрана"
+msgstr "Время для отложенных снимков экрана"
 
 #: src/kasasa-preferences.ui:141
 msgid "Auto delete image"
@@ -285,15 +278,3 @@ msgid "Auto delete the image when closing the window or retaking a screenshot"
 msgstr ""
 "Автоматическое удаление изображения при закрытии окна или повторном снимке "
 "экрана"
-
-#~ msgid "A small window, in dark mode"
-#~ msgstr "Небольшое окно в тёмном режиме"
-
-#~ msgid "A small window, in light mode"
-#~ msgstr "Небольшое окно в светлом режиме"
-
-#~ msgid "Kasasa over another application"
-#~ msgstr "Kasasa поверх другого приложения"
-
-#~ msgid "Kasasa over another application, with opacity decreased"
-#~ msgstr "Kasasa поверх другого приложения с уменьшенной непрозрачностью"
