@@ -71,13 +71,12 @@
               <object class="AdwSpinRow">
                 <property name="title" translatable="yes">Occupying screen percentage</property>
                 <property name="subtitle" translatable="yes">Max percentage of the screen that Kasasa can use</property>
-                <property name="digits">2</property>
                 <property name="adjustment">
                   <object class="GtkAdjustment" id="occupy_screen_adjustment">
-                    <property name="lower">0.10</property>
-                    <property name="upper">0.75</property>
-                    <property name="step-increment">0.01</property>
-                    <property name="value">0.15</property>
+                    <property name="lower">10</property>
+                    <property name="upper">100</property>
+                    <property name="step-increment">1</property>
+                    <property name="value">15</property>
                   </object>
                 </property>
               </object>
@@ -149,5 +148,4 @@
     </child>
   </template>
 </interface>
-
 

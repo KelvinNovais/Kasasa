@@ -27,9 +27,9 @@
     </key>
 
 	  <!-- OCCUPY SCREEN -->
-	  <key name="occupy-screen" type="d">
-      <range min="0.10" max="0.75"/>
-      <default>0.15</default>
+	  <key name="occupy-screen" type="i">
+      <range min="10" max="100"/>
+      <default>15</default>
     </key>
 
 	  <!-- AUTO DISCARD WINDOW -->
