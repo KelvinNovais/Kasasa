@@ -1,6 +1,6 @@
 /* kasasa-application.c
  *
- * Copyright 2024-2025 Kelvin Novais
+ * Copyright 2024-2026 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
 
 #include <glib/gi18n.h>
 
-#include "kasasa-preferences.h"
 #include "kasasa-application.h"
+#include "kasasa-preferences.h"
 #include "kasasa-window.h"
 
 struct _KasasaApplication
@@ -34,8 +34,8 @@ struct _KasasaApplication
 G_DEFINE_FINAL_TYPE (KasasaApplication, kasasa_application, ADW_TYPE_APPLICATION)
 
 KasasaApplication *
-kasasa_application_new (const char        *application_id,
-                        GApplicationFlags  flags)
+kasasa_application_new (const char *application_id,
+                        GApplicationFlags flags)
 {
   g_return_val_if_fail (application_id != NULL, NULL);
 
@@ -68,8 +68,8 @@ kasasa_application_activate (GApplication *app)
 
 static void
 kasasa_application_preferences_action (GSimpleAction *action,
-                                       GVariant      *parameter,
-                                       gpointer       app)
+                                       GVariant *parameter,
+                                       gpointer app)
 {
   KasasaPreferences *preferences;
   GtkWindow *window;
@@ -89,10 +89,10 @@ kasasa_application_class_init (KasasaApplicationClass *klass)
 
 static void
 kasasa_application_about_action (GSimpleAction *action,
-                                 GVariant      *parameter,
-                                 gpointer       user_data)
+                                 GVariant *parameter,
+                                 gpointer user_data)
 {
-  static const char *developers[] = {"Kelvin Ribeiro Novais", NULL};
+  static const char *developers[] = { "Kelvin Ribeiro Novais", NULL };
   KasasaApplication *self = user_data;
   GtkWindow *window = NULL;
 
@@ -101,26 +101,26 @@ kasasa_application_about_action (GSimpleAction *action,
   window = gtk_application_get_active_window (GTK_APPLICATION (self));
 
   adw_show_about_dialog (GTK_WIDGET (window),
-                         "application-name", _("Kasasa"),
+                         "application-name", _ ("Kasasa"),
                          "application-icon", "io.github.kelvinnovais.Kasasa",
                          "developer-name", "Kelvin Ribeiro Novais",
-                         "version", "1.1.4",
-                         "comments", _("Snip and pin useful information"
-                                       "\n\nIf you liked the app ❤️, consider giving it a star ⭐:"),
+                         "version", PACKAGE_VERSION,
+                         "comments", _ ("Snip and pin useful information"
+                                        "\n\nIf you liked the app ❤️, consider giving it a star ⭐:"),
                          "issue-url", "https://github.com/KelvinNovais/Kasasa/issues",
                          "website", "https://github.com/KelvinNovais/Kasasa",
                          "developers", developers,
-                         "copyright", "© 2024-2025 Kelvin Ribeiro Novais",
+                         "copyright", "© 2024-2026 Kelvin Ribeiro Novais",
                          "license-type", GTK_LICENSE_GPL_3_0,
                          // Translators: Replace "translator-credits" with your names, one name per line
-                         "translator_credits", _("translator-credits"),
+                         "translator_credits", _ ("translator-credits"),
                          NULL);
 }
 
 static void
 kasasa_application_quit_action (GSimpleAction *action,
-                                GVariant      *parameter,
-                                gpointer       user_data)
+                                GVariant *parameter,
+                                gpointer user_data)
 {
   KasasaApplication *self = user_data;
 

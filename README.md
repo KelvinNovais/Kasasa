@@ -30,6 +30,10 @@ https://github.com/user-attachments/assets/eb98f2e0-d3cc-4461-bc84-25f438120b58
 > 
 > There you can set a shortcut to call **`flatpak run io.github.kelvinnovais.Kasasa`**
 
+> [!NOTE]
+> If using Hyprland, add the following rule:
+> `windowrule = match:title Kasasa, no_blur on, border_size 0, no_shadow on`
+
 > [!IMPORTANT]
 > On GNOME versions < 46, a dialog will appear to set up and take the screenshot,
 > instead of directly using the GNOME's screenshoter; this may be inconvenient. 
