@@ -75,6 +75,7 @@
                                           <object class="GtkToggleButton" id="lock_button">
                                             <property name="margin-start">6</property>
                                             <property name="icon-name">padlock2-open-symbolic</property>
+                                            <property name="tooltip-text" translatable="yes">Block miniaturization</property>
                                           </object>
                                         </child>
                                       </object>
@@ -97,7 +98,7 @@
                         <child>
                           <object class="GtkProgressBar" id="progress_bar">
                             <style>
-                              <class name="osd" />
+                              <class name="osd"/>
                             </style>
                           </object>
                         </child>
@@ -107,7 +108,7 @@
 
                     <!-- PICTURE CONTAINER -->
                     <child>
-                      <object class="KasasaContentContainer" id="content_container" />
+                      <object class="KasasaContentContainer" id="content_container"/>
                     </child>
                   </object>
                 </child>
@@ -171,5 +172,4 @@
     </section>
   </menu>
 </interface>
-
 

@@ -1,6 +1,6 @@
 /* kasasa-window.c
  *
- * Copyright 2024-2025 Kelvin Novais
+ * Copyright 2024-2026 Kelvin Novais
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,44 +22,44 @@
 
 #include <glib/gi18n.h>
 
-#include "kasasa-window.h"
 #include "kasasa-content-container.h"
+#include "kasasa-window.h"
 
 // Defined on GSchema and preferences
 #define MIN_OCCUPY_SCREEN 0.1
 
 struct _KasasaWindow
 {
-  AdwApplicationWindow       parent_instance;
+  AdwApplicationWindow parent_instance;
 
   /* Template widgets */
-  KasasaContentContainer    *content_container;
-  AdwHeaderBar              *header_bar;
-  GtkRevealer               *header_bar_revealer;
-  GtkMenuButton             *menu_button;
-  GtkToggleButton           *auto_discard_button;
-  GtkToggleButton           *auto_trash_button;
-  GtkToggleButton           *lock_button;
-  GtkProgressBar            *progress_bar;
-  GtkStack                  *stack;
+  KasasaContentContainer *content_container;
+  AdwHeaderBar *header_bar;
+  GtkRevealer *header_bar_revealer;
+  GtkMenuButton *menu_button;
+  GtkToggleButton *auto_discard_button;
+  GtkToggleButton *auto_trash_button;
+  GtkToggleButton *lock_button;
+  GtkProgressBar *progress_bar;
+  GtkStack *stack;
 
   /* State variables */
-  gboolean                   hide_menu_requested;
-  gboolean                   mouse_over_window;
-  gboolean                   hiding_window;
-  gboolean                   block_miniaturization;
-  gboolean                   window_is_miniaturized;
+  gboolean hide_menu_requested;
+  gboolean mouse_over_window;
+  gboolean hiding_window;
+  gboolean block_miniaturization;
+  gboolean window_is_miniaturized;
 
   /* Instance variables */
-  GSettings                 *settings;
-  AdwAnimation              *window_opacity_animation;
-  GCancellable              *miniaturization_canceller;
+  GSettings *settings;
+  AdwAnimation *window_opacity_animation;
+  GCancellable *miniaturization_canceller;
 };
 
 typedef struct
 {
-  HideWindowCallback    function;
-  gpointer              data;
+  HideWindowCallback function;
+  gpointer data;
 } HideWindowCallbackInfo;
 
 G_DEFINE_FINAL_TYPE (KasasaWindow, kasasa_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -146,7 +146,7 @@ has_different_scalings (gdouble *max_scale)
   if (min_s != max_s)
     {
       g_info ("Monitors have different scales: %.2f and %.2f [min, max]",
-               min_s, max_s);
+              min_s, max_s);
       *max_scale = max_s;
       return TRUE;
     }
@@ -159,7 +159,7 @@ has_different_scalings (gdouble *max_scale)
 
 static gboolean
 scaling (GtkWidget *widget,
-         gdouble   *scale)
+         gdouble *scale)
 {
   GdkDisplay *display = NULL;
   GtkNative *native = NULL;
@@ -195,8 +195,8 @@ scaling (GtkWidget *widget,
 
 static gboolean
 monitor_size (GtkWidget *widget,
-              gdouble   *monitor_width,
-              gdouble   *monitor_height)
+              gdouble *monitor_width,
+              gdouble *monitor_height)
 {
   GdkDisplay *display = NULL;
   GtkNative *native = NULL;
@@ -255,17 +255,17 @@ monitor_size (GtkWidget *widget,
 // https://gitlab.gnome.org/GNOME/loupe/-/blob/4ca5f9e03d18667db5d72325597cebc02887777a/src/widgets/image/rendering.rs#L151
 static gboolean
 compute_size (KasasaWindow *self,
-              gdouble      *nat_width,
-              gdouble      *nat_height,
-              const gint    content_height,
-              const gint    content_width)
+              gdouble *nat_width,
+              gdouble *nat_height,
+              const gint content_height,
+              const gint content_width)
 {
   g_autoptr (GError) error = NULL;
   // gints
   gint image_width, image_height, image_area, max_width, max_height;
   // gdoubles
-  gdouble monitor_width, monitor_height, monitor_area,
-          occupy_area_factor, size_scale, target_scale, hidpi_scale, max_scale;
+  gdouble monitor_width, monitor_height, monitor_area, header_bar_height,
+      occupy_area_factor, size_scale, target_scale, hidpi_scale, max_scale;
 
   g_autoptr (GSettings) settings = g_settings_new ("io.github.kelvinnovais.Kasasa");
 
@@ -305,7 +305,10 @@ compute_size (KasasaWindow *self,
   monitor_area = monitor_width * monitor_height;
   image_area = image_height * image_width;
 
-  occupy_area_factor = g_settings_get_double (settings, "occupy-screen");
+  occupy_area_factor = g_settings_get_int (settings, "occupy-screen") / 100.0;
+
+  header_bar_height =
+      g_settings_get_boolean (settings, "auto-hide-menu") ? 0 : 47;
 
   // factor for width and height that will achieve the desired area
   // occupation derived from:
@@ -326,7 +329,7 @@ compute_size (KasasaWindow *self,
 
   // Scale down if targeted occupation does not fit horizontally
   // Add some margin to not touch corners
-  max_width = monitor_width - 20;
+  max_width = monitor_width /*- 20*/;
   if (*nat_width > max_width)
     {
       *nat_width = max_width;
@@ -337,7 +340,7 @@ compute_size (KasasaWindow *self,
 
   // Same for vertical size
   // Additionally substract some space for HeaderBar and Shell bar
-  max_height = monitor_height - (50 + 35 + 20) * hidpi_scale;
+  max_height = monitor_height - (header_bar_height + 35 /*+ 20*/) * hidpi_scale;
   if (*nat_height > max_height)
     {
       *nat_height = max_height;
@@ -357,7 +360,7 @@ compute_size (KasasaWindow *self,
 
   // If the header bar is NOT hiding, then the window height must have more 47 px
   if (!g_settings_get_boolean (settings, "auto-hide-menu"))
-    *nat_height += 47;
+    *nat_height += header_bar_height;
 
   g_info ("Physical monitor dimensions: %.2f x %.2f",
           monitor_width, monitor_height);
@@ -371,8 +374,8 @@ compute_size (KasasaWindow *self,
 // Resize the window with an animation
 void
 kasasa_window_resize_window (KasasaWindow *self,
-                             gdouble       new_height,
-                             gdouble       new_width)
+                             gdouble new_height,
+                             gdouble new_width)
 {
   AdwAnimationTarget *target_h = NULL;
   AdwAnimationTarget *target_w = NULL;
@@ -390,28 +393,28 @@ kasasa_window_resize_window (KasasaWindow *self,
 
   // Set targets
   target_h =
-    adw_property_animation_target_new (G_OBJECT (self), "default-height");
+      adw_property_animation_target_new (G_OBJECT (self), "default-height");
   target_w =
-    adw_property_animation_target_new (G_OBJECT (self), "default-width");
+      adw_property_animation_target_new (G_OBJECT (self), "default-width");
 
   // Animation for resizing height
   animation_height = adw_timed_animation_new (
-    GTK_WIDGET (self),                                      // widget
-    (gdouble) default_height,                               // from
-    new_height,                                             // to
-    WINDOW_RESIZING_DURATION,                               // duration
-    target_h                                                // target
+      GTK_WIDGET (self),        // widget
+      (gdouble) default_height, // from
+      new_height,               // to
+      WINDOW_RESIZING_DURATION, // duration
+      target_h                  // target
   );
   adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_height),
                                   ADW_EASE_OUT_EXPO);
 
   // Animation for resizing width
   animation_width = adw_timed_animation_new (
-    GTK_WIDGET (self),                                        // widget
-    (gdouble) default_width,                                  // from
-    new_width,                                                // to
-    WINDOW_RESIZING_DURATION,                                 // duration
-    target_w                                                  // target
+      GTK_WIDGET (self),        // widget
+      (gdouble) default_width,  // from
+      new_width,                // to
+      WINDOW_RESIZING_DURATION, // duration
+      target_w                  // target
   );
   adw_timed_animation_set_easing (ADW_TIMED_ANIMATION (animation_width),
                                   ADW_EASE_OUT_EXPO);
@@ -435,8 +438,8 @@ kasasa_window_resize_window (KasasaWindow *self,
 
 void
 kasasa_window_resize_window_scaling (KasasaWindow *self,
-                                     gdouble       new_height,
-                                     gdouble       new_width)
+                                     gdouble new_height,
+                                     gdouble new_width)
 {
   gdouble nat_width = -1.0;
   gdouble nat_height = -1.0;
@@ -451,22 +454,22 @@ kasasa_window_resize_window_scaling (KasasaWindow *self,
 }
 
 static void
-change_opacity_cb (double         value,
-                   KasasaWindow  *self)
+change_opacity_cb (double value,
+                   KasasaWindow *self)
 {
   gtk_widget_set_opacity (GTK_WIDGET (self), value);
 }
 
 void
 kasasa_window_change_opacity (KasasaWindow *self,
-                              Opacity       opacity_direction)
+                              Opacity opacity_direction)
 {
   AdwAnimationTarget *target = NULL;
   gdouble opacity = g_settings_get_double (self->settings, "opacity");
 
   // Set from and to target values, according to the mode (increase or decrease opacity)
-  gdouble from  = gtk_widget_get_opacity (GTK_WIDGET (self));
-  gdouble to    = (opacity_direction == OPACITY_INCREASE) ? 1.00    : opacity;
+  gdouble from = gtk_widget_get_opacity (GTK_WIDGET (self));
+  gdouble to = (opacity_direction == OPACITY_INCREASE) ? 1.00 : opacity;
 
   // Return if this option is disabled
   if (!g_settings_get_boolean (self->settings, "change-opacity"))
@@ -478,8 +481,7 @@ kasasa_window_change_opacity (KasasaWindow *self,
     return;
 
   // Return if the opacity is already 100%
-  if (opacity == OPACITY_INCREASE
-      && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
+  if (opacity == OPACITY_INCREASE && gtk_widget_get_opacity (GTK_WIDGET (self)) == 1.00)
     return;
 
   // Pause an animation
@@ -490,15 +492,15 @@ kasasa_window_change_opacity (KasasaWindow *self,
   g_clear_object (&self->window_opacity_animation);
 
   target =
-    adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
-                                       self,
-                                       NULL);
+      adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
+                                         self,
+                                         NULL);
 
   self->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (self),  // widget
-    from, to,             // opacity from to
-    270,                  // duration
-    target                // target
+      GTK_WIDGET (self), // widget
+      from, to,          // opacity from to
+      270,               // duration
+      target             // target
   );
 
   adw_animation_play (self->window_opacity_animation);
@@ -506,7 +508,7 @@ kasasa_window_change_opacity (KasasaWindow *self,
 
 static void
 on_window_hidden (AdwAnimation *animation,
-                  gpointer      user_data)
+                  gpointer user_data)
 {
   HideWindowCallbackInfo *cb = user_data;
 
@@ -526,10 +528,10 @@ on_window_hidden (AdwAnimation *animation,
  * window is finished. This argument can be NULL, as well 'callback_data'.
  */
 void
-kasasa_window_hide_window (KasasaWindow           *self,
-                           gboolean                hide,
-                           HideWindowCallback      callback,
-                           gpointer                callback_data)
+kasasa_window_hide_window (KasasaWindow *self,
+                           gboolean hide,
+                           HideWindowCallback callback,
+                           gpointer callback_data)
 {
   AdwAnimationTarget *target = NULL;
   gdouble from, to;
@@ -545,22 +547,22 @@ kasasa_window_hide_window (KasasaWindow           *self,
     }
 
   // Set 'from' and 'to' target values
-  from  = gtk_widget_get_opacity (GTK_WIDGET (self));
-  to    = (hide) ? 0.00    : 1.00;
+  from = gtk_widget_get_opacity (GTK_WIDGET (self));
+  to = (hide) ? 0.00 : 1.00;
 
   // Set if the window is hiding or being revealed
   self->hiding_window = hide;
 
   target =
-    adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
-                                       self,
-                                       NULL);
+      adw_callback_animation_target_new ((AdwAnimationTargetFunc) change_opacity_cb,
+                                         self,
+                                         NULL);
 
   self->window_opacity_animation = adw_timed_animation_new (
-    GTK_WIDGET (self),                      // widget
-    from, to,                               // opacity from to
-    (hide) ? WINDOW_HIDING_DURATION : 200,  // duration
-    target                                  // target
+      GTK_WIDGET (self),                     // widget
+      from, to,                              // opacity from to
+      (hide) ? WINDOW_HIDING_DURATION : 200, // duration
+      target                                 // target
   );
 
   if (callback != NULL)
@@ -620,7 +622,7 @@ kasasa_window_auto_discard_window (KasasaWindow *self)
 
 static gboolean
 on_modal_close_request (GtkWindow *window,
-                        gpointer   user_data)
+                        gpointer user_data)
 {
   kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), TRUE);
   return FALSE;
@@ -642,10 +644,7 @@ has_modal (KasasaWindow *self)
     {
       gpointer item = g_list_model_get_item (windows, i);
 
-      if (GTK_IS_WINDOW (item)
-          && !GTK_IS_SHORTCUTS_WINDOW (item)
-          && gtk_window_get_modal (GTK_WINDOW (item))
-          )
+      if (GTK_IS_WINDOW (item) && !GTK_IS_SHORTCUTS_WINDOW (item) && gtk_window_get_modal (GTK_WINDOW (item)))
         {
           g_info ("Window has a modal");
           g_signal_connect (item, "close-request",
@@ -660,9 +659,9 @@ has_modal (KasasaWindow *self)
 }
 
 static gboolean
-window_miniaturization_finish (GObject       *source_object,
-                               GAsyncResult  *result,
-                               GError       **error)
+window_miniaturization_finish (GObject *source_object,
+                               GAsyncResult *result,
+                               GError **error)
 {
   g_return_val_if_fail (g_task_is_valid (result, source_object), FALSE);
 
@@ -670,15 +669,14 @@ window_miniaturization_finish (GObject       *source_object,
 }
 
 static void
-window_miniaturization_cb (GObject      *source_object,
+window_miniaturization_cb (GObject *source_object,
                            GAsyncResult *res,
-                           gpointer      data)
+                           gpointer data)
 {
   KasasaWindow *self = KASASA_WINDOW (source_object);
   gboolean miniaturize = window_miniaturization_finish (source_object, res, NULL);
 
-  if (miniaturize
-      && !has_modal (self))
+  if (miniaturize && !has_modal (self))
     {
       self->window_is_miniaturized = TRUE;
       gtk_stack_set_visible_child_name (self->stack, "miniature_page");
@@ -688,9 +686,9 @@ window_miniaturization_cb (GObject      *source_object,
 }
 
 static void
-window_miniaturization_thread (GTask        *task,
-                               gpointer      source_object,
-                               gpointer      task_data,
+window_miniaturization_thread (GTask *task,
+                               gpointer source_object,
+                               gpointer task_data,
                                GCancellable *cancellable)
 {
   sleep (WINDOW_MINIATURIZATION_DELAY);
@@ -708,7 +706,7 @@ window_miniaturization_thread (GTask        *task,
  */
 void
 kasasa_window_miniaturize_window (KasasaWindow *self,
-                                  gboolean      miniaturize)
+                                  gboolean miniaturize)
 {
   GTask *task = NULL;
 
@@ -719,10 +717,7 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
 
   if (miniaturize)
     {
-      if (self->window_is_miniaturized
-          || !g_settings_get_boolean (self->settings, "miniaturize-window")
-          || self->block_miniaturization
-          || gtk_toggle_button_get_active (self->lock_button))
+      if (self->window_is_miniaturized || !g_settings_get_boolean (self->settings, "miniaturize-window") || self->block_miniaturization || gtk_toggle_button_get_active (self->lock_button))
         return;
 
       g_object_unref (self->miniaturization_canceller);
@@ -748,7 +743,7 @@ kasasa_window_miniaturize_window (KasasaWindow *self,
 
 void
 kasasa_window_block_miniaturization (KasasaWindow *self,
-                                     gboolean       block)
+                                     gboolean block)
 {
   g_return_if_fail (KASASA_IS_WINDOW (self));
 
@@ -825,14 +820,15 @@ hide_header_bar (KasasaWindow *self)
 
 static void
 on_mouse_enter_content_container (GtkEventControllerMotion *event_controller_motion,
-                                  gdouble                   x,
-                                  gdouble                   y,
-                                  gpointer                  user_data)
+                                  gdouble x,
+                                  gdouble y,
+                                  gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   // See Note [1]
-  if (gtk_menu_button_get_active (self->menu_button)) return;
+  if (gtk_menu_button_get_active (self->menu_button))
+    return;
 
   self->mouse_over_window = TRUE;
 
@@ -851,13 +847,15 @@ on_mouse_enter_content_container (GtkEventControllerMotion *event_controller_mot
 
 static void
 on_mouse_leave_content_container (GtkEventControllerMotion *event_controller_motion,
-                                  gpointer                  user_data)
+                                  gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   // See Note [1]
-  if (gtk_menu_button_get_active (self->menu_button)) return;
-  if (kasasa_content_container_controls_active (self->content_container)) return;
+  if (gtk_menu_button_get_active (self->menu_button))
+    return;
+  if (kasasa_content_container_controls_active (self->content_container))
+    return;
 
   self->mouse_over_window = FALSE;
   kasasa_window_change_opacity (self, OPACITY_INCREASE);
@@ -866,14 +864,15 @@ on_mouse_leave_content_container (GtkEventControllerMotion *event_controller_mot
 
 static void
 on_mouse_enter_header_bar (GtkEventControllerMotion *event_controller_motion,
-                           gdouble                   x,
-                           gdouble                   y,
-                           gpointer                  user_data)
+                           gdouble x,
+                           gdouble y,
+                           gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   // See Note [1]
-  if (gtk_menu_button_get_active (self->menu_button)) return;
+  if (gtk_menu_button_get_active (self->menu_button))
+    return;
 
   self->mouse_over_window = TRUE;
   kasasa_window_change_opacity (self, OPACITY_INCREASE);
@@ -882,12 +881,13 @@ on_mouse_enter_header_bar (GtkEventControllerMotion *event_controller_motion,
 // Increase window opacity when the pointer leaves it
 static void
 on_mouse_leave_header_bar (GtkEventControllerMotion *event_controller_motion,
-                           gpointer                  user_data)
+                           gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
   // See Note [1]
-  if (gtk_menu_button_get_active (self->menu_button)) return;
+  if (gtk_menu_button_get_active (self->menu_button))
+    return;
 
   self->mouse_over_window = FALSE;
   hide_header_bar (self);
@@ -895,14 +895,14 @@ on_mouse_leave_header_bar (GtkEventControllerMotion *event_controller_motion,
 
 static void
 on_mouse_enter_window (GtkEventControllerMotion *event_controller_motion,
-                       gpointer                  user_data)
+                       gpointer user_data)
 {
   kasasa_window_miniaturize_window (KASASA_WINDOW (user_data), FALSE);
 }
 
 static void
 on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
-                       gpointer                  user_data)
+                       gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
   guint interval = (guint) 1000 * g_settings_get_double (self->settings,
@@ -922,10 +922,10 @@ on_mouse_leave_window (GtkEventControllerMotion *event_controller_motion,
 
 static void
 on_window_click_released (GtkGestureClick *gesture_click,
-                          gint             n_press,
-                          gdouble          x,
-                          gdouble          y,
-                          gpointer         user_data)
+                          gint n_press,
+                          gdouble x,
+                          gdouble y,
+                          gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -940,9 +940,9 @@ on_window_click_released (GtkGestureClick *gesture_click,
 
 static gboolean
 on_scroll (GtkEventControllerScroll *self,
-           gdouble                   dx,
-           gdouble                   dy,
-           gpointer                  user_data)
+           gdouble dx,
+           gdouble dy,
+           gpointer user_data)
 {
   kasasa_window_change_opacity (KASASA_WINDOW (user_data),
                                 OPACITY_INCREASE);
@@ -951,8 +951,8 @@ on_scroll (GtkEventControllerScroll *self,
 }
 
 static void
-on_auto_discard_button_toggled (GtkToggleButton   *button,
-                                gpointer           user_data)
+on_auto_discard_button_toggled (GtkToggleButton *button,
+                                gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -962,26 +962,26 @@ on_auto_discard_button_toggled (GtkToggleButton   *button,
 
 static void
 on_lock_button_toggled (GtkToggleButton *button,
-                        gpointer         user_data)
+                        gpointer user_data)
 {
   if (gtk_toggle_button_get_active (button))
     {
       gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-symbolic");
       gtk_widget_set_tooltip_text (GTK_WIDGET (button),
-                                   _("Unblock miniaturization"));
+                                   _ ("Unblock miniaturization"));
     }
   else
     {
       gtk_button_set_icon_name (GTK_BUTTON (button), "padlock2-open-symbolic");
       gtk_widget_set_tooltip_text (GTK_WIDGET (button),
-                                   _("Block miniaturization"));
+                                   _ ("Block miniaturization"));
     }
 }
 
 static void
 on_settings_updated (GSettings *settings,
-                     gchar     *key,
-                     gpointer   user_data)
+                     gchar *key,
+                     gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -1032,7 +1032,7 @@ on_settings_updated (GSettings *settings,
 
 static gboolean
 on_close_request (GtkWindow *window,
-                  gpointer   user_data)
+                  gpointer user_data)
 {
   KasasaWindow *self = KASASA_WINDOW (user_data);
 
@@ -1172,11 +1172,10 @@ kasasa_window_init (KasasaWindow *self)
   gtk_widget_add_controller (GTK_WIDGET (self),
                              GTK_EVENT_CONTROLLER (win_gesture_click));
 
-
   // Increase opacity when the user scrolls the screenshot; this is combined with
   // "page-changed" signal from the caroussel @ContentContainer
   win_scroll_event_controller =
-    gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES);
+      gtk_event_controller_scroll_new (GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES);
   g_signal_connect (win_scroll_event_controller,
                     "scroll",
                     G_CALLBACK (on_scroll),
@@ -1201,10 +1200,10 @@ kasasa_window_init (KasasaWindow *self)
                     self);
 }
 
-
 /* [1] Note:
  * The PopOver of a menu button steals the focus of a motion event controller
  * (when it's under the pointer)
  *
  * This situation in unwanted
  */
+
